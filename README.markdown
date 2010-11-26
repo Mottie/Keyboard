@@ -1,6 +1,6 @@
 Originally posted by Jeremy Satterfield in his [blog][1], [jQuery plugins][2] and on [Snipplr][3].
 
-**Features**
+**Features** ([Demo][4])
 
 * An on-screen virtual keyboard embedded within the browser window which will popup when a specified entry field is focused.
 * The user can then type and preview their input before Accepting or Canceling.
@@ -70,7 +70,7 @@ Originally posted by Jeremy Satterfield in his [blog][1], [jQuery plugins][2] an
 
 **Licensing**
 
-* [Creative Commons Attribution-Share Alike 3.0 Unported License][4]
+* [Creative Commons Attribution-Share Alike 3.0 Unported License][5]
 
 **To Do** (most of these are almost done and ready to post in the next version)
 
@@ -127,5 +127,6 @@ Version 1.0 (10/21/2009)
   [1]: http://jsatt.blogspot.com/2010/01/on-screen-keyboard-widget-using-jquery.html
   [2]: http://plugins.jquery.com/project/virtual_keyboard
   [3]: http://snipplr.com/view/21577/virtual-keyboard-widget/
-  [4]: http://creativecommons.org/licenses/by-sa/3.0/
+  [4]: http://mottie.github.com/Keyboard/
+  [5]: http://creativecommons.org/licenses/by-sa/3.0/
 
