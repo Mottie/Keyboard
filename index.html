@@ -1,0 +1,77 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html><head>
+	<title>Virtual Keyboard Widget - jQuery UI</title>
+
+	<!-- jQuery & jQueryUI + theme -->
+	<link href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/themes/ui-lightness/jquery-ui.css" type="text/css" rel="stylesheet" />
+	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.4/jquery.min.js" type="text/javascript"></script>
+	<script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/jquery-ui.min.js" type="text/javascript"></script>
+
+	<!-- keyboard widget css & script -->
+	<link rel="stylesheet" href="css/keyboard.css" type="text/css" />
+	<script src="js/jquery.keyboard.min.js" type="text/javascript"></script>
+
+	<!-- demo -->
+	<link href="css/demo.css" type="text/css" rel="stylesheet" />
+	<script src="js/demo.js" type="text/javascript"></script>
+
+	<!-- theme switcher -->
+	<script type="text/javascript" src="http://jqueryui.com/themeroller/themeswitchertool/"></script>
+
+</head><body>
+
+<div id="page-wrap">
+
+	<h1><a href="https://github.com/Mottie/Keyboard">Virtual Keyboard Widget</a></h1>
+	<h3>A jQuery UI widget by <a href="http://jsatt.blogspot.com/2010/01/on-screen-keyboard-widget-using-jquery.html">Jeremy Satterfield</a></h3>
+
+	<div id="switcher"></div><br>
+	<br>
+
+	<div class="block">
+		<h2>QWERTY Text</h2>
+		<input class="qwerty" type="text" />
+	</div>
+
+	<div class="block">
+		<h2>QWERTY Password</h2>
+		<input class="qwerty" type="password" />
+	</div>
+
+	<div class="block">
+		<h2>QWERTY Text Area</h2>
+		<textarea class="qwerty"></textarea>
+	</div>
+
+	<br class="clear" />
+
+	<div class="block">
+		<h2>Alphabetical</h2>
+		<textarea id="alpha"></textarea>
+	</div>
+
+	<div class="block">
+		<h2>Dvorak</h2>
+		<textarea id="dvorak"></textarea>
+	</div>
+
+	<div class="block">
+		<h2>Num Pad</h2>
+		<textarea id="num"></textarea>
+	</div>
+
+	<br class="clear" />
+
+	<div class="block">
+		<h2>Custom: Hex</h2>
+		<input id="custom1" type="text" />
+	</div>
+
+	<div class="block">
+		<h2>Custom: Junk</h2>
+		<textarea id="custom2"></textarea>
+	</div>
+
+</div>
+
+</body></html>

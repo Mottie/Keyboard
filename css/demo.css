@@ -1,0 +1,15 @@
+/* keyboard - demo CSS */
+body { background: #333; color: #ddd; height: 100%; }
+ a:link { color: #9fcdff; text-decoration: none; }
+ a:hover { color: #fff; }
+ a:visited,a:active { color: #53a5ff; }
+
+#page-wrap { width: 800px; margin: 0 auto; height: 100%; }
+
+h1, h2, h3 { color: #ddd; text-align: center; }
+h2 { margin: 5px; font-size: 130%; }
+#switcher { float: right; }
+
+.block { float: left; padding-left: 30px; margin-bottom: 30px; }
+textarea, input { width: 230px; background: #333; color: #ddd; border: #777 1px solid; }
+.clear { clear: both; }

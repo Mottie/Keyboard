@@ -1,0 +1,6 @@
+/* keyboard - jQuery UI Widget */
+.ui-keyboard { padding: .3em; position: absolute; z-index: 16000; }
+.ui-keyboard-button { height: 2em; width: 2em; margin: .1em; }
+.ui-keyboard-actionkey { width: 4em; }
+.ui-keyboard-space { width: 15em; }
+.ui-keyboard-preview { width: 100%; text-align: left; }
