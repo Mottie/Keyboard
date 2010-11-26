@@ -1,7 +1,7 @@
 $(document).ready(function(){
 
 	// Theme switcher
-//	$('#switcher').themeswitcher();
+	$('#switcher').themeswitcher();
 
 	// Keyboards
 	$('.qwerty').keyboard({ layout: 'qwerty' });
