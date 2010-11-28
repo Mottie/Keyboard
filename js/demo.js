@@ -6,6 +6,8 @@ $(document).ready(function(){
 	// Keyboards
 	$('.qwerty').keyboard({ layout: 'qwerty' });
 
+	$('#inter').keyboard({ layout: 'international' });
+
 	$('#dvorak').keyboard({ layout: 'dvorak' });
 
 	$('#alpha').keyboard({ layout: 'alpha' });
@@ -14,18 +16,28 @@ $(document).ready(function(){
 
 	$('#custom1').keyboard({
 		layout: 'custom',
-		customLayout:
-		[["1 2 3 4 {bksp}"],
-		["5 6 7 8 {accept}"],
-		["9 A B C {cancel}"],
-		["D E F"]]
+		customLayout: [
+			['C D E F'],
+			['8 9 A B'],
+			['4 5 6 7'],
+			['0 1 2 3'],
+			['{bksp} {accept} {close}']
+		]
 	});
 
 	$('#custom2').keyboard({
 		layout: 'custom',
-		customLayout: [['q w e r t y {bksp}', 'Q W E R T Y {bksp}'],
-									[ 's a m p l e {shift}', 'S A M P L E {shift}'],
-									[ '{accept} {space} {cancel}', '{accept} {space} {cancel}']]
+		customLayout: [
+			['h i t {sp:1} s h i f t', 'H I T {sp:1} S H I F T'],
+			['{tab} {enter} {bksp}', '{t} {sp:1} {e} {sp:1} {b}'],
+			['{space} {dec}', '{space} {dec}'],
+			['{accept} {cancel} {shift}', '{a} {sp:1} {c} {sp:1} {s}']
+		],
+		// Not part of the standard combos
+		combos : {
+			'a' : { e: 'æ' },
+			'A' : { E: 'Æ' }
+		}
 	})
 
 });

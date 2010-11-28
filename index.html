@@ -3,20 +3,21 @@
 	<title>Virtual Keyboard Widget - jQuery UI</title>
 
 	<!-- jQuery & jQueryUI + theme -->
-	<link href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/themes/ui-lightness/jquery-ui.css" type="text/css" rel="stylesheet" />
+	<link href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/themes/ui-darkness/jquery-ui.css" type="text/css" rel="stylesheet" />
 	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.4/jquery.min.js" type="text/javascript"></script>
 	<script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/jquery-ui.min.js" type="text/javascript"></script>
+	<script src="js/jquery.mousewheel.js" type="text/javascript"></script>
 
 	<!-- keyboard widget css & script -->
 	<link rel="stylesheet" href="css/keyboard.css" type="text/css" />
-	<script src="js/jquery.keyboard.min.js" type="text/javascript"></script>
+	<script src="js/jquery.keyboard.js" type="text/javascript"></script>
 
 	<!-- demo -->
 	<link href="css/demo.css" type="text/css" rel="stylesheet" />
 	<script src="js/demo.js" type="text/javascript"></script>
 
 	<!-- theme switcher -->
-	<script type="text/javascript" src="http://jqueryui.com/themeroller/themeswitchertool/"></script>
+	<script src="http://jqueryui.com/themeroller/themeswitchertool/" type="text/javascript"></script>
 
 </head><body>
 
@@ -46,6 +47,11 @@
 	<br class="clear" />
 
 	<div class="block">
+		<h2>International</h2>
+		<textarea id="inter"></textarea>
+	</div>
+
+	<div class="block">
 		<h2>Alphabetical</h2>
 		<textarea id="alpha"></textarea>
 	</div>
@@ -55,12 +61,12 @@
 		<textarea id="dvorak"></textarea>
 	</div>
 
+	<br class="clear" />
+
 	<div class="block">
 		<h2>Num Pad</h2>
-		<textarea id="num"></textarea>
+		<input id="num" type="text" />
 	</div>
-
-	<br class="clear" />
 
 	<div class="block">
 		<h2>Custom: Hex</h2>
@@ -70,6 +76,12 @@
 	<div class="block">
 		<h2>Custom: Junk</h2>
 		<textarea id="custom2"></textarea>
+		<br>
+		<small>
+			* use shift key - see action key sizes.<br>
+			* use the decimal - only one allowed.<br>
+			* type in 'ae' to test the combo keys.
+		</small>
 	</div>
 
 </div>
