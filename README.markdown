@@ -12,12 +12,12 @@ Originally posted by Jeremy Satterfield in his [blog][1], [jQuery plugins][2] an
 * Scroll through the other key sets using the mousewheel while hovering over a key to bypass the need to use alt and shift keys.
 * Easily type in characters with diacritics. Here are some combination examples:
 
-    * ' + vowel ( vowel with acute accent, e.g. ' + e = é )
-    * \` + vowel ( vowel with grave accent, e.g., \` + e = è )
-    * " + vowel ( vowel with diaeresis, e.g., " + e = ë )
-    * ^ + vowel ( vowel with circumflex accent, e.g., ^ + e = ê )
-    * ~ + certain letters ( letter with tilde, e.g. ~ + n = ñ, ~ + o = õ )
-    * ' + c ( becomes ç )
+    * ' + vowel ( vowel with acute accent, e.g. ' + e = Ã© )
+    * \` + vowel ( vowel with grave accent, e.g., \` + e = Ã¨ )
+    * " + vowel ( vowel with diaeresis, e.g., " + e = Ã« )
+    * ^ + vowel ( vowel with circumflex accent, e.g., ^ + e = Ãª )
+    * ~ + certain letters ( letter with tilde, e.g. ~ + n = Ã±, ~ + o = Ãµ )
+    * ' + c ( becomes Ã§ )
 
 * Enable, disable or add more diacritic functionality as desired.
 * ARIA support (may not be fully implemented)
@@ -93,7 +93,7 @@ Originally posted by Jeremy Satterfield in his [blog][1], [jQuery plugins][2] an
           keyBinding : 'mousedown',
 
           // combos (emulate dead keys : http://en.wikipedia.org/wiki/Keyboard_layout#US-International)
-          // if user inputs `a the script converts it to à, ^o becomes ô, etc.
+          // if user inputs `a the script converts it to Ã , ^o becomes Ã´, etc.
           useCombos  : true
 
         });
@@ -215,8 +215,8 @@ Originally posted by Jeremy Satterfield in his [blog][1], [jQuery plugins][2] an
 * But you can add more key combinations as desired by using this format (try it in the Custom: Junk demo)
 
         combos : {
-          'a' : { e: 'æ' },
-          'A' : { E: 'Æ' }
+          'a' : { e: 'Ã¦' },
+          'A' : { E: 'Ã†' }
         }
 
 * In the default settings the root key is a diacritic ( \`, ', ", ^, ~ ) and the script is only setup to accept these. And also the 'a' so the example above will work if you try it.
