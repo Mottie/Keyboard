@@ -59,6 +59,7 @@ Originally posted by Jeremy Satterfield in his [blog][1], [jQuery plugins][2] an
           layout       : 'qwerty',
           customLayout : [['{cancel}']],
           position     : {
+            of : null, // optional - null (attach to input/textarea) or a jQuery object (attach elsewhere)
             my : 'center top',
             at : 'center top'
           },
@@ -82,6 +83,8 @@ Originally posted by Jeremy Satterfield in his [blog][1], [jQuery plugins][2] an
             't'      : '\u21e5', // right arrow to bar (used since this virtual keyboard works with one directional tabs)
             'tab'    : '\u21e5 Tab' // \u21b9 is the true tab symbol (left & right arrows)
           },
+          // Message added to the key title while hovering, if the mousewheel plugin exists
+          wheelMessage : 'Use mousewheel to see other keys',
 
           // Class added to the Accept and cancel buttons (originally 'ui-state-highlight')
           actionClass : 'ui-state-active',
@@ -91,6 +94,12 @@ Originally posted by Jeremy Satterfield in his [blog][1], [jQuery plugins][2] an
 
           // When the character is added to the input
           keyBinding : 'mousedown',
+
+          // Callbacks - attach a function to any of these callbacks as desired
+          accepted : null,
+          canceled : null,
+          hidden   : null,
+          visible  : null,
 
           // combos (emulate dead keys : http://en.wikipedia.org/wiki/Keyboard_layout#US-International)
           // if user inputs `a the script converts it to à, ^o becomes ô, etc.
@@ -129,7 +138,7 @@ Originally posted by Jeremy Satterfield in his [blog][1], [jQuery plugins][2] an
 
         // example: three rows; shift keyset rows included
         // note: the {shift} needs to be included in both the default and shifted keysets, that's why there are two
-        [ ['a b c d', 'A B C D'], ['E F G H', 'E F G H'], ['{shift} {check}', '{shift} {check}'] ]
+        [ ['a b c d', 'A B C D'], ['e f g h', 'E F G H'], ['{shift} {check}', '{shift} {check}'] ]
 
 * In the list below where two special/"Action" keys are shown, both keys have the same action but different appearances.
 * Special/"Action" keys include:
@@ -151,10 +160,12 @@ Originally posted by Jeremy Satterfield in his [blog][1], [jQuery plugins][2] an
 
 * The script uses the jQuery UI positioning utility
 * Adjust where the keyboard pops up relative to the input area.
+* `of` refers to the jQuery object where the keyboard attaches. The default below is null, but it reverts to the input object. Add a jQuery object (e.g. `$('#keyboard-anchor')`) to attach the keyboard elsewhere.
 * `my` refers to a keyboard location. `'center top'` is the keyboard point that is attached to the `at` element location.
 * `at` refers to the element location (the input or textbox). `'center top'` is the element point where the keypoint point is attached.
 
         position     : {
+          of : null, // null (attach to input/textarea) or a jQuery object (attach elsewhere)
           my : 'center top',
           at : 'center top'
         }
@@ -184,6 +195,12 @@ Originally posted by Jeremy Satterfield in his [blog][1], [jQuery plugins][2] an
     * `'t'      : '\u21e5'` - Alternate tab button - unicode for right arrow to bar (used since only one directional tabs available)
     * `'tab'    : '\u21e5 Tab'` - Tab button text (Note: \u21b9 is the true tab symbol (left & right arrows) but not used here)
 
+`wheelMessage` - [String] Message to tell users about the hidden feature
+
+* This message is only added when a key on the keyboard is hovered over.
+* The text is added to the title attribute of the key, so if you want to have a tooltip attached to it. You will probably need a 'live' tooltip that targets the 'ui-keyboard-button' class.
+* Default message is `'Use mousewheel to see other keys'`.
+
 `actionClass` - [String] Class name used to make keys a different color
 
 * This varibale contains the class that is only added to the Accept and cancel buttons to give them a different color from the normal keys.
@@ -202,6 +219,10 @@ Originally posted by Jeremy Satterfield in his [blog][1], [jQuery plugins][2] an
 * This is the event type that the script binds to the key.
 * Possible options include 'mouseup', 'mousedown' and 'click'. Using an event like 'mouseenter' may get a little messy.
 * Default is `'mousedown'`.
+
+`visible`, `hidden`, `canceled` or `accepted` [Function] callback function called
+
+* See the callback section below for more details.
 
 `useCombos` [Boolean] Allows users to type in key combos to add characters with diacritics
 
@@ -223,13 +244,38 @@ Originally posted by Jeremy Satterfield in his [blog][1], [jQuery plugins][2] an
 * To use different diacritics the regex in the `_checkCombos` function will need to be modified. If you don't know how to do this, then please add an issue and we will look into adding it.
 * Note that even though these special characters are included in this plugin they may not be visible in all browsers. They may need to be set to the proper encoding (e.g. UTF-8, ISO-8859, etc).
 
+**Callbacks &amp; Events**
+
+`visible`, `hidden`, `canceled` or `accepted` callbacks - [Function] callback function called
+
+* Callbacks / Triggered Events:
+
+    * `accepted` - Event called when the accept button on the virtual keyboard is pressed
+    * `canceled` - Event called when the virtual keyboard was closed without accepting any changes.
+    * `hidden` - Event called when the virtual keyboard is hidden.
+    * `visible` - Event called when the virtual keyboard is visible.
+
+* Add a function to any or all of these callbacks in the initialization code as seen in the example below.
+* `e` is the event variable - `e.target` is the same object as `el`.
+* `el` in the example below is the `#keyboard` object (non-jQuery object). Use value to get the input/textarea content. Use `el.keyboard` to access the popup keyboard object.
+
+        // Using Callbacks
+        $('#keyboard').keyboard({
+          accepted : function(e, el){ alert('The content "' + el.value + '" was accepted!'); }
+        });
+
+        // Using triggered events - set up to target all inputs on the page!
+        $('.ui-keyboard-input').bind('accepted', function(e, el){
+         var txt = 'Input ID of ' + el.id + ' has the accepted content of ' + el.value;
+        });
+
 **Style**
 
 * The keyboard is set up to match the current jQuery UI theme, but it is still highly customizable with CSS.
 * The basic css, shown above, has no color styling but can have styling added to override the jQuery UI theme.
 * Action keys will have a class name of "ui-keyboard-{name}". So "bksp" (backspace) will have the class name of "ui-keyboard-bksp".
 * All other keys will have the unicode decimal value of the first character in the class name ("ui-keyboard-#"). So the tidle character has a unicode decimal value of 126, the class name will be "ui-keyboard-126". This is the same as typing `&#126;` into the page or alt-0126 (hold down the alt key and press 0126 in the keypad).
-* Key sets are named as follows: 
+* Key sets are named as follows:
 
     * 'ui-keyboard-default'  - Default (lower case keys)
     * 'ui-keyboard-shifted'  - Shift active (upper case keys)
@@ -237,6 +283,9 @@ Originally posted by Jeremy Satterfield in his [blog][1], [jQuery plugins][2] an
     * 'ui-keyboard-altshift' - Alt plus shift key set
 
 * The basic keyboard markup is as follows, using the basic QWERTY layout:
+
+        <!-- Target Input (script is initialized on this element by targeting "#keyboard") -->
+        <textarea id="keyboard" class="ui-keyboard-input ui-widget-content ui-corner-all"></textarea>
 
         <!-- Keyboard wrapper (QWERTY layout) -->
         <div class="ui-keyboard ui-widget-content ui-widget ui-corner-all ui-helper-clearfix ui-helper-hidden-accessible">
@@ -290,13 +339,20 @@ Originally posted by Jeremy Satterfield in his [blog][1], [jQuery plugins][2] an
 * Allow inserting text at the caret inside the preview window.
 * Add max length setting.
 * Add additional buttons to change key sets (similiar to the alt key).
-* Add callbacks.
-* Add _destroy function.
 * Work on setting up one keyboard per layout to speed up initialization.
 
 ~~~
 
 **Changelog**
+
+Version 1.5.1 (11/29/2010) - Rob G
+
+* Added 'ui-keyboard-input' class to the target element.
+* Added `wheelMessage` to allow changing the language - this message is added to the hovered key's title attribute to so the user knows they can use the mousewheel to see the other key sets for that same key.
+* Added event triggers - `accepted`, `canceled`, `hidden` and `visible`. Open the (Firefox) firebug console to see the callback messages on the demo page.
+* Added `position` propery `of`. By default (when it is `null`) it is set to the input element, but you can change it so the keyboard attaches to another object.
+* Modified the code to work with hidden inputs - but not `type="hidden"` inputs! See the last example on the demo page.
+* Added destroy method.
 
 Version 1.5 (11/28/2010) - Rob G
 

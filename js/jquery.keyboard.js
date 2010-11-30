@@ -1,6 +1,6 @@
 /*
 jQuery UI Virtual Keyboard Widget
-Version 1.5
+Version 1.5.1
 
 Author: Jeremy Satterfield
 Modified: Rob G (Mottie on github)
@@ -152,6 +152,7 @@ $.widget('ui.keyboard', {
 		layout       : 'qwerty',
 		customLayout : null,
 		position     : {
+			of : null, // optional - null (attach to input/textarea) or a jQuery object (attach elsewhere)
 			my : 'center top',
 			at : 'center top'
 		},
@@ -175,15 +176,23 @@ $.widget('ui.keyboard', {
 			't'      : '\u21e5', // right arrow to bar (used since this virtual keyboard works with one directional tabs)
 			'tab'    : '\u21e5 Tab' // \u21b9 is the true tab symbol (left & right arrows)
 		},
+		// Message added to the key title while hovering, if the mousewheel plugin exists
+		wheelMessage : 'Use mousewheel to see other keys',
 
 		// Class added to the Accept and cancel buttons (originally 'ui-state-highlight')
-		actionClass : 'ui-state-active',
+		actionClass  : 'ui-state-active',
 
 		// Prevents direct input in the preview window when true
 		lockInput    : false,
 
 		// When the character is added to the input
-		keyBinding : 'mousedown',
+		keyBinding   : 'mousedown',
+
+		// Callbacks
+		accepted : null,
+		canceled : null,
+		hidden   : null,
+		visible  : null,
 
 		// combos (emulate dead keys : http://en.wikipedia.org/wiki/Keyboard_layout#US-International)
 		// if user inputs `a the script converts it to à, ^o becomes ô, etc.
@@ -201,7 +210,7 @@ $.widget('ui.keyboard', {
 	shiftActive : false,
 	altActive   : false,
 
-	_init: function(){
+	_create: function(){
 
 		var ui = this,
 			o = ui.options,
@@ -211,24 +220,23 @@ $.widget('ui.keyboard', {
 			previewInput = keyboard.find('.ui-keyboard-preview'),
 			decBtn = keyboard.find('.ui-keyboard-decimal'),
 			wheel = $.isFunction( $.fn.mousewheel ); // is mousewheel plugin loaded?
+			ui.keyboard = keyboard;
 
-		// Close keyboard
-		$(document)
-			.unbind('mousedown', ui._hide)
-			 // close with esc key & clicking outside
-			.bind('mousedown keyup', function(e){
-				if (e.which == 27 || (e.type="mousedown") && $(e.target).closest('.ui-keyboard').length < 1) {
-					ui._hide();
-				}
-			});
+		// Bind events
+		if ($.isFunction(o.visible)) { el.bind('visible', o.visible); }
+		if ($.isFunction(o.hidden)) { el.bind('hidden', o.hidden); }
+		if ($.isFunction(o.canceled)) { el.bind('canceled', o.canceled); }
+		if ($.isFunction(o.accepted)) { el.bind('accepted', o.accepted); }
+
+		// Close with esc key & clicking outside
+		$(document).bind('mousedown keyup', function(e){ ui._escClose(e,ui); });
 
 		// Display keyboard on focus
 		el
-			.addClass('ui-widget-content ui-corner-all')
+			.addClass('ui-keyboard-input ui-widget-content ui-corner-all')
 			.attr({ 'aria-haspopup' : 'true', 'role' : 'textbox' })
-			.focus(function(){
+			.bind('focus', function(){
 				var el = $(this);
-				$('.ui-keyboard').hide();
 				previewInput.val(el.val());
 
 				// show & position keyboard
@@ -237,11 +245,13 @@ $.widget('ui.keyboard', {
 					.css({ position: 'absolute', left: 0, top: 0 })
 					.show()
 					.position({
-						of: $(this),
+						of: o.position.of || el,
 						my: o.position.my,
 						at: o.position.at,
 						collision: 'fit'
 					});
+
+				el.trigger( "visible", el );
 
 				previewInput.trigger('gotoEnd');
 				ui._checkDecimal(decBtn);
@@ -257,16 +267,17 @@ $.widget('ui.keyboard', {
 
 		allKeys
 			.bind(o.keyBinding, function(){
-				var keyaction = $.data(this, 'keyaction'),
+				// 'key', { action: doAction, original: n, curTxt : n, curNum: 0 }
+				var key = $.data(this, 'key'),
 					txt = previewInput.val();
-				if ($.isFunction(keyaction)) {
-					keyaction(ui);
-				} else if (typeof keyaction !== 'undefined') {
-					if (keyaction == 'bksp') {
+				if ($.isFunction(key.action)) {
+					key.action(ui);
+				} else if (typeof key.action !== 'undefined') {
+					if (key.action == 'bksp') {
 						txt = txt.substring( 0, txt.length - 1 );
 					} else {
 						// add currently displayed key (if mousewheel active) and it's not an action key
-						txt += (wheel && !$(this).is('.ui-keyboard-actionkey')) ? $.data(this, 'current') || keyaction : keyaction;
+						txt += (wheel && !$(this).is('.ui-keyboard-actionkey')) ? key.curTxt : key.action;
 					}
 					if (o.useCombos) { txt = ui._checkCombos(txt); }
 					previewInput.val(txt);
@@ -275,32 +286,34 @@ $.widget('ui.keyboard', {
 			})
 			// Change hover class and allow mousewheel to scroll through other key sets of the same key
 			.bind('mouseenter mouseleave mousewheel', function(e, delta){
-				var el = this, $this = $(this), cur, txt;
+				var el = this, $this = $(this), txt,
+					// 'key', { action: doAction, original: n, curTxt : n, curNum: 0 }
+					key = $.data(el, 'key');
 				if (e.type == 'mouseenter'){
 					$this
 						.addClass('ui-state-hover')
-						.attr('title', (wheel) ? 'Use mousewheel to see other options' : '');
+						.attr('title', (wheel) ? o.wheelMessage : '');
 					return;
 				}
 				if (e.type == 'mouseleave'){
-					txt = $.data(el, 'original');
-					$.data(el, 'currentNum', 0);
-					$.data(el, 'current', txt);
+					key.curTxt = key.original;
+					key.curNum = 0;
+					$.data(el, 'key', key);
 					$this
 						.removeClass('ui-state-hover')
 						.removeAttr('title')
-						.val( txt ); // restore original button text
+						.val( key.original ); // restore original button text
 					return;
 				}
 				if (wheel) {
-					cur = $.data(el, 'currentNum') || 0;
-					txt = $.data(el, 'layers') || ui._getLayers( $this );
-					cur += (delta > 0) ? -1 : 1;
-					if (cur > txt.length-1) { cur = 0; }
-					if (cur < 0) { cur = txt.length-1; }
-					$.data(el, 'currentNum', cur);
-					$.data(el, 'current', txt[cur]);
-					$this.val( txt[cur] );
+					txt = key.layers || ui._getLayers( $this );
+					key.curNum += (delta > 0) ? -1 : 1;
+					if (key.curNum > txt.length-1) { key.curNum = 0; }
+					if (key.curNum < 0) { key.curNum = txt.length-1; }
+					key.layers = txt;
+					key.curTxt = txt[key.curNum];
+					$.data(el, 'key', key);
+					$this.val( txt[key.curNum] );
 				}
 			});
 
@@ -340,21 +353,30 @@ $.widget('ui.keyboard', {
 
 	// get other layer values for a specific key
 	_getLayers: function(el){
-		var key, keys = $.data(el[0], 'layers');
-		if (typeof(keys) == 'undefined') {
-			key = el.attr('name').split('_');
-			key = key[ key.length-1 ] || '';
-			keys = el.closest('.ui-keyboard-row').find('.ui-keyboard-button[name$=_' + key + ']').map(function(){
-				return this.value;
-			}).get();
-			$.data(el[0], 'layers', keys);
-		}
+		var key, keys;
+		key = el.attr('name').split('_');
+		key = key[ key.length-1 ] || '';
+		keys = el.closest('.ui-keyboard-row').find('.ui-keyboard-button[name$=_' + key + ']').map(function(){
+			return this.value;
+		}).get();
 		return keys;
 	},
 
-	_hide: function(){
-		$('.ui-keyboard').hide();
+	_hide: function(status){
+		var kb = this.keyboard,
+			visible = kb.filter(':visible').length;
+		this.keyboard.hide();
 		this.element.scrollTop( this.element.attr('scrollHeight') );
+		if (visible) {
+			this.element.trigger( (typeof(status) !== 'undefined' && status) ? 'accepted' : 'canceled', this.element );
+			this.element.trigger('hidden', this.element );
+		}
+	},
+
+	_escClose: function(e, ui){
+		if (e.which == 27 || (e.type == "mousedown") && $(e.target).closest('.ui-keyboard').length < 1) {
+			ui._hide();
+		}
 	},
 
 	_buildKeyboard: function(){
@@ -371,6 +393,7 @@ $.widget('ui.keyboard', {
 		// build preview display
 		previewInput = ui.element.clone()
 			.removeAttr('id')
+			.show() // for hidden inputs
 			.attr( (o.lockInput) ? { 'readonly': 'readonly'} : {} )
 			.addClass('ui-widget-content ui-keyboard-preview ui-corner-all')
 			.bind('keyup', function(){
@@ -396,8 +419,7 @@ $.widget('ui.keyboard', {
 			return keyBtn
 				.clone()
 				.attr('name', 'key_' + keyName)
-				.data('keyaction', doAction)
-				.data('original', n) // save name for mouse wheel
+				.data('key', { action: doAction, original: n, curTxt : n, curNum: 0 })
 				.val( n )
 				// add "ui-keyboard-" + keyName, if this is an action key (e.g. "Bksp" will have 'ui-keyboard-bskp' class)
 				// add "ui-keyboard-" + unicode of 1st character (e.g. "~" is a regular key, class = 'ui-keyboard-126' (126 is the unicode value - same as typing &#126;)
@@ -461,7 +483,7 @@ $.widget('ui.keyboard', {
 									var txt = previewInput.val();
 									if (o.useCombos) { txt = ui._checkCombos( previewInput.val() ); }
 									ui.element.val(txt);
-									ui._hide();
+									ui._hide(true);
 								})
 								.addClass(o.actionClass)
 								.appendTo(newSet);
@@ -569,8 +591,18 @@ $.widget('ui.keyboard', {
 
 	return container;
 
-	}
+	},
 
+	destroy: function() {
+		this.element
+			.removeClass('ui-keyboard-input ui-widget-content ui-corner-all')
+			.removeAttr('aria-haspopup')
+			.removeAttr('role')
+			.unbind('focus');
+		this.keyboard.remove();
+		$(document).unbind('mousedown keyup', this._escClose );
+		$.Widget.prototype.destroy.apply(this, arguments); // default destroy
+	}
 
 });
 

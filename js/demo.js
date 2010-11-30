@@ -1,7 +1,7 @@
 $(document).ready(function(){
 
 	// Theme switcher
-	$('#switcher').themeswitcher();
+//	$('#switcher').themeswitcher();
 
 	// Keyboards
 	$('.qwerty').keyboard({ layout: 'qwerty' });
@@ -14,6 +14,7 @@ $(document).ready(function(){
 
 	$('#num').keyboard({ layout: 'num' });
 
+	// Hex
 	$('#custom1').keyboard({
 		layout: 'custom',
 		customLayout: [
@@ -25,6 +26,7 @@ $(document).ready(function(){
 		]
 	});
 
+	// Junk / Examples
 	$('#custom2').keyboard({
 		layout: 'custom',
 		customLayout: [
@@ -37,7 +39,34 @@ $(document).ready(function(){
 		combos : {
 			'a' : { e: 'æ' },
 			'A' : { E: 'Æ' }
-		}
+		},
+		accepted: function(e, el){ alert('The content "' + el.value + '" was accepted!'); }
+	});
+
+	// *** Hidden input example ***
+	// click on a link - add focus to hidden input
+	$('.hiddenInput').click(function(){
+		$('#hidden').trigger('focus');
+		return false;
 	})
+	// Initialize keyboard script on hidden input
+	// set "position.of" to the same link as above
+	$('#hidden').keyboard({ 
+		layout: 'qwerty',
+		position     : {
+			of : $('.hiddenInput'),
+			my : 'center top',
+			at : 'center top'
+		},
+		accepted: function(e, el){ alert('The content "' + el.value + '" was accepted!'); }
+	});
+
+	/*** console messages showing callbacks ***/
+	$('.ui-keyboard-input').bind('visible hidden accepted canceled', function(e, el){
+		if ( window.console && window.console.firebug ){
+			var txt = (e.type == 'visible' || e.type == 'hidden') ? ' virtual keyboard is ' : ' content was ';
+			console.debug( $(el).parent().find('h2').text() + txt + e.type );
+		}
+	});
 
 });
