@@ -340,13 +340,16 @@ Originally posted by Jeremy Satterfield in his [blog][1], [jQuery plugins][2] an
 * Allow inserting text at the caret inside the preview window.
 * Add max length setting.
 * Add additional buttons to change key sets (similiar to the alt key).
-* Work on setting up one keyboard per layout to speed up initialization.
 
 ~~~
 
 **Changelog**
 
-Version 1.5.1 (11/29/2010) - Rob G
+Version 1.5.2 (11/30/2010)
+
+* Keyboard build now occurs after the target element gets focus to speed up startup.
+
+Version 1.5.1 (11/29/2010)
 
 * Added 'ui-keyboard-input' class to the target element.
 * Added `wheelMessage` to allow changing the language - this message is added to the hovered key's title attribute to so the user knows they can use the mousewheel to see the other key sets for that same key.
@@ -355,7 +358,7 @@ Version 1.5.1 (11/29/2010) - Rob G
 * Modified the code to work with hidden inputs - but not `type="hidden"` inputs! See the last example on the demo page.
 * Added destroy method.
 
-Version 1.5 (11/28/2010) - Rob G
+Version 1.5 (11/28/2010)
 
 * Changed class of preview window from 'ui-state-active' to 'ui-widget-content' because it looks bad in some themes.
 * Added 'ui-widget-content' class to the element (input or textarea).
@@ -376,7 +379,7 @@ Version 1.5 (11/28/2010) - Rob G
 * Added mousewheel support to allow scrolling through the other keysets while hovering over a key.
 * Added ARIA support (may not be complete).
 
-Version 1.4.2 (11/26/2010) - Rob G
+Version 1.4.2 (11/26/2010)
 
 * Made a copy of the code and documentation hosted at [snipplr][3] on github.
 * Slightly modified the code to correct JSLint nags. All except functions in a loop and adding conditions inside for in loop - will be fixed in next version.

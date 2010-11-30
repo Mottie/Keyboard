@@ -16,5 +16,6 @@ h2 { margin: 5px; font-size: 130%; }
 #switcher { float: right; }
 
 .block { float: left; padding-left: 30px; margin-bottom: 30px; text-align: center; }
- textarea, input { width: 220px; background: #333; color: #ddd; border: #777 1px solid; padding: 5px 0; }
+textarea, input { width: 220px; background: #333; color: #ddd; border: #777 1px solid; padding: 5px 0; }
+.hiddenInput { display: inline-block; width: 220px; }
 .clear { clear: both; }

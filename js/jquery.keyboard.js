@@ -1,6 +1,6 @@
 /*
 jQuery UI Virtual Keyboard Widget
-Version 1.5.1
+Version 1.5.2
 
 Author: Jeremy Satterfield
 Modified: Rob G (Mottie on github)
@@ -210,17 +210,10 @@ $.widget('ui.keyboard', {
 	shiftActive : false,
 	altActive   : false,
 
-	_create: function(){
-
+	_init: function(){
 		var ui = this,
 			o = ui.options,
-			el = ui.element,
-			keyboard = ui._buildKeyboard(),
-			allKeys = keyboard.find('.ui-keyboard-button'),
-			previewInput = keyboard.find('.ui-keyboard-preview'),
-			decBtn = keyboard.find('.ui-keyboard-decimal'),
-			wheel = $.isFunction( $.fn.mousewheel ); // is mousewheel plugin loaded?
-			ui.keyboard = keyboard;
+			el = ui.element;
 
 		// Bind events
 		if ($.isFunction(o.visible)) { el.bind('visible', o.visible); }
@@ -236,11 +229,15 @@ $.widget('ui.keyboard', {
 			.addClass('ui-keyboard-input ui-widget-content ui-corner-all')
 			.attr({ 'aria-haspopup' : 'true', 'role' : 'textbox' })
 			.bind('focus', function(){
-				var el = $(this);
-				previewInput.val(el.val());
+
+				// build keyboard if it doesn't exist
+				if (typeof(ui.keyboard) == 'undefined') { ui._startup(); }
+
+				var el = $(this),
+					previewInput = ui.keyboard.find('.ui-keyboard-preview').val(el.val());
 
 				// show & position keyboard
-				keyboard
+				ui.keyboard
 					// position and show the keyboard before positioning (required for UI position utility)
 					.css({ position: 'absolute', left: 0, top: 0 })
 					.show()
@@ -254,8 +251,20 @@ $.widget('ui.keyboard', {
 				el.trigger( "visible", el );
 
 				previewInput.trigger('gotoEnd');
-				ui._checkDecimal(decBtn);
+				ui._checkDecimal(ui.keyboard.find('.ui-keyboard-decimal'));
 			});
+
+	},
+
+	_startup: function(){
+		var ui = this,
+			o = ui.options,
+			keyboard = ui._buildKeyboard(),
+			allKeys = keyboard.find('.ui-keyboard-button'),
+			previewInput = keyboard.find('.ui-keyboard-preview'),
+			decBtn = keyboard.find('.ui-keyboard-decimal'),
+			wheel = $.isFunction( $.fn.mousewheel ); // is mousewheel plugin loaded?
+			ui.keyboard = keyboard;
 
 		previewInput.bind('keyup gotoEnd', function(){
 			$(this)
@@ -363,6 +372,7 @@ $.widget('ui.keyboard', {
 	},
 
 	_hide: function(status){
+		if (typeof(this.keyboard) == 'undefined') { return; }
 		var kb = this.keyboard,
 			visible = kb.filter(':visible').length;
 		this.keyboard.hide();
@@ -598,7 +608,7 @@ $.widget('ui.keyboard', {
 			.removeClass('ui-keyboard-input ui-widget-content ui-corner-all')
 			.removeAttr('aria-haspopup')
 			.removeAttr('role')
-			.unbind('focus');
+			.unbind('focus accept canceled hidden visible');
 		this.keyboard.remove();
 		$(document).unbind('mousedown keyup', this._escClose );
 		$.Widget.prototype.destroy.apply(this, arguments); // default destroy
