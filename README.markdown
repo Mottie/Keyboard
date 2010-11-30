@@ -267,6 +267,7 @@ Originally posted by Jeremy Satterfield in his [blog][1], [jQuery plugins][2] an
         // Using triggered events - set up to target all inputs on the page!
         $('.ui-keyboard-input').bind('accepted', function(e, el){
          var txt = 'Input ID of ' + el.id + ' has the accepted content of ' + el.value;
+         alert(txt);
         });
 
 **Style**
