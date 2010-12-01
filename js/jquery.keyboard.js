@@ -1,6 +1,6 @@
 /*
 jQuery UI Virtual Keyboard Widget
-Version 1.5.2
+Version 1.5.3
 
 Author: Jeremy Satterfield
 Modified: Rob G (Mottie on github)
@@ -79,76 +79,98 @@ $.widget('ui.keyboard', {
 
 	// Default keyboard layouts
 	layouts: {
-		'alpha' : [
-			[ '` 1 2 3 4 5 6 7 8 9 0 - = {bksp}',  // default key
-				'~ ! @ # $ % ^ & * ( ) _ + {bksp}'], // shifted
-			[ 'a b c d e f g h i j [ ] \\',
-				'A B C D E F G H I J { } |'],
-			[ 'k l m n o p q r s ; \' {enter}',
-				'K L M N O P Q R S : " {enter}'],
-			[ '{shift} t u v w x y z , . / {shift}',
-				'{shift} T U V W X Y Z < > ? {shift}' ],
-			[ '{accept} {space} {cancel}',
-				'{accept} {space} {cancel}']
-		],
-		'qwerty' : [
-			[ '` 1 2 3 4 5 6 7 8 9 0 - = {bksp}',  // default key
-				'~ ! @ # $ % ^ & * ( ) _ + {bksp}'], // shifted
-			[ '{tab} q w e r t y u i o p [ ] \\',
-				'{tab} Q W E R T Y U I O P { } |'],
-			[ 'a s d f g h j k l ; \' {enter}',
-				'A S D F G H J K L : " {enter}'],
-			[ '{shift} z x c v b n m , . / {shift}',
-				'{shift} Z X C V B N M < > ? {shift}' ],
-			[ '{accept} {space} {cancel}',
-				'{accept} {space} {cancel}']
-		],
-		'international' : [
-			[ '` 1 2 3 4 5 6 7 8 9 0 - = {bksp}',  // default key
-				'~ ! @ # $ % ^ & * ( ) _ + {bksp}',  // shifted
-				'~ ¡ ² ³ ¤ € ¼ ½ ¾ ‘ ’ ¥ × {bksp}',  // AltGr
-				'~ ¹ ² ³ £ € ¼ ½ ¾ ‘ ’ ¥ ÷ {bksp}'], // shift-AltGr
-			[ '{tab} q w e r t y u i o p [ ] \\',
+		'alpha' : {
+			'default': [
+				'` 1 2 3 4 5 6 7 8 9 0 - = {bksp}',
+				'a b c d e f g h i j [ ] \\',
+				'k l m n o p q r s ; \' {enter}',
+				'{shift} t u v w x y z , . / {shift}',
+				'{accept} {space} {cancel}'
+			],
+			'shift': [
+				'~ ! @ # $ % ^ & * ( ) _ + {bksp}',
+				'A B C D E F G H I J { } |',
+				'K L M N O P Q R S : " {enter}',
+				'{shift} T U V W X Y Z < > ? {shift}',
+				'{accept} {space} {cancel}'
+			]
+		},
+		'qwerty' : {
+			'default': [
+				'` 1 2 3 4 5 6 7 8 9 0 - = {bksp}',
+				'{tab} q w e r t y u i o p [ ] \\',
+				'a s d f g h j k l ; \' {enter}',
+				'{shift} z x c v b n m , . / {shift}',
+				'{accept} {space} {cancel}'
+			],
+			'shift': [
+				'~ ! @ # $ % ^ & * ( ) _ + {bksp}',
 				'{tab} Q W E R T Y U I O P { } |',
-				'{tab} ä å é ® þ ü ú í ó ö « » ¬',
-				'{tab} Ä Å É ® Þ Ü Ú Í Ó Ö « » ¦'],
-			[ 'a s d f g h j k l ; \' {enter}',
 				'A S D F G H J K L : " {enter}',
-				'á ß ð f g h j k ø ¶ ´ {enter}',
-				'Ä § Ð F G H J K Ø ° ¨ {enter}'],
-			[ '{shift} z x c v b n m , . / {shift}',
 				'{shift} Z X C V B N M < > ? {shift}',
+				'{accept} {space} {cancel}'
+			]
+		},
+		'international' : {
+			'default': [
+				'` 1 2 3 4 5 6 7 8 9 0 - = {bksp}',
+				'{tab} q w e r t y u i o p [ ] \\',
+				'a s d f g h j k l ; \' {enter}',
+				'{shift} z x c v b n m , . / {shift}',
+				'{accept} {space} {alt} {cancel}'
+			],
+			'shift': [
+				'~ ! @ # $ % ^ & * ( ) _ + {bksp}',
+				'{tab} Q W E R T Y U I O P { } |',
+				'A S D F G H J K L : " {enter}',
+				'{shift} Z X C V B N M < > ? {shift}',
+				'{accept} {space} {alt} {cancel}'
+			],
+			'alt': [
+				'~ ¡ ² ³ ¤ € ¼ ½ ¾ ‘ ’ ¥ × {bksp}',
+				'{tab} ä å é ® þ ü ú í ó ö « » ¬',
+				'á ß ð f g h j k ø ¶ ´ {enter}',
 				'{shift} æ x © v b ñ µ ç > ¿ {shift}',
-				'{shift} Æ X ¢ V B Ñ µ Ç . ¿ {shift}'],
-			[ '{accept} {space} {alt} {cancel}',
-				'{accept} {space} {alt} {cancel}',
-				'{accept} {space} {alt} {cancel}',
-				'{accept} {space} {alt} {cancel}']
-		],
-		'dvorak' : [
-			[ '` 1 2 3 4 5 6 7 8 9 0 [ ] {bksp}',  // default key
-				'~ ! @ # $ % ^ & * ( ) { } {bksp}'], // shifted
-			[ '{tab} \' , . p y f g c r l / = \\',
-				'{tab} " < > P Y F G C R L ? + |'],
-			[ 'a o e u i d h t n s - {enter}',
-				'A O E U I D H T N S _ {enter}'],
-			[ '{shift} ; q j k x b m w v z {shift}',
-				'{shift} : Q J K X B M W V Z {shift}' ],
-			[ '{accept} {space} {cancel}',
-				'{accept} {space} {cancel}']
-		],
-		'num' : [
-			['= ( ) {b}'],
-			['{clear} / * -'],
-			['7 8 9 +'],
-			['4 5 6 {sign}'],
-			['1 2 3 %'],
-			['0 . {a} {c}']
-		]
+				'{accept} {space} {alt} {cancel}'
+			],
+			'alt-shift': [
+				'~ ¹ ² ³ £ € ¼ ½ ¾ ‘ ’ ¥ ÷ {bksp}',
+				'{tab} Ä Å É ® Þ Ü Ú Í Ó Ö « » ¦',
+				'Ä § Ð F G H J K Ø ° ¨ {enter}',
+				'{shift} Æ X ¢ V B Ñ µ Ç . ¿ {shift}',
+				'{accept} {space} {alt} {cancel}'
+			]
+		},
+		'dvorak' : {
+			'default': [
+				'` 1 2 3 4 5 6 7 8 9 0 [ ] {bksp}',
+				'{tab} \' , . p y f g c r l / = \\',
+				'a o e u i d h t n s - {enter}',
+				'{shift} ; q j k x b m w v z {shift}',
+				'{accept} {space} {cancel}'
+			],
+			'shift' : [
+				'~ ! @ # $ % ^ & * ( ) { } {bksp}',
+				'{tab} " < > P Y F G C R L ? + |', 
+				'A O E U I D H T N S _ {enter}',
+				'{shift} : Q J K X B M W V Z {shift}',
+				'{accept} {space} {cancel}'
+			]
+		},
+		'num' : {
+			'default' : [
+				'= ( ) {b}',
+				'{clear} / * -',
+				'7 8 9 +',
+				'4 5 6 {sign}',
+				'1 2 3 %',
+				'0 . {a} {c}'
+			]
+		}
 	},
 
 	options: {
-		// choose layout & positioning
+		// *** choose layout & positioning ***
 		layout       : 'qwerty',
 		customLayout : null,
 		position     : {
@@ -157,7 +179,7 @@ $.widget('ui.keyboard', {
 			at : 'center top'
 		},
 
-		// change button language / symbol
+		// *** change keyboard language & look ***
 		display : {
 			'a'      : '\u2714', // check mark - same action as accept
 			'accept' : 'Accept',
@@ -182,17 +204,12 @@ $.widget('ui.keyboard', {
 		// Class added to the Accept and cancel buttons (originally 'ui-state-highlight')
 		actionClass  : 'ui-state-active',
 
+		// *** Useability ***
 		// Prevents direct input in the preview window when true
 		lockInput    : false,
 
 		// When the character is added to the input
 		keyBinding   : 'mousedown',
-
-		// Callbacks
-		accepted : null,
-		canceled : null,
-		hidden   : null,
-		visible  : null,
 
 		// combos (emulate dead keys : http://en.wikipedia.org/wiki/Keyboard_layout#US-International)
 		// if user inputs `a the script converts it to à, ^o becomes ô, etc.
@@ -203,12 +220,23 @@ $.widget('ui.keyboard', {
 			'"' : { a:'ä', A:'Ä', e:'ë', E:'Ë', i:'ï', I:'Ï', o:'ö', O:'Ö', u:'ü', U:'Ü' },
 			'^' : { a:'â', A:'Â', e:'ê', E:'Ê', i:'î', I:'Î', o:'ô', O:'Ô', u:'û', U:'Û' },
 			'~' : { a:'\u00e3', A:'\u00c3', e:'\u1ebd', E:'\u1ebc', i:'\u0129', I:'\u0128', o:'\u00f5', O:'\u00d5', u:'\u0169', U:'\u0168', n:'\u00f1', N:'\u00d1' }
-		}
+		},
+
+		// *** Methods ***
+		// Callbacks - attach a function to any of these callbacks as desired
+		accepted : null,
+		canceled : null,
+		hidden   : null,
+		visible  : null
 	},
 
 	// Shift and Alt key toggles
 	shiftActive : false,
 	altActive   : false,
+	metaActive  : false,
+
+	// Class names of the basic key set - meta keysets are handled by the keyname
+	rows : ['ui-keyboard-keyset-default', 'ui-keyboard-keyset-shift', 'ui-keyboard-keyset-alt', 'ui-keyboard-keyset-alt-shift' ],
 
 	_init: function(){
 		var ui = this,
@@ -242,7 +270,8 @@ $.widget('ui.keyboard', {
 					.css({ position: 'absolute', left: 0, top: 0 })
 					.show()
 					.position({
-						of: o.position.of || el,
+						// get single target position || target stored in element data (multiple targets) || default, at the element
+						of: o.position.of || el.data('keyboardPosition') || el,
 						my: o.position.my,
 						at: o.position.at,
 						collision: 'fit'
@@ -280,7 +309,7 @@ $.widget('ui.keyboard', {
 				var key = $.data(this, 'key'),
 					txt = previewInput.val();
 				if ($.isFunction(key.action)) {
-					key.action(ui);
+					key.action(this);
 				} else if (typeof key.action !== 'undefined') {
 					if (key.action == 'bksp') {
 						txt = txt.substring( 0, txt.length - 1 );
@@ -296,7 +325,7 @@ $.widget('ui.keyboard', {
 			// Change hover class and allow mousewheel to scroll through other key sets of the same key
 			.bind('mouseenter mouseleave mousewheel', function(e, delta){
 				var el = this, $this = $(this), txt,
-					// 'key', { action: doAction, original: n, curTxt : n, curNum: 0 }
+					// 'key' = { action: doAction, original: n, curTxt : n, curNum: 0 }
 					key = $.data(el, 'key');
 				if (e.type == 'mouseenter'){
 					$this
@@ -334,6 +363,27 @@ $.widget('ui.keyboard', {
 
 	},
 
+	_showKeySet: function(el){
+		var ui = this, key, toShow;
+		ui.keyboard.find('.ui-keyboard-actionkey[name*=key_meta]').removeClass('ui-state-active');
+		if (ui.metaActive) {
+			key = el.name.split('_')[1];
+			ui.keyboard
+				.find('.ui-keyboard-alt, .ui-keyboard-shift, .ui-keyboard-actionkey[class*=meta]').removeClass('ui-state-active').end()
+				.find('.ui-keyboard-actionkey.ui-keyboard-' + key).addClass('ui-state-active').end()
+				.find('.ui-keyboard-keyset').hide().end()
+				.find('.ui-keyboard-keyset-' + key ).show();
+		} else {
+			toShow = (ui.shiftActive) ? 1 : 0;
+			toShow += (ui.altActive) ? 2 : 0;
+			ui.keyboard
+				.find('.ui-keyboard-alt')[(ui.altActive) ? 'addClass' : 'removeClass']('ui-state-active').end()
+				.find('.ui-keyboard-shift')[(ui.shiftActive) ? 'addClass' : 'removeClass']('ui-state-active').end()
+				.find('.ui-keyboard-keyset').hide().end()
+				.find('.' + ui.rows[toShow]).show();
+		}
+	},
+
 	// check for key combos (dead keys)
 	_checkCombos : function(txt){
 		var o = this.options;
@@ -363,9 +413,8 @@ $.widget('ui.keyboard', {
 	// get other layer values for a specific key
 	_getLayers: function(el){
 		var key, keys;
-		key = el.attr('name').split('_');
-		key = key[ key.length-1 ] || '';
-		keys = el.closest('.ui-keyboard-row').find('.ui-keyboard-button[name$=_' + key + ']').map(function(){
+		key = el.attr('name');
+		keys = el.closest('.ui-keyboard').find('input[name=' + key + ']').map(function(){
 			return this.value;
 		}).get();
 		return keys;
@@ -390,8 +439,8 @@ $.widget('ui.keyboard', {
 	},
 
 	_buildKeyboard: function(){
-		var action, row, currentRow, newRow,
-			set, newSet, currentSet, key, keys, margin,
+		var action, row, newRow, set, newSet,
+			currentSet, key, keys, keySet, margin,
 			ui = this,
 			o = ui.options,
 
@@ -434,10 +483,7 @@ $.widget('ui.keyboard', {
 				// add "ui-keyboard-" + keyName, if this is an action key (e.g. "Bksp" will have 'ui-keyboard-bskp' class)
 				// add "ui-keyboard-" + unicode of 1st character (e.g. "~" is a regular key, class = 'ui-keyboard-126' (126 is the unicode value - same as typing &#126;)
 				.addClass('ui-keyboard-' + ((regKey === true) ? keyName.charCodeAt(0) : keyName) + keyType );
-		},
-
-		// Name of each key set
-		rows = ['ui-keyboard-default', 'ui-keyboard-shifted', 'ui-keyboard-alted', 'ui-keyboard-altshift' ];
+		};
 
 		// build preview container and append preview display
 		$('<div />')
@@ -446,27 +492,27 @@ $.widget('ui.keyboard', {
 
 		// setup custom keyboard
 		if (o.layout == 'custom') {
-			ui.layouts.custom = o.customLayout || [['{cancel}']];
+			ui.layouts.custom = o.customLayout || { 'default' : ['{cancel}'] };
 		}
 
 		// define decimal alternative symbol - not a language option
 		o.display.decimal = '.';
 
 		// Main keyboard building loop
-		for ( row in ui.layouts[o.layout] ){
-			currentRow = ui.layouts[o.layout][row];
-			newRow = $('<div />')
-				.addClass('ui-keyboard-row ui-keyboard-row'+row )
-				.appendTo(container);
+		for ( set in ui.layouts[o.layout] ){
+			keySet = ui.layouts[o.layout][set];
+			newSet = $('<div />')
+				.addClass('ui-keyboard-keyset ui-keyboard-keyset-' + set)
+				.appendTo(container)
+				[(set == 'default') ? 'show' : 'hide']();
 
-			for ( set in currentRow ){
-				newSet = $('<div />')
-					.addClass('ui-keyboard-keyset ' + rows[set])
-					.appendTo(newRow)
-					[(set == '0') ? 'show' : 'hide']();
+			for ( row in keySet ){
+				newRow = $('<div />')
+					.addClass('ui-keyboard-row ui-keyboard-row' + row )
+					.appendTo(newSet);
 
 				// remove extra spaces before spliting (regex probably could be improved)
-				currentSet = $.trim(currentRow[set]).replace(/\{(\.?)[\s+]?:[\s+]?(\.?)\}/g,'{$1:$2}');
+				currentSet = $.trim(keySet[row]).replace(/\{(\.?)[\s+]?:[\s+]?(\.?)\}/g,'{$1:$2}');
 				keys = currentSet.split(/\s+/);
 
 				for ( key in keys ) {
@@ -482,7 +528,17 @@ $.widget('ui.keyboard', {
 							margin = action.match(/^sp:(\.?\d+)$/)[1] || 0;
 							$('<span>&nbsp;</span>')
 								.css('margin','0 ' + margin + 'em')
-								.appendTo(newSet);
+								.appendTo(newRow);
+						}
+
+						// meta keys
+						if (/^meta\d+$/.test(action)){
+							addKey(action, action, function(el){
+								ui.metaActive = ($(el).is('.ui-state-active')) ? false : true;
+								ui._showKeySet(el);
+							})
+							.appendTo(newRow);
+							continue;
 						}
 
 						switch(action){
@@ -496,28 +552,23 @@ $.widget('ui.keyboard', {
 									ui._hide(true);
 								})
 								.addClass(o.actionClass)
-								.appendTo(newSet);
+								.appendTo(newRow);
 								break;
 
 							case 'alt':
 							case 'altgr':
-								addKey('alt', 'alt', function(){
+								addKey('alt', 'alt', function(el){
 									ui.altActive = !ui.altActive;
-									var aor = (ui.altActive) ? 'addClass' : 'removeClass',
-									toShow = (ui.shiftActive) ? 1 : 0;
-									toShow += (ui.altActive) ? 2 : 0;
-									container
-										.find('.ui-keyboard-alt')[aor]('ui-state-active').end()
-										.find('.ui-keyboard-keyset').hide().end()
-										.find('.' + rows[toShow]).show();
+									ui.metaActive = false;
+									ui._showKeySet(el);
 								})
-								.appendTo(newSet);
+								.appendTo(newRow);
 								break;
 
 							case 'b':
 							case 'bksp':
 								addKey('bksp', action, 'bksp')
-									.appendTo(newSet);
+									.appendTo(newRow);
 								break;
 
 							case 'c':
@@ -526,7 +577,7 @@ $.widget('ui.keyboard', {
 									ui._hide();
 								})
 								.addClass(o.actionClass)
-								.appendTo(newSet);
+								.appendTo(newRow);
 								break;
 
 							// for NumPad
@@ -534,33 +585,28 @@ $.widget('ui.keyboard', {
 								addKey('clear', 'clear', function(){
 									previewInput.val('');
 								})
-								.appendTo(newSet);
+								.appendTo(newRow);
 								break;
 
 							// Decimal - unique decimal point (num pad layout)
 							case 'dec':
 								addKey('decimal', 'decimal', '.')
-								.appendTo(newSet);
+								.appendTo(newRow);
 								break;
 
 							case 'e':
 							case 'enter':
-								addKey('enter', action, '\n').appendTo(newSet);
+								addKey('enter', action, '\n').appendTo(newRow);
 								break;
 
 							case 's':
 							case 'shift':
-								addKey('shift', action, function(){
+								addKey('shift', action, function(el){
 									ui.shiftActive = !ui.shiftActive;
-									var aor = (ui.shiftActive) ? 'addClass' : 'removeClass',
-									toShow = (ui.shiftActive) ? 1 : 0;
-									toShow += (ui.altActive) ? 2 : 0;
-									container
-										.find('.ui-keyboard-shift')[aor]('ui-state-active').end()
-										.find('.ui-keyboard-keyset').hide().end()
-										.find('.' + rows[toShow]).show();
+									ui.metaActive = false;
+									ui._showKeySet(el);
 								})
-								.appendTo(newSet);
+								.appendTo(newRow);
 								break;
 
 								// Change sign (for num pad layout)
@@ -570,16 +616,16 @@ $.widget('ui.keyboard', {
 										previewInput.val( (previewInput.val() * -1) );
 									}
 								})
-								.appendTo(newSet);
+								.appendTo(newRow);
 								break;
 
 							case 'space':
-								addKey('space', 'space', ' ').appendTo(newSet);
+								addKey('space', 'space', ' ').appendTo(newRow);
 								break;
 
 							case 't':
 							case 'tab':
-								addKey('tab', action, '\t').appendTo(newSet);
+								addKey('tab', action, '\t').appendTo(newRow);
 								break;
 
 						}
@@ -588,8 +634,8 @@ $.widget('ui.keyboard', {
 
 						// regular button (not an action key)
 						addKey(keys[key], keys[key], keys[key], true)
-							.attr('name','key_'+row+'_'+key)
-							.appendTo(newSet);
+							.attr('name','key_' + row + '_'+key)
+							.appendTo(newRow);
 
 					}
 

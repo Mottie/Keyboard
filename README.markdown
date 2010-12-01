@@ -5,12 +5,13 @@ Originally posted by Jeremy Satterfield in his [blog][1], [jQuery plugins][2] an
 * An on-screen virtual keyboard embedded within the browser window which will popup when a specified entry field is focused.
 * The user can then type and preview their input before Accepting or Canceling.
 * Add custom keyboard layouts easily.
-* Add up to four key sets to each layout using the shift and alt keys.
-* Position the keyboard in any location around the element.
+* Add up to four standard key sets to each layout that use the shift and alt keys.
+* Add any number of optional modifier keys (meta keys) to add more key sets.
+* Position the keyboard in any location around the element, or target another element on the page.
 * Easily modify the key text to any language or symbol.
 * Allow direct input or lock the preview window.
-* Scroll through the other key sets using the mousewheel while hovering over a key to bypass the need to use alt and shift keys.
-* Easily type in characters with diacritics. Here are some combination examples:
+* Scroll through the other key sets using the mousewheel while hovering over a key to bypass the need to use alt, shift or meta keys.
+* Easily type in characters with diacritics. Here are some default combination examples - it is possible to add more.
 
     * ' + vowel ( vowel with acute accent, e.g. ' + e = é )
     * \` + vowel ( vowel with grave accent, e.g., \` + e = è )
@@ -20,410 +21,42 @@ Originally posted by Jeremy Satterfield in his [blog][1], [jQuery plugins][2] an
     * ' + c ( becomes ç )
 
 * Enable, disable or add more diacritic functionality as desired.
+* Use callbacks and event triggers that occur when the keyboard is open or closed and when the content has been accepted or canceled.
 * ARIA support (may not be fully implemented)
 * As a jQuery UI widget, this widget styling will automatically match the selected jQuery UI theme with the exception of the required CSS listed below.
 
-**Setup**
+**Documentation**
 
-* Page Head
-
-        <!-- jQuery & jQueryUI + theme -->
-        <link href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/themes/ui-lightness/jquery-ui.css" type="text/css" rel="stylesheet" />
-        <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.4/jquery.min.js" type="text/javascript"></script>
-        <script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/jquery-ui.min.js" type="text/javascript"></script>
-        <script src="js/jquery.mousewheel.js" type="text/javascript"></script>
-
-        <!-- keyboard widget css & script -->
-        <link href="css/keyboard.css" type="text/css" rel="stylesheet" />
-        <script src="js/jquery.keyboard.js" type="text/javascript"></script>
-
-* CSS (from the keyboard.css file)
-
-        .ui-keyboard { padding: .3em; position: absolute; left: 0; top: 0; z-index: 16000; }
-        .ui-keyboard div { font-size: 1.1em; }
-        .ui-keyboard-button { height: 2em; width: 2em; margin: .1em; }
-        .ui-keyboard-widekey { width: 4em; }
-        .ui-keyboard-space { width: 15em; }
-        .ui-keyboard-preview { width: 100%; text-align: left; margin-bottom: 3px; }
-        .ui-keyboard-keyset { text-align: center; }
-
-* HTML
-
-        <textarea id="keyboard"></textarea>
-
-* Script (showing defaults)
-
-        $('#keyboard').keyboard({
-
-          // choose layout
-          layout       : 'qwerty',
-          customLayout : [['{cancel}']],
-          position     : {
-            of : null, // optional - null (attach to input/textarea) or a jQuery object (attach elsewhere)
-            my : 'center top',
-            at : 'center top'
-          },
-
-          // change keyboard language / symbol
-          display      : {
-            'a'      : '\u2714', // check mark - same action as accept
-            'accept' : 'Accept',
-            'alt'    : 'AltGr',
-            'b'      : '\u2190', // Left arrow (same as &larr;)
-            'bksp'   : 'Bksp', // Left arrow (same as &larr;)
-            'c'      : '\u2716', // big X, close - same action as cancel
-            'cancel' : 'Cancel',
-            'clear'  : 'C',      // clear num pad
-            'e'      : '\u21b5', // down, then left arrow - enter symbol
-            'enter'  : 'Enter',
-            's'      : '\u21e7', // thick up arrow
-            'shift'  : 'Shift',
-            'sign'   : '\u00b1', // +/- sign for num pad
-            'space'  : 'Space',
-            't'      : '\u21e5', // right arrow to bar (used since this virtual keyboard works with one directional tabs)
-            'tab'    : '\u21e5 Tab' // \u21b9 is the true tab symbol (left & right arrows)
-          },
-          // Message added to the key title while hovering, if the mousewheel plugin exists
-          wheelMessage : 'Use mousewheel to see other keys',
-
-          // Class added to the Accept and cancel buttons (originally 'ui-state-highlight')
-          actionClass : 'ui-state-active',
-
-          // Prevents direct input in the preview window when true
-          lockInput    : false,
-
-          // When the character is added to the input
-          keyBinding : 'mousedown',
-
-          // Callbacks - attach a function to any of these callbacks as desired
-          accepted : null,
-          canceled : null,
-          hidden   : null,
-          visible  : null,
-
-          // combos (emulate dead keys : http://en.wikipedia.org/wiki/Keyboard_layout#US-International)
-          // if user inputs `a the script converts it to à, ^o becomes ô, etc.
-          useCombos  : true
-
-        });
-
-**Options & Details**
-
-`layout` - [String] Specify which keyboard layout to use.
-
-* 'qwerty' - Standard QWERTY layout (Default).
-* 'international'` - Standard US-international QWERTY layout.
-* 'alpha' - Alphabetical layout.
-* 'dvorak' - Dvorak Simplified layout.
-* 'num' - Numerical (ten-key) layout.
-* 'custom' - Uses a custom layout as defined by the `customLayout` option.
-* Default value is 'qwerty'
-
-`customLayout` - [Array] Specify a custom layout
-
-* An Array of arrays & each internal array is a new keyboard row.
-
-        // two row keyboard
-        [ [row1], [row2] ]
-
-        // example: four rows; no shift/alt key sets
-        [ ['r o w 1'], ['r o w 2'], ['r o w 3'], ['{accept} {cancel}'] ]
-
-* Each internal array can contain one to four rows (default, shifted, alt and alt-shift... respectively).
-* String elements (Lower case and Upper case, alt lower case and alt-upper case respectively).
-* Each string element must have each character or key seperated by a space.
-
-        // two rows; each row has four key sets. An {accept} or {check}, {shift} and {alt} key are required.
-        [ [default, shifted, alt, alt-shift], [default, shifted, alt, alt-shift] ]
-
-        // example: three rows; shift keyset rows included
-        // note: the {shift} needs to be included in both the default and shifted keysets, that's why there are two
-        [ ['a b c d', 'A B C D'], ['e f g h', 'E F G H'], ['{shift} {check}', '{shift} {check}'] ]
-
-* In the list below where two special/"Action" keys are shown, both keys have the same action but different appearances.
-* Special/"Action" keys include:
-
-    * `{a}`, `{accept}` - (required) Updates element value and closes keyboard.
-    * `{alt}`, `{altgr}` - (optional/required) AltGr for International keyboard which switches the key set. Required for alt keysets.
-    * `{b}`, `{bksp}` - (optional) Backspace. Deletes from the end of the content (for now).
-    * `{c}`, `{cancel}` - (optional) Clears changes and closes keyboard (clicking outside or hitting escape does this as well)
-    * `{clear}` - (optional) Clear input window - used in num pad
-    * `{dec}` - (optional) Decimal for numeric entry, only allows one decimal point in the window (meant for use in num pad)
-    * `{e}`, `{enter}` - (optional) Enter/New Line. {e} is the narrow enter key.
-    * `{s}`, `{shift}` - (optional/required) Shift/Capslock. Required to show shifted keysets.
-    * `{sign}` - (optional) Change sign of numeric entry (positive or negative)
-    * `{sp:#}` - (optional) Replace # with a numerical value, adds blank space in the keyboard. A value of 1 ~ width of one key (1em).
-    * `{space}` - (optional) Spacebar
-    * `{t}`, `{tab}` - (optional) Tab. {t} is the narrow tab key.
-
-`position` [Object] Set keyboard positioning
-
-* The script uses the jQuery UI positioning utility
-* Adjust where the keyboard pops up relative to the input area.
-* `of` refers to the jQuery object where the keyboard attaches. The default below is null, but it reverts to the input object. Add a jQuery object (e.g. `$('#keyboard-anchor')`) to attach the keyboard elsewhere.
-* `my` refers to a keyboard location. `'center top'` is the keyboard point that is attached to the `at` element location.
-* `at` refers to the element location (the input or textbox). `'center top'` is the element point where the keypoint point is attached.
-
-        position     : {
-          of : null, // null (attach to input/textarea) or a jQuery object (attach elsewhere)
-          my : 'center top',
-          at : 'center top'
-        }
-
-* For more information see the jQuery UI position utility [documents][7].
-* The default settings are shown above.
-
-`display` - [Object] Button language / symbol options
-
-* Change the displayed button text by modifying the value, in the key:value pair, with the text or symbol you want to use.
-* The default values are shown in the following list. The abbreviated names contain only a symbol so as to fit the layout style as desired:
-
-    * `'a'      : '\u2714'` - Alternate accept button - unicode for check mark symbol
-    * `'accept' : 'Accept'` - Accept button text
-    * `'alt'    : 'AltGr'` - Alt button text (AltGr is for international key sets)
-    * `'b'      : '\u2190'` - Alternate backspace button - unicode for left arrow. Same as &larr;
-    * `'bksp'   : 'Bksp'` - Backspace button text
-    * `'c'      : '\u2716'` - Alternate cancel button - unicode for big X
-    * `'cancel' : 'Cancel` - Cancel button text
-    * `'clear'  : 'C'` - Clear window content (used in num pad)
-    * `'e'      : '\u21b5'` - Alternate enter button - unicode for down, then left arrow (enter symbol)
-    * `'enter'  : 'Enter'` - Enter button text
-    * `'s'      : '\u21e7'` - Alternate shift button - unicode for a thick up arrow
-    * `'shift'  : 'Shift'` - Shift button text
-    * `'sign'   : '\u00b1'` - Change sign (used in num pad) - unicode for a +- symbol
-    * `'space'  : 'Space'` - Space button text
-    * `'t'      : '\u21e5'` - Alternate tab button - unicode for right arrow to bar (used since only one directional tabs available)
-    * `'tab'    : '\u21e5 Tab'` - Tab button text (Note: \u21b9 is the true tab symbol (left & right arrows) but not used here)
-
-`wheelMessage` - [String] Message to tell users about the hidden feature
-
-* This message is only added when a key on the keyboard is hovered over.
-* The text is added to the title attribute of the key, so if you want to have a tooltip attached to it. You will probably need a 'live' tooltip that targets the 'ui-keyboard-button' class.
-* Default message is `'Use mousewheel to see other keys'`.
-
-`actionClass` - [String] Class name used to make keys a different color
-
-* This varibale contains the class that is only added to the Accept and cancel buttons to give them a different color from the normal keys.
-* It was originally set to 'ui-state-highlight' which looks good in some themes, but not others.
-* This class name can also be a custom one that you set up for these keys as well.
-* Default is `'ui-state-active'`.
-
-`lockInput` - [Boolean] Allow access to the preview window from outside the virtual keyboard
-
-* When set to false, the user can type and edit in the preview window
-* If true, the user will only be able to add characters to the preview window using the virtual keyboard.
-* Default is `false`.
-
-`keyBinding` - [String] Mouse event used to interact with the key
-
-* This is the event type that the script binds to the key.
-* Possible options include 'mouseup', 'mousedown' and 'click'. Using an event like 'mouseenter' may get a little messy.
-* Default is `'mousedown'`.
-
-`visible`, `hidden`, `canceled` or `accepted` [Function] callback function called
-
-* See the callback section below for more details.
-
-`useCombos` [Boolean] Allows users to type in key combos to add characters with diacritics
-
-* If true, the script will automatically convert key combinations into diacritics characters.
-* If false, the script will ignore the triggering key combinations.
-* This is an automatic feature on international keyboards ([dead keys][6]), so the script is only emulating the same function.
-
-`Combos` [Object] Not listed in the above options, but you can add more if you wish
-
-* The full set of combinations are not intended to be changed so they were not listed in the options above.
-* But you can add more key combinations as desired by using this format (try it in the Custom: Junk demo)
-
-        combos : {
-          'a' : { e: 'æ' },
-          'A' : { E: 'Æ' }
-        }
-
-* In the default settings the root key is a diacritic ( \`, ', ", ^, ~ ) and the script is only setup to accept these. And also the 'a' so the example above will work if you try it.
-* To use different diacritics the regex in the `_checkCombos` function will need to be modified. If you don't know how to do this, then please add an issue and we will look into adding it.
-* Note that even though these special characters are included in this plugin they may not be visible in all browsers. They may need to be set to the proper encoding (e.g. UTF-8, ISO-8859, etc).
-
-**Callbacks &amp; Events**
-
-`visible`, `hidden`, `canceled` or `accepted` callbacks - [Function] callback function called
-
-* Callbacks / Triggered Events:
-
-    * `accepted` - Event called when the accept button on the virtual keyboard is pressed
-    * `canceled` - Event called when the virtual keyboard was closed without accepting any changes.
-    * `hidden` - Event called when the virtual keyboard is hidden.
-    * `visible` - Event called when the virtual keyboard is visible.
-
-* Add a function to any or all of these callbacks in the initialization code as seen in the example below.
-* `e` is the event variable - `e.target` is the same object as `el`.
-* `el` in the example below is the `#keyboard` object (non-jQuery object). Use value to get the input/textarea content. Use `el.keyboard` to access the popup keyboard object.
-
-        // Using Callbacks
-        $('#keyboard').keyboard({
-          accepted : function(e, el){ alert('The content "' + el.value + '" was accepted!'); }
-        });
-
-        // Using triggered events - set up to target all inputs on the page!
-        $('.ui-keyboard-input').bind('accepted', function(e, el){
-         var txt = 'Input ID of ' + el.id + ' has the accepted content of ' + el.value;
-         alert(txt);
-        });
-
-**Style**
-
-* The keyboard is set up to match the current jQuery UI theme, but it is still highly customizable with CSS.
-* The basic css, shown above, has no color styling but can have styling added to override the jQuery UI theme.
-* Action keys will have a class name of "ui-keyboard-{name}". So "bksp" (backspace) will have the class name of "ui-keyboard-bksp".
-* All other keys will have the unicode decimal value of the first character in the class name ("ui-keyboard-#"). So the tidle character has a unicode decimal value of 126, the class name will be "ui-keyboard-126". This is the same as typing `&#126;` into the page or alt-0126 (hold down the alt key and press 0126 in the keypad).
-* Key sets are named as follows:
-
-    * 'ui-keyboard-default'  - Default (lower case keys)
-    * 'ui-keyboard-shifted'  - Shift active (upper case keys)
-    * 'ui-keyboard-alted'    - Alt key set
-    * 'ui-keyboard-altshift' - Alt plus shift key set
-
-* The basic keyboard markup is as follows, using the basic QWERTY layout:
-
-        <!-- Target Input (script is initialized on this element by targeting "#keyboard") -->
-        <textarea id="keyboard" class="ui-keyboard-input ui-widget-content ui-corner-all"></textarea>
-
-        <!-- Keyboard wrapper (QWERTY layout) -->
-        <div class="ui-keyboard ui-widget-content ui-widget ui-corner-all ui-helper-clearfix ui-helper-hidden-accessible">
-          <!-- preview window -->
-          <div>
-            <input type="text" class="qwerty ui-widget-content ui-keyboard-preview ui-corner-all">
-          </div>
-          <!-- first row -->
-          <div class="ui-keyboard-row ui-keyboard-row0">
-            <!-- default key set -->
-            <div class="ui-keyboard-keyset ui-keyboard-default">
-              <input type="button" class="ui-keyboard-button ui-state-default ui-corner-all ui-keyboard-96" name="key_0_0" value="`">
-              <input type="button" class="ui-keyboard-button ui-state-default ui-corner-all ui-keyboard-49" name="key_0_1" value="1">
-              ...
-              <input type="button" class="ui-keyboard-button ui-state-default ui-corner-all ui-keyboard-61" name="key_0_12" value="=">
-              <input type="button" class="ui-keyboard-button ui-state-default ui-corner-all ui-keyboard-bksp ui-keyboard-widekey ui-keyboard-actionkey" name="key_bksp" value="Bksp">
-            </div>
-            <!-- shifted key set -->
-            <div class="ui-keyboard-keyset ui-keyboard-shifted" style="display: none;">
-              <input type="button" class="ui-keyboard-button ui-state-default ui-corner-all ui-keyboard-126" name="key_0_0" value="~">
-              <input type="button" class="ui-keyboard-button ui-state-default ui-corner-all ui-keyboard-33" name="key_0_1" value="!">
-              ...
-              <input type="button" class="ui-keyboard-button ui-state-default ui-corner-all ui-keyboard-43" name="key_0_12" value="+">
-              <input type="button" class="ui-keyboard-button ui-state-default ui-corner-all ui-keyboard-bksp ui-keyboard-widekey ui-keyboard-actionkey" name="key_bksp" value="Bksp">
-            </div>
-          </div> <!-- end first row -->
-          ...
-          <!--  fifth row -->
-          <div class="ui-keyboard-row ui-keyboard-row4">
-            <!-- default key set -->
-            <div class="ui-keyboard-keyset ui-keyboard-default">
-              <input type="button" class="ui-keyboard-button ui-state-default ui-corner-all ui-keyboard-accept ui-keyboard-widekey ui-keyboard-actionkey ui-state-active" name="key_accept" value="Accept">
-              <input type="button" class="ui-keyboard-button ui-state-default ui-corner-all ui-keyboard-space ui-keyboard-widekey ui-keyboard-actionkey" name="key_space" value="Space">
-              <input type="button" class="ui-keyboard-button ui-state-default ui-corner-all ui-keyboard-cancel ui-keyboard-widekey ui-keyboard-actionkey ui-state-active" name="key_cancel" value="Cancel">
-            </div>
-            <!-- shifted key set -->
-            <div class="ui-keyboard-keyset ui-keyboard-shifted" style="display: none;">
-              <input type="button" class="ui-keyboard-button ui-state-default ui-corner-all ui-keyboard-accept ui-keyboard-widekey ui-keyboard-actionkey ui-state-active" name="key_accept" value="Accept">
-              <input type="button" class="ui-keyboard-button ui-state-default ui-corner-all ui-keyboard-space ui-keyboard-widekey ui-keyboard-actionkey" name="key_space" value="Space">
-              <input type="button" class="ui-keyboard-button ui-state-default ui-corner-all ui-keyboard-cancel ui-keyboard-widekey ui-keyboard-actionkey ui-state-active" name="key_cancel" value="Cancel">
-            </div>
-          </div> <!-- end fifth row -->
-        </div> <!-- end wrapper -->
+Moved to the Wiki Pages: [Home][6] | [Setup][7] | [Options][8] ( [Layout][9], [Language][10], [Useability][11] ) | [Methods][12] | [Theme][13] | [Log][14]
 
 **Licensing**
 
 * [Creative Commons Attribution-Share Alike 3.0 Unported License][5]
 
-**To Do**
+**Change Log**
 
-* Allow inserting text at the caret inside the preview window.
-* Add max length setting.
-* Add additional buttons to change key sets (similiar to the alt key).
+Only the latest changes will be shown below, see the log to view older versions.
 
-~~~
+Version 1.5.3
 
-**Changelog**
-
-Version 1.5.2 (11/30/2010)
-
-* Keyboard build now occurs after the target element gets focus to speed up startup.
-
-Version 1.5.1 (11/29/2010)
-
-* Added 'ui-keyboard-input' class to the target element.
-* Added `wheelMessage` to allow changing the language - this message is added to the hovered key's title attribute to so the user knows they can use the mousewheel to see the other key sets for that same key.
-* Added event triggers - `accepted`, `canceled`, `hidden` and `visible`. Open the (Firefox) firebug console to see the callback messages on the demo page.
-* Added `position` propery `of`. By default (when it is `null`) it is set to the input element, but you can change it so the keyboard attaches to another object.
-* Modified the code to work with hidden inputs - but not `type="hidden"` inputs! See the last example on the demo page.
-* Added destroy method.
-
-Version 1.5 (11/28/2010)
-
-* Changed class of preview window from 'ui-state-active' to 'ui-widget-content' because it looks bad in some themes.
-* Added 'ui-widget-content' class to the element (input or textarea).
-* Added International keyboard Layout (AltGr key) and expanded the keysets up to four.
-* Added more special/"action" keys:
-    * Previous text only keys now have a companion symbol only key. The abbreviated names contain only a symbol so as to fit the layout style as desired.
-    * Added alt key to allow accessing two additional key sets.
-    * Changed name of {neg} to {sign}. This key changes the sign of the input.
-    * Added tab key
-* Fixed positioning utility problem I added in the last version - show the popup before positioning (duh).
-* Added `position` option to allow positioning the keyboard anywhere around the input/textarea.
-* Added `display` option to support multiple languages or change key symbols.
-* Added `actionClass` option to allow changing the style of the accept and cancel keys.
-* Added `lockInput` option to lock or unlock the ability to access the preview window.
-* Added `keyBinding` option to change the keyboard key behaviour.
-* Added `useCombos` to enable the dead key emulation which allows entering diacritic key combinations.
-* Using the escape key now closes the keyboard.
-* Added mousewheel support to allow scrolling through the other keysets while hovering over a key.
-* Added ARIA support (may not be complete).
-
-Version 1.4.2 (11/26/2010)
-
-* Made a copy of the code and documentation hosted at [snipplr][3] on github.
-* Slightly modified the code to correct JSLint nags. All except functions in a loop and adding conditions inside for in loop - will be fixed in next version.
-* Had to fix the keyboard positioning so it would work in IE properly
-    * Using jQuery UI position utility was causing a bug where opening the keyboard popup more than once would move the popup down and left
-    * See a demo of the problem here: http://jsfiddle.net/Mottie/EMXGF/.
-* Will add you Jeremy when you get a github account :)
-
-Version 1.4.1 (11/18/2010)
-
-* Attach keyboard to the body tag for instances where a parent element is position relative
-* Add focus method to refocus the input preview so that a cursor is visible
-
-Version 1.4
-
-* Update positioning to jQuery UI 1.8 position method
-* Other tweaks for cleaning code
-
-Version 1.3 (1/17/2010)
-
-* Hide keyboard when clicking outside of keyboard
-* Tweek positioning to fit better on screen if page scrolled or resized
-
-Version 1.2 (1/15/2010)
-
-* Align keyboard with element it is called from
-* Append keyboard DOM to elements parent instead of body
-
-Version 1.1 (10/30/2009)
-
-* Change Preview window to clone the selected element to match the proper formatting of the element (i.e. not showing characters in password fields)
-* Add Return key to insert new lines into textareas
-* Change style of Accept and Cancel buttons to "ui-state-highlight" to standout
-* Add ability for designer to create a custom keyboard layout
-
-Version 1.0 (10/21/2009)
-
-* Initial build by Jeremy Satterfield.
+* Added optional modifier keys (meta) to add additional key sets. There is no limit on the number of meta keys you can add. Look for meta key in the customLayout section for more details.
+* Changed keyset class names to include '-keyset' in them.
+* Completely changed the layout format
+    * When adding a custom layout, each keyset is named with all of it rows. This will make it easier to add meta key sets without defining shift and alt key sets as would be necessary in the original formatting. See the customLayout section for more details.
+    * Each keyset now contains the keyboard rows instead of each row containing each keyset. See the example HTML in the Theme section above.
+* Added another method to position the keyboard since the `position` property `of` works well if you target a single target. This new method requires the target to be added to the element data - in a variable named `keyboardPosition`. See the positioning section above for more details.
 
   [1]: http://jsatt.blogspot.com/2010/01/on-screen-keyboard-widget-using-jquery.html
   [2]: http://plugins.jquery.com/project/virtual_keyboard
   [3]: http://snipplr.com/view/21577/virtual-keyboard-widget/
   [4]: http://mottie.github.com/Keyboard/
   [5]: http://creativecommons.org/licenses/by-sa/3.0/
-  [6]: http://en.wikipedia.org/wiki/Keyboard&#95;layout#US-International
-  [7]: http://jqueryui.com/demos/position/
-
+  [6]: https://github.com/Mottie/Keyboard/wiki/Home
+  [7]: https://github.com/Mottie/Keyboard/wiki/Setup
+  [8]: https://github.com/Mottie/Keyboard/wiki/Options
+  [9]: https://github.com/Mottie/Keyboard/wiki/Layout
+  [10]: https://github.com/Mottie/Keyboard/wiki/Language
+  [11]: https://github.com/Mottie/Keyboard/wiki/Useability
+  [12]: https://github.com/Mottie/Keyboard/wiki/Methods
+  [13]: https://github.com/Mottie/Keyboard/wiki/Theme
+  [14]: https://github.com/Mottie/Keyboard/wiki/Log
