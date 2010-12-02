@@ -71,6 +71,7 @@ CSS:
 	.ui-keyboard-space { width: 15em; }
 	.ui-keyboard-preview { width: 100%; text-align: left; margin-bottom: 3px; }
 	.ui-keyboard-keyset { text-align: center; }
+	.ui-keyboard-input { text-align: left; }
 */
 
 (function( $, undefined ) {
@@ -127,17 +128,17 @@ $.widget('ui.keyboard', {
 				'{accept} {space} {alt} {cancel}'
 			],
 			'alt': [
-				'~ ¡ ² ³ ¤ € ¼ ½ ¾ ‘ ’ ¥ × {bksp}',
-				'{tab} ä å é ® þ ü ú í ó ö « » ¬',
-				'á ß ð f g h j k ø ¶ ´ {enter}',
-				'{shift} æ x © v b ñ µ ç > ¿ {shift}',
+				'~ \u00a1 \u00b2 \u00b3 \u00a4 \u20ac \u00bc \u00bd \u00be \u2018 \u2019 \u00a5 \u00d7 {bksp}',
+				'{tab} \u00e4 \u00e5 \u00e9 \u00ae \u00fe \u00fc \u00fa \u00ed \u00f3 \u00f6 \u00ab \u00bb \u00ac',
+				'\u00e1 \u00df \u00f0 f g h j k \u00f8 \u00b6 \u00b4 {enter}',
+				'{shift} \u00e6 x \u00a9 v b \u00f1 \u00b5 \u00e7 > \u00bf {shift}',
 				'{accept} {space} {alt} {cancel}'
 			],
 			'alt-shift': [
-				'~ ¹ ² ³ £ € ¼ ½ ¾ ‘ ’ ¥ ÷ {bksp}',
-				'{tab} Ä Å É ® Þ Ü Ú Í Ó Ö « » ¦',
-				'Ä § Ð F G H J K Ø ° ¨ {enter}',
-				'{shift} Æ X ¢ V B Ñ µ Ç . ¿ {shift}',
+				'~ \u00b9 \u00b2 \u00b3 \u00a3 \u20ac \u00bc \u00bd \u00be \u2018 \u2019 \u00a5 \u00f7 {bksp}',
+				'{tab} \u00c4 \u00c5 \u00c9 \u00ae \u00de \u00dc \u00da \u00cd \u00d3 \u00d6 \u00ab \u00bb \u00a6',
+				'\u00c4 \u00a7 \u00d0 F G H J K \u00d8 \u00b0 \u00a8 {enter}',
+				'{shift} \u00c6 X \u00a2 V B \u00d1 \u00b5 \u00c7 . \u00bf {shift}',
 				'{accept} {space} {alt} {cancel}'
 			]
 		},
@@ -212,14 +213,14 @@ $.widget('ui.keyboard', {
 		keyBinding   : 'mousedown',
 
 		// combos (emulate dead keys : http://en.wikipedia.org/wiki/Keyboard_layout#US-International)
-		// if user inputs `a the script converts it to à, ^o becomes ô, etc.
+		// if user inputs `a the script converts it to Ã , ^o becomes Ã´, etc.
 		useCombos : true,
 		combos    : {
-			'`' : { a:'à', A:'À', e:'è', E:'È', i:'ì', I:'Ì', o:'ò', O:'Ò', u:'ù', U:'Ù' },
-			"'" : { a:'á', A:'Á', e:'é', E:'É', i:'í', I:'Í', o:'ó', O:'Ó', u:'ú', U:'Ú', y:'ý', Y:'Ý', c:'ç', C:'Ç' },
-			'"' : { a:'ä', A:'Ä', e:'ë', E:'Ë', i:'ï', I:'Ï', o:'ö', O:'Ö', u:'ü', U:'Ü' },
-			'^' : { a:'â', A:'Â', e:'ê', E:'Ê', i:'î', I:'Î', o:'ô', O:'Ô', u:'û', U:'Û' },
-			'~' : { a:'\u00e3', A:'\u00c3', e:'\u1ebd', E:'\u1ebc', i:'\u0129', I:'\u0128', o:'\u00f5', O:'\u00d5', u:'\u0169', U:'\u0168', n:'\u00f1', N:'\u00d1' }
+			'`' : { a:"\u00e0", A:"\u00c0", e:"\u00e8", E:"\u00c8", i:"\u00ec", I:"\u00cc", o:"\u00f2", O:"\u00d2", u:"\u00f9", U:"\u00d9"},
+			"'" : { a:"\u00e1", A:"\u00c1", e:"\u00e9", E:"\u00c9", i:"\u00ed", I:"\u00cd", o:"\u00f3", O:"\u00d3", u:"\u00fa", U:"\u00da", y:"\u00fd", Y:"\u00dd", c:"\u00e7", C:"\u00c7"},
+			'"' : { a:"\u00e4", A:"\u00c4", e:"\u00eb", E:"\u00cb", i:"\u00ef", I:"\u00cf", o:"\u00f6", O:"\u00d6", u:"\u00fc", U:"\u00dc"},
+			'^' : { a:"\u00e2", A:"\u00c2", e:"\u00ea", E:"\u00ca", i:"\u00ee", I:"\u00ce", o:"\u00f4", O:"\u00d4", u:"\u00fb", U:"\u00db"},
+			'~' : { a:"\u00e3", A:"\u00c3", e:"\u1ebd", E:"\u1ebc", i:"\u0129", I:"\u0128", o:"\u00f5", O:"\u00d5", u:"\u0169", U:"\u0168", n:"\u00f1", N:"\u00d1"}
 		},
 
 		// *** Methods ***
@@ -387,7 +388,7 @@ $.widget('ui.keyboard', {
 	// check for key combos (dead keys)
 	_checkCombos : function(txt){
 		var o = this.options;
-		// keep 'a' in the regex for the demo a + e = æ
+		// keep 'a' in the regex for the demo a + e = Ã¦
 		txt = txt.replace(/([`\'~\^\"a])([a-z])/ig, function(s, accent, letter){
 			return (accent in o.combos) ? o.combos[accent][letter] || s : s;
 		});

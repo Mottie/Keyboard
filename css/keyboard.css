@@ -6,3 +6,4 @@
 .ui-keyboard-space { width: 15em; }
 .ui-keyboard-preview { width: 100%; text-align: left; margin-bottom: 3px; }
 .ui-keyboard-keyset { text-align: center; }
+.ui-keyboard-input { text-align: left; } /* set to text-align:right; for RTL keyboards */
