@@ -27,36 +27,64 @@ Originally posted by Jeremy Satterfield in his [blog][1], [jQuery plugins][2] an
 
 **Documentation**
 
-Moved to the Wiki Pages: [Home][6] | [Setup][7] | [Options][8] ( [Layout][9], [Language][10], [Useability][11] ) | [Methods][12] | [Theme][13] | [Log][14]
+Moved to the Wiki Pages: [Home][5] | [Setup][6] | [Options][7] ( [Layout][8], [Language][9], [Useability][10] ) | [Methods][11] | [Theme][12] | [Log][13]
+
+**To Do**
+
+* Waiting for requests :)
+
+~~~
 
 **Licensing**
 
-* [Creative Commons Attribution-Share Alike 3.0 Unported License][5]
+* Keyboard code: [Creative Commons Attribution-Share Alike 3.0 Unported License][14]
+* Caret code by C. F., Wong (Cloudgen): [MIT License][15]
 
 **Change Log**
 
 Only the latest changes will be shown below, see the log to view older versions.
 
-Version 1.5.3
+Version 1.5.4
 
-* Added optional modifier keys (meta) to add additional key sets. There is no limit on the number of meta keys you can add. Look for meta key in the customLayout section for more details.
-* Changed keyset class names to include '-keyset' in them.
-* Completely changed the layout format
-    * When adding a custom layout, each keyset is named with all of it rows. This will make it easier to add meta key sets without defining shift and alt key sets as would be necessary in the original formatting. See the customLayout section for more details.
-    * Each keyset now contains the keyboard rows instead of each row containing each keyset. See the example HTML in the Theme section above.
-* Added another method to position the keyboard since the `position` property `of` works well if you target a single target. This new method requires the target to be added to the element data - in a variable named `keyboardPosition`. See the positioning section above for more details.
+* Copied code from the jQuery Caret plugin to allow inserting text at the caret inside the preview window. It may not be perfect, but it appears to work in the latest versions of Firefox, Chrome, IE and Opera.
+* Added a `maxLength` option to limit the amount of text. It is set to `false` by default which disables the limit.
+* Added a way to name keys, these names are added to the key's title attribute. If a tooltip plugin is used on the page, just target '.ui-keyboard-button' and get the tooltip from the title.
+    * Keys defined in the `display` option follow this format "Key Name:Key's Label". The "Key Name" is what is actually shown on the virtual keyboard, while "Key's Label" is added to the key's title attribute. The "Key's Label" can include spaces.
+
+            display: {
+              'accept' : 'Accept:Accept the Content',
+              'meta1'  : '\u2666:Alternate character set',  // Diamond
+              'meta2'  : '\u2665:Some other character set', // Heart
+            }
+
+    * The key names defined in the `customLayout` cannot include spaces, the script will assume you want a new key. So only in the `customLayout` follow this format "key:Key_Label" - replace all spaces with an underscore. Here is an example (view demo.js for another example - Meta):
+
+            customLayout: {
+              'default' : [
+                '! @:this_is_an_at_symbol # $ % ^ & *:this_is_an_asterisk ( ) - + {bksp}'
+              ]
+            }
+
+    * View demo.js source for more examples.
+
+* Added `dec` to the `display` options for the decimal key (only allows one decimal). It wasn't previously added because the decimal key was just a period; now it can have a label! YAY!
+* Added a+e and o+e ligatures to the combination keys.
+* Replaced Hebrew characters from the Meta Sets Demo - it added characters from right-to-left and mixing them with left-to-right characters would just confuse people too much (as it did to me o.O)
+* Changed Custom: Junk demo to include vowels and accent keys to allow visualization of inputing combo keys.
+
 
   [1]: http://jsatt.blogspot.com/2010/01/on-screen-keyboard-widget-using-jquery.html
   [2]: http://plugins.jquery.com/project/virtual_keyboard
   [3]: http://snipplr.com/view/21577/virtual-keyboard-widget/
   [4]: http://mottie.github.com/Keyboard/
-  [5]: http://creativecommons.org/licenses/by-sa/3.0/
-  [6]: https://github.com/Mottie/Keyboard/wiki/Home
-  [7]: https://github.com/Mottie/Keyboard/wiki/Setup
-  [8]: https://github.com/Mottie/Keyboard/wiki/Options
-  [9]: https://github.com/Mottie/Keyboard/wiki/Layout
-  [10]: https://github.com/Mottie/Keyboard/wiki/Language
-  [11]: https://github.com/Mottie/Keyboard/wiki/Useability
-  [12]: https://github.com/Mottie/Keyboard/wiki/Methods
-  [13]: https://github.com/Mottie/Keyboard/wiki/Theme
-  [14]: https://github.com/Mottie/Keyboard/wiki/Log
+  [5]: https://github.com/Mottie/Keyboard/wiki/Home
+  [6]: https://github.com/Mottie/Keyboard/wiki/Setup
+  [7]: https://github.com/Mottie/Keyboard/wiki/Options
+  [8]: https://github.com/Mottie/Keyboard/wiki/Layout
+  [9]: https://github.com/Mottie/Keyboard/wiki/Language
+  [10]: https://github.com/Mottie/Keyboard/wiki/Useability
+  [11]: https://github.com/Mottie/Keyboard/wiki/Methods
+  [12]: https://github.com/Mottie/Keyboard/wiki/Theme
+  [13]: https://github.com/Mottie/Keyboard/wiki/Log
+  [14]: http://creativecommons.org/licenses/by-sa/3.0/
+  [15]: http://www.opensource.org/licenses/mit-license.php

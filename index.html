@@ -26,7 +26,12 @@
 	<h1><a href="https://github.com/Mottie/Keyboard">Virtual Keyboard Widget</a></h1>
 	<h3>A jQuery UI widget by <a href="http://jsatt.blogspot.com/2010/01/on-screen-keyboard-widget-using-jquery.html">Jeremy Satterfield</a></h3>
 
-	<div id="switcher"></div><br>
+	<div id="switcher"></div>
+	<ul id="console">
+		<li>...</li>
+		<li>...</li>
+		<li>...</li>
+	</ul>
 	<br>
 
 	<div class="block">
@@ -65,12 +70,16 @@
 
 	<div class="block">
 		<h2>Num Pad</h2>
-		<input id="num" type="text" />
+		<input id="num" class="alignRight" type="text" />
 	</div>
 
 	<div class="block">
 		<h2>Custom: Hex</h2>
 		<input id="custom1" type="text" />
+		<br>
+		<small>
+			* maxLength = 6.
+		</small>
 	</div>
 
 	<div class="block">

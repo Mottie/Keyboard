@@ -1,12 +1,16 @@
 /*
 jQuery UI Virtual Keyboard Widget
-Version 1.5.3
+Version 1.5.4
 
 Author: Jeremy Satterfield
 Modified: Rob G (Mottie on github)
 -----------------------------------------
 Creative Commons Attribution-Share Alike 3.0 Unported License
 http://creativecommons.org/licenses/by-sa/3.0/
+
+Caret code adapted from jquery.caret.1.02.js
+Licensed under the MIT License:
+http://www.opensource.org/licenses/mit-license.php
 -----------------------------------------
 
 An on-screen virtual keyboard embedded within the browser window which
@@ -83,14 +87,14 @@ $.widget('ui.keyboard', {
 		'alpha' : {
 			'default': [
 				'` 1 2 3 4 5 6 7 8 9 0 - = {bksp}',
-				'a b c d e f g h i j [ ] \\',
+				'{tab} a b c d e f g h i j [ ] \\',
 				'k l m n o p q r s ; \' {enter}',
 				'{shift} t u v w x y z , . / {shift}',
 				'{accept} {space} {cancel}'
 			],
 			'shift': [
 				'~ ! @ # $ % ^ & * ( ) _ + {bksp}',
-				'A B C D E F G H I J { } |',
+				'{tab} A B C D E F G H I J { } |',
 				'K L M N O P Q R S : " {enter}',
 				'{shift} T U V W X Y Z < > ? {shift}',
 				'{accept} {space} {cancel}'
@@ -182,22 +186,23 @@ $.widget('ui.keyboard', {
 
 		// *** change keyboard language & look ***
 		display : {
-			'a'      : '\u2714', // check mark - same action as accept
-			'accept' : 'Accept',
-			'alt'    : 'AltGr',
-			'b'      : '\u2190', // Left arrow (same as &larr;)
-			'bksp'   : 'Bksp', // Left arrow (same as &larr;)
-			'c'      : '\u2716', // big X, close - same action as cancel
-			'cancel' : 'Cancel',
-			'clear'  : 'C',      // clear num pad
-			'e'      : '\u21b5', // down, then left arrow - enter symbol
-			'enter'  : 'Enter',
-			's'      : '\u21e7', // thick up arrow
-			'shift'  : 'Shift',
-			'sign'   : '\u00b1', // +/- sign for num pad
-			'space'  : 'Space',
-			't'      : '\u21e5', // right arrow to bar (used since this virtual keyboard works with one directional tabs)
-			'tab'    : '\u21e5 Tab' // \u21b9 is the true tab symbol (left & right arrows)
+			'a'      : '\u2714:Accept',      // check mark - same action as accept
+			'accept' : 'Accept:Accept',
+			'alt'    : 'AltGr:Alternate Graphemes',
+			'b'      : '\u2190:Backspace',   // Left arrow (same as &larr;)
+			'bksp'   : 'Bksp:Backspace',
+			'c'      : '\u2716:Cancel',      // big X, close - same action as cancel
+			'cancel' : 'Cancel:Cancel',
+			'clear'  : 'C:Clear',            // clear num pad
+			'dec'    : '.:Decimal',          // decimal point for num pad (optional) - if used, only one decimal point is allowed
+			'e'      : '\u21b5:Enter',       // down, then left arrow - enter symbol
+			'enter'  : 'Enter:Enter',
+			's'      : '\u21e7:Shift',       // thick hollow up arrow
+			'shift'  : 'Shift:Shift',
+			'sign'   : '\u00b1:Change Sign', // +/- sign for num pad
+			'space'  : 'Space:Space',
+			't'      : '\u21e5:Tab',         // right arrow to bar (used since this virtual keyboard works with one directional tabs)
+			'tab'    : '\u21e5 Tab:Tab'      // \u21b9 is the true tab symbol (left & right arrows)
 		},
 		// Message added to the key title while hovering, if the mousewheel plugin exists
 		wheelMessage : 'Use mousewheel to see other keys',
@@ -208,6 +213,9 @@ $.widget('ui.keyboard', {
 		// *** Useability ***
 		// Prevents direct input in the preview window when true
 		lockInput    : false,
+
+		// Set the max number of characters allowed in the input, setting it to false disables this option
+		maxLength    : false,
 
 		// When the character is added to the input
 		keyBinding   : 'mousedown',
@@ -220,7 +228,11 @@ $.widget('ui.keyboard', {
 			"'" : { a:"\u00e1", A:"\u00c1", e:"\u00e9", E:"\u00c9", i:"\u00ed", I:"\u00cd", o:"\u00f3", O:"\u00d3", u:"\u00fa", U:"\u00da", y:"\u00fd", Y:"\u00dd", c:"\u00e7", C:"\u00c7"},
 			'"' : { a:"\u00e4", A:"\u00c4", e:"\u00eb", E:"\u00cb", i:"\u00ef", I:"\u00cf", o:"\u00f6", O:"\u00d6", u:"\u00fc", U:"\u00dc"},
 			'^' : { a:"\u00e2", A:"\u00c2", e:"\u00ea", E:"\u00ca", i:"\u00ee", I:"\u00ce", o:"\u00f4", O:"\u00d4", u:"\u00fb", U:"\u00db"},
-			'~' : { a:"\u00e3", A:"\u00c3", e:"\u1ebd", E:"\u1ebc", i:"\u0129", I:"\u0128", o:"\u00f5", O:"\u00d5", u:"\u0169", U:"\u0168", n:"\u00f1", N:"\u00d1"}
+			'~' : { a:"\u00e3", A:"\u00c3", e:"\u1ebd", E:"\u1ebc", i:"\u0129", I:"\u0128", o:"\u00f5", O:"\u00d5", u:"\u0169", U:"\u0168", n:"\u00f1", N:"\u00d1"},
+			'a' : { e: '\u00e6' },
+			'A' : { E: '\u00c6' },
+			'o' : { e: '\u0153' },
+			'O' : { E: '\u0152' }
 		},
 
 		// *** Methods ***
@@ -235,6 +247,9 @@ $.widget('ui.keyboard', {
 	shiftActive : false,
 	altActive   : false,
 	metaActive  : false,
+
+	// true if a layout has more than one keyset - used for mousewheel message
+	sets : false,
 
 	// Class names of the basic key set - meta keysets are handled by the keyname
 	rows : ['ui-keyboard-keyset-default', 'ui-keyboard-keyset-shift', 'ui-keyboard-keyset-alt', 'ui-keyboard-keyset-alt-shift' ],
@@ -260,7 +275,7 @@ $.widget('ui.keyboard', {
 			.bind('focus', function(){
 
 				// build keyboard if it doesn't exist
-				if (typeof(ui.keyboard) == 'undefined') { ui._startup(); }
+				if (typeof(ui.keyboard) === 'undefined') { ui._startup(); }
 
 				var el = $(this),
 					previewInput = ui.keyboard.find('.ui-keyboard-preview').val(el.val());
@@ -292,7 +307,7 @@ $.widget('ui.keyboard', {
 			keyboard = ui._buildKeyboard(),
 			allKeys = keyboard.find('.ui-keyboard-button'),
 			previewInput = keyboard.find('.ui-keyboard-preview'),
-			decBtn = keyboard.find('.ui-keyboard-decimal'),
+			decBtn = keyboard.find('.ui-keyboard-dec'),
 			wheel = $.isFunction( $.fn.mousewheel ); // is mousewheel plugin loaded?
 			ui.keyboard = keyboard;
 
@@ -307,19 +322,12 @@ $.widget('ui.keyboard', {
 		allKeys
 			.bind(o.keyBinding, function(){
 				// 'key', { action: doAction, original: n, curTxt : n, curNum: 0 }
-				var key = $.data(this, 'key'),
-					txt = previewInput.val();
+				var txt, key = $.data(this, 'key');
 				if ($.isFunction(key.action)) {
 					key.action(this);
 				} else if (typeof key.action !== 'undefined') {
-					if (key.action == 'bksp') {
-						txt = txt.substring( 0, txt.length - 1 );
-					} else {
-						// add currently displayed key (if mousewheel active) and it's not an action key
-						txt += (wheel && !$(this).is('.ui-keyboard-actionkey')) ? key.curTxt : key.action;
-					}
-					if (o.useCombos) { txt = ui._checkCombos(txt); }
-					previewInput.val(txt);
+					txt = (wheel && !$(this).is('.ui-keyboard-actionkey')) ? key.curTxt : key.action;
+					ui._insertText(previewInput[0], txt);
 				}
 				previewInput.trigger('gotoEnd');
 			})
@@ -328,19 +336,22 @@ $.widget('ui.keyboard', {
 				var el = this, $this = $(this), txt,
 					// 'key' = { action: doAction, original: n, curTxt : n, curNum: 0 }
 					key = $.data(el, 'key');
-				if (e.type == 'mouseenter'){
+				if (e.type === 'mouseenter'){
 					$this
 						.addClass('ui-state-hover')
-						.attr('title', (wheel) ? o.wheelMessage : '');
+						.attr('title', function(i,t){
+							// show mouse wheel message 
+							return (wheel && t === '' && ui.sets) ? o.wheelMessage : t;
+						});
 					return;
 				}
-				if (e.type == 'mouseleave'){
+				if (e.type === 'mouseleave'){
 					key.curTxt = key.original;
 					key.curNum = 0;
 					$.data(el, 'key', key);
 					$this
 						.removeClass('ui-state-hover')
-						.removeAttr('title')
+						.attr('title', function(i,t){ return (t === o.wheelMessage) ? '' : t; })
 						.val( key.original ); // restore original button text
 					return;
 				}
@@ -354,6 +365,9 @@ $.widget('ui.keyboard', {
 					$.data(el, 'key', key);
 					$this.val( txt[key.curNum] );
 				}
+			})
+			.bind('mouseup', function(e){
+				previewInput.focus();
 			});
 
 		if (decBtn.length) {
@@ -361,7 +375,67 @@ $.widget('ui.keyboard', {
 				ui._checkDecimal(decBtn);
 			});
 		}
+	},
 
+	// get Caret position
+	_getCaret: function(p){
+		var v = {};
+		v.prevw = p;
+		v.start = 0;
+		v.txt = p.value;
+		v.st = p.scrollTop;
+		v.dsel = document.selection;
+		// this code adapted from jquery.caret.1.02.js - MIT licensed
+		if (v.dsel) { // IE
+			$(p).focus();
+			v.r = v.dsel.createRange();
+			if (p.tagName === "TEXTAREA"){
+				v.r2 = v.r.duplicate();
+				v.r2.moveToElementText(p);
+				v.r2.setEndPoint('EndToEnd', v.r);
+				v.start = v.r2.text.length - v.r.text.length;
+			} else {
+				v.r.moveStart('character', -p.value.length);
+				v.start = v.r.text.length;
+			}
+		} else { // Other browsers
+			v.start = p.selectionStart || 0;
+		}
+		return v;
+	},
+
+	// This caret code adapted from
+	// http://www.scottklarr.com/topic/425/how-to-insert-text-into-a-textarea-where-the-cursor-is/
+	_setCaret: function(v){
+		if (v.dsel) { // IE
+			$(v.prevw).focus();
+			v.r.moveStart('character', v.start);
+			v.r.collapse(true);
+			v.r.select();
+		} else { // Other browsers
+			v.prevw.selectionStart = v.start;
+			v.prevw.selectionEnd = v.start;
+		}
+		$(v.prevw).focus();
+		v.prevw.scrollTop = v.st;
+	},
+
+	// Code to insert text at the caret
+	_insertText: function(p, txt){
+		var t, v = this._getCaret(p);
+		// special treatment for backspace
+		if (txt === 'bksp') {
+			p.value = v.txt.substring(0, v.start-1) + v.txt.substring(v.start, v.txt.length);
+			v.start -= 1;
+		} else {
+			// inject text at caret
+		  v.txt = v.txt.substring(0, v.start) + txt + v.txt.substring(v.start, v.txt.length);
+			v.start = v.start + txt.length;
+			t = this._checkCombos(v.txt); // t = [ text, length change ];
+			v.prevw.value = t[0];
+			v.start += t[1]; // move caret to correct position
+		}
+		this._setCaret(v);
 	},
 
 	_showKeySet: function(el){
@@ -387,12 +461,16 @@ $.widget('ui.keyboard', {
 
 	// check for key combos (dead keys)
 	_checkCombos : function(txt){
-		var o = this.options;
-		// keep 'a' in the regex for the demo a + e = æ
-		txt = txt.replace(/([`\'~\^\"a])([a-z])/ig, function(s, accent, letter){
-			return (accent in o.combos) ? o.combos[accent][letter] || s : s;
-		});
-		return txt;
+		var s = txt.length, o = this.options;
+		if (o.useCombos) {
+			// keep 'a' and 'o' in the regex for ae and oe ligature (æ,œ)
+			txt = txt.replace(/([`\'~\^\"ao])([a-z])/ig, function(s, accent, letter){
+				return (accent in o.combos) ? o.combos[accent][letter] || s : s;
+			});
+		}
+		// check max length too!
+		if (o.maxLength !== false && txt.length > o.maxLength) { txt = txt.substring(0, o.maxLength); }
+		return [ txt, txt.length - s ]; // return new text and change in length
 	},
 
 	// Decimal button for num pad - only allow one (not used by default)
@@ -422,7 +500,7 @@ $.widget('ui.keyboard', {
 	},
 
 	_hide: function(status){
-		if (typeof(this.keyboard) == 'undefined') { return; }
+		if (typeof(this.keyboard) === 'undefined') { return; }
 		var kb = this.keyboard,
 			visible = kb.filter(':visible').length;
 		this.keyboard.hide();
@@ -434,7 +512,7 @@ $.widget('ui.keyboard', {
 	},
 
 	_escClose: function(e, ui){
-		if (e.which == 27 || (e.type == "mousedown") && $(e.target).closest('.ui-keyboard').length < 1) {
+		if (e.which === 27 || (e.type === "mousedown") && $(e.target).closest('.ui-keyboard').length < 1) {
 			ui._hide();
 		}
 	},
@@ -442,7 +520,7 @@ $.widget('ui.keyboard', {
 	_buildKeyboard: function(){
 		var action, row, newRow, set, newSet,
 			currentSet, key, keys, keySet, margin,
-			ui = this,
+			ui = this, sets = 0,
 			o = ui.options,
 
 		container = $('<div />')
@@ -457,9 +535,11 @@ $.widget('ui.keyboard', {
 			.attr( (o.lockInput) ? { 'readonly': 'readonly'} : {} )
 			.addClass('ui-widget-content ui-keyboard-preview ui-corner-all')
 			.bind('keyup', function(){
-				if (o.useCombos) {
-					$(this).val( ui._checkCombos( $(this).val() ) );
-				}
+				var v = ui._getCaret(previewInput[0]),
+					t = ui._checkCombos( $(this).val() );
+				$(this).val(t[0]);
+				v.start += t[1]; // reposition caret based on # of replacments
+				ui._setCaret(v);
 			}),
 
 		// build default button
@@ -471,14 +551,17 @@ $.widget('ui.keyboard', {
 		// keyName = name added to key, name = display option name (e.g. tab or t),
 		// doAction = what is done/added when the button is clicked, regKey = true when it is not an action key
 		addKey = function(keyName, name, doAction, regKey ){
-			var n = (regKey === true) ? keyName : o.display[name] || keyName,
+			var t, keyType, n = (regKey === true) ? keyName : o.display[name] || keyName,
+				nm = n.split(':'); // find key label
+				n = (nm[0] !== '' && nm.length > 1) ? $.trim(nm[0]) : n;
+				t = (nm.length > 1) ? $.trim(nm[1]).replace(/_/g, " ") || '' : ''; // added to title
 				// Action keys will have the 'ui-keyboard-actionkey' class
 				// '\u2190'.length = 1 because the unicode is converted, so if more than one character, add the wide class
 				keyType = (n.length > 1) ? ' ui-keyboard-widekey' : '';
 				keyType += (regKey !== true) ? ' ui-keyboard-actionkey' : '';
 			return keyBtn
 				.clone()
-				.attr('name', 'key_' + keyName)
+				.attr({ 'name': 'key_' + keyName, 'title' : t })
 				.data('key', { action: doAction, original: n, curTxt : n, curNum: 0 })
 				.val( n )
 				// add "ui-keyboard-" + keyName, if this is an action key (e.g. "Bksp" will have 'ui-keyboard-bskp' class)
@@ -492,20 +575,18 @@ $.widget('ui.keyboard', {
 			.appendTo(container);
 
 		// setup custom keyboard
-		if (o.layout == 'custom') {
+		if (o.layout === 'custom') {
 			ui.layouts.custom = o.customLayout || { 'default' : ['{cancel}'] };
 		}
 
-		// define decimal alternative symbol - not a language option
-		o.display.decimal = '.';
-
 		// Main keyboard building loop
 		for ( set in ui.layouts[o.layout] ){
+			sets++;
 			keySet = ui.layouts[o.layout][set];
 			newSet = $('<div />')
 				.addClass('ui-keyboard-keyset ui-keyboard-keyset-' + set)
 				.appendTo(container)
-				[(set == 'default') ? 'show' : 'hide']();
+				[(set === 'default') ? 'show' : 'hide']();
 
 			for ( row in keySet ){
 				newRow = $('<div />')
@@ -533,7 +614,7 @@ $.widget('ui.keyboard', {
 						}
 
 						// meta keys
-						if (/^meta\d+$/.test(action)){
+						if (/^meta\d+\:?(\w+)?/.test(action)){
 							addKey(action, action, function(el){
 								ui.metaActive = ($(el).is('.ui-state-active')) ? false : true;
 								ui._showKeySet(el);
@@ -548,7 +629,6 @@ $.widget('ui.keyboard', {
 							case 'accept':
 								addKey('accept', action, function(){
 									var txt = previewInput.val();
-									if (o.useCombos) { txt = ui._checkCombos( previewInput.val() ); }
 									ui.element.val(txt);
 									ui._hide(true);
 								})
@@ -591,7 +671,7 @@ $.widget('ui.keyboard', {
 
 							// Decimal - unique decimal point (num pad layout)
 							case 'dec':
-								addKey('decimal', 'decimal', '.')
+								addKey('dec', 'dec', '.')
 								.appendTo(newRow);
 								break;
 
@@ -639,15 +719,12 @@ $.widget('ui.keyboard', {
 							.appendTo(newRow);
 
 					}
-
 				}
-
 			}
-
 		}
-
+	
+	if (sets > 1) { ui.sets = true; }
 	return container;
-
 	},
 
 	destroy: function() {

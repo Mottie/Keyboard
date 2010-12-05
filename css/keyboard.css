@@ -1,9 +1,9 @@
 /* keyboard - jQuery UI Widget */
 .ui-keyboard { padding: .3em; position: absolute; left: 0; top: 0; z-index: 16000; }
 .ui-keyboard div { font-size: 1.1em; }
-.ui-keyboard-button { height: 2em; width: 2em; margin: .1em; }
+.ui-keyboard-button { height: 2em; width: 2em; margin: .1em; cursor: pointer; }
 .ui-keyboard-widekey { width: 4em; }
 .ui-keyboard-space { width: 15em; }
 .ui-keyboard-preview { width: 100%; text-align: left; margin-bottom: 3px; }
 .ui-keyboard-keyset { text-align: center; }
-.ui-keyboard-input { text-align: left; } /* set to text-align:right; for RTL keyboards */
+.ui-keyboard-input { text-align: left; }
