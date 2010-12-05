@@ -10,7 +10,8 @@ Originally posted by Jeremy Satterfield in his [blog][1], [jQuery plugins][2] an
 * Position the keyboard in any location around the element, or target another element on the page.
 * Easily modify the key text to any language or symbol.
 * Allow direct input or lock the preview window.
-* Scroll through the other key sets using the mousewheel while hovering over a key to bypass the need to use alt, shift or meta keys.
+* Set a maximum length to the inputted content.
+* Scroll through the other key sets using the mouse wheel while hovering over a key to bypass the need to use alt, shift or meta keys.
 * Easily type in characters with diacritics. Here are some default combination examples - it is possible to add more.
 
     * ' + vowel ( vowel with acute accent, e.g. ' + e = é )
