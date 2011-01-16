@@ -1,6 +1,6 @@
 /*
 jQuery UI Virtual Keyboard Widget
-Version 1.5.4
+Version 1.5.5
 
 Author: Jeremy Satterfield
 Modified: Rob G (Mottie on github)
@@ -524,7 +524,7 @@ $.widget('ui.keyboard', {
 			o = ui.options,
 
 		container = $('<div />')
-			.addClass('ui-keyboard ui-widget-content ui-widget ui-corner-all ui-helper-clearfix ui-helper-hidden-accessible')
+			.addClass('ui-keyboard ui-widget-content ui-widget ui-corner-all ui-helper-clearfix')
 			.attr({ 'role': 'textbox' })
 			.hide(),
 
