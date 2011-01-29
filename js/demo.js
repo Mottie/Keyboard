@@ -12,7 +12,10 @@ $(document).ready(function(){
 
 	$('#alpha').keyboard({ layout: 'alpha' });
 
-	$('#num').keyboard({ layout: 'num' });
+	$('#num').keyboard({
+		layout: 'num',
+		restrictInput : true
+	});
 
 	// Hex
 	$('#custom1').keyboard({
@@ -27,6 +30,7 @@ $(document).ready(function(){
 			]
 		},
 		maxLength : 6,
+		restrictInput : true,
 		useCombos : false // don't want A+E to become a ligature
 	});
 

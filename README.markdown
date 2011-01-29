@@ -45,6 +45,10 @@ Moved to the Wiki Pages: [Home][5] | [Setup][6] | [Options][7] ( [Layout][8], [L
 
 Only the latest changes will be shown below, see the log to view older versions.
 
+Version 1.5.6
+
+* Added <code>restrictInput</code> option which when true will only allow keys that exist in the virtual keyboard to be typed/pasted into the window.
+
 Version 1.5.5
 
 * Removed jquery-ui class "ui-helper-hidden-accessible" as the recent change now prevents the popup from showing.

@@ -1,6 +1,6 @@
 /*
 jQuery UI Virtual Keyboard Widget
-Version 1.5.5
+Version 1.5.6
 
 Author: Jeremy Satterfield
 Modified: Rob G (Mottie on github)
@@ -213,6 +213,9 @@ $.widget('ui.keyboard', {
 		// *** Useability ***
 		// Prevents direct input in the preview window when true
 		lockInput    : false,
+
+		// Prevent keys not in the displayed keyboard from being typed in
+		restrictInput: false,
 
 		// Set the max number of characters allowed in the input, setting it to false disables this option
 		maxLength    : false,
@@ -461,12 +464,19 @@ $.widget('ui.keyboard', {
 
 	// check for key combos (dead keys)
 	_checkCombos : function(txt){
-		var s = txt.length, o = this.options;
+		var i, s = txt.length, t, o = this.options;
 		if (o.useCombos) {
 			// keep 'a' and 'o' in the regex for ae and oe ligature (æ,œ)
 			txt = txt.replace(/([`\'~\^\"ao])([a-z])/ig, function(s, accent, letter){
 				return (accent in o.combos) ? o.combos[accent][letter] || s : s;
 			});
+		}
+		// check restrictions
+		if (o.restrictInput) {
+			t = txt;
+			for (i=0; i<s; i++){
+				if ($.inArray( t[i], o.acceptedKeys ) < 0) { txt = txt.replace(t[i], ''); }
+			}
 		}
 		// check max length too!
 		if (o.maxLength !== false && txt.length > o.maxLength) { txt = txt.substring(0, o.maxLength); }
@@ -579,6 +589,8 @@ $.widget('ui.keyboard', {
 			ui.layouts.custom = o.customLayout || { 'default' : ['{cancel}'] };
 		}
 
+		o.acceptedKeys = [];
+
 		// Main keyboard building loop
 		for ( set in ui.layouts[o.layout] ){
 			sets++;
@@ -671,6 +683,7 @@ $.widget('ui.keyboard', {
 
 							// Decimal - unique decimal point (num pad layout)
 							case 'dec':
+								o.acceptedKeys.push('.');
 								addKey('dec', 'dec', '.')
 								.appendTo(newRow);
 								break;
@@ -692,6 +705,7 @@ $.widget('ui.keyboard', {
 
 								// Change sign (for num pad layout)
 							case 'sign':
+								o.acceptedKeys.push('-');
 								addKey('sign', 'sign', function(){
 									if(/^\-?\d*\.?\d*$/.test( previewInput.val() )) {
 										previewInput.val( (previewInput.val() * -1) );
@@ -701,6 +715,7 @@ $.widget('ui.keyboard', {
 								break;
 
 							case 'space':
+								o.acceptedKeys.push(' ');
 								addKey('space', 'space', ' ').appendTo(newRow);
 								break;
 
@@ -714,6 +729,7 @@ $.widget('ui.keyboard', {
 					} else {
 
 						// regular button (not an action key)
+						o.acceptedKeys.push(keys[key]);
 						addKey(keys[key], keys[key], keys[key], true)
 							.attr('name','key_' + row + '_'+key)
 							.appendTo(newRow);
