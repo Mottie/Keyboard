@@ -34,6 +34,9 @@ Moved to the Wiki Pages: [Home][5] | [Setup][6] | [Options][7] ( [Layout][8], [L
 
 * Waiting for requests :)
 
+**Known Problems**
+* IE: In a textarea with multiple (more than three) carriage returns, repositioning the caret near the end of the content will add the following clicked keys at the end.
+
 ~~~
 
 **Licensing**
@@ -43,44 +46,20 @@ Moved to the Wiki Pages: [Home][5] | [Setup][6] | [Options][7] ( [Layout][8], [L
 
 **Change Log**
 
-Only the latest changes will be shown below, see the log to view older versions.
+Only the latest changes will be shown below, see the wiki log to view older versions.
 
-Version 1.5.6
+Version 1.6
 
-* Added <code>restrictInput</code> option which when true will only allow keys that exist in the virtual keyboard to be typed/pasted into the window.
-
-Version 1.5.5
-
-* Removed jquery-ui class "ui-helper-hidden-accessible" as the recent change now prevents the popup from showing.
-
-Version 1.5.4
-
-* Copied code from the jQuery Caret plugin to allow inserting text at the caret inside the preview window. It may not be perfect, but it appears to work in the latest versions of Firefox, Chrome, IE and Opera.
-* Added a `maxLength` option to limit the amount of text. It is set to `false` by default which disables the limit.
-* Added a way to name keys, these names are added to the key's title attribute. If a tooltip plugin is used on the page, just target '.ui-keyboard-button' and get the tooltip from the title.
-    * Keys defined in the `display` option follow this format "Key Name:Key's Label". The "Key Name" is what is actually shown on the virtual keyboard, while "Key's Label" is added to the key's title attribute. The "Key's Label" can include spaces.
-
-            display: {
-              'accept' : 'Accept:Accept the Content',
-              'meta1'  : '\u2666:Alternate character set',  // Diamond
-              'meta2'  : '\u2665:Some other character set', // Heart
-            }
-
-    * The key names defined in the `customLayout` cannot include spaces, the script will assume you want a new key. So only in the `customLayout` follow this format "key:Key_Label" - replace all spaces with an underscore. Here is an example (view demo.js for another example - Meta):
-
-            customLayout: {
-              'default' : [
-                '! @:this_is_an_at_symbol # $ % ^ & *:this_is_an_asterisk ( ) - + {bksp}'
-              ]
-            }
-
-    * View demo.js source for more examples.
-
-* Added `dec` to the `display` options for the decimal key (only allows one decimal). It wasn't previously added because the decimal key was just a period; now it can have a label! YAY!
-* Added a+e and o+e ligatures to the combination keys.
-* Replaced Hebrew characters from the Meta Sets Demo - it added characters from right-to-left and mixing them with left-to-right characters would just confuse people too much (as it did to me o.O)
-* Changed Custom: Junk demo to include vowels and accent keys to allow visualization of inputing combo keys.
-
+* Numerous problems were introduced with the release of jQuery 1.5 and jQuery UI 1.8.9, so the core code no longer uses the jQuery UI widget factory, but still needs jQuery UI. There were no changes to the way this plugin is called or modified with options.
+* Cleaned up code and made some parts more readable.
+* Fixed IE keyboard going across the screen. Removed 100% width from the <code>.ui-keyboard-preview</code> css as the width is now set in the code.
+* Fixed IE placing cursor at beginning of content when opened a second time.
+* Fixed IE memory overflow error using custom events. Somehow related to jQuery 1.5.
+* Fixed IE problem with clicking in another input block which did close the previous virtual keyboard, but did not initialize the keyboard in the input/keyboard that was clicked inside. Added an overlay under the keyboard, in IE only, to resolve this problem.
+* Replaced custom caret code and added the Caret plugin (by C.F.,Wong) into the core. This resolved caret positioning problems in IE, except in textareas with lots of carriage returns.
+* Pressing "Enter" inside of an input or pressing "Shift-Enter" inside of a textarea will now accept the content. Added label to the Accept button to indicate this shortcut is now available.
+* Pressing "Tab" inside of the keyboard input/textarea will now add a tab instead of navigating to the first key in the keyboard.
+* Known problems section added to readme.
 
   [1]: http://jsatt.blogspot.com/2010/01/on-screen-keyboard-widget-using-jquery.html
   [2]: http://plugins.jquery.com/project/virtual_keyboard
