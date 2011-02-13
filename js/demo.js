@@ -14,7 +14,8 @@ $(document).ready(function(){
 
 	$('#num').keyboard({
 		layout: 'num',
-		restrictInput : true
+		restrictInput : true, // Prevent keys not in the displayed keyboard from being typed in
+		preventPaste : true // prevent ctrl-v and right click
 	});
 
 	// Hex
@@ -30,7 +31,7 @@ $(document).ready(function(){
 			]
 		},
 		maxLength : 6,
-		restrictInput : true,
+		restrictInput : true, // Prevent keys not in the displayed keyboard from being typed in
 		useCombos : false // don't want A+E to become a ligature
 	});
 
@@ -58,7 +59,8 @@ $(document).ready(function(){
 			'a' : { e: '\u00e6' },
 			'A' : { E: '\u00c6' }
 		},
-		accepted: function(e, el){ alert('The content "' + el.value + '" was accepted!'); }
+		// example callback function
+		accepted : function(e, el){ alert('The content "' + el.value + '" was accepted!'); }
 	});
 
 	// Meta
@@ -66,7 +68,7 @@ $(document).ready(function(){
 		layout: 'custom',
 		display: {
 			'alt'    : 'AltGr:It\'s all Greek to me',
-			'meta1'  : '\u2666:russian lower-case', // Diamond
+			'meta1'  : '\u2666:russian lower-case', // Diamond with label that shows in the title (spaces are okay here)
 			'meta2'  : '\u2665:RUSSIAN upper-case', // Heart
 			'meta3'  : '\u2663:zodiac',             // Club
 			'meta99' : '\u2660:numbers'             // Spade

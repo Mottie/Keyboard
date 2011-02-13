@@ -1,6 +1,6 @@
 /*
 jQuery UI Virtual Keyboard Widget
-Version 1.6
+Version 1.6.1
 
 Author: Jeremy Satterfield
 Modified: Rob G (Mottie on github)
@@ -173,20 +173,54 @@ CSS:
 			base.$decBtn = base.$keyboard.find('.ui-keyboard-dec');
 			base.wheel = $.isFunction( $.fn.mousewheel ); // is mousewheel plugin loaded?
 
-			base.$preview.bind('keyup', function(e){
-				// Insert tab key
-				if (e.which === 9) {
-					base.keyaction.tab();
-				}
-			}).bind('keydown', function(e){
-				// prevent tab key from leaving the preview window
-				if (e.which === 9) { return false; }
-				// accept - shift-enter in textarea or just enter in input boxes
-				if (e.which === 13 && (e.target.tagName === "INPUT" || e.shiftKey)) {
-					base.acceptClose();
-					return false;
-				}
-			});
+			base.$preview
+				.keypress(function(e){
+					// restrict input
+					if (base.options.restrictInput) {
+						var k = (!e.charCode) ? String.fromCharCode(e.which) : String.fromCharCode(e.charCode);
+						if (base.acceptedKeysStr.indexOf(k) === -1) { e.preventDefault(); }
+					}
+				})
+				.bind('keyup', function(e){
+					switch (e.which) {
+						// Insert tab key
+						case 9 :
+							base.keyaction.tab();
+							break;
+
+						// Escape will hide the keyboard
+						case 27:
+							base.kbHide();
+					}
+				})
+				.bind('keydown', function(e){
+					switch (e.which) {
+						// prevent tab key from leaving the preview window
+						case 9 :
+							e.preventDefault(); // Opera ignores this =(
+							break;
+
+						case 13:
+							// Accept content - enter for inputs and shift-enter for textarea
+							if (e.target.tagName === "INPUT" || e.shiftKey) {
+								base.acceptClose();
+								e.preventDefault();
+							}
+							break;
+
+						case 86:
+							// prevent ctrl-v
+							if (e.ctrlKey) {
+								if (base.options.preventPaste) { e.preventDefault(); return; }
+								base.$preview.val( base.checkCombos(base.$preview.val())[0] ); // check pasted content
+							}
+					}
+				});
+			// If preventing paste, block context menu (right click)
+			if (base.options.preventPaste){
+				base.$preview.bind('contextmenu', function(e){ e.preventDefault(); });
+				base.$el.bind('contextmenu', function(e){ e.preventDefault(); });
+			}
 
 			base.$keyboard.appendTo('body');
 
@@ -366,7 +400,7 @@ CSS:
 	};
 
 	base.acceptClose = function(){
-		base.el.value = base.preview.value;
+		base.el.value = base.checkCombos(base.preview.value)[0];
 		base.kbHide(true);
 	};
 
@@ -442,123 +476,126 @@ CSS:
 
 		// Main keyboard building loop
 		for ( set in $.keyboard.layouts[base.options.layout] ){
-			keySet = $.keyboard.layouts[base.options.layout][set];
-			sets++;
-			newSet = $('<div />')
-				.addClass('ui-keyboard-keyset ui-keyboard-keyset-' + set)
-				.appendTo(container)
-				[(set === 'default') ? 'show' : 'hide']();
+			if (set !== "") {
+				keySet = $.keyboard.layouts[base.options.layout][set];
+				sets++;
+				newSet = $('<div />')
+					.addClass('ui-keyboard-keyset ui-keyboard-keyset-' + set)
+					.appendTo(container)
+					[(set === 'default') ? 'show' : 'hide']();
 
-			for ( row in keySet ){
-				newRow = $('<div />')
-					.addClass('ui-keyboard-row ui-keyboard-row' + row )
-					.appendTo(newSet);
+				for ( row = 0; row < keySet.length; row++ ){
+					newRow = $('<div />')
+						.addClass('ui-keyboard-row ui-keyboard-row' + row )
+						.appendTo(newSet);
 
-				// remove extra spaces before spliting (regex probably could be improved)
-				currentSet = $.trim(keySet[row]).replace(/\{(\.?)[\s+]?:[\s+]?(\.?)\}/g,'{$1:$2}');
-				keys = currentSet.split(/\s+/);
+					// remove extra spaces before spliting (regex probably could be improved)
+					currentSet = $.trim(keySet[row]).replace(/\{(\.?)[\s+]?:[\s+]?(\.?)\}/g,'{$1:$2}');
+					keys = currentSet.split(/\s+/);
 
-				for ( key in keys ) {
-					// ignore empty keys
-					if (keys[key].length === 0) { continue; }
+					for ( key = 0; key < keys.length; key++ ) {
+						// ignore empty keys
+						if (keys[key].length === 0) { continue; }
 
-					// process here if it's an action key
-					if( /^\{\S+\}$/.test(keys[key])){
-						action = keys[key].match(/^\{(\S+)\}$/)[1].toLowerCase();
+						// process here if it's an action key
+						if( /^\{\S+\}$/.test(keys[key])){
+							action = keys[key].match(/^\{(\S+)\}$/)[1].toLowerCase();
 
-						// add empty space
-						if (/^sp:(\.?\d+)$/.test(action)) {
-							margin = action.match(/^sp:(\.?\d+)$/)[1] || 0;
-							$('<span>&nbsp;</span>')
-								.css('margin','0 ' + margin + 'em')
-								.appendTo(newRow);
-						}
+							// add empty space
+							if (/^sp:(\.?\d+)$/.test(action)) {
+								margin = action.match(/^sp:(\.?\d+)$/)[1] || 0;
+								$('<span>&nbsp;</span>')
+									.css('margin','0 ' + margin + 'em')
+									.appendTo(newRow);
+							}
 
-						// meta keys
-						if (/^meta\d+\:?(\w+)?/.test(action)){
-							base.addKey(action, action).appendTo(newRow);
-							continue;
-						}
+							// meta keys
+							if (/^meta\d+\:?(\w+)?/.test(action)){
+								base.addKey(action, action).appendTo(newRow);
+								continue;
+							}
 
-						switch(action){
+							switch(action){
 
-							case 'a':
-							case 'accept':
-								base.addKey('accept', action)
-								.addClass(base.options.actionClass)
-								.appendTo(newRow);
-								break;
+								case 'a':
+								case 'accept':
+									base.addKey('accept', action)
+									.addClass(base.options.actionClass)
+									.appendTo(newRow);
+									break;
 
-							case 'alt':
-							case 'altgr':
-								base.addKey('alt', 'alt').appendTo(newRow);
-								break;
+								case 'alt':
+								case 'altgr':
+									base.addKey('alt', 'alt').appendTo(newRow);
+									break;
 
-							case 'b':
-							case 'bksp':
-								base.addKey('bksp', action).appendTo(newRow);
-								break;
+								case 'b':
+								case 'bksp':
+									base.addKey('bksp', action).appendTo(newRow);
+									break;
 
-							case 'c':
-							case 'cancel':
-								base.addKey('cancel', action)
-								.addClass(base.options.actionClass)
-								.appendTo(newRow);
-								break;
+								case 'c':
+								case 'cancel':
+									base.addKey('cancel', action)
+									.addClass(base.options.actionClass)
+									.appendTo(newRow);
+									break;
 
-							// for NumPad
-							case 'clear':
-								base.addKey('clear', 'clear').appendTo(newRow);
-								break;
+								// for NumPad
+								case 'clear':
+									base.addKey('clear', 'clear').appendTo(newRow);
+									break;
 
-							// Decimal - unique decimal point (num pad layout)
-							case 'dec':
-								base.acceptedKeys.push('.');
-								base.addKey('dec', 'dec').appendTo(newRow);
-								break;
+								// Decimal - unique decimal point (num pad layout)
+								case 'dec':
+									base.acceptedKeys.push('.');
+									base.addKey('dec', 'dec').appendTo(newRow);
+									break;
 
-							case 'e':
-							case 'enter':
-								base.addKey('enter', action).appendTo(newRow);
-								break;
+								case 'e':
+								case 'enter':
+									base.addKey('enter', action).appendTo(newRow);
+									break;
 
-							case 's':
-							case 'shift':
-								base.addKey('shift', action).appendTo(newRow);
-								break;
+								case 's':
+								case 'shift':
+									base.addKey('shift', action).appendTo(newRow);
+									break;
 
 								// Change sign (for num pad layout)
-							case 'sign':
-								base.acceptedKeys.push('-');
-								base.addKey('sign', 'sign').appendTo(newRow);
-								break;
+								case 'sign':
+									base.acceptedKeys.push('-');
+									base.addKey('sign', 'sign').appendTo(newRow);
+									break;
 
-							case 'space':
-								base.acceptedKeys.push(' ');
-								base.addKey('space', 'space').appendTo(newRow);
-								break;
+								case 'space':
+									base.acceptedKeys.push(' ');
+									base.addKey('space', 'space').appendTo(newRow);
+									break;
 
-							case 't':
-							case 'tab':
-								base.addKey('tab', action).appendTo(newRow);
-								break;
+								case 't':
+								case 'tab':
+									base.addKey('tab', action).appendTo(newRow);
+									break;
+
+							}
+
+						} else {
+
+							// regular button (not an action key)
+							base.acceptedKeys.push(keys[key]);
+							base.addKey(keys[key], keys[key], true)
+								.attr('name','key_' + row + '_'+key)
+								.appendTo(newRow);
 
 						}
-
-					} else {
-
-						// regular button (not an action key)
-						base.acceptedKeys.push(keys[key]);
-						base.addKey(keys[key], keys[key], true)
-							.attr('name','key_' + row + '_'+key)
-							.appendTo(newRow);
-
 					}
 				}
 			}
 		}
 	
 		if (sets > 1) { base.sets = true; }
+		base.acceptedKeysStr = base.acceptedKeys.join('');
 		return container;
 	};
 
@@ -580,6 +617,9 @@ CSS:
 			base.altActive = !base.altActive;
 			base.metaActive = false;
 			base.showKeySet(el);
+		},
+		bksp : function(){
+			base.insertText('bksp');
 		},
 		cancel : function(){
 			base.kbHide();
@@ -756,6 +796,9 @@ CSS:
 
 		// Prevent keys not in the displayed keyboard from being typed in
 		restrictInput: false,
+
+		// Prevent pasting content into the area
+		preventPaste : false,
 
 		// Set the max number of characters allowed in the input, setting it to false disables this option
 		maxLength    : false,

@@ -36,6 +36,7 @@ Moved to the Wiki Pages: [Home][5] | [Setup][6] | [Options][7] ( [Layout][8], [L
 
 **Known Problems**
 * IE: In a textarea with multiple (more than three) carriage returns, repositioning the caret near the end of the content will add the following clicked keys at the end.
+* Opera: When pressing the tab key while inside a textarea, all browsers but Opera add the tab to the virtual keyboard input.
 
 ~~~
 
@@ -47,6 +48,12 @@ Moved to the Wiki Pages: [Home][5] | [Setup][6] | [Options][7] ( [Layout][8], [L
 **Change Log**
 
 Only the latest changes will be shown below, see the wiki log to view older versions.
+
+Version 1.6.1
+
+* Setting <code>restrictInput</code> to true now prevents showing invalid keys in the input/textarea while typing.
+* Added <code>preventPaste</code>. When true, it prevents pasting content into the input/textarea by either (ctrl-v) or the right-click menu.
+* Fixed issue #1 to prevent potential problems with prototype.
 
 Version 1.6
 
