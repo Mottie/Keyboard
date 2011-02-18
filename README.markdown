@@ -35,6 +35,7 @@ Moved to the Wiki Pages: [Home][5] | [Setup][6] | [Options][7] ( [Layout][8], [L
 * Waiting for requests :)
 
 **Known Problems**
+
 * IE: In a textarea with multiple (more than three) carriage returns, repositioning the caret near the end of the content will add the following clicked keys at the end.
 * Opera: When pressing the tab key while inside a textarea, all browsers but Opera add the tab to the virtual keyboard input.
 
@@ -48,6 +49,10 @@ Moved to the Wiki Pages: [Home][5] | [Setup][6] | [Options][7] ( [Layout][8], [L
 **Change Log**
 
 Only the latest changes will be shown below, see the wiki log to view older versions.
+
+Version 1.6.2
+
+* Prevent keyboard below the accept key from opening (stopped the event propogation) - fixed issue #2.
 
 Version 1.6.1
 

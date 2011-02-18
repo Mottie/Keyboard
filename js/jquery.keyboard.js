@@ -1,6 +1,6 @@
 /*
 jQuery UI Virtual Keyboard Widget
-Version 1.6.1
+Version 1.6.2
 
 Author: Jeremy Satterfield
 Modified: Rob G (Mottie on github)
@@ -113,7 +113,7 @@ CSS:
 
 			// Close with esc key & clicking outside
 			$(document).bind('mousedown keyup', function(e){
-				if (e.type === 'keyup' && e.which === 27 || e.type !== 'keyup'){
+				if ((e.type === 'keyup' && e.which === 27) || e.type !== 'keyup'){
 					base.escClose(e);
 				}
 			});
@@ -191,6 +191,7 @@ CSS:
 						// Escape will hide the keyboard
 						case 27:
 							base.kbHide();
+							break;
 					}
 				})
 				.bind('keydown', function(e){
@@ -214,6 +215,7 @@ CSS:
 								if (base.options.preventPaste) { e.preventDefault(); return; }
 								base.$preview.val( base.checkCombos(base.$preview.val())[0] ); // check pasted content
 							}
+							break;
 					}
 				});
 			// If preventing paste, block context menu (right click)
@@ -225,7 +227,7 @@ CSS:
 			base.$keyboard.appendTo('body');
 
 			base.$allKeys
-				.bind(base.options.keyBinding, function(){
+				.bind(base.options.keyBinding, function(e){
 					// 'key', { action: doAction, original: n, curTxt : n, curNum: 0 }
 					var txt, key = $.data(this, 'key'), action = key.action;
 					if (action.match('meta')) { action = 'meta'; }
@@ -236,6 +238,7 @@ CSS:
 						base.insertText(txt);
 					}
 					base.$preview.focus();
+					e.preventDefault();
 				})
 				// Change hover class and allow mousewheel to scroll through other key sets of the same key
 				.bind('mouseenter mouseleave mousewheel', function(e, delta){
