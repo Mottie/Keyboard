@@ -15,11 +15,12 @@ $(document).ready(function(){
 	$('#num').keyboard({
 		layout: 'num',
 		restrictInput : true, // Prevent keys not in the displayed keyboard from being typed in
-		preventPaste : true // prevent ctrl-v and right click
+		preventPaste : true,  // prevent ctrl-v and right click
+		autoAccept : true
 	});
 
 	// Hex
-	$('#custom1').keyboard({
+	$('#hex').keyboard({
 		layout: 'custom',
 		customLayout: {
 			'default' : [
@@ -36,7 +37,7 @@ $(document).ready(function(){
 	});
 
 	// Junk / Examples
-	$('#custom2').keyboard({
+	$('#junk').keyboard({
 		layout: 'custom',
 		customLayout: {
 			'default' : [
@@ -174,4 +175,64 @@ $(document).ready(function(){
 		c.append(t);
 		if (c.find('li').length > 2) { c.find('li').eq(0).remove(); }
 	});
+
+	// Show code
+	$('h2').click(function(){
+		var t = '<h2>' + $(this).text() + ' Code</h2>' + $(this).parent().find('.code').html();
+		$('#showcode').html(t).show();
+	});
+
+	// add tooltips
+	$.jatt();
+
+});
+
+
+// Extension demos
+$(function() {
+
+	// Set up typing simulator extension on all keyboards
+	$('.ui-keyboard-input').addTyping();
+
+	// simulate typing into the keyboard
+	$('#inter-type').click(function(){
+		$('#inter').getkeyboard().reveal().typeIn('\tHello \b\r\tWorld', 500);
+		return false;
+	});
+	$('#meta-type').click(function(){
+		var meta = $('#meta').getkeyboard();
+		meta.reveal().typeIn('aBcD11123\u2648\u2649', 700, function(){ meta.accept(); alert('all done!'); });
+		return false;
+	});
+
+	// Autocomplete demo
+	var availableTags = [
+		"ActionScript",
+		"AppleScript",
+		"Asp",
+		"BASIC",
+		"C",
+		"C++",
+		"Clojure",
+		"COBOL",
+		"ColdFusion",
+		"Erlang",
+		"Fortran",
+		"Groovy",
+		"Haskell",
+		"Java",
+		"JavaScript",
+		"Lisp",
+		"Perl",
+		"PHP",
+		"Python",
+		"Ruby",
+		"Scala",
+		"Scheme"
+	];
+	$('.qwerty:eq(0)')
+		.autocomplete({
+			source: availableTags
+		})
+		.addAutocomplete();
 });

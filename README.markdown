@@ -22,9 +22,12 @@ Originally posted by Jeremy Satterfield in his [blog][1], [jQuery plugins][2] an
     * ' + c ( becomes ç )
 
 * Enable, disable or add more diacritic functionality as desired.
-* Use callbacks and event triggers that occur when the keyboard is open or closed and when the content has been accepted or canceled.
+* Use callbacks and event triggers that occur when the keyboard is open or closed and when the content has changed, been accepted or canceled.
 * ARIA support (may not be fully implemented)
-* As a jQuery UI widget, this widget styling will automatically match the selected jQuery UI theme with the exception of the required CSS listed below.
+* As jQuery UI is a dependancy, this plugin's styling will automatically match the selected jQuery UI theme with the exception of the required CSS listed below.
+* Built in watermarking. Emulates HTML5 placeholder if the browser doesn't support it.
+* Typing extension allows you to simulate typing into the keyboard for demo purposes or to assist user input.
+* Autocomplete extension will integrate this keyboard plugin with jQuery UI's autocomplete widget.
 
 **Documentation**
 
@@ -36,6 +39,7 @@ Moved to the Wiki Pages: [Home][5] | [Setup][6] | [Options][7] ( [Layout][8], [L
 
 **Known Problems**
 
+* Autocomplete: When using the autocomplete extension and the suggestion window is open, pressing the up or down arrow keys too fast will reset the list.
 * IE: In a textarea with multiple (more than three) carriage returns, repositioning the caret near the end of the content will add the following clicked keys at the end.
 * Opera: When pressing the tab key while inside a textarea, all browsers but Opera add the tab to the virtual keyboard input.
 
@@ -50,28 +54,60 @@ Moved to the Wiki Pages: [Home][5] | [Setup][6] | [Options][7] ( [Layout][8], [L
 
 Only the latest changes will be shown below, see the wiki log to view older versions.
 
-Version 1.6.2
+Version 1.7
 
-* Prevent keyboard below the accept key from opening (stopped the event propogation) - fixed issue #2.
+* Added <code>autoAccept</code> option which, if true, will automatically accept the preview window content when clicking outside the keyboard popup. 
+* Added <code>change</code> callback/event which fires when the input has been changed (key clicked or manually added to the keyboard window).
+* Added input watermarks. Use HTML5 placeholder attribute, the script will emulate it if the browser doesn't support it.
+* Changed accepting content in input boxes from pressing enter to shift-enter (now the same as the textareas). This was changed to allow selecting items in the autocomplete popup when using the extension.
+* Rearranged code to allow limited chaining of functions and opening a virtual keyboard externally - the function is named <code>reveal</code>. See example below.
+* Renamed "acceptClose" function to <code>accept</code>. This function will accept the content and close the keyboard.
+* Renamed "kbHide" function to <code>close</code>. This function will close the keyboard and ignore the contents.
+* Made some functions chainable to allow the following code:
 
-Version 1.6.1
+        // $('#example').getkeyboard() returns keyboard data object, same as $('#example').data('keyboard')
+        var example = $('#example').getkeyboard();
+        example
+         .reveal()                   // opens the virtual keyboard (chainable)
+         .insertText('Hello World'); // instantly enters "Hello World" into the input area 
+        // do something else here
+        // when done you can 
+        example.accept();            // accepts the content & closes the keyboard
 
-* Setting <code>restrictInput</code> to true now prevents showing invalid keys in the input/textarea while typing.
-* Added <code>preventPaste</code>. When true, it prevents pasting content into the input/textarea by either (ctrl-v) or the right-click menu.
-* Fixed issue #1 to prevent potential problems with prototype.
+* Added an extension which will simulate typing on the keyboard for tutorials, etc. Please read the documentation for more details.
+    * Setup:
 
-Version 1.6
+            // all keyboards
+            $('.ui-keyboard-input')
+             .keyboard(options)
+             .typing();
 
-* Numerous problems were introduced with the release of jQuery 1.5 and jQuery UI 1.8.9, so the core code no longer uses the jQuery UI widget factory, but still needs jQuery UI. There were no changes to the way this plugin is called or modified with options.
-* Cleaned up code and made some parts more readable.
-* Fixed IE keyboard going across the screen. Removed 100% width from the <code>.ui-keyboard-preview</code> css as the width is now set in the code.
-* Fixed IE placing cursor at beginning of content when opened a second time.
-* Fixed IE memory overflow error using custom events. Somehow related to jQuery 1.5.
-* Fixed IE problem with clicking in another input block which did close the previous virtual keyboard, but did not initialize the keyboard in the input/keyboard that was clicked inside. Added an overlay under the keyboard, in IE only, to resolve this problem.
-* Replaced custom caret code and added the Caret plugin (by C.F.,Wong) into the core. This resolved caret positioning problems in IE, except in textareas with lots of carriage returns.
-* Pressing "Enter" inside of an input or pressing "Shift-Enter" inside of a textarea will now accept the content. Added label to the Accept button to indicate this shortcut is now available.
-* Pressing "Tab" inside of the keyboard input/textarea will now add a tab instead of navigating to the first key in the keyboard.
-* Known problems section added to readme.
+            // or if targeting a specific keyboard
+            $('#keyboard1')
+            .keyboard(options)
+            .typing();
+
+    * Basic Usage:
+
+            // get keyboard object, open it, then start typing simulation
+            $('#keyboard-input').getkeyboard()
+             .reveal()
+             .typeIn('Hello World', 700); // types in the text with a 700ms delay between letters. No callback included.
+
+            // get keyboard object, open it, type in "This is a test" with 700ms delay between types, then the callback function will accept & close the keyboard.
+            var kb = $('#keyboard-input').getkeyboard();
+            kb
+             .reveal()
+             .typeIn('This is a test', 500, function(){ kb.accept(); }); // types in the text with a 500ms delay, then accepts the content when done.
+
+* Added an extension which integrates the keyboard with jQuery UI's autocomplete widget. Please read the documentation for more details.
+    * Setup:
+
+            // target a specific keyboard, or use $('.ui-keyboard-input') to target all
+            $('#keyboard1')
+             .keyboard(options)     // keyboard plugin
+             .autocomplete(options) // jQuery UI autocomplete
+             .addAutoComplete();    // keyboard autocomplete extension, there are no options
 
   [1]: http://jsatt.blogspot.com/2010/01/on-screen-keyboard-widget-using-jquery.html
   [2]: http://plugins.jquery.com/project/virtual_keyboard

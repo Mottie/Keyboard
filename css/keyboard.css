@@ -7,6 +7,7 @@
 .ui-keyboard-preview { text-align: left; margin-bottom: 3px; } /* width: 100%; now full window width in IE =( */ 
 .ui-keyboard-keyset { text-align: center; }
 .ui-keyboard-input { text-align: left; }
+.ui-keyboard-input.placeholder { color: #888; }
 
 /* only used in IE to prevent clicking in another input/textarea */
 .ui-keyboard-overlay { height: 100%; width: 100%; background: transparent; position: absolute; top: 0; left: 0; z-index: 15999; }

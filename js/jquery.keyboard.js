@@ -1,6 +1,6 @@
 /*
-jQuery UI Virtual Keyboard Widget
-Version 1.6.2
+jQuery UI Virtual Keyboard
+Version 1.7
 
 Author: Jeremy Satterfield
 Modified: Rob G (Mottie on github)
@@ -102,10 +102,12 @@ CSS:
 			// Class names of the basic key set - meta keysets are handled by the keyname
 			base.rows = ['ui-keyboard-keyset-default', 'ui-keyboard-keyset-shift', 'ui-keyboard-keyset-alt', 'ui-keyboard-keyset-alt-shift' ];
 			base.acceptedKeys = [];
-			base.docSel = document.selection; // IE test
+			base.msie = $.browser.msie;
+			base.inPlaceholder = base.$el.attr('placeholder') || '';
+			base.watermark = ('placeholder' in document.createElement('input') && base.inPlaceholder !== ''); // html 5 watermark
 
 			// Bind events
-			$.each('visible hidden canceled accepted'.split(' '), function(i,o){
+			$.each('visible change hidden canceled accepted'.split(' '), function(i,o){
 				if ($.isFunction(base.options[o])){
 					base.$el.bind(o, base.options[o]);
 				}
@@ -113,7 +115,7 @@ CSS:
 
 			// Close with esc key & clicking outside
 			$(document).bind('mousedown keyup', function(e){
-				if ((e.type === 'keyup' && e.which === 27) || e.type !== 'keyup'){
+				if (base.isVisible && ( e.type === 'mousedown' || (e.type === 'keyup' && e.which === 27) )){
 					base.escClose(e);
 				}
 			});
@@ -123,46 +125,72 @@ CSS:
 				.addClass('ui-keyboard-input ui-widget-content ui-corner-all')
 				.attr({ 'aria-haspopup' : 'true', 'role' : 'textbox' })
 				.bind('focus', function(){
-					// build keyboard if it doesn't exist
-					if (typeof(base.$keyboard) === 'undefined') { base.startup(); }
-
-					base.$preview.val( base.$el.val() );
-
-					// show & position keyboard
-					base.$keyboard
-						// position and show the keyboard before positioning (required for UI position utility)
-						.css({ position: 'absolute', left: 0, top: 0 })
-						.show()
-						.position({
-							// get single target position || target stored in element data (multiple targets) || default, at the element
-							of: base.options.position.of || base.$el.data('keyboardPosition') || base.$el,
-							my: base.options.position.my,
-							at: base.options.position.at,
-							collision: 'fit'
-						});
-					// adjust keyboard preview window width
-					base.$preview
-						.css('width', ((base.docSel) ? base.$keyboard.width() : '100%' )) // IE thinks 100% means across the screen
-						.focus();
-
-					base.checkDecimal();
-
-					// IE haxx0rs
-					if (base.docSel){
-						// ensure caret is at the end of the text (needed for IE)
-						var caret = base.$preview.val().length;
-						base.$preview.caret(caret, caret);
-						// Add overlay under the keyboard to prevent clicking in and not opening a new keyboard while one is open
-						$('<div class="ui-keyboard-overlay"></div>')
-							.click(function(){
-								$(this).remove();
-								base.kbHide();
-							})
-							.appendTo('body');
+					if (!base.isVisible) {
+						base.reveal();
+						setTimeout(function(){ base.$preview.focus(); }, 100); // needed for Opera
 					}
-					base.$el.trigger( 'visible', base.$el );
 				});
 
+			if (!base.watermark && base.$el.attr('placeholder') !== '') {
+				base.$el
+					.addClass('placeholder')
+					.val( base.inPlaceholder );
+			}
+
+		};
+
+		base.reveal = function(){
+			// close all keyboards
+			$('.ui-keyboard').hide();
+
+			// build keyboard if it doesn't exist
+			if (typeof(base.$keyboard) === 'undefined') { base.startup(); }
+
+			// Timeout to allow watermark to clear in .Net before updating - thanks to carlbrummy!
+			if (!base.watermark && base.el.value === base.inPlaceholder) {
+				base.$el
+					.removeClass('placeholder')
+					.val('');
+			}
+			// save starting content, in case we cancel
+			base.originalContent = base.$el.val();
+			base.$preview.val( base.originalContent );
+
+			// show & position keyboard
+			base.$keyboard
+				// position and show the keyboard before positioning (required for UI position utility)
+				.css({ position: 'absolute', left: 0, top: 0 })
+				.show()
+				.position({
+					// get single target position || target stored in element data (multiple targets) || default, at the element
+					of: base.options.position.of || base.$el.data('keyboardPosition') || base.$el,
+					my: base.options.position.my,
+					at: base.options.position.at,
+					collision: 'fit'
+				});
+			// adjust keyboard preview window width
+			base.$preview
+				.css('width', ((base.msie) ? base.$keyboard.width() : '100%' )) // IE thinks 100% means across the screen
+				.focus();
+			base.isVisible = true;
+
+			base.checkDecimal();
+
+			// IE caret haxx0rs
+			if (base.msie){
+				// ensure caret is at the end of the text (needed for IE)
+				var caret = base.$preview.val().length;
+				base.$preview.caret(caret, caret);
+				// Add overlay under the keyboard to prevent clicking in and not opening a new keyboard while one is open
+				$('<div class="ui-keyboard-overlay"></div>')
+					.click(function(){
+						$(this).remove();
+						base.close();
+					})
+					.appendTo('body');
+			}
+			base.$el.trigger( 'visible', base.$el );
+			return base;
 		};
 
 		base.startup = function(){
@@ -190,9 +218,10 @@ CSS:
 
 						// Escape will hide the keyboard
 						case 27:
-							base.kbHide();
+							base.close();
 							break;
 					}
+					base.$el.trigger( 'change', base.$el );
 				})
 				.bind('keydown', function(e){
 					switch (e.which) {
@@ -203,8 +232,8 @@ CSS:
 
 						case 13:
 							// Accept content - enter for inputs and shift-enter for textarea
-							if (e.target.tagName === "INPUT" || e.shiftKey) {
-								base.acceptClose();
+							if (e.shiftKey) {
+								base.close(true);
 								e.preventDefault();
 							}
 							break;
@@ -229,7 +258,7 @@ CSS:
 			base.$allKeys
 				.bind(base.options.keyBinding, function(e){
 					// 'key', { action: doAction, original: n, curTxt : n, curNum: 0 }
-					var txt, key = $.data(this, 'key'), action = key.action;
+					var txt, key = $.data(this, 'key'), action = key.action.split(':')[0];
 					if (action.match('meta')) { action = 'meta'; }
 					if (base.keyaction.hasOwnProperty(action)) {
 						base.keyaction[action](this);
@@ -237,6 +266,7 @@ CSS:
 						txt = (base.wheel && !$(this).is('.ui-keyboard-actionkey')) ? key.curTxt : key.action;
 						base.insertText(txt);
 					}
+					base.$el.trigger( 'change', base.$el );
 					base.$preview.focus();
 					e.preventDefault();
 				})
@@ -292,7 +322,7 @@ CSS:
 			prevw = base.$preview.val(),
 			len = prevw.length;
 
-		if (base.docSel) {
+		if (base.msie) {
 			//  silly IE hacks... it still messes up with in a text area with lots of carriage returns (in Opera too)
 			t = caret;
 			i = t - 1;
@@ -319,8 +349,10 @@ CSS:
 		base.$preview
 			.val(t[0])
 			.caret(caret, caret); // move caret to correct position
+
 		// set scrollTop to 0 if caret is in the first 1/2 of content, it'll have to do =/
 		base.preview.scrollTop = (caret > len/2) ? base.preview.scrollHeight : 0;
+		return base;
 	};
 
 	base.showKeySet = function(el){
@@ -392,24 +424,32 @@ CSS:
 		return keys;
 	};
 
-	base.kbHide = function(status){
-		if (typeof(base.$keyboard) === 'undefined') { return; }
+	// Close the keyboard, if visible. Pass a status of true, if the content was accepted (for the event trigger).
+	base.close = function(accepted){
 		if (base.$keyboard.is(':visible')) {
-			base.$el.scrollTop( base.el.scrollHeight );
 			base.$keyboard.hide();
-			base.$el.trigger( (status || false) ? 'accepted' : 'canceled', base.$el );
-			base.$el.trigger( 'hidden', base.$el );
+			base.isVisible = false;
+			base.el.value = (accepted) ? base.checkCombos(base.preview.value)[0] : base.originalContent;
+			base.$el
+				.scrollTop( base.el.scrollHeight )
+				.trigger( (accepted || false) ? 'accepted' : 'canceled', base.$el )
+				.trigger( 'hidden', base.$el )
+				.blur();
+			if (!base.watermark && base.el.value === '') {
+				base.$el
+					.addClass('placeholder')
+					.val(base.inPlaceholder);
+			}
 		}
 	};
 
-	base.acceptClose = function(){
-		base.el.value = base.checkCombos(base.preview.value)[0];
-		base.kbHide(true);
+	base.accept = function(){
+		base.close(true);
 	};
 
 	base.escClose = function(e){
 		if ( !$(e.target).closest('.ui-keyboard').length ) {
-			base.kbHide();
+			base.close( (base.options.autoAccept) ? true : false );
 		}
 	};
 
@@ -455,6 +495,7 @@ CSS:
 			.removeAttr('id')
 			.show() // for hidden inputs
 			.attr( (base.options.lockInput) ? { 'readonly': 'readonly'} : {} )
+			.removeClass('placeholder')
 			.addClass('ui-widget-content ui-keyboard-preview ui-corner-all')
 			.bind('keyup', function(){
 				var caret = base.$preview.caret().start,
@@ -483,6 +524,7 @@ CSS:
 				keySet = $.keyboard.layouts[base.options.layout][set];
 				sets++;
 				newSet = $('<div />')
+					.attr('name', set) // added for typing extension
 					.addClass('ui-keyboard-keyset ui-keyboard-keyset-' + set)
 					.appendTo(container)
 					[(set === 'default') ? 'show' : 'hide']();
@@ -586,7 +628,7 @@ CSS:
 						} else {
 
 							// regular button (not an action key)
-							base.acceptedKeys.push(keys[key]);
+							base.acceptedKeys.push(keys[key].split(':')[0]);
 							base.addKey(keys[key], keys[key], true)
 								.attr('name','key_' + row + '_'+key)
 								.appendTo(newRow);
@@ -603,18 +645,20 @@ CSS:
 	};
 
 	base.destroy = function() {
+		$(document).unbind('mousedown keyup', base.escClose );
 		base.$keyboard.remove();
 		base.$el
 			.removeClass('ui-keyboard-input ui-widget-content ui-corner-all')
 			.removeAttr('aria-haspopup')
 			.removeAttr('role')
-			.unbind('focus accepted canceled hidden visible');
-		$(document).unbind('mousedown keyup', base.escClose );
+			.unbind('focus accepted canceled hidden visible')
+			.removeData('keyboard');
 	};
 
+	// Action key function list
 	base.keyaction = {
 		accept : function(){
-			base.acceptClose();
+			base.close(true);
 		},
 		alt : function(el){
 			base.altActive = !base.altActive;
@@ -625,7 +669,7 @@ CSS:
 			base.insertText('bksp');
 		},
 		cancel : function(){
-			base.kbHide();
+			base.close();
 		},
 		clear : function(){
 			base.$preview.val('');
@@ -768,23 +812,23 @@ CSS:
 
 		// *** change keyboard language & look ***
 		display : {
-			'a'      : '\u2714:Accept (Shift-Enter)',      // check mark - same action as accept
+			'a'      : '\u2714:Accept (Shift-Enter)', // check mark - same action as accept
 			'accept' : 'Accept:Accept (Shift-Enter)',
 			'alt'    : 'AltGr:Alternate Graphemes',
-			'b'      : '\u2190:Backspace',   // Left arrow (same as &larr;)
+			'b'      : '\u2190:Backspace',    // Left arrow (same as &larr;)
 			'bksp'   : 'Bksp:Backspace',
-			'c'      : '\u2716:Cancel (Esc)',      // big X, close - same action as cancel
+			'c'      : '\u2716:Cancel (Esc)', // big X, close - same action as cancel
 			'cancel' : 'Cancel:Cancel (Esc)',
-			'clear'  : 'C:Clear',            // clear num pad
-			'dec'    : '.:Decimal',          // decimal point for num pad (optional) - if used, only one decimal point is allowed
-			'e'      : '\u21b5:Enter',       // down, then left arrow - enter symbol
+			'clear'  : 'C:Clear',             // clear num pad
+			'dec'    : '.:Decimal',           // decimal point for num pad (optional) - if used, only one decimal point is allowed
+			'e'      : '\u21b5:Enter',        // down, then left arrow - enter symbol
 			'enter'  : 'Enter:Enter',
-			's'      : '\u21e7:Shift',       // thick hollow up arrow
+			's'      : '\u21e7:Shift',        // thick hollow up arrow
 			'shift'  : 'Shift:Shift',
-			'sign'   : '\u00b1:Change Sign', // +/- sign for num pad
+			'sign'   : '\u00b1:Change Sign',  // +/- sign for num pad
 			'space'  : 'Space:Space',
-			't'      : '\u21e5:Tab',         // right arrow to bar (used since this virtual keyboard works with one directional tabs)
-			'tab'    : '\u21e5 Tab:Tab'      // \u21b9 is the true tab symbol (left & right arrows)
+			't'      : '\u21e5:Tab',          // right arrow to bar (used since this virtual keyboard works with one directional tabs)
+			'tab'    : '\u21e5 Tab:Tab'       // \u21b9 is the true tab symbol (left & right arrows)
 		},
 
 		// Message added to the key title while hovering, if the mousewheel plugin exists
@@ -794,6 +838,9 @@ CSS:
 		actionClass  : 'ui-state-active',
 
 		// *** Useability ***
+		// Auto-accept content when clicking outside the keyboard (popup will close)
+		autoAccept   : false,
+
 		// Prevents direct input in the preview window when true
 		lockInput    : false,
 
@@ -806,7 +853,7 @@ CSS:
 		// Set the max number of characters allowed in the input, setting it to false disables this option
 		maxLength    : false,
 
-		// When the character is added to the input
+		// When the character is added to the input (clicking on the keyboard)
 		keyBinding   : 'mousedown',
 
 		// combos (emulate dead keys : http://en.wikipedia.org/wiki/Keyboard_layout#US-International)
@@ -842,7 +889,7 @@ CSS:
 	// This function breaks the chain, but returns
 	// the keyboard if it has been attached to the object.
 	$.fn.getkeyboard = function(){
-		this.data("keyboard");
+		return this.data("keyboard");
 	};
 
 })(jQuery);
@@ -858,6 +905,7 @@ CSS:
 $.fn.caret = function(options,opt2) {
 	var s, start, e, end, selRange, range, stored_range, te, val,
 		selection = document.selection, t = this[0], sTop = t.scrollTop, browser = $.browser.msie;
+	if (typeof(t) === 'undefined') { return; }
 	if (typeof options === "number" && typeof opt2 === "number") {
 		start = options;
 		end = opt2;
