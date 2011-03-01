@@ -1,6 +1,6 @@
 /*
 jQuery UI Virtual Keyboard
-Version 1.7
+Version 1.7.1
 
 Author: Jeremy Satterfield
 Modified: Rob G (Mottie on github)
@@ -270,39 +270,42 @@ CSS:
 					base.$preview.focus();
 					e.preventDefault();
 				})
-				// Change hover class and allow mousewheel to scroll through other key sets of the same key
-				.bind('mouseenter mouseleave mousewheel', function(e, delta){
-					var el = this, $this = $(this), txt,
+				// Change hover class and tooltip
+				.bind('mouseenter mouseleave', function(e){
+					var el = this, $this = $(this),
 						// 'key' = { action: doAction, original: n, curTxt : n, curNum: 0 }
 						key = $.data(el, 'key');
-					if (e.type === 'mouseenter'){
+					if (e.type === 'mouseenter' && base.el.type !== 'password' ){
 						$this
 							.addClass('ui-state-hover')
 							.attr('title', function(i,t){
 								// show mouse wheel message
 								return (base.wheel && t === '' && base.sets) ? base.options.wheelMessage : t;
 							});
-						return;
 					}
 					if (e.type === 'mouseleave'){
 						key.curTxt = key.original;
 						key.curNum = 0;
 						$.data(el, 'key', key);
 						$this
-							.removeClass('ui-state-hover')
+							.removeClass( (base.el.type === 'password') ? '' : 'ui-state-hover') // needed or IE flickers really bad
 							.attr('title', function(i,t){ return (t === base.options.wheelMessage) ? '' : t; })
 							.val( key.original ); // restore original button text
-						return;
 					}
+				})
+				// Allow mousewheel to scroll through other key sets of the same key
+				.bind('mousewheel', function(e, delta){
 					if (base.wheel) {
+						var txt, $this = $(this), key = $.data(this, 'key');
 						txt = key.layers || base.getLayers( $this );
 						key.curNum += (delta > 0) ? -1 : 1;
 						if (key.curNum > txt.length-1) { key.curNum = 0; }
 						if (key.curNum < 0) { key.curNum = txt.length-1; }
 						key.layers = txt;
 						key.curTxt = txt[key.curNum];
-						$.data(el, 'key', key);
+						$.data(this, 'key', key);
 						$this.val( txt[key.curNum] );
+						return false;
 					}
 				})
 				.bind('mouseup', function(e){

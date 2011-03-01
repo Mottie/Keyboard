@@ -54,6 +54,11 @@ Moved to the Wiki Pages: [Home][5] | [Setup][6] | [Options][7] ( [Layout][8], [L
 
 Only the latest changes will be shown below, see the wiki log to view older versions.
 
+Version 1.7.1
+
+* Password type inputs will now have virtual keyboards with no key hover effects. Hopefully this will increase password security.
+* Some code rearrangment.
+
 Version 1.7
 
 * Added <code>autoAccept</code> option which, if true, will automatically accept the preview window content when clicking outside the keyboard popup. 
