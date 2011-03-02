@@ -1,6 +1,6 @@
 /*
 jQuery UI Virtual Keyboard
-Version 1.7.1
+Version 1.7.2
 
 Author: Jeremy Satterfield
 Modified: Rob G (Mottie on github)
@@ -104,7 +104,7 @@ CSS:
 			base.acceptedKeys = [];
 			base.msie = $.browser.msie;
 			base.inPlaceholder = base.$el.attr('placeholder') || '';
-			base.watermark = ('placeholder' in document.createElement('input') && base.inPlaceholder !== ''); // html 5 watermark
+			base.watermark = (typeof(document.createElement('input').placeholder) !== 'undefined' && base.inPlaceholder !== ''); // html 5 placeholder/watermark
 
 			// Bind events
 			$.each('visible change hidden canceled accepted'.split(' '), function(i,o){
@@ -213,7 +213,12 @@ CSS:
 					switch (e.which) {
 						// Insert tab key
 						case 9 :
-							base.keyaction.tab();
+							// Added a flag to prevent from tabbing into an input, keyboard opening, then adding the tab to the keyboard preview
+							// area on keyup. Sadly it still happens if you don't release the tab key immediately because keydown event auto-repeats
+							if (base.tab) {
+								base.keyaction.tab();
+								base.tab = false;
+							}
 							break;
 
 						// Escape will hide the keyboard
@@ -227,11 +232,12 @@ CSS:
 					switch (e.which) {
 						// prevent tab key from leaving the preview window
 						case 9 :
+							base.tab = true; // see keyup comment above
 							e.preventDefault(); // Opera ignores this =(
 							break;
 
 						case 13:
-							// Accept content - enter for inputs and shift-enter for textarea
+							// Accept content - shift-enter
 							if (e.shiftKey) {
 								base.close(true);
 								e.preventDefault();
@@ -386,7 +392,7 @@ CSS:
 			// keep 'a' and 'o' in the regex for ae and oe ligature (æ,œ)
 			// thanks to KennyTM: http://stackoverflow.com/questions/4275077/replace-characters-to-make-international-letters-diacritics
 			txt = txt.replace(/([`\'~\^\"ao])([a-z])/ig, function(s, accent, letter){
-				return (accent in base.options.combos) ? base.options.combos[accent][letter] || s : s;
+				return (base.options.combos.hasOwnProperty(accent)) ? base.options.combos[accent][letter] || s : s;
 			});
 		}
 		// check restrictions - to do: figure out how to check this on keydown
@@ -484,8 +490,8 @@ CSS:
 	};
 
 	base.buildKeyboard = function(){
-		var action, row, newRow, set, newSet,
-			currentSet, key, keys, keySet, margin,
+		var action, row, newRow, newSet,
+			currentSet, key, keys, margin,
 			sets = 0,
 
 		container = $('<div />')
@@ -496,6 +502,7 @@ CSS:
 		// build preview display
 		base.$preview = base.$el.clone(false)
 			.removeAttr('id')
+			.removeAttr('placeholder')
 			.show() // for hidden inputs
 			.attr( (base.options.lockInput) ? { 'readonly': 'readonly'} : {} )
 			.removeClass('placeholder')
@@ -522,15 +529,13 @@ CSS:
 		}
 
 		// Main keyboard building loop
-		for ( set in $.keyboard.layouts[base.options.layout] ){
+		$.each($.keyboard.layouts[base.options.layout], function(set, keySet){
 			if (set !== "") {
-				keySet = $.keyboard.layouts[base.options.layout][set];
 				sets++;
 				newSet = $('<div />')
 					.attr('name', set) // added for typing extension
 					.addClass('ui-keyboard-keyset ui-keyboard-keyset-' + set)
-					.appendTo(container)
-					[(set === 'default') ? 'show' : 'hide']();
+					.appendTo(container)[(set === 'default') ? 'show' : 'hide']();
 
 				for ( row = 0; row < keySet.length; row++ ){
 					newRow = $('<div />')
@@ -640,7 +645,7 @@ CSS:
 					}
 				}
 			}
-		}
+		});
 	
 		if (sets > 1) { base.sets = true; }
 		base.acceptedKeysStr = base.acceptedKeys.join('');

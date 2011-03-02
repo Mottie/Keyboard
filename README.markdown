@@ -31,7 +31,7 @@ Originally posted by Jeremy Satterfield in his [blog][1], [jQuery plugins][2] an
 
 **Documentation**
 
-Moved to the Wiki Pages: [Home][5] | [Setup][6] | [Options][7] ( [Layout][8], [Language][9], [Useability][10] ) | [Methods][11] | [Theme][12] | [Log][13]
+Moved to the Wiki Pages: [Home][5] | [FAQ][6] | [Setup][7] | [Options][8] ( [Layout][9], [Language][10], [Useability][11] ) | [Methods][12] | [Theme][13] | [Log][14]
 
 **To Do**
 
@@ -40,19 +40,24 @@ Moved to the Wiki Pages: [Home][5] | [Setup][6] | [Options][7] ( [Layout][8], [L
 **Known Problems**
 
 * Autocomplete: When using the autocomplete extension and the suggestion window is open, pressing the up or down arrow keys too fast will reset the list.
-* IE: In a textarea with multiple (more than three) carriage returns, repositioning the caret near the end of the content will add the following clicked keys at the end.
+* IE: In a textarea with multiple (more than three) carriage returns, repositioning the caret near the end of the content will add all following clicked keys to the end.
 * Opera: When pressing the tab key while inside a textarea, all browsers but Opera add the tab to the virtual keyboard input.
 
 ~~~
 
 **Licensing**
 
-* Keyboard code: [Creative Commons Attribution-Share Alike 3.0 Unported License][14]
-* Caret code by C. F., Wong (Cloudgen): [MIT License][15]
+* Keyboard code: [Creative Commons Attribution-Share Alike 3.0 Unported License][15]
+* Caret code by C. F., Wong (Cloudgen): [MIT License][16]
 
 **Change Log**
 
 Only the latest changes will be shown below, see the wiki log to view older versions.
+
+Version 1.7.2
+
+* Fixed a problem with tabbing into an input. When the keyboard opened, the tab would be added (when the keyup event fired) into the keyboard preview area. It will still do it if you keep holding down the tab key because of the auto-repeat. Opera still doesn't add a tab to the area, but instead continues to cycle through the keyboard keys - already a known issue =(.
+* Changed some more code around to make JSLint happy, it sure is grouchy around this time of month.
 
 Version 1.7.1
 
@@ -114,18 +119,20 @@ Version 1.7
              .autocomplete(options) // jQuery UI autocomplete
              .addAutoComplete();    // keyboard autocomplete extension, there are no options
 
+
   [1]: http://jsatt.blogspot.com/2010/01/on-screen-keyboard-widget-using-jquery.html
   [2]: http://plugins.jquery.com/project/virtual_keyboard
   [3]: http://snipplr.com/view/21577/virtual-keyboard-widget/
   [4]: http://mottie.github.com/Keyboard/
   [5]: https://github.com/Mottie/Keyboard/wiki/Home
-  [6]: https://github.com/Mottie/Keyboard/wiki/Setup
-  [7]: https://github.com/Mottie/Keyboard/wiki/Options
-  [8]: https://github.com/Mottie/Keyboard/wiki/Layout
-  [9]: https://github.com/Mottie/Keyboard/wiki/Language
-  [10]: https://github.com/Mottie/Keyboard/wiki/Useability
-  [11]: https://github.com/Mottie/Keyboard/wiki/Methods
-  [12]: https://github.com/Mottie/Keyboard/wiki/Theme
-  [13]: https://github.com/Mottie/Keyboard/wiki/Log
-  [14]: http://creativecommons.org/licenses/by-sa/3.0/
-  [15]: http://www.opensource.org/licenses/mit-license.php
+  [6]: https://github.com/Mottie/Keyboard/wiki/FAQ
+  [7]: https://github.com/Mottie/Keyboard/wiki/Setup
+  [8]: https://github.com/Mottie/Keyboard/wiki/Options
+  [9]: https://github.com/Mottie/Keyboard/wiki/Layout
+  [10]: https://github.com/Mottie/Keyboard/wiki/Language
+  [11]: https://github.com/Mottie/Keyboard/wiki/Useability
+  [12]: https://github.com/Mottie/Keyboard/wiki/Methods
+  [13]: https://github.com/Mottie/Keyboard/wiki/Theme
+  [14]: https://github.com/Mottie/Keyboard/wiki/Log
+  [15]: http://creativecommons.org/licenses/by-sa/3.0/
+  [16]: http://www.opensource.org/licenses/mit-license.php
