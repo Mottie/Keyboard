@@ -54,6 +54,10 @@ Moved to the Wiki Pages: [Home][5] | [FAQ][6] | [Setup][7] | [Options][8] ( [Lay
 
 Only the latest changes will be shown below, see the wiki log to view older versions.
 
+Version 1.7.3
+
+* Fixed a bug introduced with the watermark/placeholder script that clears out existing values.
+
 Version 1.7.2
 
 * Fixed a problem with tabbing into an input. When the keyboard opened, the tab would be added (when the keyup event fired) into the keyboard preview area. It will still do it if you keep holding down the tab key because of the auto-repeat. Opera still doesn't add a tab to the area, but instead continues to cycle through the keyboard keys - already a known issue =(.

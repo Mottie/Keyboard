@@ -1,6 +1,6 @@
 /*
 jQuery UI Virtual Keyboard
-Version 1.7.2
+Version 1.7.3
 
 Author: Jeremy Satterfield
 Modified: Rob G (Mottie on github)
@@ -131,9 +131,9 @@ CSS:
 					}
 				});
 
-			if (!base.watermark && base.$el.attr('placeholder') !== '') {
+			if (!base.watermark && base.$el.val() === '' && base.$el.attr('placeholder') !== '') {
 				base.$el
-					.addClass('placeholder')
+					.addClass('placeholder') // css watermark style (darker text)
 					.val( base.inPlaceholder );
 			}
 
@@ -146,7 +146,7 @@ CSS:
 			// build keyboard if it doesn't exist
 			if (typeof(base.$keyboard) === 'undefined') { base.startup(); }
 
-			// Timeout to allow watermark to clear in .Net before updating - thanks to carlbrummy!
+			// clear watermark 
 			if (!base.watermark && base.el.value === base.inPlaceholder) {
 				base.$el
 					.removeClass('placeholder')
