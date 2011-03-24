@@ -54,6 +54,10 @@ Moved to the Wiki Pages: [Home][5] | [FAQ][6] | [Setup][7] | [Options][8] ( [Lay
 
 Only the latest changes will be shown below, see the wiki log to view older versions.
 
+Version 1.7.4
+
+* Fixed issue #4, no more inifintie loop in IE. Thanks pgambling!
+
 Version 1.7.3
 
 * Fixed a bug introduced with the watermark/placeholder script that clears out existing values.

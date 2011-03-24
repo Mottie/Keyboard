@@ -331,7 +331,7 @@ CSS:
 			prevw = base.$preview.val(),
 			len = prevw.length;
 
-		if (base.msie) {
+		if (base.msie && caret > 0) {
 			//  silly IE hacks... it still messes up with in a text area with lots of carriage returns (in Opera too)
 			t = caret;
 			i = t - 1;
