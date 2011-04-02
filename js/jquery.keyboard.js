@@ -1,6 +1,6 @@
 /*
 jQuery UI Virtual Keyboard
-Version 1.7.3
+Version 1.7.5
 
 Author: Jeremy Satterfield
 Modified: Rob G (Mottie on github)
@@ -168,9 +168,11 @@ CSS:
 					at: base.options.position.at,
 					collision: 'fit'
 				});
-			// adjust keyboard preview window width
+
+			// adjust keyboard preview window width - save width so IE won't keep expanding (fix issue #6)
+			if (typeof base.width === 'undefined') { base.width = base.$keyboard.width(); }
 			base.$preview
-				.css('width', ((base.msie) ? base.$keyboard.width() : '100%' )) // IE thinks 100% means across the screen
+				.css('width', ((base.msie) ? base.width : '100%' )) // IE7 thinks 100% means across the screen
 				.focus();
 			base.isVisible = true;
 

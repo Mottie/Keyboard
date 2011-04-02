@@ -1,6 +1,6 @@
-Originally posted by Jeremy Satterfield in his [blog][1], [jQuery plugins][2] and on [Snipplr][3].
+Originally posted by Jeremy Satterfield in his [blog][1], [jQuery plugins][2] and on [Snipplr][3]. Currently maintained by [Mottie][4].
 
-**Features** ([Demo][4])
+**Features** ([Demo][5])
 
 * An on-screen virtual keyboard embedded within the browser window which will popup when a specified entry field is focused.
 * The user can then type and preview their input before Accepting or Canceling.
@@ -31,7 +31,7 @@ Originally posted by Jeremy Satterfield in his [blog][1], [jQuery plugins][2] an
 
 **Documentation**
 
-Moved to the Wiki Pages: [Home][5] | [FAQ][6] | [Setup][7] | [Options][8] ( [Layout][9], [Language][10], [Useability][11] ) | [Methods][12] | [Theme][13] | [Log][14]
+Moved to the Wiki Pages: [Home][6] | [FAQ][7] | [Setup][8] | [Options][9] ( [Layout][10], [Language][11], [Useability][12] ) | [Methods][13] | [Theme][14] | [Log][15]
 
 **To Do**
 
@@ -47,12 +47,16 @@ Moved to the Wiki Pages: [Home][5] | [FAQ][6] | [Setup][7] | [Options][8] ( [Lay
 
 **Licensing**
 
-* Keyboard code: [Creative Commons Attribution-Share Alike 3.0 Unported License][15]
-* Caret code by C. F., Wong (Cloudgen): [MIT License][16]
+* Keyboard code: [Creative Commons Attribution-Share Alike 3.0 Unported License][16]
+* Caret code by C. F., Wong (Cloudgen): [MIT License][17]
 
 **Change Log**
 
 Only the latest changes will be shown below, see the wiki log to view older versions.
+
+Version 1.7.5
+
+* Keyboards in IE should no longer continue to expand with each opening of the keyboard - Fix for issue #6. 
 
 Version 1.7.4
 
@@ -131,16 +135,17 @@ Version 1.7
   [1]: http://jsatt.blogspot.com/2010/01/on-screen-keyboard-widget-using-jquery.html
   [2]: http://plugins.jquery.com/project/virtual_keyboard
   [3]: http://snipplr.com/view/21577/virtual-keyboard-widget/
-  [4]: http://mottie.github.com/Keyboard/
-  [5]: https://github.com/Mottie/Keyboard/wiki/Home
-  [6]: https://github.com/Mottie/Keyboard/wiki/FAQ
-  [7]: https://github.com/Mottie/Keyboard/wiki/Setup
-  [8]: https://github.com/Mottie/Keyboard/wiki/Options
-  [9]: https://github.com/Mottie/Keyboard/wiki/Layout
-  [10]: https://github.com/Mottie/Keyboard/wiki/Language
-  [11]: https://github.com/Mottie/Keyboard/wiki/Useability
-  [12]: https://github.com/Mottie/Keyboard/wiki/Methods
-  [13]: https://github.com/Mottie/Keyboard/wiki/Theme
-  [14]: https://github.com/Mottie/Keyboard/wiki/Log
-  [15]: http://creativecommons.org/licenses/by-sa/3.0/
-  [16]: http://www.opensource.org/licenses/mit-license.php
+  [4]: https://github.com/Mottie/Keyboard
+  [5]: http://mottie.github.com/Keyboard/
+  [6]: https://github.com/Mottie/Keyboard/wiki/Home
+  [7]: https://github.com/Mottie/Keyboard/wiki/FAQ
+  [8]: https://github.com/Mottie/Keyboard/wiki/Setup
+  [9]: https://github.com/Mottie/Keyboard/wiki/Options
+  [10]: https://github.com/Mottie/Keyboard/wiki/Layout
+  [11]: https://github.com/Mottie/Keyboard/wiki/Language
+  [12]: https://github.com/Mottie/Keyboard/wiki/Useability
+  [13]: https://github.com/Mottie/Keyboard/wiki/Methods
+  [14]: https://github.com/Mottie/Keyboard/wiki/Theme
+  [15]: https://github.com/Mottie/Keyboard/wiki/Log
+  [16]: http://creativecommons.org/licenses/by-sa/3.0/
+  [17]: http://www.opensource.org/licenses/mit-license.php
