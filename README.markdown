@@ -54,6 +54,33 @@ Moved to the Wiki Pages: [Home][6] | [FAQ][7] | [Setup][8] | [Options][9] ( [Lay
 
 Only the latest changes will be shown below, see the wiki log to view older versions.
 
+Version 1.7.6
+
+* Pressing the tab or enter key inside of an input will now be ignored. Previously it added a "\t" or "\r\n" respectively which sometimes appeared to be adding a space.
+* Made keyactions into a public method to make it easier to modify. For example, to make the enter key inside an input to automattically submit the form, do something like this:
+
+        $.keyboard.keyaction.enter = function(base){
+          if (base.el.tagName === "input") {
+            base.accept();      // accept the content
+            $('form').submit(); // submit form on enter
+          } else {
+            base.insertText('\r\n'); // textarea
+          }
+        };
+
+* Updated the typing keyboard extension to work properly with the public keyactions
+* The "change" event now provides the event object from the change. To use it, bind to the keyboard change event as follows:
+
+        $('.ui-keyboard-input').bind('change', function(event, elemnt, keyEvent){
+          var txt = event.type + ' event triggered on ' + $(elemnt).attr('name') +
+           '; key code = ' + (keyEvent.which !== 1 ? keyEvent.which : keyEvent.text); 
+          console.debug(txt);
+        });
+
+ * When using the virtual keyboard, keyEvent.text contains the actual text (keyEvent.which == 1).
+ * When typing on a real keyboard, keyEvent.text doesn't exist and keyEvent.which contains the key code.
+ * Maybe there is a better method for this.
+
 Version 1.7.5
 
 * Keyboards in IE should no longer continue to expand with each opening of the keyboard - Fix for issue #6. 

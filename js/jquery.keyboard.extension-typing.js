@@ -1,5 +1,5 @@
 /*
- * jQuery UI Virtual Keyboard Typing Simulator v1.0
+ * jQuery UI Virtual Keyboard Typing Simulator v1.0.1 for Keyboard v1.7.6+ only
  *
  * By Rob Garrison (aka Mottie & Fudgey)
  * Dual licensed under the MIT and GPL licenses.
@@ -108,8 +108,8 @@ $.fn.addTyping = function(){
 						base.showKeySet(set);
 
 					// Shift or Alt key
-					} else if (base.keyaction.hasOwnProperty(meta)) {
-						base.keyaction[meta]();
+					} else if ($.keyboard.keyaction.hasOwnProperty(base.meta)) {
+						$.keyboard.keyaction[meta](base);
 					}
 
 					// Add the key

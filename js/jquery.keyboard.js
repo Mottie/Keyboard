@@ -1,6 +1,6 @@
 /*
 jQuery UI Virtual Keyboard
-Version 1.7.5
+Version 1.7.6
 
 Author: Jeremy Satterfield
 Modified: Rob G (Mottie on github)
@@ -218,7 +218,7 @@ CSS:
 							// Added a flag to prevent from tabbing into an input, keyboard opening, then adding the tab to the keyboard preview
 							// area on keyup. Sadly it still happens if you don't release the tab key immediately because keydown event auto-repeats
 							if (base.tab) {
-								base.keyaction.tab();
+								$.keyboard.keyaction.tab(base);
 								base.tab = false;
 							}
 							break;
@@ -228,7 +228,7 @@ CSS:
 							base.close();
 							break;
 					}
-					base.$el.trigger( 'change', base.$el );
+					base.$el.trigger( 'change', [ base.$el, e ] );
 				})
 				.bind('keydown', function(e){
 					switch (e.which) {
@@ -268,13 +268,14 @@ CSS:
 					// 'key', { action: doAction, original: n, curTxt : n, curNum: 0 }
 					var txt, key = $.data(this, 'key'), action = key.action.split(':')[0];
 					if (action.match('meta')) { action = 'meta'; }
-					if (base.keyaction.hasOwnProperty(action)) {
-						base.keyaction[action](this);
+					if ($.keyboard.keyaction.hasOwnProperty(action)) {
+						$.keyboard.keyaction[action](base,this);
 					} else if (typeof key.action !== 'undefined') {
 						txt = (base.wheel && !$(this).is('.ui-keyboard-actionkey')) ? key.curTxt : key.action;
 						base.insertText(txt);
 					}
-					base.$el.trigger( 'change', base.$el );
+					e.text = txt; // maybe set e.which = txt.charCodeAt(0)?
+					base.$el.trigger( 'change', [ base.$el, e ] );
 					base.$preview.focus();
 					e.preventDefault();
 				})
@@ -665,55 +666,57 @@ CSS:
 			.removeData('keyboard');
 	};
 
+		// Run initializer
+		base.init();
+	};
+
 	// Action key function list
-	base.keyaction = {
-		accept : function(){
-			base.close(true);
+	$.keyboard.keyaction = {
+		accept : function(base){
+			base.close(true); // same as base.accept();
 		},
-		alt : function(el){
+		alt : function(base,el){
 			base.altActive = !base.altActive;
 			base.metaActive = false;
 			base.showKeySet(el);
 		},
-		bksp : function(){
-			base.insertText('bksp');
+		bksp : function(base){
+			base.insertText('bksp'); // the script looks for the "bksp" string and initiates a backspace
 		},
-		cancel : function(){
+		cancel : function(base){
 			base.close();
 		},
-		clear : function(){
+		clear : function(base){
 			base.$preview.val('');
 		},
-		dec : function(){
+		dec : function(base){
 			base.insertText('.');
 		},
-		enter : function() {
+		enter : function(base) {
+			if (base.el.tagName === 'INPUT') { return; } // ignore enter key in input
 			base.insertText('\r\n');
 		},
-		meta : function(el){
+		meta : function(base,el){
 			base.metaActive = ($(el).is('.ui-state-active')) ? false : true;
 			base.showKeySet(el);
 		},
-		shift : function(el){
+		shift : function(base,el){
 			base.shiftActive = !base.shiftActive;
 			base.metaActive = false;
 			base.showKeySet(el);
 		},
-		sign : function(){
+		sign : function(base){
 			if(/^\-?\d*\.?\d*$/.test( base.$preview.val() )) {
 				base.$preview.val( (base.$preview.val() * -1) );
 			}
 		},
-		space : function(){
+		space : function(base){
 			base.insertText(' ');
 		},
-		tab : function() {
+		tab : function(base) {
+			if (base.el.tagName === 'INPUT') { return; } // ignore tab key in input
 			base.insertText('\t');
 		}
-	};
-
-		// Run initializer
-		base.init();
 	};
 
 	// Default keyboard layouts
