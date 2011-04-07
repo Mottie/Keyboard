@@ -1,6 +1,6 @@
 /*
 jQuery UI Virtual Keyboard
-Version 1.7.6
+Version 1.7.7
 
 Author: Jeremy Satterfield
 Modified: Rob G (Mottie on github)
@@ -102,6 +102,7 @@ CSS:
 			// Class names of the basic key set - meta keysets are handled by the keyname
 			base.rows = ['ui-keyboard-keyset-default', 'ui-keyboard-keyset-shift', 'ui-keyboard-keyset-alt', 'ui-keyboard-keyset-alt-shift' ];
 			base.acceptedKeys = [];
+			base.mappedKeys = {};
 			base.msie = $.browser.msie;
 			base.inPlaceholder = base.$el.attr('placeholder') || '';
 			base.watermark = (typeof(document.createElement('input').placeholder) !== 'undefined' && base.inPlaceholder !== ''); // html 5 placeholder/watermark
@@ -124,11 +125,8 @@ CSS:
 			base.$el
 				.addClass('ui-keyboard-input ui-widget-content ui-corner-all')
 				.attr({ 'aria-haspopup' : 'true', 'role' : 'textbox' })
-				.bind('focus', function(){
-					if (!base.isVisible) {
-						base.reveal();
-						setTimeout(function(){ base.$preview.focus(); }, 100); // needed for Opera
-					}
+				.bind('focus.keyboard', function(){
+					base.focusOn();
 				});
 
 			if (!base.watermark && base.$el.val() === '' && base.$el.attr('placeholder') !== '') {
@@ -142,6 +140,8 @@ CSS:
 		base.reveal = function(){
 			// close all keyboards
 			$('.ui-keyboard').hide();
+
+			if (!base.options.usePreview) { base.$el.unbind('focus.keyboard'); }
 
 			// build keyboard if it doesn't exist
 			if (typeof(base.$keyboard) === 'undefined') { base.startup(); }
@@ -166,13 +166,13 @@ CSS:
 					of: base.options.position.of || base.$el.data('keyboardPosition') || base.$el,
 					my: base.options.position.my,
 					at: base.options.position.at,
-					collision: 'fit'
+					collision: (base.options.usePreview) ? 'fit' : 'flip'
 				});
 
 			// adjust keyboard preview window width - save width so IE won't keep expanding (fix issue #6)
-			if (typeof base.width === 'undefined') { base.width = base.$keyboard.width(); }
+			if (typeof base.width === 'undefined') { base.width = (base.options.usePreview) ? base.$keyboard.width() : base.$el.width(); }
 			base.$preview
-				.css('width', ((base.msie) ? base.width : '100%' )) // IE7 thinks 100% means across the screen
+				.css('width', base.width) // set preview width to fill keyboard IE7 thinks 100% means across the screen
 				.focus();
 			base.isVisible = true;
 
@@ -190,6 +190,7 @@ CSS:
 						base.close();
 					})
 					.appendTo('body');
+				if (!base.options.usePreview) { base.$el.addClass('ui-keyboard-overlay-input'); }
 			}
 			base.$el.trigger( 'visible', base.$el );
 			return base;
@@ -198,11 +199,10 @@ CSS:
 		base.startup = function(){
 			base.$keyboard = base.buildKeyboard();
 			base.$allKeys = base.$keyboard.find('.ui-keyboard-button');
-			base.$preview = base.$keyboard.find('.ui-keyboard-preview');
+			base.$preview = (base.options.usePreview) ? base.$keyboard.find('.ui-keyboard-preview') : base.$el;
 			base.preview = base.$preview[0];
 			base.$decBtn = base.$keyboard.find('.ui-keyboard-dec');
 			base.wheel = $.isFunction( $.fn.mousewheel ); // is mousewheel plugin loaded?
-
 			base.$preview
 				.keypress(function(e){
 					// restrict input
@@ -254,6 +254,17 @@ CSS:
 							}
 							break;
 					}
+					// Mapped Keys - allows typing on a regular keyboard and the mapped key is entered
+					// So far, only set up to work with default and shifted keysets
+					// Set up a key in the layout as follows: "k(m):label"; k = key, (m) = mapped key (e.which value, add an "s" for shifted keys), ":label" = title/tooltip
+					if (!e.shiftKey && base.mappedKeys.hasOwnProperty(e.which)){
+						base.insertText( base.mappedKeys[e.which] );
+						e.preventDefault();
+					}
+					if (e.shiftKey && base.mappedKeys.hasOwnProperty(e.which + 's')){
+						base.insertText( base.mappedKeys[e.which + 's'] );
+						e.preventDefault();
+					}
 				});
 			// If preventing paste, block context menu (right click)
 			if (base.options.preventPaste){
@@ -276,7 +287,7 @@ CSS:
 					}
 					e.text = txt; // maybe set e.which = txt.charCodeAt(0)?
 					base.$el.trigger( 'change', [ base.$el, e ] );
-					base.$preview.focus();
+					if (base.options.usePreview) { base.$preview.focus(); }
 					e.preventDefault();
 				})
 				// Change hover class and tooltip
@@ -333,7 +344,6 @@ CSS:
 			caret = base.$preview.caret().start,
 			prevw = base.$preview.val(),
 			len = prevw.length;
-
 		if (base.msie && caret > 0) {
 			//  silly IE hacks... it still messes up with in a text area with lots of carriage returns (in Opera too)
 			t = caret;
@@ -436,17 +446,26 @@ CSS:
 		return keys;
 	};
 
+	base.focusOn = function(){
+		if (!base.isVisible) {
+			base.reveal();
+			if (!base.options.usePreview) { setTimeout(function(){ base.preview.focus(); }, 100); } // needed for Opera
+		}
+	};
+
 	// Close the keyboard, if visible. Pass a status of true, if the content was accepted (for the event trigger).
 	base.close = function(accepted){
 		if (base.$keyboard.is(':visible')) {
-			base.$keyboard.hide();
-			base.isVisible = false;
 			base.el.value = (accepted) ? base.checkCombos(base.preview.value)[0] : base.originalContent;
 			base.$el
 				.scrollTop( base.el.scrollHeight )
 				.trigger( (accepted || false) ? 'accepted' : 'canceled', base.$el )
 				.trigger( 'hidden', base.$el )
+				.removeClass('ui-keyboard-overlay-input') // added for IE overlay
 				.blur();
+			if (!base.options.usePreview) { base.$el.blur().bind('focus.keyboard', function(){ base.focusOn(); }); }
+			base.$keyboard.hide();
+			base.isVisible = false;
 			if (!base.watermark && base.el.value === '') {
 				base.$el
 					.addClass('placeholder')
@@ -460,6 +479,7 @@ CSS:
 	};
 
 	base.escClose = function(e){
+		if ( e.target === base.el ) { return; } // necessary to prevent keyboard closing when usePreview is false
 		if ( !$(e.target).closest('.ui-keyboard').length ) {
 			base.close( (base.options.autoAccept) ? true : false );
 		}
@@ -474,14 +494,20 @@ CSS:
 	// keyName = name added to key, name = display option name (e.g. tab or t),
 	// doAction = what is done/added when the button is clicked, regKey = true when it is not an action key
 	base.addKey = function(keyName, name, regKey ){
-		var t, keyType, n = (regKey === true) ? keyName : base.options.display[name] || keyName,
+		var t, keyType, map, n = (regKey === true) ? keyName : base.options.display[name] || keyName,
 			nm = n.split(':'); // find key label
 			n = (nm[0] !== '' && nm.length > 1) ? $.trim(nm[0]) : n;
 			t = (nm.length > 1) ? $.trim(nm[1]).replace(/_/g, " ") || '' : ''; // added to title
-			// Action keys will have the 'ui-keyboard-actionkey' class
-			// '\u2190'.length = 1 because the unicode is converted, so if more than one character, add the wide class
-			keyType = (n.length > 1) ? ' ui-keyboard-widekey' : '';
-			keyType += (regKey !== true) ? ' ui-keyboard-actionkey' : '';
+
+		if ( /\((.+?)\)/.test(n) ) {
+			map = n.replace(/\((.+?)\)/g, '');
+			base.mappedKeys[ n.match(/\((.+?)\)/)[1] ] = map;
+			n = map;
+		}
+		// Action keys will have the 'ui-keyboard-actionkey' class
+		// '\u2190'.length = 1 because the unicode is converted, so if more than one character, add the wide class
+		keyType = (n.length > 1) ? ' ui-keyboard-widekey' : '';
+		keyType += (regKey !== true) ? ' ui-keyboard-actionkey' : '';
 		return base.keyBtn
 			.clone()
 			.attr({ 'name': 'key_' + keyName, 'title' : t })
@@ -503,13 +529,20 @@ CSS:
 			.hide();
 
 		// build preview display
-		base.$preview = base.$el.clone(false)
-			.removeAttr('id')
-			.removeAttr('placeholder')
-			.show() // for hidden inputs
+		if (base.options.usePreview) {
+			base.$preview = base.$el.clone(false)
+				.removeAttr('id')
+				.removeAttr('placeholder')
+				.removeClass('placeholder')
+				.addClass('ui-widget-content ui-keyboard-preview ui-corner-all')
+				.show(); // for hidden inputs
+		} else {
+			// No preview display, use element and reposition the keyboard under it.
+			base.$preview = base.$el;
+			base.options.position.at = base.options.position.at2;
+		}
+		base.$preview
 			.attr( (base.options.lockInput) ? { 'readonly': 'readonly'} : {} )
-			.removeClass('placeholder')
-			.addClass('ui-widget-content ui-keyboard-preview ui-corner-all')
 			.bind('keyup', function(){
 				var caret = base.$preview.caret().start,
 					t = base.checkCombos( base.$preview.val() );
@@ -522,9 +555,11 @@ CSS:
 			});
 
 		// build preview container and append preview display
-		$('<div />')
-			.append(base.$preview)
-			.appendTo(container);
+		if (base.options.usePreview) {
+			$('<div />')
+				.append(base.$preview)
+				.appendTo(container);
+		}
 
 		// setup custom keyboard
 		if (base.options.layout === 'custom') {
@@ -820,8 +855,11 @@ CSS:
 		position     : {
 			of : null, // optional - null (attach to input/textarea) or a jQuery object (attach elsewhere)
 			my : 'center top',
-			at : 'center top'
+			at : 'center top',
+			at2: 'center bottom' // used when "usePreview" is false (centers the keyboard at the bottom of the input/textarea)
 		},
+		// preview added above keyboard if true, original input/textarea used if false
+		usePreview   : true,
 
 		// *** change keyboard language & look ***
 		display : {

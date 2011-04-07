@@ -339,7 +339,42 @@ $('#junk')
 			* use shift key - see action key sizes.<br>
 			* use the decimal - only one allowed.<br>
 			* type in 'ae' to test the combo keys.<br>
-			* accept the content to see the callback.
+			* accept content to see the callback.
+		</small>
+	</div>
+
+	<div class="block">
+		<h2 class="tooltip" title="Click to see code">Custom: Mapped Keys</h2>
+		<textarea id="map"></textarea>
+		<div class="code ui-corner-all" style="width: 745px; height: 285px;">
+			<pre><code><span class="ct">HTML
+=======</span>
+&lt;textarea id="map"&gt;&lt;/textarea&gt;
+
+<span class="ct">Script
+=======</span>
+// *** Mapped keys ***
+$('#map').keyboard({
+ layout: 'custom',
+ customLayout: {
+  'default' : [ 
+   // "k(m):label"; k = key, (m) = mapped key (e.which value, add an "s" for shifted keys), ":label" = title/tooltip
+   '\u03b1(65):lower_case_alpha_(press_a) \u03b2(66):lower_case_beta_(press_b) \u03b3(67):lower_case_gamma_(press_c) \u03b4(68):lower_case_delta_(press_d) \u03b5(69):lower_case_epsilon_(press_e) \u03b6(70):lower_case_zeta_(press_f) \u03b7(71):lower_case_eta_(press_g)', // lower case Greek
+   '{shift} {accept} {cancel}'
+  ],
+  'shift' : [
+   '\u0391(65s) \u0392(66s) \u0393(67s) \u0394(68s) \u0395(69s) \u0396(70s) \u0397(71s)', // upper case Greek
+   '{shift} {accept} {cancel}'
+  ]
+ },
+ usePreview: false // no preveiw
+});</code></pre>
+		</div>
+		<br>
+		<small>
+			* No preview window.<br>
+			* Type in a-g.<br>
+			* Type in A-G (shifted).<br>
 		</small>
 	</div>
 

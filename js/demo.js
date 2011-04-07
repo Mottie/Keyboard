@@ -144,6 +144,22 @@ $(document).ready(function(){
 	})
 */
 
+	// *** Mapped keys ***
+	$('#map').keyboard({
+		layout: 'custom',
+		customLayout: {
+			'default' : [ 
+				'\u03b1(65):lower_case_alpha_(type_a) \u03b2(66):lower_case_beta_(type_b) \u03b3(67):lower_case_gamma_(type_c) \u03b4(68):lower_case_delta_(type_d) \u03b5(69):lower_case_epsilon_(type_e) \u03b6(70):lower_case_zeta_(type_f) \u03b7(71):lower_case_eta_(type_g)', // lower case Greek
+				'{shift} {accept} {cancel}'
+			],
+			'shift' : [
+				'\u0391(65s) \u0392(66s) \u0393(67s) \u0394(68s) \u0395(69s) \u0396(70s) \u0397(71s)', // upper case Greek
+				'{shift} {accept} {cancel}'
+			]
+		},
+		usePreview: false // no preveiw
+	});
+
 	// *** Hidden input example ***
 	// click on a link - add focus to hidden input
 	$('.hiddenInput').click(function(){
@@ -160,6 +176,7 @@ $(document).ready(function(){
 			at : 'center top'
 		}
 	});
+
 
 	/*** console messages showing callbacks ***/
 	$('.ui-keyboard-input').bind('visible hidden accepted canceled', function(e, el){

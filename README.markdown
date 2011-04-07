@@ -54,6 +54,27 @@ Moved to the Wiki Pages: [Home][6] | [FAQ][7] | [Setup][8] | [Options][9] ( [Lay
 
 Only the latest changes will be shown below, see the wiki log to view older versions.
 
+Version 1.7.7
+
+* Added `usePreview` option
+    * When true will add a preview window above the virtual keyboard (same as in previous versions).
+    * If set to false, the actual input/textarea will be used.
+    * Added `at2` option to the `position` option which is used when this option is false to position the keyboard so it doesn't cover up the input.
+    * Added `.ui-keyboard-overlay-input` css class which is only used in IE and when this option is false. This is to keep the input above the overlay.
+
+* Added mapped keys
+    * Mapped keys will allow the user to type directly from the keyboard and enter the keys seen on the keyboard.
+    * When defining a keyboard layout, assign the map value along with the key as follows:
+
+            "k(m):title/tooltip \u03b5(69):lower_case_epsilon_(type_e) \u0395(69s):upper_case_epsilon_(type_E)"
+
+    * `k` is the key value (\u03b5 in the example).
+    * `(m)` is the keyboard character code (69 from event.which value for "e" on the keyboard). 
+    * `(ms)` is needed for shifted keys because the mapped numbers need to be unique. So shifted keysets must have a character code followed by an "s" (for shift).
+    * `:title/tooltip` is the title/tooltip added to the key's title attribute and pops up when hovering over the key.
+    * At this time, this functionality is limited to the default and shifted key sets. If alt or meta key sets are added, these keysets will be ignored; but only when direct typing on the keyboard (the virtual keyboard will still work as usual).
+    * See the "Mapped keys" demo for a full example and code.
+
 Version 1.7.6
 
 * Pressing the tab or enter key inside of an input will now be ignored. Previously it added a "\t" or "\r\n" respectively which sometimes appeared to be adding a space.
