@@ -51,7 +51,6 @@ Moved to the Wiki Pages: [Home][6] | [FAQ][7] | [Setup][8] | [Options][9] ( [Lay
     * Holding down the Alt key and trying to type is also not possible since the Windows OS is assuming you are trying to type a shortcut key to access the browser menu. You can still click the keys in the alt key set with the mouse.
     * Simulated typing on the keyboard breaks when the CapLock is on. Still looking for a cross-browser solution.
 
-~~~
 ### Dependencies
 * Required
     * jQuery 1.4.3+
