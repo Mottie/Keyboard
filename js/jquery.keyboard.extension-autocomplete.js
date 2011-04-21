@@ -1,5 +1,5 @@
 /*
- * jQuery UI Virtual Keyboard Autocomplete v1.0
+ * jQuery UI Virtual Keyboard Autocomplete v1.1 for Keyboard v1.8+ only
  *
  * By Rob Garrison (aka Mottie & Fudgey)
  * Dual licensed under the MIT and GPL licenses.
@@ -36,27 +36,27 @@ $.fn.addAutocomplete = function(){
 		// Setup
 		base.autocomplete_init = function(txt, delay, accept){
 			base.$el
-				.bind('visible',function(){
+				.bind('visible.keyboard',function(){
 					// look for autocomplete
 					base.$autocomplete = base.$el.data('autocomplete');
 					base.hasAutocomplete = (typeof(base.$autocomplete) === 'undefined') ? false : (base.$autocomplete.options.disabled) ? false : true;
 					// only bind to keydown once
 					if (base.hasAutocomplete && !base.autocomplete_bind) {
-						base.$preview.bind('keydown',function(e){
+						base.$preview.bind('keydown.keyboard',function(e){
 							// send keys to the autocomplete widget (arrow, pageup/down, etc)
 							base.autocomplete_input(e);
 						});
 						base.autocomplete_bind = true;
 					}
 				})
-				.bind('change',function(e){
+				.bind('change.keyboard',function(e){
 					if (base.hasAutocomplete && base.isVisible) {
 						base.$el
 							.val(base.$preview.val())
 							.trigger('keydown.autocomplete');
 					}
 				})
-				.bind('hidden', function(e){
+				.bind('hidden.keyboard', function(e){
 					base.$el.autocomplete('close');
 				})
 				.bind('autocompleteopen', function(e, ui) {
@@ -105,6 +105,17 @@ $.fn.addAutocomplete = function(){
 			case keyCode.NUMPAD_ENTER:
 				t = base.$autocomplete.menu.element.find('#ui-active-menuitem').text() || '';
 				if (t !== '') { base.$preview.val(t); }
+				break;
+			default:
+				// keypress is triggered before the input value is changed
+				clearTimeout( base.$autocomplete.searching );
+				base.$autocomplete.searching = setTimeout(function() {
+					// only search if the value has changed
+					if ( base.$autocomplete.term != base.$autocomplete.element.val() ) {
+						base.$autocomplete.selectedItem = null;
+						base.$autocomplete.search( null, event );
+					}
+				}, base.$autocomplete.options.delay );
 				break;
 			}
 		};

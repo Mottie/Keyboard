@@ -12,3 +12,6 @@
 /* only used in IE to prevent clicking in another input/textarea */
 .ui-keyboard-overlay { height: 100%; width: 100%; background: transparent; position: absolute; top: 0; left: 0; z-index: 15999; }
 .ui-keyboard-overlay-input { position: relative; top: 0; left: 0; zoom: 1; z-index: 16000; } /* put input above overlay if preview is not used - IE only */
+
+/* combo key styling - toggles diacritics on/off */
+.ui-keyboard-button.ui-keyboard-combo.ui-state-default { border-color: #ffaf0f; }

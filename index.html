@@ -1,5 +1,6 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
 <html><head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 	<title>Virtual Keyboard - jQuery UI</title>
 
 	<!-- jQuery & jQueryUI + theme -->
@@ -29,7 +30,11 @@
 <div id="page-wrap">
 
 	<h1><a href="https://github.com/Mottie/Keyboard">Virtual Keyboard</a></h1>
-	<h3>Original by <a href="http://jsatt.blogspot.com/2010/01/on-screen-keyboard-widget-using-jquery.html">Jeremy Satterfield</a></h3>
+	<h4>Original by 
+		<a href="http://jsatt.blogspot.com/2010/01/on-screen-keyboard-widget-using-jquery.html">Jeremy Satterfield</a>, 
+		updated &amp; maintained by <a href="http://wowmotty.blogspot.com/2010/11/jquery-ui-keyboard-widget.html">Rob Garrison</a><br>
+		See more <a href="layouts.htm">language layouts</a><br>
+	</h4>
 
 	<div id="switcher"></div>
 	<ul id="console">
@@ -40,11 +45,11 @@
 <h3>Click on the keyboard title to see its code</h3>
 
 	<div class="block">
-		<h2 class="tooltip" title="Click to see code">QWERTY Text</h2>
+		<h2><span class="tooltip" title="Click to see code">QWERTY Text</span></h2>
 		<input class="qwerty" type="text" placeholder="Enter something...">
 		<br>
 		<small>
-			* watermark.<br>
+			* placeholder (watermark).<br>
 			* autocomplete.
 		</small>
 		<div class="code ui-corner-all" style="width: 585px; height: 365px;">
@@ -54,7 +59,7 @@
 
 <span class="ct">Script
 =======</span>
-// Autocomplete demo
+<span class="comment">// Autocomplete demo</span>
 var availableTags = ["ActionScript", "AppleScript", "Asp", "BASIC", "C", "C++", "Clojure",
  "COBOL", "ColdFusion", "Erlang", "Fortran", "Groovy", "Haskell", "Java", "JavaScript",
  "Lisp", "Perl", "PHP", "Python", "Ruby", "Scala", "Scheme" ];
@@ -70,7 +75,7 @@ $('.qwerty:eq(0)')
 	</div>
 
 	<div class="block">
-		<h2 class="tooltip" title="Click to see code">QWERTY Password</h2>
+		<h2><span class="tooltip" title="Click to see code">QWERTY Password</span> <img id="passwd" class="tooltip" title="Click to open the virtual keyboard" src="https://assets3.github.com/images/icons/keyboard.png"></h2>
 		<input class="qwerty" type="password">
 		<div class="code ui-corner-all" style="width: 350px; height: 200px;">
 			<pre><code><span class="ct">HTML
@@ -80,15 +85,31 @@ $('.qwerty:eq(0)')
 <span class="ct">Script
 =======</span>
 $('.qwerty:eq(1)')
- .keyboard({ layout: 'qwerty' })
- .addTyping();</code></pre>
+ .keyboard({ 
+  openOn : null,
+  layout : 'qwerty'
+ })
+ .addTyping();
+$('#passwd').click(function(){
+ $('.qwerty:eq(1)').getkeyboard().reveal();
+});</code></pre>
 		</div>
+		<br>
+		<small>
+			* Click icon to open keyboard.<br>
+			* Stay open until accept/cancel.<br>
+			* Hover disabled in this type.
+		</small>
 	</div>
 
 	<div class="block">
-		<h2 class="tooltip" title="Click to see code">QWERTY Text Area</h2>
+		<h2><span class="tooltip" title="Click to see code">QWERTY Text Area</span></h2>
 		<textarea class="qwerty"></textarea>
-		<div class="code ui-corner-all" style="width: 350px; height: 200px;">
+		<br>
+		<small>
+			* locked input (no manual input).<br>
+			* position the hidden caret!
+		</small>		<div class="code ui-corner-all" style="width: 350px; height: 200px;">
 			<pre><code><span class="ct">HTML
 =======</span>
 &lt;textarea class="qwerty"&gt;&lt;/textarea&gt;
@@ -96,7 +117,10 @@ $('.qwerty:eq(1)')
 <span class="ct">Script
 =======</span>
 $('.qwerty:eq(2)')
- .keyboard({ layout: 'qwerty' })
+ .keyboard({
+  layout   : 'qwerty',
+  lockInput: true <span class="comment">// prevent manual keyboard entry</span>
+ })
  .addTyping();</code></pre>
 		</div>
 	</div>
@@ -124,7 +148,7 @@ $('#inter').getkeyboard().reveal().typeIn('\tHello \b\n\tWorld', 500);</code></p
 	</div>
 
 	<div class="block">
-		<h2 class="tooltip" title="Click to see code">Alphabetical</h2>
+		<h2><span class="tooltip" title="Click to see code">Alphabetical</span></h2>
 		<textarea id="alpha"></textarea>
 		<div class="code ui-corner-all" style="width: 350px; height: 200px;">
 			<pre><code><span class="ct">HTML
@@ -140,7 +164,7 @@ $('#alpha')
 	</div>
 
 	<div class="block">
-		<h2 class="tooltip" title="Click to see code">Dvorak</h2>
+		<h2><span class="tooltip" title="Click to see code">Dvorak</span></h2>
 		<textarea id="dvorak"></textarea>
 		<div class="code ui-corner-all" style="width: 350px; height: 200px;">
 			<pre><code><span class="ct">HTML
@@ -158,7 +182,7 @@ $('#dvorak')
 	<br class="clear">
 
 	<div class="block">
-		<h2 class="tooltip" title="Click to see code">Num Pad</h2>
+		<h2><span class="tooltip" title="Click to see code">Num Pad</span></h2>
 		<input id="num" class="alignRight" type="text">
 		<div class="code ui-corner-all" style="width: 745px; height: 285px;">
 			<pre><code><span class="ct">HTML
@@ -169,9 +193,9 @@ $('#dvorak')
 =======</span>
 $('#num')
  .keyboard({
-  layout: 'num',
-  restrictInput : true, // Prevent keys not in the displayed keyboard from being typed in
-  preventPaste : true,  // prevent ctrl-v and right click
+  layout : 'num',
+  restrictInput : true, <span class="comment">// Prevent keys not in the displayed keyboard from being typed in</span>
+  preventPaste : true,  <span class="comment">// prevent ctrl-v and right click</span>
   autoAccept : true
  })
  .addTyping();</code></pre>
@@ -185,7 +209,7 @@ $('#num')
 	</div>
 
 	<div class="block">
-		<h2 class="tooltip" title="Click to see code">Custom: Hex</h2>
+		<h2><span class="tooltip" title="Click to see code">Custom: Hex</span></h2>
 		<input id="hex" type="text">
 		<div class="code ui-corner-all" style="width: 740px; height: 420px;">
 			<pre><code><span class="ct">HTML
@@ -207,8 +231,8 @@ $('#hex')
    ]
   },
   maxLength : 6,
-  restrictInput : true, // Prevent keys not in the displayed keyboard from being typed in
-  useCombos : false // don't want A+E to become a ligature
+  restrictInput : true, <span class="comment">// Prevent keys not in the displayed keyboard from being typed in</span>
+  useCombos : false <span class="comment">// don't want A+E to become a ligature</span>
  })
  .addTyping();</code></pre>
 		</div>
@@ -234,15 +258,15 @@ $('#meta')
   layout: 'custom',
   display: {
    'alt'    : 'AltGr:It\'s all Greek to me',
-   'meta1'  : '\u2666:russian lower-case', // Diamond with label that shows in the title (spaces are okay here)
-   'meta2'  : '\u2665:RUSSIAN upper-case', // Heart
-   'meta3'  : '\u2663:zodiac',             // Club
-   'meta99' : '\u2660:numbers'             // Spade
+   'meta1'  : '\u2666:russian lower-case', <span class="comment">// Diamond with label that shows in the title (spaces are okay here)</span>
+   'meta2'  : '\u2665:RUSSIAN upper-case', <span class="comment">// Heart</span>
+   'meta3'  : '\u2663:zodiac',             <span class="comment">// Club</span>
+   'meta99' : '\u2660:numbers'             <span class="comment">// Spade</span>
   },
   customLayout: {
    'default' : [
-    // Add labels using a ":" after the key's name and replace spaces with "_"
-    // without the labels this line is just 'a b c d e f g'
+    <span class="comment">// Add labels using a ":" after the key's name and replace spaces with "_"
+    // without the labels this line is just 'a b c d e f g'</span>
     'a:a_letter,_that_sounds_like_"ey" b:a_bug_that_makes_honey c:is_when_I_look_around d:a_grade,_I_never_got e:is_what_girls_say_when_they_run_away_from_me f:u,_is_what_I_say_to_those_screaming_girls! g:gee,_is_that_the_end_of_my_wittiness?',
     '{shift} {alt} {meta1} {meta2} {meta3} {meta99}',
     '{bksp} {sp:1} {accept} {cancel}'
@@ -253,32 +277,32 @@ $('#meta')
     '{bksp} {sp:1} {accept} {cancel}'
    ],
    'alt' : [ 
-    '\u03b1 \u03b2 \u03b3 \u03b4 \u03b5 \u03b6 \u03b7', // lower case Greek
+    '\u03b1 \u03b2 \u03b3 \u03b4 \u03b5 \u03b6 \u03b7', <span class="comment">// lower case Greek</span>
     '{shift} {alt} {meta1} {meta2} {meta3} {meta99}',
     '{bksp} {sp:1} {accept} {cancel}'
    ],
    'alt-shift' : [
-    '\u0391 \u0392 \u0393 \u0394 \u0395 \u0396 \u0397', // upper case Greek
+    '\u0391 \u0392 \u0393 \u0394 \u0395 \u0396 \u0397', <span class="comment">// upper case Greek</span>
     '{shift} {alt} {meta1} {meta2} {meta3} {meta99}',
     '{bksp} {sp:1} {accept} {cancel}'
    ],
    'meta1' : [
-    '\u0430 \u0431 \u0432 \u0433 \u0434 \u0435 \u0436', // lower case Russian
+    '\u0430 \u0431 \u0432 \u0433 \u0434 \u0435 \u0436', <span class="comment">// lower case Russian</span>
     '{shift} {alt} {meta1} {meta2} {meta3} {meta99}',
     '{bksp} {sp:1} {accept} {cancel}'
    ],
    'meta2' : [
-    '\u0410 \u0411 \u0412 \u0413 \u0414 \u0415 \u0416', // upper case Russian
+    '\u0410 \u0411 \u0412 \u0413 \u0414 \u0415 \u0416', <span class="comment">// upper case Russian</span>
     '{shift} {alt} {meta1} {meta2} {meta3} {meta99}',
     '{bksp} {sp:1} {accept} {cancel}'
    ],
    'meta3' : [
-    '\u2648 \u2649 \u264A \u264B \u264C \u264D \u264E', // Zodiac
+    '\u2648 \u2649 \u264A \u264B \u264C \u264D \u264E', <span class="comment">// Zodiac</span>
     '{shift} {alt} {meta1} {meta2} {meta3} {meta99}',
     '{bksp} {sp:1} {accept} {cancel}'
    ],
    'meta99' : [
-    '1 2 3 4 5 6 7', // only because I ran out of ideas
+    '1 2 3 4 5 6 7', <span class="comment">// only because I ran out of ideas</span>
     '{shift} {alt} {meta1} {meta2} {meta3} {meta99}',
     '{bksp} {sp:1} {accept} {cancel}'
    ]
@@ -296,7 +320,7 @@ meta.reveal().typeIn('aBcD11123\u2648\u2649', 700, function(){ meta.accept(); al
 	<br class="clear">
 
 	<div class="block">
-		<h2 class="tooltip" title="Click to see code">Custom: Junk</h2>
+		<h2><span class="tooltip" title="Click to see code">Custom: Junk</span></h2>
 		<textarea id="junk"></textarea>
 		<div class="code ui-corner-all" style="width: 745px; height: 285px;">
 			<pre><code><span class="ct">HTML
@@ -324,12 +348,12 @@ $('#junk')
     '{a} {sp:1} {c} {sp:1} {s}'
    ]
   },
-  // Part of the standard combos - added here as an example
+  <span class="comment">// Part of the standard combos - added here as an example</span>
   combos : {
    'a' : { e: '\u00e6' },
    'A' : { E: '\u00c6' }
   },
-  // example callback function
+  <span class="comment">// example callback function</span>
   accepted : function(e, el){ alert('The content "' + el.value + '" was accepted!'); }
  })
  .addTyping();</code></pre>
@@ -338,13 +362,13 @@ $('#junk')
 		<small>
 			* use shift key - see action key sizes.<br>
 			* use the decimal - only one allowed.<br>
-			* type in 'ae' to test the combo keys.<br>
+			* type in 'ae' and other combo keys.<br>
 			* accept content to see the callback.
 		</small>
 	</div>
 
 	<div class="block">
-		<h2 class="tooltip" title="Click to see code">Custom: Mapped Keys</h2>
+		<h2><span class="tooltip" title="Click to see code">Custom: Mapped Keys</span></h2>
 		<textarea id="map"></textarea>
 		<div class="code ui-corner-all" style="width: 745px; height: 285px;">
 			<pre><code><span class="ct">HTML
@@ -353,21 +377,21 @@ $('#junk')
 
 <span class="ct">Script
 =======</span>
-// *** Mapped keys ***
+<span class="comment">// *** Mapped keys ***</span>
 $('#map').keyboard({
  layout: 'custom',
  customLayout: {
   'default' : [ 
-   // "k(m):label"; k = key, (m) = mapped key (e.which value, add an "s" for shifted keys), ":label" = title/tooltip
-   '\u03b1(65):lower_case_alpha_(press_a) \u03b2(66):lower_case_beta_(press_b) \u03b3(67):lower_case_gamma_(press_c) \u03b4(68):lower_case_delta_(press_d) \u03b5(69):lower_case_epsilon_(press_e) \u03b6(70):lower_case_zeta_(press_f) \u03b7(71):lower_case_eta_(press_g)', // lower case Greek
+   <span class="comment">// "n(a):title_or_tooltip"; n = new key, (a) = actual key, ":label" = title_or_tooltip (use an underscore "_" in place of a space " ")</span>
+   '\u03b1(a):lower_case_alpha_(type_a) \u03b2(b):lower_case_beta_(type_b) \u03b3(c):lower_case_gamma_(type_c) \u03b4(d):lower_case_delta_(type_d) \u03b5(e):lower_case_epsilon_(type_e) \u03b6(f):lower_case_zeta_(type_f) \u03b7(g):lower_case_eta_(type_g)', <span class="comment">// lower case Greek</span>
    '{shift} {accept} {cancel}'
   ],
   'shift' : [
-   '\u0391(65s) \u0392(66s) \u0393(67s) \u0394(68s) \u0395(69s) \u0396(70s) \u0397(71s)', // upper case Greek
+   '\u0391(A) \u0392(B) \u0393(C) \u0394(D) \u0395(E) \u0396(F) \u0397(G)', <span class="comment">// upper case Greek</span>
    '{shift} {accept} {cancel}'
   ]
  },
- usePreview: false // no preveiw
+ usePreview: false <span class="comment">// no preveiw</span>
 });</code></pre>
 		</div>
 		<br>
@@ -379,7 +403,7 @@ $('#map').keyboard({
 	</div>
 
 	<div class="block">
-		<h2 class="tooltip" title="Click to see code">Custom: Hidden</h2>
+		<h2><span class="tooltip" title="Click to see code">Custom: Hidden</span></h2>
 		<a href="#" class="hiddenInput">Hidden input</a>
 		<!-- DON'T use type="hidden" because IE doesn't like hidden inputs -->
 		<input id="hidden" type="text" style="display:none;">
@@ -387,19 +411,19 @@ $('#map').keyboard({
 			<pre><code><span class="ct">HTML
 =======</span>
 &lt;a href="#" class="hiddenInput"&gt;Hidden input&lt;/a&gt;
-&lt;!-- DON'T use type="hidden" because IE doesn't like hidden inputs --&gt;
+<span class="comment">&lt;!-- DON'T use type="hidden" because IE doesn't like hidden inputs --&gt;</span>
 &lt;input id="hidden" type="text" style="display:none;"&gt;
 
 <span class="ct">Script
 =======</span>
-// *** Hidden input example ***
-// click on a link - add focus to hidden input
+<span class="comment">// *** Hidden input example ***
+// click on a link - add focus to hidden input</span>
 $('.hiddenInput').click(function(){
- $('#hidden').trigger('focus');
+ $('#hidden').trigger('focus.keyboard');
  return false;
 });
-// Initialize keyboard script on hidden input
-// set "position.of" to the same link as above
+<span class="comment">// Initialize keyboard script on hidden input
+// set "position.of" to the same link as above</span>
 $('#hidden')
  .keyboard({ 
   layout   : 'qwerty',
@@ -416,6 +440,8 @@ $('#hidden')
 	<br class="clear">
 
 	<div id="showcode"></div>
+
+	<div id="footer"></div>
 
 </div>
 

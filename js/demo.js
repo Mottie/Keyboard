@@ -3,8 +3,30 @@ $(document).ready(function(){
 	// Theme switcher
 	$('#switcher').themeswitcher();
 
-	// Keyboards
-	$('.qwerty').keyboard({ layout: 'qwerty' });
+	// QWERTY Text
+	$('.qwerty:first').keyboard({ layout: 'qwerty' });
+
+	// QWERTY Password
+	$('.qwerty:eq(1)').keyboard({
+		openOn   : null,
+		stayOpen : true,
+		layout   : 'qwerty'
+	});
+	$('#passwd').click(function(){
+		$('.qwerty:eq(1)').getkeyboard().reveal();
+	});
+	// since IE adds an overlay behind the input to prevent clicking in other inputs (the keyboard may not automatically open on focus... silly IE bug)
+	// We can remove the overlay (transparent) if desired using this code:
+	$('.qwerty:eq(1)').bind('visible.keyboard', function(e, el){
+	 $('.ui-keyboard-overlay').remove(); // remove overlay because clicking on it will close the keyboard... we set "openOn" to null to prevent closing.
+	});
+
+
+	// QWERTY Text Area
+	$('.qwerty:last').keyboard({
+		layout   : 'qwerty',
+		lockInput: true // prevent manual keyboard entry
+	});
 
 	$('#inter').keyboard({ layout: 'international' });
 
@@ -42,14 +64,14 @@ $(document).ready(function(){
 		customLayout: {
 			'default' : [
 				'a e i o u y c',
-				'` \' " ~ {sp:1} {dec}',
+				'` \' " ~ ^ {dec} {combo}',
 				'{tab} {enter} {bksp}',
 				'{space}',
 				'{accept} {cancel} {shift}'
 			],
 			'shift' : [
 				'A E I O U Y C',
-				'` \' " ~ {sp:1} {dec}',
+				'` \' " ~ ^ {dec} {combo}',
 				'{t} {sp:1} {e} {sp:1} {b}',
 				'{space}',
 				'{a} {sp:1} {c} {sp:1} {s}'
@@ -66,7 +88,7 @@ $(document).ready(function(){
 
 	// Meta
 	$('#meta').keyboard({
-		layout: 'custom',
+		layout : 'custom',
 		display: {
 			'alt'    : 'AltGr:It\'s all Greek to me',
 			'meta1'  : '\u2666:russian lower-case', // Diamond with label that shows in the title (spaces are okay here)
@@ -88,12 +110,12 @@ $(document).ready(function(){
 				'{bksp} {sp:1} {accept} {cancel}'
 			],
 			'alt' : [ 
-				'\u03b1 \u03b2 \u03b3 \u03b4 \u03b5 \u03b6 \u03b7', // lower case Greek
+				'\u03b1:alpha \u03b2:beta \u03B3:gamma \u03b4:delta \u03b5:epsilon \u03b6:zeta \u03b7:eta', // lower case Greek
 				'{shift} {alt} {meta1} {meta2} {meta3} {meta99}',
 				'{bksp} {sp:1} {accept} {cancel}'
 			],
 			'alt-shift' : [
-				'\u0391 \u0392 \u0393 \u0394 \u0395 \u0396 \u0397', // upper case Greek
+				'\u0391:alpha \u0392:beta \u0393:gamma \u0394:delta \u0395:epsilon \u03A6:zeta \u03A7:eta', // upper case Greek
 				'{shift} {alt} {meta1} {meta2} {meta3} {meta99}',
 				'{bksp} {sp:1} {accept} {cancel}'
 			],
@@ -146,14 +168,15 @@ $(document).ready(function(){
 
 	// *** Mapped keys ***
 	$('#map').keyboard({
-		layout: 'custom',
+		layout : 'custom',
 		customLayout: {
 			'default' : [ 
-				'\u03b1(65):lower_case_alpha_(type_a) \u03b2(66):lower_case_beta_(type_b) \u03b3(67):lower_case_gamma_(type_c) \u03b4(68):lower_case_delta_(type_d) \u03b5(69):lower_case_epsilon_(type_e) \u03b6(70):lower_case_zeta_(type_f) \u03b7(71):lower_case_eta_(type_g)', // lower case Greek
+				// "n(a):title/tooltip"; n = new key, (a) = actual key, ":label" = title/tooltip (use an underscore "_" in place of a space " ")
+				'\u03b1(a):lower_case_alpha_(type_a) \u03b2(b):lower_case_beta_(type_b) \u03be(c):lower_case_xi_(type_c) \u03b4(d):lower_case_delta_(type_d) \u03b5(e):lower_case_epsilon_(type_e) \u03b6(f):lower_case_zeta_(type_f) \u03b3(g):lower_case_gamma_(type_g)', // lower case Greek
 				'{shift} {accept} {cancel}'
 			],
 			'shift' : [
-				'\u0391(65s) \u0392(66s) \u0393(67s) \u0394(68s) \u0395(69s) \u0396(70s) \u0397(71s)', // upper case Greek
+				'\u0391(A):alpha \u0392(B):beta \u039e(C):xi \u0394(D):delta \u0395(E):epsilon \u03a6(F):phi \u0393(G):gamma', // upper case Greek
 				'{shift} {accept} {cancel}'
 			]
 		},
@@ -163,7 +186,7 @@ $(document).ready(function(){
 	// *** Hidden input example ***
 	// click on a link - add focus to hidden input
 	$('.hiddenInput').click(function(){
-		$('#hidden').trigger('focus');
+		$('#hidden').trigger('focus.keyboard');
 		return false;
 	});
 	// Initialize keyboard script on hidden input
@@ -177,10 +200,9 @@ $(document).ready(function(){
 		}
 	});
 
-
 	/*** console messages showing callbacks ***/
-	$('.ui-keyboard-input').bind('visible hidden accepted canceled', function(e, el){
-		var c = $('#console')
+	$('.ui-keyboard-input').bind('visible.keyboard hidden.keyboard accepted.keyboard canceled.keyboard', function(e, el){
+		var c = $('#console'),
 			t = '<li>' + $(el).parent().find('h2').text();
 			switch (e.type){
 				case 'visible'  : t += ' keyboard is visible'; break;
@@ -194,8 +216,8 @@ $(document).ready(function(){
 	});
 
 	// Show code
-	$('h2').click(function(){
-		var t = '<h2>' + $(this).text() + ' Code</h2>' + $(this).parent().find('.code').html();
+	$('h2 span').click(function(){
+		var t = '<h2>' + $(this).parent().text() + ' Code</h2>' + $(this).closest('.block').find('.code').html();
 		$('#showcode').html(t).show();
 	});
 
@@ -211,9 +233,9 @@ $(function() {
 	// Set up typing simulator extension on all keyboards
 	$('.ui-keyboard-input').addTyping();
 
-	// simulate typing into the keyboard
+	// simulate typing into the keyboard (\t = tab, \b = backspace, \r or \n = enter)
 	$('#inter-type').click(function(){
-		$('#inter').getkeyboard().reveal().typeIn('\tHello \b\r\tWorld', 500);
+		$('#inter').getkeyboard().reveal().typeIn("\tHell'o\bo \r\tWorld", 500);
 		return false;
 	});
 	$('#meta-type').click(function(){
