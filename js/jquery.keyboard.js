@@ -1,6 +1,6 @@
 /*
 jQuery UI Virtual Keyboard
-Version 1.8.1
+Version 1.8.2
 
 Author: Jeremy Satterfield
 Modified: Rob Garrison (Mottie on github)
@@ -329,7 +329,7 @@ $.keyboard = function(el, options){
 				// Start caret in IE when not focused (happens with each virtual keyboard button click
 				if (base.checkCaret) { base.$preview.caret( base.lastCaret.start, base.lastCaret.end ); }
 				if (action.match('meta')) { action = 'meta'; }
-				if ($.keyboard.keyaction.hasOwnProperty(action)) {
+				if ($.keyboard.keyaction.hasOwnProperty(action) && $(this).is('.ui-keyboard-actionkey')) {
 					// stop processing if action returns false (close & cancel)
 					if ($.keyboard.keyaction[action](base,this) === false) { return; }
 				} else if (typeof key.action !== 'undefined') {
@@ -699,6 +699,8 @@ $.keyboard = function(el, options){
 								continue;
 							}
 
+							// switch needed for action keys with multiple names/shortcuts or
+							// default will catch all others
 							switch(action){
 
 								case 'a':
@@ -725,11 +727,6 @@ $.keyboard = function(el, options){
 									.appendTo(newRow);
 									break;
 
-								// for NumPad
-								case 'clear':
-									base.addKey('clear', 'clear').appendTo(newRow);
-									break;
-
 								// toggle combo/diacritic key
 								case 'combo':
 									base.addKey('combo', 'combo')
@@ -739,7 +736,7 @@ $.keyboard = function(el, options){
 
 								// Decimal - unique decimal point (num pad layout)
 								case 'dec':
-									base.acceptedKeys.push('.');
+									base.acceptedKeys.push((base.decimal) ? '.' : ',');
 									base.addKey('dec', 'dec').appendTo(newRow);
 									break;
 
@@ -769,6 +766,12 @@ $.keyboard = function(el, options){
 								case 'tab':
 									base.addKey('tab', action).appendTo(newRow);
 									break;
+
+								default:
+									if ($.keyboard.keyaction.hasOwnProperty(action)){
+										// base.acceptedKeys.push(action);
+										base.addKey(action, action).appendTo(newRow);
+									}
 
 							}
 
@@ -1046,7 +1049,8 @@ $.keyboard = function(el, options){
 		accepted : null,
 		canceled : null,
 		hidden   : null,
-		visible  : null
+		visible  : null,
+		beforeClose: null
 
 	};
 

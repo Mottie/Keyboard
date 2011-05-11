@@ -32,7 +32,7 @@ Originally posted by Jeremy Satterfield in his [blog][1], [jQuery plugins][2] an
 
 ###Documentation
 
-Moved to the Wiki Pages: [Home][6] | [FAQ][7] | [Setup][8] | [Options][9] ( [Layout][10], [Language][11], [Useability][12] ) | [Methods][13] | [Theme][14] | [Log][15]
+Moved to the Wiki Pages: [Home][6] | [FAQ][7] | [Setup][8] | [Options][9] ( [Layout][10], [Language][11], [Useability][12], [Actions][13] ) | [Methods][14] | [Theme][15] | [Log][16]
 
 ###To Do
 
@@ -64,13 +64,17 @@ Moved to the Wiki Pages: [Home][6] | [FAQ][7] | [Setup][8] | [Options][9] ( [Lay
 
 ###Licensing
 
-* Keyboard code: [Creative Commons Attribution-Share Alike 3.0 Unported License][16]
-* Caret code by C. F., Wong (Cloudgen): [MIT License][17]
-* Layouts files: Most are under [WTFPL][18], unless the file itself specifies otherwise.
+* Keyboard code: [Creative Commons Attribution-Share Alike 3.0 Unported License][17]
+* Caret code by C. F., Wong (Cloudgen): [MIT License][18]
+* Layouts files: Most are under [WTFPL][19], unless the file itself specifies otherwise.
 
 ###Change Log
 
 Only the latest changes will be shown below, see the wiki log to view older versions.
+
+####Version 1.8.2
+* Fixed a problem with decimals not working in Eurpoean format when `restrictedInput` is `true`.
+* Fixed code that allows adding custom action keys. It now works properly when adding a corresponding `display` option. Examples added to the [Actions][13] wiki page.
 
 ####Version 1.8.1
 * Added `beforeClose` trigger and callback which is called just before the contents are accepted/canceled.
@@ -262,9 +266,10 @@ Only the latest changes will be shown below, see the wiki log to view older vers
   [10]: https://github.com/Mottie/Keyboard/wiki/Layout
   [11]: https://github.com/Mottie/Keyboard/wiki/Language
   [12]: https://github.com/Mottie/Keyboard/wiki/Useability
-  [13]: https://github.com/Mottie/Keyboard/wiki/Methods
-  [14]: https://github.com/Mottie/Keyboard/wiki/Theme
-  [15]: https://github.com/Mottie/Keyboard/wiki/Log
-  [16]: http://creativecommons.org/licenses/by-sa/3.0/
-  [17]: http://www.opensource.org/licenses/mit-license.php
-  [18]: http://sam.zoy.org/wtfpl/
+  [13]: https://github.com/Mottie/Keyboard/wiki/Actions
+  [14]: https://github.com/Mottie/Keyboard/wiki/Methods
+  [15]: https://github.com/Mottie/Keyboard/wiki/Theme
+  [16]: https://github.com/Mottie/Keyboard/wiki/Log
+  [17]: http://creativecommons.org/licenses/by-sa/3.0/
+  [18]: http://www.opensource.org/licenses/mit-license.php
+  [19]: http://sam.zoy.org/wtfpl/
