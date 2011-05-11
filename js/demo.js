@@ -201,7 +201,7 @@ $(document).ready(function(){
 	});
 
 	/*** console messages showing callbacks ***/
-	$('.ui-keyboard-input').bind('visible.keyboard hidden.keyboard accepted.keyboard canceled.keyboard', function(e, el){
+	$('.ui-keyboard-input').bind('visible.keyboard hidden.keyboard beforeClose.keyboard accepted.keyboard canceled.keyboard', function(e, el, status){
 		var c = $('#console'),
 			t = '<li>' + $(el).parent().find('h2').text();
 			switch (e.type){
@@ -209,10 +209,11 @@ $(document).ready(function(){
 				case 'hidden'   : t += ' keyboard is now hidden'; break;
 				case 'accepted' : t += ' content "' + el.value + '" was accepted' + ($(el).is('[type=password]') ? ', yeah... not so secure :(' : ''); break;
 				case 'canceled' : t += ' content was ignored'; break;
+				case 'beforeClose' : t += ' keyboard is about to close, contents were ' + (status ? 'accepted' : 'ignored'); break;
 			}
 		t += '</li>';
 		c.append(t);
-		if (c.find('li').length > 2) { c.find('li').eq(0).remove(); }
+		if (c.find('li').length > 3) { c.find('li').eq(0).remove(); }
 	});
 
 	// Show code

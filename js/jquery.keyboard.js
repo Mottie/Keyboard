@@ -1,6 +1,6 @@
 /*
 jQuery UI Virtual Keyboard
-Version 1.8
+Version 1.8.1
 
 Author: Jeremy Satterfield
 Modified: Rob Garrison (Mottie on github)
@@ -113,7 +113,7 @@ $.keyboard = function(el, options){
 		base.checkCaret = (base.options.lockInput || base.msie || base.opera ) ? true : false; // needed to save caret positions when the input is locked.
 
 		// Bind events
-		$.each('visible change hidden canceled accepted'.split(' '), function(i,o){
+		$.each('visible change hidden canceled accepted beforeClose'.split(' '), function(i,o){
 			if ($.isFunction(base.options[o])){
 				base.$el.bind(o + '.keyboard', base.options[o]);
 			}
@@ -174,18 +174,17 @@ $.keyboard = function(el, options){
 		base.originalContent = base.$el.val();
 		base.$preview.val( base.originalContent );
 
+		// get single target position || target stored in element data (multiple targets) || default, at the element
+		var o, s, position = base.options.position;
+		position.of = position.of || base.$el.data('keyboardPosition') || base.$el;
+		position.collision = (base.options.usePreview) ? position.collision || 'fit fit' : 'flip flip';
+
 		// show & position keyboard
 		base.$keyboard
 			// position and show the keyboard before positioning (required for UI position utility)
 			.css({ position: 'absolute', left: 0, top: 0 })
 			.show()
-			.position({
-				// get single target position || target stored in element data (multiple targets) || default, at the element
-				of: base.options.position.of || base.$el.data('keyboardPosition') || base.$el,
-				my: base.options.position.my,
-				at: base.options.position.at,
-				collision: (base.options.usePreview) ? 'fit' : 'flip'
-			});
+			.position(position);
 
 		// adjust keyboard preview window width - save width so IE won't keep expanding (fix issue #6)
 		if (base.options.usePreview) {
@@ -203,7 +202,8 @@ $.keyboard = function(el, options){
 		// IE & Opera caret haxx0rs
 		if (base.msie || base.opera){
 			// ensure caret is at the end of the text (needed for IE)
-			var s = base.originalContent.length, o = { start: s, end: s };
+			s = base.originalContent.length;
+			o = { start: s, end: s };
 			if (!base.lastCaret) { base.lastCaret = o; } // set caret at end of content, if undefined
 			if (base.lastCaret.end === 0 && base.lastCaret.start > 0) { base.lastCaret.end = base.lastCaret.start; } // sometimes end = 0 while start is > 0
 			if (base.lastCaret.start < 0) { base.lastCaret = o; } // IE will have start -1, end of 0 when not focused (see demo: http://jsfiddle.net/Mottie/fgryQ/3/).
@@ -540,8 +540,9 @@ $.keyboard = function(el, options){
 	base.close = function(accepted){
 		if (base.$keyboard.is(':visible')) {
 			clearTimeout(base.throttled);
-			base.$el.val( (accepted) ? base.checkCombos() : base.originalContent );
 			base.$el
+				.trigger('beforeClose.keyboard', [ base.$el, (accepted || false) ] )
+				.val( (accepted) ? base.checkCombos() : base.originalContent )
 				.scrollTop( base.el.scrollHeight )
 				.trigger( (accepted || false) ? 'accepted.keyboard' : 'canceled.keyboard', base.$el )
 				.trigger( 'hidden.keyboard', base.$el )
@@ -798,7 +799,7 @@ $.keyboard = function(el, options){
 			.removeClass('ui-keyboard-input ui-widget-content ui-corner-all placeholder')
 			.removeAttr('aria-haspopup')
 			.removeAttr('role')
-			.unbind( base.options.openOn + '.keyboard accepted.keyboard canceled.keyboard hidden.keyboard visible.keyboard keydown.keyboard keypress.keyboard keyup.keyboard contextmenu.keyboard')
+			.unbind( base.options.openOn + '.keyboard accepted.keyboard canceled.keyboard beforeClose.keyboard hidden.keyboard visible.keyboard keydown.keyboard keypress.keyboard keyup.keyboard contextmenu.keyboard')
 			.removeData('keyboard');
 	};
 

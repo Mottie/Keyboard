@@ -51,7 +51,6 @@ Moved to the Wiki Pages: [Home][6] | [FAQ][7] | [Setup][8] | [Options][9] ( [Lay
     * Holding down the Alt key and trying to type is also not possible since the Windows OS is assuming you are trying to type a shortcut key to access the browser menu. You can still click the keys in the alt key set with the mouse.
     * Simulated typing on the keyboard breaks when the CapLock is on. Still looking for a cross-browser solution.
 
-~~~
 ### Dependencies
 * Required
     * jQuery 1.4.3+
@@ -72,6 +71,10 @@ Moved to the Wiki Pages: [Home][6] | [FAQ][7] | [Setup][8] | [Options][9] ( [Lay
 ###Change Log
 
 Only the latest changes will be shown below, see the wiki log to view older versions.
+
+####Version 1.8.1
+* Added `beforeClose` trigger and callback which is called just before the contents are accepted/canceled.
+* Fixed keyboard positioning to now include `offset` options... opps!
 
 ####Version 1.8
 
