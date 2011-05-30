@@ -271,7 +271,7 @@ $.keyboard = function(el, options){
 					// Escape will hide the keyboard
 					case 27:
 						base.close();
-						e.preventDefault();
+						return false;
 						break;
 				}
 
@@ -296,7 +296,7 @@ $.keyboard = function(el, options){
 						// Accept content - shift-enter
 						if (e.shiftKey) {
 							base.close(true);
-							e.preventDefault();
+							return false;
 						}
 						break;
 
@@ -388,33 +388,42 @@ $.keyboard = function(el, options){
 
 	// Insert text at caret/selection - thanks to Derek Wickwire for fixing this up!
 	base.insertText = function(txt){
-		var bksp, t,
+		var bksp, t, h,
 			// use base.$preview.val() instead of base.preview.value (val.length includes carriage returns in IE).
 			val = base.$preview.val(),
 			pos = base.$preview.caret(),
+			scrL = base.$preview.scrollLeft(),
+			scrT = base.$preview.scrollTop(),
 			len = val.length; // save original content length
 
 		// silly caret hacks (IE & Opera)... it should work correctly, but navigating using arrow keys in a textarea is still difficult
 		if (pos.end < pos.start) { pos.end = pos.start; } // in IE, pos.end can be zero after input loses focus
 		if (pos.start > len) { pos.end = pos.start = len; }
-		// This makes sure the caret moves to the next line after clicking on enter (manual typing works fine)
-		if (base.msie && val.substr(pos.start, 1) === '\n') { pos.start += 1; pos.end += 1; }
-		// Opera still needs to subtract out the carriage returns
-		if ( (base.msie || base.opera) && val.substr(0,pos.start).split('\n').length - 1 > 0) {
-			t = val.substr(0,pos.start).split('\n').length - 1;
-			pos.start += t;
-			pos.end += t;
-		}
 
-		// Set scroll top so current text is in view - needed for virtual keyboard typing, not manual typing
-		// this doesn't appear to work correctly in Opera
-		base.preview.scrollTop = base.lineHeight * (val.split('\n').length - 1);
+		if (base.preview.tagName === 'TEXTAREA') {
+			// This makes sure the caret moves to the next line after clicking on enter (manual typing works fine)
+			if (base.msie && val.substr(pos.start, 1) === '\n') { pos.start += 1; pos.end += 1; }
+			// Opera still needs to subtract out the carriage returns
+			if ( (base.msie || base.opera) && val.substr(0,pos.start).split('\n').length - 1 > 0) {
+				t = val.substr(0,pos.start).split('\n').length - 1;
+				pos.start += t;
+				pos.end += t;
+			}
+			// Set scroll top so current text is in view - needed for virtual keyboard typing, not manual typing
+			// this doesn't appear to work correctly in Opera
+			h = (val.split('\n').length - 1);
+			base.preview.scrollTop = (h>0) ? base.lineHeight * h : scrT;
+		}
 
 		bksp = (txt === 'bksp' && pos.start === pos.end) ? true : false;
 		txt = (txt === 'bksp') ? '' : txt;
 		t = pos.start + (bksp ? -1 : txt.length);
-		base.$preview.val( val.substr(0, pos.start - (bksp ? 1 : 0)) + txt + val.substr(pos.end) );
-		base.$preview.caret(t, t);
+		scrL += parseInt(base.$preview.css('fontSize'),10) * (txt === 'bksp' ? -1 : 1);
+
+		base.$preview
+			.val( val.substr(0, pos.start - (bksp ? 1 : 0)) + txt + val.substr(pos.end) )
+			.caret(t, t)
+			.scrollLeft(scrL);
 
 		if (base.checkCaret) { base.lastCaret = { start: t, end: t }; } // save caret in case of bksp
 	};
@@ -561,6 +570,7 @@ $.keyboard = function(el, options){
 					.val(base.inPlaceholder);
 			}
 		}
+		return false;
 	};
 
 	base.accept = function(){
