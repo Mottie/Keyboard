@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+
+	<title>Virtual Keyboard Basic Demo</title>
+
+	<!-- demo -->
+	<link href="demo/demo.css" type="text/css" rel="stylesheet">
+
+	<!-- jQuery & jQuery UI + theme (required) -->
+	<link href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/themes/ui-darkness/jquery-ui.css" rel="stylesheet">
+	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.6/jquery.min.js"></script>
+	<script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/jquery-ui.min.js"></script>
+
+	<!-- keyboard widget css & script (required) -->
+	<link rel="stylesheet" href="css/keyboard.css">
+	<script src="js/jquery.keyboard.js"></script>
+
+	<!-- keyboard extensions (optional) -->
+	<script src="js/jquery.mousewheel.js"></script>
+	<!--
+	<script src="js/jquery.keyboard.extension-typing.js"></script>
+	<script src="js/jquery.keyboard.extension-autocomplete.js"></script>
+	-->
+
+	<!-- initialize keyboard (required) -->
+	<script>
+		$(function(){
+			$('#keyboard').keyboard();
+		});
+	</script>
+
+</head>
+
+<body>
+
+	<!-- Links to other demo pages & docs -->
+	<div id="nav">
+		<a href="index.html">Main Demo</a>
+		<a class="current" href="basic.html">Basic Demo</a>
+		<a href="layouts.html">Language Demos</a>
+		<a href="calculator.html">Calculator Demo</a>
+		<a class="play" href="http://jsfiddle.net/Mottie/Qs2V2/">Playground</a>
+		<a class="git" href="https://github.com/Mottie/Keyboard/wiki">Documentation</a>
+		<a class="git" href="http://github.com/Mottie/Keyboard/downloads">Download</a>
+		<a class="issue" href="https://github.com/Mottie/Keyboard/issues">Issues</a><br><br>
+	</div>
+	<!-- End Links -->
+
+	<div id="wrap"> <!-- wrapper only needed to center the input -->
+
+		<!-- keyboard input -->
+		<input id="keyboard" type="text">
+
+	</div> <!-- End wrapper -->
+
+</body>
+
+</html>

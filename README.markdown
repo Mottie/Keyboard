@@ -72,6 +72,33 @@ Moved to the Wiki Pages: [Home][6] | [FAQ][7] | [Setup][8] | [Options][9] ( [Lay
 
 Only the latest changes will be shown below, see the wiki log to view older versions.
 
+###Version 1.8.3
+* Replaced all the keyboard keys with `<buttons>` instead of `<input>` to allow adding of an image overlay.
+* Removed all keyrow wrappers, so now every key is floating inside the keyset. This allows you to make different sized keys and position them however you want with the CSS.
+* *NOTE* Changed the order of parameters in every event!
+    * Sorry if this breaks any extra coding you may have added, but I did it to provide a keyboard object with every event and make everything more consistent.
+    * Previously you had to use "$(el).getkeyboard()" function inside of the event function to get the keyboard object.
+    * In the event callback, the order is now (event, keyboard, elem). Where "event" is the event object, "keyboard" is the keyboard object and "elem" is the input element (non jQuery).
+    * The only event function that is different from the above order is the "beforeClose" event! The old order was (event, element, accepted). The new order is now as in this example:
+    ```javascript
+    // Binding to the "beforeClose" event - it has an extra parameter ("accepted")
+    $('.ui-keyboard-input').bind('beforeClose.keyboard', function(event, keyboard, elem, accepted){
+      var txt = "Virtual Keyboard for " + elem.id + " is about to close, and it's contents were ";
+      txt += (accepted ? 'accepted' : 'ignored');
+      txt += '. Current content = ' + elem.value;
+      txt += '. Original content = ' + keyboard.originalContent;
+      alert(txt);
+    });
+    ```
+    * see the <a href="https://github.com/Mottie/Keyboard/wiki/Methods">Methods</a> wiki documents page for more details.
+* Fixed an issue in Chrome where the caret would go out of view while typing on the virtual keyboard (horizontal scrolling of inputs).
+* Fixed the typing extension not highlighting the tab or backspace while typing.
+* Added "initialized" event which is triggered when the keyboard script has completed initialization.
+* Added a basic demo page, called "basic.html". This is a minimal setup.
+* Added a basic scientific calculator demo page. For demonstration only, it's not meant to replace your calculator but to show how to add more key actions, change display names and apply image overlays to the keys.
+* Moved demo files into a separate directory.
+* Updated all demo pages to HTML5 formatting.
+
 ####Version 1.8.2
 * Fixed a problem with decimals not working in Eurpoean format when `restrictedInput` is `true`.
 * Fixed code that allows adding custom action keys. It now works properly when adding a corresponding `display` option. Examples added to the [Actions][13] wiki page.

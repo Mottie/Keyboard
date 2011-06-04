@@ -1,39 +1,55 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
-<html><head>
-	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-	<title>Virtual Keyboard - jQuery UI</title>
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
 
-	<!-- jQuery & jQueryUI + theme -->
-	<link href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/themes/ui-darkness/jquery-ui.css" type="text/css" rel="stylesheet" >
-	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.6/jquery.min.js" type="text/javascript"></script>
-	<script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/jquery-ui.min.js" type="text/javascript"></script>
-	<script src="js/jquery.mousewheel.js" type="text/javascript"></script>
+	<title>Virtual Keyboard</title>
 
-	<!-- keyboard widget css & script -->
-	<link rel="stylesheet" href="css/keyboard.css" type="text/css" >
-	<script src="js/jquery.keyboard.js" type="text/javascript"></script>
+	<!-- jQuery & jQuery UI + theme (required) -->
+	<link href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/themes/ui-darkness/jquery-ui.css" rel="stylesheet">
+	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.6/jquery.js"></script>
+	<script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/jquery-ui.min.js"></script>
 
-	<!-- keyboard optional extensions -->
-	<script src="js/jquery.keyboard.extension-typing.js" type="text/javascript"></script>
-	<script src="js/jquery.keyboard.extension-autocomplete.js" type="text/javascript"></script>
+	<!-- keyboard widget css & script (required) -->
+	<link href="css/keyboard.css" rel="stylesheet">
+	<script src="js/jquery.keyboard.js"></script>
 
-	<!-- demo -->
-	<link href="css/demo.css" type="text/css" rel="stylesheet" >
-	<script src="js/demo.js" type="text/javascript"></script>
-	<script src="http://mottie.github.com/Jatt/js/jquery.jatt.min.js" type="text/javascript"></script>
+	<!-- keyboard extensions (optional) -->
+	<script src="js/jquery.mousewheel.js"></script>
+	<script src="js/jquery.keyboard.extension-typing.js"></script>
+	<script src="js/jquery.keyboard.extension-autocomplete.js"></script>
+
+	<!-- demo only -->
+	<link href="demo/demo.css" rel="stylesheet" >
+	<script src="demo/demo.js"></script>
+	<script src="http://mottie.github.com/Jatt/js/jquery.jatt.min.js"></script> <!-- tooltips -->
 
 	<!-- theme switcher -->
-	<script src="http://jqueryui.com/themeroller/themeswitchertool/" type="text/javascript"></script>
+	<script src="http://jqueryui.com/themeroller/themeswitchertool/"></script>
 
-</head><body>
+</head>
+
+<body>
 
 <div id="page-wrap">
+
+	<!-- Links to other demo pages & docs -->
+	<div id="nav">
+		<a class="current" href="index.html">Main Demo</a>
+		<a href="basic.html">Basic Demo</a>
+		<a href="layouts.html">Language Demos</a>
+		<a href="calculator.html">Calculator Demo</a>
+		<a class="play" href="http://jsfiddle.net/Mottie/Qs2V2/">Playground</a>
+		<a class="git" href="https://github.com/Mottie/Keyboard/wiki">Documentation</a>
+		<a class="git" href="http://github.com/Mottie/Keyboard/downloads">Download</a>
+		<a class="issue" href="https://github.com/Mottie/Keyboard/issues">Issues</a>
+	</div>
+	<!-- End Links -->
 
 	<h1><a href="https://github.com/Mottie/Keyboard">Virtual Keyboard</a></h1>
 	<h4>Original by 
 		<a href="http://jsatt.blogspot.com/2010/01/on-screen-keyboard-widget-using-jquery.html">Jeremy Satterfield</a>, 
-		updated &amp; maintained by <a href="http://wowmotty.blogspot.com/2010/11/jquery-ui-keyboard-widget.html">Rob Garrison</a><br>
-		See more <a href="layouts.htm">language layouts</a><br>
+		updated &amp; maintained by <a href="http://wowmotty.blogspot.com/2010/11/jquery-ui-keyboard-widget.html">Rob Garrison</a>
 	</h4>
 
 	<div id="switcher"></div>
@@ -43,7 +59,7 @@
 		<li>...</li>
 		<li>...</li>
 	</ul>
-<h3>Click on the keyboard title to see its code</h3>
+<h3>Click on the keyboard title, then scroll down to see its code</h3>
 
 	<div class="block">
 		<h2><span class="tooltip" title="Click to see code">QWERTY Text</span></h2>
@@ -76,7 +92,7 @@ $('.qwerty:eq(0)')
 	</div>
 
 	<div class="block">
-		<h2><span class="tooltip" title="Click to see code">QWERTY Password</span> <img id="passwd" class="tooltip" title="Click to open the virtual keyboard" src="https://assets3.github.com/images/icons/keyboard.png"></h2>
+		<h2><span class="tooltip" title="Click to see code">QWERTY Password</span> <img id="passwd" class="tooltip" title="Click to open the virtual keyboard" src="demo/keyboard.png"></h2>
 		<input class="qwerty" type="password">
 		<div class="code ui-corner-all" style="width: 350px; height: 200px;">
 			<pre><code><span class="ct">HTML
@@ -110,7 +126,8 @@ $('#passwd').click(function(){
 		<small>
 			* locked input (no manual input).<br>
 			* position the hidden caret!
-		</small>		<div class="code ui-corner-all" style="width: 350px; height: 200px;">
+		</small>
+		<div class="code ui-corner-all" style="width: 350px; height: 200px;">
 			<pre><code><span class="ct">HTML
 =======</span>
 &lt;textarea class="qwerty"&gt;&lt;/textarea&gt;
@@ -129,7 +146,7 @@ $('.qwerty:eq(2)')
 	<br class="clear">
 
 	<div class="block">
-		<h2><span class="tooltip" title="Click to see code">International</span> <img id="inter-type" class="tooltip" title="Try out the typing extension!" src="https://assets3.github.com/images/icons/keyboard.png"></h2>
+		<h2><span class="tooltip" title="Click to see code">International</span> <img id="inter-type" class="tooltip" title="Try out the typing extension!" src="demo/keyboard.png"></h2>
 		<textarea id="inter"></textarea>
 		<div class="code ui-corner-all" style="width: 350px; height: 200px;">
 			<pre><code><span class="ct">HTML
@@ -245,7 +262,7 @@ $('#hex')
 	</div>
 
 	<div class="block">
-		<h2><span class="tooltip" title="Click to see code">Custom: Meta Sets</span> <img id="meta-type" class="tooltip" title="Try out the typing extension!" src="https://assets3.github.com/images/icons/keyboard.png"></h2>
+		<h2><span class="tooltip" title="Click to see code">Custom: Meta Sets</span> <img id="meta-type" class="tooltip" title="Try out the typing extension!" src="demo/keyboard.png"></h2>
 		<textarea id="meta"></textarea>
 		<div class="code ui-corner-all" style="width: 740px; height: 420px;">
 			<pre><code><span class="ct">HTML

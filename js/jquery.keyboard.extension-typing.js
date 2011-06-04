@@ -61,8 +61,13 @@
 				'\b' : 'bksp',
 				'\n' : 'Enter',
 				'\r' : 'Enter',
-				'\t' : 'tab',
-				'8'  : 'bksp'
+				'\t' : 'tab'
+			};
+			base.typing_xref = {
+				8  : 'bksp',
+				9  : 'tab',
+				13 : 'enter',
+				32 : 'space'
 			};
 			base.typing_event = false;
 			// no manual typing simulation if lockInput is true; but the typeIn() function still works
@@ -97,9 +102,16 @@
 							base.$preview.focus(); // Alt shift focus to the menu
 						}
 						base.typing_event = true;
+						// Simulate key press for tab and backspace since they don't fire the keypress event
+						if (e.which === 8 || e.which === 9) {
+							base.typeIn( '', base.typing_options.delay || 250, function(){
+								base.typing_event = false;
+							}, e); // pass event object
+						}
+
 					})
 					.bind('keypress.keyboard', function(e){
-						// using keyup because keydown makes the keys flash while repeating
+						// Simulate key press on virtual keyboard
 						if (base.typing_event && !base.options.lockInput) {
 							base.typeIn( '', base.typing_options.delay || 250, function(){
 								base.typing_event = false;
@@ -133,13 +145,17 @@
 				k = (base.typing_keymap.hasOwnProperty(txt)) ? base.typing_keymap[txt] : txt;
 
 				// typing_event is true when typing on the actual keyboard - look for actual key
-				// All of this break when the CapLock is on... unable to find a cross-browser method that works.
-				tar = 'input.ui-keyboard-button[value="' + k + '"]';
+				// All of this breaks when the CapLock is on... unable to find a cross-browser method that works.
+				tar = '.ui-keyboard-button[data-value="' + k + '"]';
 				if (base.typing_event && e) {
-					m = String.fromCharCode(e.charCode || e.which);
-					tar = (base.mappedKeys.hasOwnProperty(m)) ? 'input.ui-keyboard-button[value="' + base.mappedKeys[m]  + '"]' : 'input.ui-keyboard-' + (e.charCode || e.which);
+					if (base.typing_xref.hasOwnProperty(e.keyCode || e.which)) {
+						// special named keys: bksp, tab and enter
+						tar = '.ui-keyboard-' + base.typing_xref[e.keyCode || e.which];
+					} else {
+						m = String.fromCharCode(e.charCode || e.which);
+						tar = (base.mappedKeys.hasOwnProperty(m)) ? '.ui-keyboard-button[data-value="' + base.mappedKeys[m]  + '"]' : '.ui-keyboard-' + (e.charCode || e.which);
+					}
 				}
-
 				// find key
 				key = ks.filter(':visible').find(tar);
 				if (key.length) {
@@ -154,7 +170,7 @@
 						n = (base.typing_keymap.hasOwnProperty(txt)) ? base.typing_keymap[txt] : txt.charCodeAt(0);
 						if (n === 'bksp') { txt = n; }
 						// find actual key on keyboard
-						key = ks.find('input.ui-keyboard-' + n);
+						key = ks.find('.ui-keyboard-' + n);
 					}
 
 					// find the keyset

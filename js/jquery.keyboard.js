@@ -1,6 +1,6 @@
 /*
 jQuery UI Virtual Keyboard
-Version 1.8.2
+Version 1.8.3
 
 Author: Jeremy Satterfield
 Modified: Rob Garrison (Mottie on github)
@@ -23,16 +23,24 @@ CSS listed below.
 
 Requires:
 	jQuery
-	jQuery UI (position utility) & CSS
+	jQuery UI (position utility only) & CSS
 
 Usage:
 	$('input[type=text], input[type=password], textarea')
 		.keyboard({
 			layout:"qwerty",
-			customLayout:
-				[["q w e r t y {bksp}","Q W E R T Y {bksp}"],
-				["s a m p l e {shift}","S A M P L E {shift}"],
-				["{accept} {space} {cancel}","{accept} {space} {cancel}"]]
+			customLayout: {
+				'default': [
+					"q w e r t y {bksp}",
+					"s a m p l e {shift}",
+					"{accept} {space} {cancel}"
+				],
+				'shift' : [
+					"Q W E R T Y {bksp}",
+					"S A M P L E {shift}",
+					"{accept} {space} {cancel}"
+				]
+			}
 		});
 
 Options:
@@ -46,13 +54,13 @@ Options:
 		custom - Uses a custom layout as defined by the customLayout option
 
 	customLayout
-		[Array] Specify a custom layout
-			An Array of arrays.
-			Each internal array is a new keyboard row.
-			Each internal array can contain one to four rows (default, shifted, alt and alt-shift... respectively).
-			String elements (Lower case and Upper case, alt lower case and alt-upper case respectively).
+		[Object] Specify a custom layout
+			An Object containing a set of key:value pairs, each key is a keyset.
+			The key can be one to four rows (default, shifted, alt and alt-shift) or any number of meta key sets (meta1, meta2, etc).
+			The value is an array with string elements of which each defines a new keyboard row.
 			Each string element must have each character or key seperated by a space.
-			In the list below where two special/"Action" keys are shown, both keys have the same action but different appearances.
+			To include an action key, select the desired one from the list below, or define your own by adding it to the $.keyboard.keyaction variable
+			In the list below where two special/"Action" keys are shown, both keys have the same action but different appearances (abbreviated/full name keys).
 			Special/"Action" keys include:
 				{a}, {accept} - Updates element value and closes keyboard
 				{alt},{altgr} - AltGr for International keyboard
@@ -71,16 +79,16 @@ Options:
 CSS:
 	.ui-keyboard { padding: .3em; position: absolute; left: 0; top: 0; z-index: 16000; }
 	.ui-keyboard div { font-size: 1.1em; }
-	.ui-keyboard-button { height: 2em; width: 2em; margin: .1em; cursor: pointer; }
+	.ui-keyboard-button { height: 2em; width: 2em; margin: .1em; cursor: pointer; overflow: hidden; }
+	.ui-keyboard-button span { padding: 0; margin: 0; white-space:nowrap; }
+	.ui-keyboard-button-endrow { clear: left; }
 	.ui-keyboard-widekey { width: 4em; }
-	.ui-keyboard-space { width: 15em; }
-	.ui-keyboard-preview { text-align: left; margin-bottom: 3px; }
+	.ui-keyboard-space { width: 15em; text-indent: -999em; }
+	.ui-keyboard-preview { text-align: left; margin: 0 0 3px 0; display: inline; }
 	.ui-keyboard-keyset { text-align: center; }
 	.ui-keyboard-input { text-align: left; }
 	.ui-keyboard-input.placeholder { color: #888; }
-	.ui-keyboard-button.ui-keyboard-combo.ui-state-default { border-color: #ffaf0f; }
-	.ui-keyboard-overlay { height: 100%; width: 100%; background: transparent; position: absolute; top: 0; left: 0; z-index: 15999; }
-	.ui-keyboard-overlay-input { position: relative; top: 0; left: 0; zoom: 1; z-index: 16000; }
+	.ui-keyboard-nokeyboard { color: #888; border-color: #888; }
 */
 
 (function($){
@@ -113,7 +121,7 @@ $.keyboard = function(el, options){
 		base.checkCaret = (base.options.lockInput || base.msie || base.opera ) ? true : false; // needed to save caret positions when the input is locked.
 
 		// Bind events
-		$.each('visible change hidden canceled accepted beforeClose'.split(' '), function(i,o){
+		$.each('initialized visible change hidden canceled accepted beforeClose'.split(' '), function(i,o){
 			if ($.isFunction(base.options[o])){
 				base.$el.bind(o + '.keyboard', base.options[o]);
 			}
@@ -132,6 +140,10 @@ $.keyboard = function(el, options){
 		base.$el
 			.addClass('ui-keyboard-input ui-widget-content ui-corner-all')
 			.attr({ 'aria-haspopup' : 'true', 'role' : 'textbox' });
+		// add disabled/readonly class - dynamically updated on reveal
+		if (base.$el.is(':disabled') || base.$el.attr('readonly')) {
+			base.$el.addClass('ui-keyboard-nokeyboard');
+		}
 		if (base.options.openOn) {
 			base.$el.bind(base.options.openOn + '.keyboard', function(){
 				base.focusOn();
@@ -145,6 +157,8 @@ $.keyboard = function(el, options){
 				.val( base.inPlaceholder );
 		}
 
+		base.$el.trigger( 'initialized.keyboard', [ base, base.el ] );
+
 	};
 
 	base.focusOn = function(){
@@ -157,6 +171,14 @@ $.keyboard = function(el, options){
 	base.reveal = function(){
 		// close all keyboards
 		$('.ui-keyboard').hide();
+
+		// Don't open if disabled
+		if (base.$el.is(':disabled') || base.$el.attr('readonly')) {
+			base.$el.addClass('ui-keyboard-nokeyboard');
+			return;
+		} else {
+			base.$el.removeClass('ui-keyboard-nokeyboard');
+		}
 
 		// Unbind focus to prevent recursion
 		if (!base.options.usePreview) { base.$el.unbind( (base.options.openOn) ? base.options.openOn + '.keyboard' : ''); }
@@ -219,7 +241,7 @@ $.keyboard = function(el, options){
 				.appendTo('body');
 			if (!base.options.usePreview) { base.$el.addClass('ui-keyboard-overlay-input'); }
 		}
-		base.$el.trigger( 'visible.keyboard', base.$el );
+		base.$el.trigger( 'visible.keyboard', [ base, base.el ] );
 		return base;
 	};
 
@@ -238,9 +260,9 @@ $.keyboard = function(el, options){
 
 				// restrict input - keyCode in keypress special keys: see http://www.asquare.net/javascript/tests/KeyCode.html
 				if (base.options.restrictInput) {
-					// allow navigation keys to work - Chrome doesn't fire a keypress event
+					// allow navigation keys to work - Chrome doesn't fire a keypress event (8 = bksp)
 					if ( (e.which === 8 || e.which === 0) && $.inArray( e.keyCode, base.alwaysAllowed ) ) { return; }
-					if (base.acceptedKeysStr.indexOf(k) === -1) { e.preventDefault(); } // quick key check
+					if ($.inArray(k, base.acceptedKeys) === -1) { e.preventDefault(); } // quick key check
 				} else if ( (e.ctrlKey || e.metaKey) && (e.which === 97 || e.which === 99 || e.which === 118 || e.which === 120) ) {
 					// Allow select all (ctrl-a:97), copy (ctrl-c:99), paste (ctrl-v:118) & cut (ctrl-x:120); meta key for mac
 					return;
@@ -262,7 +284,7 @@ $.keyboard = function(el, options){
 					case 9 :
 						// Added a flag to prevent from tabbing into an input, keyboard opening, then adding the tab to the keyboard preview
 						// area on keyup. Sadly it still happens if you don't release the tab key immediately because keydown event auto-repeats
-						if (base.tab) {
+						if (base.tab && !base.options.lockInput) {
 							$.keyboard.keyaction.tab(base);
 							base.tab = false;
 						}
@@ -272,7 +294,6 @@ $.keyboard = function(el, options){
 					case 27:
 						base.close();
 						return false;
-						break;
 				}
 
 				// throttle the check combo function because fast typers will have an incorrectly positioned caret
@@ -282,7 +303,7 @@ $.keyboard = function(el, options){
 				}, 100);
 
 				base.checkMaxLength();
-				base.$el.trigger( 'change.keyboard', [ base.$el, e ] );
+				base.$el.trigger( 'change.keyboard', [ base, base.el ] );
 			})
 			.bind('keydown.keyboard', function(e){
 				switch (e.which) {
@@ -338,7 +359,7 @@ $.keyboard = function(el, options){
 				}
 				base.checkCombos();
 				base.checkMaxLength();
-				base.$el.trigger( 'change.keyboard', [ base.$el, e ] );
+				base.$el.trigger( 'change.keyboard', [ base, base.el ] );
 				if (base.options.usePreview) { base.preview.focus(); }
 				e.preventDefault();
 			})
@@ -362,7 +383,7 @@ $.keyboard = function(el, options){
 					$this
 						.removeClass( (base.el.type === 'password') ? '' : 'ui-state-hover') // needed or IE flickers really bad
 						.attr('title', function(i,t){ return (t === base.options.wheelMessage) ? '' : t; })
-						.val( key.original ); // restore original button text
+						.find('span').text( key.original ); // restore original button text
 				}
 			})
 			// Allow mousewheel to scroll through other key sets of the same key
@@ -376,11 +397,11 @@ $.keyboard = function(el, options){
 					key.layers = txt;
 					key.curTxt = txt[key.curNum];
 					$.data(this, 'key', key);
-					$this.val( txt[key.curNum] );
+					$this.find('span').text( txt[key.curNum] );
 					return false;
 				}
 			})
-			.bind('mouseup.keyboard', function(e){
+			.bind('mouseup.keyboard', function(){
 				base.preview.focus();
 			});
 
@@ -539,8 +560,8 @@ $.keyboard = function(el, options){
 	base.getLayers = function(el){
 		var key, keys;
 		key = el.attr('name');
-		keys = el.closest('.ui-keyboard').find('input[name=' + key + ']').map(function(){
-			return this.value;
+		keys = el.closest('.ui-keyboard').find('button[name=' + key + ']').map(function(){
+			return $(this).find('span').text();
 		}).get();
 		return keys;
 	};
@@ -550,11 +571,11 @@ $.keyboard = function(el, options){
 		if (base.$keyboard.is(':visible')) {
 			clearTimeout(base.throttled);
 			base.$el
-				.trigger('beforeClose.keyboard', [ base.$el, (accepted || false) ] )
+				.trigger('beforeClose.keyboard', [ base, base.el, (accepted || false) ] )
 				.val( (accepted) ? base.checkCombos() : base.originalContent )
 				.scrollTop( base.el.scrollHeight )
-				.trigger( (accepted || false) ? 'accepted.keyboard' : 'canceled.keyboard', base.$el )
-				.trigger( 'hidden.keyboard', base.$el )
+				.trigger( ((accepted || false) ? 'accepted.keyboard' : 'canceled.keyboard'), [ base, base.el ] )
+				.trigger( 'hidden.keyboard', [ base, base.el ] )
 				.removeClass('ui-keyboard-overlay-input') // added for IE overlay
 				.blur();
 			if (!base.options.usePreview && base.options.openOn !== '') {
@@ -588,14 +609,16 @@ $.keyboard = function(el, options){
 	};
 
 	// Build default button
-	base.keyBtn = $('<input />')
-		.attr({ 'type': 'button', 'role': 'button', 'aria-disabled': 'false' })
+	base.keyBtn = $('<button />')
+		.attr({ 'role': 'button', 'aria-disabled': 'false' })
 		.addClass('ui-keyboard-button ui-state-default ui-corner-all');
 
 	// Add key function
-	// keyName = name added to key, name = display option name (e.g. tab or t),
-	// doAction = what is done/added when the button is clicked, regKey = true when it is not an action key
-	base.addKey = function(keyName, name, regKey ){
+	// keyName = the name of the function called in $.keyboard.keyaction when the button is clicked
+	// name = name added to key, or cross-referenced in the display options
+	// newSet = keyset to attach the new button
+	// regKey = true when it is not an action key
+	base.addKey = function(keyName, name, newSet, regKey){
 		var t, keyType, m, map, nm,
 			n = (regKey === true) ? keyName : base.options.display[name] || keyName;
 		// map defined keys - format "key(A):Label_for_key"
@@ -620,19 +643,20 @@ $.keyboard = function(el, options){
 		// Action keys will have the 'ui-keyboard-actionkey' class
 		// '\u2190'.length = 1 because the unicode is converted, so if more than one character, add the wide class
 		keyType = (n.length > 1) ? ' ui-keyboard-widekey' : '';
-		keyType += (regKey !== true) ? ' ui-keyboard-actionkey' : '';
+		keyType += (regKey) ? '' : ' ui-keyboard-actionkey';
 		return base.keyBtn
 			.clone()
-			.attr({ 'name': 'key_' + keyName, 'title' : t })
+			.attr({ 'data-value' : n, 'name': 'key_' + keyName, 'title' : t })
 			.data('key', { action: keyName, original: n, curTxt : n, curNum: 0 })
-			.val( n )
 			// add "ui-keyboard-" + keyName, if this is an action key (e.g. "Bksp" will have 'ui-keyboard-bskp' class)
 			// add "ui-keyboard-" + unicode of 1st character (e.g. "~" is a regular key, class = 'ui-keyboard-126' (126 is the unicode value - same as typing &#126;)
-			.addClass('ui-keyboard-' + ((regKey === true) ? keyName.charCodeAt(0) : keyName) + keyType );
+			.addClass('ui-keyboard-' + ((regKey === true) ? keyName.charCodeAt(0) : keyName) + keyType)
+			.html('<span>' + n + '</span>')
+			.appendTo(newSet);
 	};
 
 	base.buildKeyboard = function(){
-		var action, row, newRow, newSet,
+		var action, row, newSet,
 			currentSet, key, keys, margin,
 			sets = 0,
 
@@ -679,9 +703,6 @@ $.keyboard = function(el, options){
 					.appendTo(container)[(set === 'default') ? 'show' : 'hide']();
 
 				for ( row = 0; row < keySet.length; row++ ){
-					newRow = $('<div />')
-						.addClass('ui-keyboard-row ui-keyboard-row' + row )
-						.appendTo(newSet);
 
 					// remove extra spaces before spliting (regex probably could be improved)
 					currentSet = $.trim(keySet[row]).replace(/\{(\.?)[\s+]?:[\s+]?(\.?)\}/g,'{$1:$2}');
@@ -700,12 +721,12 @@ $.keyboard = function(el, options){
 								margin = action.match(/^sp:(\.?\d+)$/)[1] || 0;
 								$('<span>&nbsp;</span>')
 									.css('margin','0 ' + margin + 'em')
-									.appendTo(newRow);
+									.appendTo(newSet);
 							}
 
 							// meta keys
 							if (/^meta\d+\:?(\w+)?/.test(action)){
-								base.addKey(action, action).appendTo(newRow);
+								base.addKey(action, action, newSet);
 								continue;
 							}
 
@@ -715,72 +736,73 @@ $.keyboard = function(el, options){
 
 								case 'a':
 								case 'accept':
-									base.addKey('accept', action)
-									.addClass(base.options.actionClass)
-									.appendTo(newRow);
+									base
+										.addKey('accept', action, newSet)
+										.addClass(base.options.actionClass);
 									break;
 
 								case 'alt':
 								case 'altgr':
-									base.addKey('alt', 'alt').appendTo(newRow);
+									base.addKey('alt', 'alt', newSet);
 									break;
 
 								case 'b':
 								case 'bksp':
-									base.addKey('bksp', action).appendTo(newRow);
+									base.addKey('bksp', action, newSet);
 									break;
 
 								case 'c':
 								case 'cancel':
-									base.addKey('cancel', action)
-									.addClass(base.options.actionClass)
-									.appendTo(newRow);
+									base
+										.addKey('cancel', action, newSet)
+										.addClass(base.options.actionClass);
 									break;
 
 								// toggle combo/diacritic key
 								case 'combo':
-									base.addKey('combo', 'combo')
-									.addClass(base.options.actionClass)
-									.appendTo(newRow);
+									base
+										.addKey('combo', 'combo', newSet)
+										.addClass(base.options.actionClass);
 									break;
 
 								// Decimal - unique decimal point (num pad layout)
 								case 'dec':
 									base.acceptedKeys.push((base.decimal) ? '.' : ',');
-									base.addKey('dec', 'dec').appendTo(newRow);
+									base.addKey('dec', 'dec', newSet);
 									break;
 
 								case 'e':
 								case 'enter':
-									base.addKey('enter', action)
-									.addClass(base.options.actionClass).appendTo(newRow);
+									base
+										.addKey('enter', action, newSet)
+										.addClass(base.options.actionClass);
 									break;
 
 								case 's':
 								case 'shift':
-									base.addKey('shift', action).appendTo(newRow);
+									base.addKey('shift', action, newSet);
 									break;
 
 								// Change sign (for num pad layout)
 								case 'sign':
 									base.acceptedKeys.push('-');
-									base.addKey('sign', 'sign').appendTo(newRow);
+									base.addKey('sign', 'sign', newSet);
 									break;
 
 								case 'space':
 									base.acceptedKeys.push(' ');
-									base.addKey('space', 'space').appendTo(newRow);
+									base.addKey('space', '&nbsp;', newSet);
 									break;
 
 								case 't':
 								case 'tab':
-									base.addKey('tab', action).appendTo(newRow);
+									base.addKey('tab', action, newSet);
 									break;
 
 								default:
 									if ($.keyboard.keyaction.hasOwnProperty(action)){
 										// base.acceptedKeys.push(action);
-										base.addKey(action, action).appendTo(newRow);
+										base.addKey(action, action, newSet);
 									}
 
 							}
@@ -789,18 +811,18 @@ $.keyboard = function(el, options){
 
 							// regular button (not an action key)
 							base.acceptedKeys.push(keys[key].split(':')[0]);
-							base.addKey(keys[key], keys[key], true)
-								.attr('name','key_' + row + '_'+key)
-								.appendTo(newRow);
+							base
+								.addKey(keys[key], keys[key], newSet, true)
+								.attr('name','key_' + row + '_' + key);
 
 						}
 					}
+					newSet.find('.ui-keyboard-button:last').after('<br class="ui-keyboard-button-endrow">');
 				}
 			}
 		});
 	
 		if (sets > 1) { base.sets = true; }
-		base.acceptedKeysStr = base.acceptedKeys.join('');
 		base.hasMappedKeys = !( $.isEmptyObject(base.mappedKeys) ); // $.isEmptyObject() requires jQuery 1.4+
 		return container;
 	};
@@ -809,10 +831,10 @@ $.keyboard = function(el, options){
 		$(document).unbind('mousedown.keyboard keyup.keyboard', base.escClose );
 		if (base.$keyboard) { base.$keyboard.remove(); }
 		base.$el
-			.removeClass('ui-keyboard-input ui-widget-content ui-corner-all placeholder')
+			.removeClass('ui-keyboard-input ui-widget-content ui-corner-all placeholder ui-keyboard-notallowed')
 			.removeAttr('aria-haspopup')
 			.removeAttr('role')
-			.unbind( base.options.openOn + '.keyboard accepted.keyboard canceled.keyboard beforeClose.keyboard hidden.keyboard visible.keyboard keydown.keyboard keypress.keyboard keyup.keyboard contextmenu.keyboard')
+			.unbind( base.options.openOn + '.keyboard accepted.keyboard canceled.keyboard beforeClose.keyboard hidden.keyboard visible.keyboard keydown.keyboard keypress.keyboard keyup.keyboard contextmenu.keyboard initialized.keyboard')
 			.removeData('keyboard');
 	};
 
@@ -1056,11 +1078,12 @@ $.keyboard = function(el, options){
 
 		// *** Methods ***
 		// Callbacks - attach a function to any of these callbacks as desired
-		accepted : null,
-		canceled : null,
-		hidden   : null,
-		visible  : null,
-		beforeClose: null
+		initialized : null,
+		accepted    : null,
+		canceled    : null,
+		hidden      : null,
+		visible     : null,
+		beforeClose : null
 
 	};
 

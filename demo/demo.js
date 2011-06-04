@@ -1,12 +1,16 @@
-$(document).ready(function(){
+jQuery(function($) {
 
 	// Theme switcher
+	// ********************
 	$('#switcher').themeswitcher();
 
-	// QWERTY Text
+	// QWERTY Text Input
+	// The bottom of this file is where the autocomplete extension is added
+	// ********************
 	$('.qwerty:first').keyboard({ layout: 'qwerty' });
 
 	// QWERTY Password
+	// ********************
 	$('.qwerty:eq(1)').keyboard({
 		openOn   : null,
 		stayOpen : true,
@@ -21,19 +25,27 @@ $(document).ready(function(){
 	 $('.ui-keyboard-overlay').remove(); // remove overlay because clicking on it will close the keyboard... we set "openOn" to null to prevent closing.
 	});
 
-
 	// QWERTY Text Area
+	// ********************
 	$('.qwerty:last').keyboard({
 		layout   : 'qwerty',
 		lockInput: true // prevent manual keyboard entry
 	});
 
+	// International Text Area
+	// ********************
 	$('#inter').keyboard({ layout: 'international' });
 
-	$('#dvorak').keyboard({ layout: 'dvorak' });
-
+	// Alphabetical Text Area
+	// ********************
 	$('#alpha').keyboard({ layout: 'alpha' });
 
+	// Dvorak Text Area
+	// ********************
+	$('#dvorak').keyboard({ layout: 'dvorak' });
+
+	// Num Pad Input
+	// ********************
 	$('#num').keyboard({
 		layout: 'num',
 		restrictInput : true, // Prevent keys not in the displayed keyboard from being typed in
@@ -41,7 +53,8 @@ $(document).ready(function(){
 		autoAccept : true
 	});
 
-	// Hex
+	// Custom: Hex
+	// ********************
 	$('#hex').keyboard({
 		layout: 'custom',
 		customLayout: {
@@ -58,35 +71,8 @@ $(document).ready(function(){
 		useCombos : false // don't want A+E to become a ligature
 	});
 
-	// Junk / Examples
-	$('#junk').keyboard({
-		layout: 'custom',
-		customLayout: {
-			'default' : [
-				'a e i o u y c',
-				'` \' " ~ ^ {dec} {combo}',
-				'{tab} {enter} {bksp}',
-				'{space}',
-				'{accept} {cancel} {shift}'
-			],
-			'shift' : [
-				'A E I O U Y C',
-				'` \' " ~ ^ {dec} {combo}',
-				'{t} {sp:1} {e} {sp:1} {b}',
-				'{space}',
-				'{a} {sp:1} {c} {sp:1} {s}'
-			]
-		},
-		// Part of the standard combos - added here as an example
-		combos : {
-			'a' : { e: '\u00e6' },
-			'A' : { E: '\u00c6' }
-		},
-		// example callback function
-		accepted : function(e, el){ alert('The content "' + el.value + '" was accepted!'); }
-	});
-
-	// Meta
+	// Custom: Meta Sets
+	// ********************
 	$('#meta').keyboard({
 		layout : 'custom',
 		display: {
@@ -166,7 +152,37 @@ $(document).ready(function(){
 	})
 */
 
-	// *** Mapped keys ***
+	// Custom: Junk / Examples
+	// ********************
+	$('#junk').keyboard({
+		layout: 'custom',
+		customLayout: {
+			'default' : [
+				'a e i o u y c',
+				'` \' " ~ ^ {dec} {combo}',
+				'{tab} {enter} {bksp}',
+				'{space}',
+				'{accept} {cancel} {shift}'
+			],
+			'shift' : [
+				'A E I O U Y C',
+				'` \' " ~ ^ {dec} {combo}',
+				'{t} {sp:1} {e} {sp:1} {b}',
+				'{space}',
+				'{a} {sp:1} {c} {sp:1} {s}'
+			]
+		},
+		// Part of the standard combos - added here as an example
+		combos : {
+			'a' : { e: '\u00e6' },
+			'A' : { E: '\u00c6' }
+		},
+		// example callback function
+		accepted : function(e, el){ alert('The content "' + el.value + '" was accepted!'); }
+	});
+
+	// Custom: Mapped keys
+	// ********************
 	$('#map').keyboard({
 		layout : 'custom',
 		customLayout: {
@@ -183,8 +199,9 @@ $(document).ready(function(){
 		usePreview: false // no preveiw
 	});
 
-	// *** Hidden input example ***
+	// Custom: Hidden Input
 	// click on a link - add focus to hidden input
+	// ********************
 	$('.hiddenInput').click(function(){
 		$('#hidden').trigger('focus.keyboard');
 		return false;
@@ -200,8 +217,9 @@ $(document).ready(function(){
 		}
 	});
 
-	/*** console messages showing callbacks ***/
-	$('.ui-keyboard-input').bind('visible.keyboard hidden.keyboard beforeClose.keyboard accepted.keyboard canceled.keyboard', function(e, el, status){
+	// Console showing callback messages under the theme switcher
+	// ********************
+	$('.ui-keyboard-input').bind('visible.keyboard hidden.keyboard beforeClose.keyboard accepted.keyboard canceled.keyboard', function(e, keyboard, el, status){
 		var c = $('#console'),
 			t = '<li>' + $(el).parent().find('h2').text();
 			switch (e.type){
@@ -217,21 +235,21 @@ $(document).ready(function(){
 	});
 
 	// Show code
+	// ********************
 	$('h2 span').click(function(){
 		var t = '<h2>' + $(this).parent().text() + ' Code</h2>' + $(this).closest('.block').find('.code').html();
 		$('#showcode').html(t).show();
 	});
 
 	// add tooltips
+	// ********************
 	$.jatt();
 
-});
-
-
+// ********************
 // Extension demos
-$(function() {
+// ********************
 
-	// Set up typing simulator extension on all keyboards
+	// Set up typing simulator extension on ALL keyboards
 	$('.ui-keyboard-input').addTyping();
 
 	// simulate typing into the keyboard (\t = tab, \b = backspace, \r or \n = enter)
