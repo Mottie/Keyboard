@@ -70,6 +70,7 @@ Options:
 				{combo}       - Toggle combo (diacritic) key
 				{dec}         - Decimal for numeric entry, only allows one decimal (optional use in num pad)
 				{e}, {enter}  - Return/New Line
+				{meta#}       - Meta keys that change the key set (# can be any integer)
 				{s}, {shift}  - Shift/Capslock
 				{sign}        - Change sign of numeric entry (positive or negative)
 				{sp:#}        - Replace # with a numerical value, adds blank space, value of 1 ~ width of one key
