@@ -72,6 +72,9 @@ Moved to the Wiki Pages: [Home][6] | [FAQ][7] | [Setup][8] | [Options][9] ( [Lay
 
 Only the latest changes will be shown below, see the wiki log to view older versions.
 
+####Version 1.8.1
+* Fixed lockedInput causing errors in Firefox - fix for [issue #12](https://github.com/Mottie/Keyboard/issues/12).
+
 ###Version 1.8.3
 * Replaced all the keyboard keys with `<buttons>` instead of `<input>` to allow adding of an image overlay.
 * Removed all keyrow wrappers, so now every key is floating inside the keyset. This allows you to make different sized keys and position them however you want with the CSS.

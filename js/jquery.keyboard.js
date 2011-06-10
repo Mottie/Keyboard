@@ -1,6 +1,6 @@
 /*
 jQuery UI Virtual Keyboard
-Version 1.8.3
+Version 1.8.4
 
 Author: Jeremy Satterfield
 Modified: Rob Garrison (Mottie on github)
@@ -254,6 +254,7 @@ $.keyboard = function(el, options){
 		base.$decBtn = base.$keyboard.find('.ui-keyboard-dec');
 		base.wheel = $.isFunction( $.fn.mousewheel ); // is mousewheel plugin loaded?
 		base.alwaysAllowed = [33,34,35,36,37,38,39,40,45,46]; // keyCode of keys always allowed to be typed - page up & down, end, home, arrow, insert & delete keys
+		base.lastCaret = { start:0, end:0 };
 		base.$preview
 			.bind('keypress.keyboard', function(e){
 				var k = String.fromCharCode(e.charCode || e.which);
