@@ -8,7 +8,7 @@
  * license for this file: WTFPL, unless the source layout site has a problem with me using them as a reference
  */
 
-/* based on http://ascii-table.com/keyboard.php/463 & http://www.google.com/webelements/ */
+/* Thanks to Yury Kotlyarov (https://github.com/yura) */
 $.keyboard.layouts['russian-qwerty'] = {
 	'default' : [
 		"` 1 2 3 4 5 6 7 8 9 0 - = {bksp}",
@@ -33,7 +33,7 @@ $.keyboard.layouts['russian-qwerty'] = {
 	],
 	'alt-shift' : [
 		'\u0401 ! " \u2116 ; \u20ac : ? * ( ) _ + {bksp}',
-		"{tab} \u0419 \u0426 \u0423 \u041a \u0415 \u041d \u0413 \u0428 \u0429 \u0417 \u042a /",
+		"{tab} \u0419 \u0426 \u0423 \u041a \u0415 \u041d \u0413 \u0428 \u0429 \u0417 \u0425 \u042a /",
 		"\u0424 \u042b \u0412 \u0410 \u041f \u0420 \u041e \u041b \u0414 \u0416 \u042d {enter}",
 		"{shift} \u042f \u0427 \u0421 \u041c \u0418 \u0422 \u042c \u0411 \u042e , {shift}",
 		"{accept} {alt} {space} {alt} {cancel}"
