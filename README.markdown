@@ -72,6 +72,12 @@ Moved to the Wiki Pages: [Home][6] | [FAQ][7] | [Setup][8] | [Options][9] ( [Lay
 
 Only the latest changes will be shown below, see the wiki log to view older versions.
 
+####Version 1.8.6
+* Added `ui-keyboard-has-focus`
+ * This class is added to the keyboard when it opens
+ * If the keyboard has `alwaysOpen` set to `true`, the currently focused keyboard will have this class applied.
+ * In the base css, the z-index of this class is slightly bigger than the open keyboard.
+
 ####Version 1.8.5
 * Added Russian layout - thanks to Yury Kotlyarov (https://github.com/yura).
 * Added `alwaysOpen` option

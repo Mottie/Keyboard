@@ -1,6 +1,6 @@
 /*
 jQuery UI Virtual Keyboard
-Version 1.8.5
+Version 1.8.6
 
 Author: Jeremy Satterfield
 Modified: Rob Garrison (Mottie on github)
@@ -79,6 +79,7 @@ Options:
 
 CSS:
 	.ui-keyboard { padding: .3em; position: absolute; left: 0; top: 0; z-index: 16000; }
+	.ui-keyboard-has-focus { z-index: 16001; }
 	.ui-keyboard div { font-size: 1.1em; }
 	.ui-keyboard-button { height: 2em; width: 2em; margin: .1em; cursor: pointer; overflow: hidden; }
 	.ui-keyboard-button span { padding: 0; margin: 0; white-space:nowrap; }
@@ -178,6 +179,8 @@ $.keyboard = function(el, options){
 	base.reveal = function(){
 		// close all keyboards
 		$('.ui-keyboard:not(.ui-keyboard-always-open)').hide();
+		// ui-keyboard-has-focus is applied in case multiple keyboards have alwaysOpen = true and are stacked
+		$('.ui-keyboard-has-focus').removeClass('ui-keyboard-has-focus');
 
 		// Don't open if disabled
 		if (base.$el.is(':disabled') || base.$el.attr('readonly')) {
@@ -212,6 +215,7 @@ $.keyboard = function(el, options){
 		base.$keyboard
 			// position and show the keyboard before positioning (required for UI position utility)
 			.css({ position: 'absolute', left: 0, top: 0 })
+			.addClass('ui-keyboard-has-focus')
 			.show()
 			.position(position);
 
