@@ -1,15 +1,15 @@
-/* Scandinavian keyboard layouts
- * contains layout: 'scandic-qwerty' & 'scandic-dvorak'
+/* Swedish keyboard layouts
+ * contains layout: 'swedish-qwerty' & 'swedish-dvorak'
  *
  * To use:
  *  Point to this js file into your page header: <script src="layouts/scandinavian.js" type="text/javascript"></script>
- *  Initialize the keyboard using: $('input').keyboard({ layout: 'scandic-qwerty' });
+ *  Initialize the keyboard using: $('input').keyboard({ layout: 'swedish-qwerty' });
  *
  * license for this file: WTFPL, unless the source layout site has a problem with me using them as a reference
  */
 
 /* qwerty by Mika Perreri Korhonen (https://github.com/jouk0) -  */
-$.keyboard.layouts['scandic-qwerty'] = {
+$.keyboard.layouts['swedish-qwerty'] = {
 	'default' : [
 		"\u00a7 1 2 3 4 5 6 7 8 9 0 + \u0301 {bksp}",
 		"{tab} q w e r t y u i o p \u00e5 \u0308",
@@ -34,7 +34,7 @@ $.keyboard.layouts['scandic-qwerty'] = {
 };
 
 /* dvorak - from http://www.ludd.luth.se/~torger/se_dvorak.html */
-$.keyboard.layouts['scandic-dvorak'] = {
+$.keyboard.layouts['swedish-dvorak'] = {
 	'default' : [
 		"\u00a7 1 2 3 4 5 6 7 8 9 0 + \u0301 {bksp}",
 		"{tab} \u00f6 \u00e5 \u00e4 p y f g c r l q \u00a8",

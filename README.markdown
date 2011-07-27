@@ -72,6 +72,10 @@ Moved to the Wiki Pages: [Home][6] | [FAQ][7] | [Setup][8] | [Options][9] ( [Lay
 
 Only the latest changes will be shown below, see the wiki log to view older versions.
 
+####Version 1.8.6a
+* Added a Danish keyboard layout, thanks to Torben Junker Kjær!
+* Changed the name of the Scandinavian keyboard layout to Swedish. Also thanks to Torben.
+
 ####Version 1.8.6
 * Added `ui-keyboard-has-focus`
  * This class is added to the keyboard when it opens
