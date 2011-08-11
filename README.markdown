@@ -72,6 +72,9 @@ Moved to the Wiki Pages: [Home][6] | [FAQ][7] | [Setup][8] | [Options][9] ( [Lay
 
 Only the latest changes will be shown below, see the wiki log to view older versions.
 
+####Version 1.8.8
+* Fixed a bug where multiple "alwaysOpen" keyboards would not switch focus.
+
 ####Version 1.8.7
 * Fixed a bug that expanded the keyboard/moved it each time it is opened - one pixel at a time.
 

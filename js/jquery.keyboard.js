@@ -1,6 +1,6 @@
 /*
 jQuery UI Virtual Keyboard
-Version 1.8.7
+Version 1.8.8
 
 Author: Jeremy Satterfield
 Modified: Rob Garrison (Mottie on github)
@@ -171,6 +171,7 @@ $.keyboard = function(el, options){
 
 	base.focusOn = function(){
 		if (!base.isVisible || o.alwaysOpen) {
+			clearTimeout(base.timer);
 			base.reveal();
 			if (!o.usePreview) { setTimeout(function(){ base.preview.focus(); }, 100); } // needed for Opera
 		}
@@ -347,6 +348,14 @@ $.keyboard = function(el, options){
 			})
 			.bind('mouseup.keyboard', function(){
 				if (base.checkCaret) { base.lastCaret = base.$preview.caret(); }
+			})
+			.bind('blur.keyboard', function(e){
+				if (o.alwaysOpen) {
+					clearTimeout(base.timer);
+					base.timer = setTimeout(function(){
+						if ($(':focus')[0] !== base.el) { base.close(o.autoAccept); }
+					}, 300);
+				}
 			});
 
 		// If preventing paste, block context menu (right click)
@@ -587,15 +596,14 @@ $.keyboard = function(el, options){
 			clearTimeout(base.throttled);
 			base.$el
 				.trigger( (o.alwaysOpen) ? '' : 'beforeClose.keyboard', [ base, base.el, (accepted || false) ] )
-				.val( (accepted) ? base.checkCombos() : base.originalContent )
+				.val( (accepted) ? (o.alwaysOpen ? base.$el.val() : base.checkCombos()) : base.originalContent )
 				.scrollTop( base.el.scrollHeight )
 				.trigger( ((accepted || false) ? 'accepted.keyboard' : 'canceled.keyboard'), [ base, base.el ] )
 				.trigger( (o.alwaysOpen) ? '' : 'hidden.keyboard', [ base, base.el ] )
-				.removeClass('ui-keyboard-overlay-input') // added for IE overlay
-				.blur();
+				.removeClass('ui-keyboard-overlay-input'); // added for IE overlay
 			if (!o.usePreview && o.openOn !== '') {
 				// rebind input focus
-				base.$el.blur().bind( o.openOn + '.keyboard', function(){ base.focusOn(); });
+				base.$el.bind( o.openOn + '.keyboard', function(){ base.focusOn(); });
 			}
 			$('.ui-keyboard-overlay').remove(); // IE overlay
 			if ( !o.alwaysOpen ) {
@@ -851,7 +859,7 @@ $.keyboard = function(el, options){
 			.removeClass('ui-keyboard-input ui-widget-content ui-corner-all ui-keyboard-placeholder ui-keyboard-notallowed ui-keyboard-always-open')
 			.removeAttr('aria-haspopup')
 			.removeAttr('role')
-			.unbind( o.openOn + '.keyboard accepted.keyboard canceled.keyboard beforeClose.keyboard hidden.keyboard visible.keyboard keydown.keyboard keypress.keyboard keyup.keyboard contextmenu.keyboard initialized.keyboard')
+			.unbind( o.openOn + '.keyboard blur.keyboard accepted.keyboard canceled.keyboard beforeClose.keyboard hidden.keyboard visible.keyboard keydown.keyboard keypress.keyboard keyup.keyboard contextmenu.keyboard initialized.keyboard')
 			.removeData('keyboard');
 	};
 
