@@ -77,10 +77,10 @@ jQuery(function($) {
 		layout : 'custom',
 		display: {
 			'alt'    : 'AltGr:It\'s all Greek to me',
-			'meta1'  : '\u2666:russian lower-case', // Diamond with label that shows in the title (spaces are okay here)
-			'meta2'  : '\u2665:RUSSIAN upper-case', // Heart
-			'meta3'  : '\u2663:zodiac',             // Club
-			'meta99' : '\u2660:numbers'             // Spade
+			'meta1'  : '\u2666:end of alphabet', // Diamond with label that shows in the title (spaces are okay here)
+			'meta2'  : '\u2665:Russian',         // Heart
+			'meta3'  : '\u2663:zodiac',          // Club
+			'meta99' : '\u2660:numbers'          // Spade
 		},
 		customLayout: {
 			'default' : [
@@ -106,11 +106,31 @@ jQuery(function($) {
 				'{bksp} {sp:1} {accept} {cancel}'
 			],
 			'meta1' : [
-				'\u0430 \u0431 \u0432 \u0433 \u0434 \u0435 \u0436', // lower case Russian
+				't u v w x y z', // lower case end of alphabet
+				'{shift} {alt} {meta1} {meta2} {meta3} {meta99}',
+				'{bksp} {sp:1} {accept} {cancel}'
+			],
+			'meta1-shift' : [
+				'T U V W X Y Z', // upper case
+				'{shift} {alt} {meta1} {meta2} {meta3} {meta99}',
+				'{bksp} {sp:1} {accept} {cancel}'
+			],
+			'meta1-alt' : [
+				'0 9 8 7 6 5 4', // numbers
+				'{shift} {alt} {meta1} {meta2} {meta3} {meta99}',
+				'{bksp} {sp:1} {accept} {cancel}'
+			],
+			'meta1-alt-shift' : [
+				') ( * & ^ % $', // shifted numbers
 				'{shift} {alt} {meta1} {meta2} {meta3} {meta99}',
 				'{bksp} {sp:1} {accept} {cancel}'
 			],
 			'meta2' : [
+				'\u0430 \u0431 \u0432 \u0433 \u0434 \u0435 \u0436', // lower case Russian
+				'{shift} {alt} {meta1} {meta2} {meta3} {meta99}',
+				'{bksp} {sp:1} {accept} {cancel}'
+			],
+			'meta2-shift' : [
 				'\u0410 \u0411 \u0412 \u0413 \u0414 \u0415 \u0416', // upper case Russian
 				'{shift} {alt} {meta1} {meta2} {meta3} {meta99}',
 				'{bksp} {sp:1} {accept} {cancel}'
@@ -259,7 +279,7 @@ jQuery(function($) {
 	});
 	$('#meta-type').click(function(){
 		var meta = $('#meta').getkeyboard();
-		meta.reveal().typeIn('aBcD11123\u2648\u2649', 700, function(){ meta.accept(); alert('all done!'); });
+		meta.reveal().typeIn('aBcD1112389\u2648\u2649', 700, function(){ meta.accept(); alert('all done!'); });
 		return false;
 	});
 

@@ -180,29 +180,19 @@
 					if (set.attr('name')) {
 						// get meta key name
 						meta = set.attr('name');
-						// reset back to default keys
-						if (meta === 'default'){
-							base.metaActive = base.shiftActive = base.altActive = false;
-							base.showKeySet();
 
-							// Meta Key: If it's a meta key we have to do something a little
-							// different because "meta" will have a number following it
-						} else if (meta.match('meta')){
-							base.metaActive = true;
-							// make the plugin think we're passing it an jQuery object with a name
-							base.showKeySet({ name : '_' + meta});
-
-							// Shift or Alt key
-						} else if ($.keyboard.keyaction.hasOwnProperty(meta)) {
-							$.keyboard.keyaction[meta](base);
-						}
+						// show correct key set
+						base.shiftActive = /shift/.test(meta);
+						base.altActive = /alt/.test(meta);
+						base.metaActive = (meta).match(/meta\d+/) || false;
+						// make the plugin think we're passing it a jQuery object with a name
+						base.showKeySet({ name : '_' + base.metaActive});
 
 						// Add the key
 						base.typing_simulateKey(key,txt);
-
-						// Key doesn't exist on the keyboard, so just enter it
 					} else {
 						if (!base.typing_event) {
+							// Key doesn't exist on the keyboard, so just enter it
 							base.insertText(txt);
 							base.checkCombos();
 						}

@@ -5,8 +5,9 @@ Originally posted by Jeremy Satterfield in his [blog][1], [jQuery plugins][2] an
 * An on-screen virtual keyboard embedded within the browser window which will popup when a specified entry field is focused.
 * The user can then type and preview their input before Accepting or Canceling.
 * Add custom keyboard layouts easily.
-* Add up to four standard key sets to each layout that use the shift and alt keys.
+* Add up to four standard key sets to each layout that use the shift and alt keys (default, shift, alt and alt-shift).
 * Add any number of optional modifier keys (meta keys) to add more key sets.
+* Each meta key set also includes the shift, alt and alt-shift keysets - New in version 1.8.9.
 * Position the keyboard in any location around the element, or target another element on the page.
 * Easily modify the key text to any language or symbol.
 * Allow direct input or lock the preview window.
@@ -24,8 +25,8 @@ Originally posted by Jeremy Satterfield in his [blog][1], [jQuery plugins][2] an
 * Enable, disable or add more diacritic functionality as desired.
 * Use callbacks and event triggers that occur when the keyboard is open or closed and when the content has changed, been accepted or canceled.
 * ARIA support (may not be fully implemented)
-* As jQuery UI is a dependancy, this plugin's styling will automatically match the selected jQuery UI theme with the exception of the required CSS listed below.
-* Built in watermarking. It emulates HTML5's placeholder if the browser doesn't support it.
+* As jQuery UI is a dependancy, this plugin's styling will automatically match the selected jQuery UI theme with the exception of the required CSS found in the keyboard.css file.
+* Built in watermarking. It emulates HTML5's placeholder, if the browser doesn't support it.
 * Typing extension allows you to simulate typing into the keyboard for demo purposes or to assist user input.
 * Autocomplete extension will integrate this keyboard plugin with jQuery UI's autocomplete widget.
 * Multiple region specific keyboard layouts included in a separate directory. This is a work in progress and slowly growing.
@@ -71,6 +72,12 @@ Moved to the Wiki Pages: [Home][6] | [FAQ][7] | [Setup][8] | [Options][9] ( [Lay
 ###Change Log
 
 Only the latest changes will be shown below, see the wiki log to view older versions.
+
+####Version 1.8.9
+* Added shift, alt and shift-alt keysets to meta keysets.
+ * When adding these keysets to the layout, use `meta#`, `meta#-shift`, `meta#-alt` and `meta#-alt-shift`.
+ * Enhancement request from [pascal-bach](https://github.com/pascal-bach) in [issue #17](https://github.com/Mottie/Keyboard/issues/17), thanks for the suggestion!
+ * Updated the [Custom: Meta Sets](http://mottie.github.com/Keyboard/) demo to reflect these enhancements. 
 
 ####Version 1.8.8
 * Fixed a bug where multiple "alwaysOpen" keyboards would not switch focus.

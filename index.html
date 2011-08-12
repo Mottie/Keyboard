@@ -277,10 +277,10 @@ $('#meta')
   layout: 'custom',
   display: {
    'alt'    : 'AltGr:It\'s all Greek to me',
-   'meta1'  : '\u2666:russian lower-case', <span class="comment">// Diamond with label that shows in the title (spaces are okay here)</span>
-   'meta2'  : '\u2665:RUSSIAN upper-case', <span class="comment">// Heart</span>
-   'meta3'  : '\u2663:zodiac',             <span class="comment">// Club</span>
-   'meta99' : '\u2660:numbers'             <span class="comment">// Spade</span>
+   'meta1'  : '\u2666:end of alphabet', <span class="comment">// Diamond with label that shows in the title (spaces are okay here)</span>
+   'meta2'  : '\u2665:Russian',         <span class="comment">// Heart</span>
+   'meta3'  : '\u2663:zodiac',          <span class="comment">// Club</span>
+   'meta99' : '\u2660:numbers'          <span class="comment">// Spade</span>
   },
   customLayout: {
    'default' : [
@@ -306,11 +306,31 @@ $('#meta')
     '{bksp} {sp:1} {accept} {cancel}'
    ],
    'meta1' : [
-    '\u0430 \u0431 \u0432 \u0433 \u0434 \u0435 \u0436', <span class="comment">// lower case Russian</span>
+    't u v w x y z', <span class="comment">// lower case end of alphabet</span>
+    '{shift} {alt} {meta1} {meta2} {meta3} {meta99}',
+    '{bksp} {sp:1} {accept} {cancel}'
+   ],
+   'meta1-shift' : [
+    'T U V W X Y Z', <span class="comment">// upper case</span>
+    '{shift} {alt} {meta1} {meta2} {meta3} {meta99}',
+    '{bksp} {sp:1} {accept} {cancel}'
+   ],
+   'meta1-alt' : [
+    '0 9 8 7 6 5 4', <span class="comment">// numbers</span>
+    '{shift} {alt} {meta1} {meta2} {meta3} {meta99}',
+    '{bksp} {sp:1} {accept} {cancel}'
+   ],
+   'meta1-alt-shift' : [
+    ') ( * & ^ % $', <span class="comment">// shifted numbers</span>
     '{shift} {alt} {meta1} {meta2} {meta3} {meta99}',
     '{bksp} {sp:1} {accept} {cancel}'
    ],
    'meta2' : [
+    '\u0430 \u0431 \u0432 \u0433 \u0434 \u0435 \u0436', <span class="comment">// lower case Russian</span>
+    '{shift} {alt} {meta1} {meta2} {meta3} {meta99}',
+    '{bksp} {sp:1} {accept} {cancel}'
+   ],
+   'meta2-shift' : [
     '\u0410 \u0411 \u0412 \u0413 \u0414 \u0415 \u0416', <span class="comment">// upper case Russian</span>
     '{shift} {alt} {meta1} {meta2} {meta3} {meta99}',
     '{bksp} {sp:1} {accept} {cancel}'
@@ -332,7 +352,7 @@ $('#meta')
 <span class="ct">Script - typing extension
 =======</span>
 var meta = $('#meta').getkeyboard();
-meta.reveal().typeIn('aBcD11123\u2648\u2649', 700, function(){ meta.accept(); alert('all done!'); });</code></pre>
+meta.reveal().typeIn('aBcD1112389\u2648\u2649', 700, function(){ meta.accept(); alert('all done!'); });</code></pre>
 		</div>
 	</div>
 

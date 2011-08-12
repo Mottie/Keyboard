@@ -1,6 +1,6 @@
 /*
 jQuery UI Virtual Keyboard
-Version 1.8.8
+Version 1.8.9
 
 Author: Jeremy Satterfield
 Modified: Rob Garrison (Mottie on github)
@@ -109,8 +109,9 @@ $.keyboard = function(el, options){
 
 		// Shift and Alt key toggles, sets is true if a layout has more than one keyset - used for mousewheel message
 		base.shiftActive = base.altActive = base.metaActive = base.sets = false;
+		base.lastKeyset = [false, false, false]; // [shift, alt, meta]
 		// Class names of the basic key set - meta keysets are handled by the keyname
-		base.rows = ['ui-keyboard-keyset-default', 'ui-keyboard-keyset-shift', 'ui-keyboard-keyset-alt', 'ui-keyboard-keyset-alt-shift' ];
+		base.rows = ['', '-shift', '-alt', '-alt-shift' ];
 		base.acceptedKeys = [];
 		base.mappedKeys = {}; // for remapping manually typed in keys
 		base.msie = $.browser.msie; // IE flag, used for caret positioning
@@ -489,26 +490,35 @@ $.keyboard = function(el, options){
 	};
 
 	base.showKeySet = function(el){
-		var key, toShow;
-		base.$keyboard.find('.ui-keyboard-actionkey[name*=key_meta]').removeClass(o.actionClass);
+		var key = '',
+		toShow = (base.shiftActive) ? 1 : 0;
+		toShow += (base.altActive) ? 2 : 0;
+		// check meta key set
 		if (base.metaActive) {
-			key = el.name.split('_')[1];
-			if (!base.$keyboard.find('.ui-keyboard-keyset-' + key ).length) { return; } // keyset doesn't exist
-			base.$keyboard
-				.find('.ui-keyboard-alt, .ui-keyboard-shift, .ui-keyboard-actionkey[class*=meta]').removeClass(o.actionClass).end()
-				.find('.ui-keyboard-actionkey.ui-keyboard-' + key).addClass(o.actionClass).end()
-				.find('.ui-keyboard-keyset').hide().end()
-				.find('.ui-keyboard-keyset-' + key ).show();
-		} else {
-			toShow = (base.shiftActive) ? 1 : 0;
-			toShow += (base.altActive) ? 2 : 0;
-			if (!base.$keyboard.find('.' + base.rows[toShow]).length) { return; } // keyset doesn't exist
-			base.$keyboard
-				.find('.ui-keyboard-alt')[(base.altActive) ? 'addClass' : 'removeClass'](o.actionClass).end()
-				.find('.ui-keyboard-shift')[(base.shiftActive) ? 'addClass' : 'removeClass'](o.actionClass).end()
-				.find('.ui-keyboard-keyset').hide().end()
-				.find('.' + base.rows[toShow]).show();
+			key = (el && el.name && el.name.match('meta') ? el.name.split('_')[1] : '');
+			// save active meta keyset name
+			if (key === '') {
+				key = (base.metaActive === true) ? '' : base.metaActive;
+			} else {
+				base.metaActive = key;
+			}
 		}
+		key = (toShow === 0 && !base.metaActive) ? '-default' : (key === '') ? '' : '-' + key;
+		if (!base.$keyboard.find('.ui-keyboard-keyset' + key + base.rows[toShow]).length) {
+			// keyset doesn't exist, so restore last keyset settings
+			base.shiftActive = base.lastKeyset[0];
+			base.altActive = base.lastKeyset[1];
+			base.metaActive = base.lastKeyset[2];
+			return;
+		}
+		base.$keyboard
+			.find('.ui-keyboard-alt, .ui-keyboard-shift, .ui-keyboard-actionkey[class*=meta]').removeClass(o.actionClass).end()
+			.find('.ui-keyboard-alt')[(base.altActive) ? 'addClass' : 'removeClass'](o.actionClass).end()
+			.find('.ui-keyboard-shift')[(base.shiftActive) ? 'addClass' : 'removeClass'](o.actionClass).end()
+			.find('.ui-keyboard-keyset').hide().end()
+			.find('.ui-keyboard-keyset' + key + base.rows[toShow]).show().end()
+			.find('.ui-keyboard-actionkey.ui-keyboard' + key).addClass(o.actionClass);
+		base.lastKeyset = [ base.shiftActive, base.altActive, base.metaActive ];
 	};
 
 	// check for key combos (dead keys)
@@ -875,7 +885,6 @@ $.keyboard = function(el, options){
 		},
 		alt : function(base,el){
 			base.altActive = !base.altActive;
-			base.metaActive = false;
 			base.showKeySet(el);
 		},
 		bksp : function(base){
@@ -908,7 +917,6 @@ $.keyboard = function(el, options){
 		},
 		shift : function(base,el){
 			base.shiftActive = !base.shiftActive;
-			base.metaActive = false;
 			base.showKeySet(el);
 		},
 		sign : function(base){
