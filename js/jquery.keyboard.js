@@ -472,6 +472,12 @@ $.keyboard = function(el, options){
 			.scrollLeft(scrL);
 
 		if (base.checkCaret) { base.lastCaret = { start: t, end: t }; } // save caret in case of bksp
+		
+		// If capslock is enabled we don't need to revert the shift key
+		if (!o.enableCapsLock) {
+			base.shiftActive = false;
+			base.showKeySet(el);
+		}
 	};
 
 	// check max length
@@ -1069,6 +1075,9 @@ $.keyboard = function(el, options){
 			'tab'    : '\u21e5 Tab:Tab'       // \u21b9 is the true tab symbol (left & right arrows)
 		},
 
+		// If set to ture the Shift key stays on until it is pressed again, otherwise it will revert to inactive after each key press
+		enableCapsLock : false,
+		
 		// Message added to the key title while hovering, if the mousewheel plugin exists
 		wheelMessage : 'Use mousewheel to see other keys',
 
