@@ -73,6 +73,14 @@ Moved to the Wiki Pages: [Home][6] | [FAQ][7] | [Setup][8] | [Options][9] ( [Lay
 
 Only the latest changes will be shown below, see the wiki log to view older versions.
 
+####Version 1.8.10
+* Added caps lock key functionality
+ * No caps lock key was added to the keyboard. The existing shift key should show the status of the caps lock (inconsistently).
+ * There is no reliable method to detect the state of the caps lock key, except while typing the normal alphabet.
+ * The displayed key set will properly update when the user starts typing.
+ * Pressing the shift key on the keyboard will override the key set shown; but if the caps lock is enabled, the shift state will correct itself when typing is resumed.
+ * Using a mouse still functions as before - clicking the shift key toggles its state.
+
 ####Version 1.8.9
 * Added shift, alt and shift-alt keysets to meta keysets.
  * When adding these keysets to the layout, use `meta#`, `meta#-shift`, `meta#-alt` and `meta#-alt-shift`.

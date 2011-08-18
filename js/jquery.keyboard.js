@@ -1,6 +1,6 @@
 /*
 jQuery UI Virtual Keyboard
-Version 1.8.9
+Version 1.8.10
 
 Author: Jeremy Satterfield
 Modified: Rob Garrison (Mottie on github)
@@ -108,7 +108,7 @@ $.keyboard = function(el, options){
 		base.options = o = $.extend(true, {}, $.keyboard.defaultOptions, options);
 
 		// Shift and Alt key toggles, sets is true if a layout has more than one keyset - used for mousewheel message
-		base.shiftActive = base.altActive = base.metaActive = base.sets = false;
+		base.shiftActive = base.altActive = base.metaActive = base.sets = base.capsLock = false;
 		base.lastKeyset = [false, false, false]; // [shift, alt, meta]
 		// Class names of the basic key set - meta keysets are handled by the keyname
 		base.rows = ['', '-shift', '-alt', '-alt-shift' ];
@@ -268,12 +268,15 @@ $.keyboard = function(el, options){
 		base.preview = base.$preview[0];
 		base.$decBtn = base.$keyboard.find('.ui-keyboard-dec');
 		base.wheel = $.isFunction( $.fn.mousewheel ); // is mousewheel plugin loaded?
-		base.alwaysAllowed = [33,34,35,36,37,38,39,40,45,46]; // keyCode of keys always allowed to be typed - page up & down, end, home, arrow, insert & delete keys
+		base.alwaysAllowed = [20,33,34,35,36,37,38,39,40,45,46]; // keyCode of keys always allowed to be typed - caps lock, page up & down, end, home, arrow, insert & delete keys
 		base.lastCaret = { start:0, end:0 };
 		base.$preview
 			.bind('keypress.keyboard', function(e){
 				var k = String.fromCharCode(e.charCode || e.which);
 				if (base.checkCaret) { base.lastCaret = base.$preview.caret(); }
+
+				// update caps lock - can only do this while typing =(
+				base.capsLock = (((k >= 65 && k <= 90) && !e.shiftKey) || ((k >= 97 && k <= 122) && e.shiftKey)) ? true : false;
 
 				// restrict input - keyCode in keypress special keys: see http://www.asquare.net/javascript/tests/KeyCode.html
 				if (o.restrictInput) {
@@ -294,6 +297,7 @@ $.keyboard = function(el, options){
 					}
 				}
 				base.checkMaxLength();
+
 			})
 			.bind('keyup.keyboard', function(e){
 				switch (e.which) {
@@ -336,6 +340,12 @@ $.keyboard = function(el, options){
 							base.close(true);
 							return false;
 						}
+						break;
+
+					// Show capsLock
+					case 20:
+						base.shiftActive = base.capsLock = !base.capsLock;
+						base.showKeySet();
 						break;
 
 					case 86:
@@ -472,6 +482,7 @@ $.keyboard = function(el, options){
 			.scrollLeft(scrL);
 
 		if (base.checkCaret) { base.lastCaret = { start: t, end: t }; } // save caret in case of bksp
+
 	};
 
 	// check max length
@@ -495,7 +506,8 @@ $.keyboard = function(el, options){
 		toShow += (base.altActive) ? 2 : 0;
 		// check meta key set
 		if (base.metaActive) {
-			key = (el && el.name && el.name.match('meta') ? el.name.split('_')[1] : '');
+			// the name attribute contains the meta set # "key_meta99"; replace "_" only because of typing extension
+			key = (el && el.name && el.name.match('meta') ? el.name.replace(/(key_|_)/,'') : '');
 			// save active meta keyset name
 			if (key === '') {
 				key = (base.metaActive === true) ? '' : base.metaActive;
@@ -916,7 +928,8 @@ $.keyboard = function(el, options){
 			base.showKeySet(el);
 		},
 		shift : function(base,el){
-			base.shiftActive = !base.shiftActive;
+			base.shiftActive = (base.capsLock) ? true : !base.shiftActive;
+			base.lastKeyset[0] = base.shiftActive;
 			base.showKeySet(el);
 		},
 		sign : function(base){
