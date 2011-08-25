@@ -1,6 +1,6 @@
 /*
 jQuery UI Virtual Keyboard
-Version 1.8.10
+Version 1.8.11
 
 Author: Jeremy Satterfield
 Modified: Rob Garrison (Mottie on github)
@@ -345,7 +345,7 @@ $.keyboard = function(el, options){
 					// Show capsLock
 					case 20:
 						base.shiftActive = base.capsLock = !base.capsLock;
-						base.showKeySet();
+						base.showKeySet(this);
 						break;
 
 					case 86:
@@ -391,6 +391,10 @@ $.keyboard = function(el, options){
 				} else if (typeof key.action !== 'undefined') {
 					txt = (base.wheel && !$(this).is('.ui-keyboard-actionkey')) ? key.curTxt : key.action;
 					base.insertText(txt);
+					if (!base.capsLock && !o.stickyShift && !e.shiftKey) {
+						base.shiftActive = false;
+						base.showKeySet(this);
+					}
 				}
 				base.checkCombos();
 				base.checkMaxLength();
@@ -504,6 +508,7 @@ $.keyboard = function(el, options){
 		var key = '',
 		toShow = (base.shiftActive) ? 1 : 0;
 		toShow += (base.altActive) ? 2 : 0;
+		if (!base.shiftActive) { base.capsLock = false; }
 		// check meta key set
 		if (base.metaActive) {
 			// the name attribute contains the meta set # "key_meta99"; replace "_" only because of typing extension
@@ -527,6 +532,7 @@ $.keyboard = function(el, options){
 			.find('.ui-keyboard-alt, .ui-keyboard-shift, .ui-keyboard-actionkey[class*=meta]').removeClass(o.actionClass).end()
 			.find('.ui-keyboard-alt')[(base.altActive) ? 'addClass' : 'removeClass'](o.actionClass).end()
 			.find('.ui-keyboard-shift')[(base.shiftActive) ? 'addClass' : 'removeClass'](o.actionClass).end()
+			.find('.ui-keyboard-lock')[(base.capsLock) ? 'addClass' : 'removeClass'](o.actionClass).end()
 			.find('.ui-keyboard-keyset').hide().end()
 			.find('.ui-keyboard-keyset' + key + base.rows[toShow]).show().end()
 			.find('.ui-keyboard-actionkey.ui-keyboard' + key).addClass(o.actionClass);
@@ -923,13 +929,16 @@ $.keyboard = function(el, options){
 			if (base.el.tagName === 'INPUT') { return; } // ignore enter key in input
 			base.insertText('\r\n');
 		},
+		lock : function(base,el){
+			base.lastKeyset[0] = base.shiftActive = base.capsLock = !base.capsLock;
+			base.showKeySet(el);
+		},
 		meta : function(base,el){
 			base.metaActive = ($(el).is('.' + base.options.actionClass)) ? false : true;
 			base.showKeySet(el);
 		},
 		shift : function(base,el){
-			base.shiftActive = (base.capsLock) ? true : !base.shiftActive;
-			base.lastKeyset[0] = base.shiftActive;
+			base.lastKeyset[0] = base.shiftActive = !base.shiftActive;
 			base.showKeySet(el);
 		},
 		sign : function(base){
@@ -1074,6 +1083,7 @@ $.keyboard = function(el, options){
 			'dec'    : '.:Decimal',           // decimal point for num pad (optional), change '.' to ',' for European format
 			'e'      : '\u21b5:Enter',        // down, then left arrow - enter symbol
 			'enter'  : 'Enter:Enter',
+			'lock'   : '\u21ea Lock:Caps Lock', // caps lock
 			's'      : '\u21e7:Shift',        // thick hollow up arrow
 			'shift'  : 'Shift:Shift',
 			'sign'   : '\u00b1:Change Sign',  // +/- sign for num pad
@@ -1098,6 +1108,9 @@ $.keyboard = function(el, options){
 		// Prevent keys not in the displayed keyboard from being typed in
 		restrictInput: false,
 
+		// If false, the shift key will remain active until the next key is (mouse) clicked on; if true it will stay active until pressed again
+		stickyShift  : true,
+
 		// Prevent pasting content into the area
 		preventPaste : false,
 
@@ -1115,14 +1128,10 @@ $.keyboard = function(el, options){
 		useCombos : true,
 		combos    : {
 			'`' : { a:"\u00e0", A:"\u00c0", e:"\u00e8", E:"\u00c8", i:"\u00ec", I:"\u00cc", o:"\u00f2", O:"\u00d2", u:"\u00f9", U:"\u00d9", y:"\u1ef3", Y:"\u1ef2" }, // grave
-			"'" : { a:"\u00e1", A:"\u00c1", e:"\u00e9", E:"\u00c9", i:"\u00ed", I:"\u00cd", o:"\u00f3", O:"\u00d3", u:"\u00fa", U:"\u00da", y:"\u00fd", Y:"\u00dd", c:"\u00e7", C:"\u00c7" }, // acute & cedilla
+			"'" : { a:"\u00e1", A:"\u00c1", e:"\u00e9", E:"\u00c9", i:"\u00ed", I:"\u00cd", o:"\u00f3", O:"\u00d3", u:"\u00fa", U:"\u00da", y:"\u00fd", Y:"\u00dd" }, // acute & cedilla
 			'"' : { a:"\u00e4", A:"\u00c4", e:"\u00eb", E:"\u00cb", i:"\u00ef", I:"\u00cf", o:"\u00f6", O:"\u00d6", u:"\u00fc", U:"\u00dc", y:"\u00ff", Y:"\u0178" }, // umlaut/trema
 			'^' : { a:"\u00e2", A:"\u00c2", e:"\u00ea", E:"\u00ca", i:"\u00ee", I:"\u00ce", o:"\u00f4", O:"\u00d4", u:"\u00fb", U:"\u00db", y:"\u0177", Y:"\u0176" }, // circumflex
-			'~' : { a:"\u00e3", A:"\u00c3", e:"\u1ebd", E:"\u1ebc", i:"\u0129", I:"\u0128", o:"\u00f5", O:"\u00d5", u:"\u0169", U:"\u0168", y:"\u1ef9", Y:"\u1ef8", n:"\u00f1", N:"\u00d1" }, // tilde
-			'a' : { e:"\u00e6" }, // ae ligature
-			'A' : { E:"\u00c6" },
-			'o' : { e:"\u0153" }, // oe ligature
-			'O' : { E:"\u0152" }
+			'~' : { a:"\u00e3", A:"\u00c3", e:"\u1ebd", E:"\u1ebc", i:"\u0129", I:"\u0128", o:"\u00f5", O:"\u00d5", u:"\u0169", U:"\u0168", y:"\u1ef9", Y:"\u1ef8", n:"\u00f1", N:"\u00d1" } // tilde
 		},
 
 		// *** Methods ***

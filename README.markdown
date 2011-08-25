@@ -73,6 +73,22 @@ Moved to the Wiki Pages: [Home][6] | [FAQ][7] | [Setup][8] | [Options][9] ( [Lay
 
 Only the latest changes will be shown below, see the wiki log to view older versions.
 
+####Version 1.8.11
+* Added `{lock}` action toggle key.
+ * This key will act like a caps lock key, but as described in the last update, its status does not always match the actual caps lock key
+ * This behaviour could be very confusing to users, so I decided not to include the caps lock key in any of the default keyboards. But it is available.
+ * When active, the shift key set will be visible until the caps lock or shift key is pressed.
+* Added `stickyShift` option
+ * This option only applies to the virtual keyboard keys (mouse clicks), the actual keyboard overrides this option.
+ * When true, the shift key will behave as it always has - it will toggle the shift key set until pressed again.
+ * If false, the shift key set will remain active until after the next key is clicked on.
+* Removed some uncommon default diacritics & ligatures
+ * they can easily be added back using the [`combos` option](https://github.com/Mottie/Keyboard/wiki/Useability) - the regex wasn't changed
+ * ' + c = ç, ' + C = Ç
+ * ~ + n = ñ, ~ + N = Ñ
+ * a + e = æ, A + E = Æ
+ * o + e = œ, O + E = Œ
+
 ####Version 1.8.10
 * Added caps lock key functionality
  * No caps lock key was added to the keyboard. The existing shift key should show the status of the caps lock (inconsistently).
