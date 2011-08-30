@@ -192,7 +192,7 @@ jQuery(function($) {
 				'{a} {sp:1} {c} {sp:1} {s}'
 			]
 		},
-		// Part of the standard combos - added here as an example
+		// Added here as an example on how to add combos
 		combos : {
 			'a' : { e: '\u00e6' },
 			'A' : { E: '\u00c6' }

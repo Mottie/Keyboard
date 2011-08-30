@@ -73,6 +73,13 @@ Moved to the Wiki Pages: [Home][6] | [FAQ][7] | [Setup][8] | [Options][9] ( [Lay
 
 Only the latest changes will be shown below, see the wiki log to view older versions.
 
+####Version 1.8.12
+* Updated the caret script
+ * It will now differentiate IE9 from older versions, as IE9 behaves like the other modern browsers.
+ * There are still problems with Opera, IE7 and IE8 in textareas with multiple carriage returns; but it's a little bit easier to deal with.
+ * Safari still does not return the correct caret position in the [QWERTY Text Area](http://mottie.github.com/Keyboard/) demo with locked input (readonly is applied to the textarea). So any entered text will always be positioned at the start of the text area. I'll try to figure out a work around for this.
+* Ctrl (or Command) Y and Z are now allowed keys to enable use of the redo and undo keyboard shortcuts.
+
 ####Version 1.8.11
 * Added `{lock}` action toggle key.
  * This key will act like a caps lock key, but as described in the last update, its status does not always match the actual caps lock key

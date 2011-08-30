@@ -1,6 +1,6 @@
 /*
 jQuery UI Virtual Keyboard
-Version 1.8.11
+Version 1.8.12
 
 Author: Jeremy Satterfield
 Modified: Rob Garrison (Mottie on github)
@@ -114,8 +114,9 @@ $.keyboard = function(el, options){
 		base.rows = ['', '-shift', '-alt', '-alt-shift' ];
 		base.acceptedKeys = [];
 		base.mappedKeys = {}; // for remapping manually typed in keys
-		base.msie = $.browser.msie; // IE flag, used for caret positioning
-		base.opera = $.browser.opera; // opera flag, also for caret positioning
+		$('<!--[if lte IE 8]><script>$("body").addClass("oldie");</script><![endif]-->').appendTo('body').remove();
+		base.msie = $('body').is('.oldie'); // IE flag, used for caret positioning
+		base.opera = window.opera && window.opera.toString() === '[object Opera]'; // opera flag (from Modernizr), also for caret positioning
 		base.inPlaceholder = base.$el.attr('placeholder') || '';
 		base.watermark = (typeof(document.createElement('input').placeholder) !== 'undefined' && base.inPlaceholder !== ''); // html 5 placeholder/watermark
 		base.regex = $.keyboard.comboRegex; // save default regex (in case loading another layout changes it)
@@ -237,8 +238,8 @@ $.keyboard = function(el, options){
 		// add roughly 4px to get line height from font height, works well for font-sizes from 14-36px.
 		base.lineHeight = parseInt( base.$preview.css('lineHeight'), 10) || parseInt(base.$preview.css('font-size') ,10) + 4;
 
-		// IE & Opera caret haxx0rs
-		if (base.msie || base.opera){
+		// IE caret haxx0rs
+		if (base.msie){
 			// ensure caret is at the end of the text (needed for IE)
 			s = base.originalContent.length;
 			p = { start: s, end: s };
@@ -268,7 +269,8 @@ $.keyboard = function(el, options){
 		base.preview = base.$preview[0];
 		base.$decBtn = base.$keyboard.find('.ui-keyboard-dec');
 		base.wheel = $.isFunction( $.fn.mousewheel ); // is mousewheel plugin loaded?
-		base.alwaysAllowed = [20,33,34,35,36,37,38,39,40,45,46]; // keyCode of keys always allowed to be typed - caps lock, page up & down, end, home, arrow, insert & delete keys
+		// keyCode of keys always allowed to be typed - caps lock, page up & down, end, home, arrow, insert & delete keys
+		base.alwaysAllowed = [20,33,34,35,36,37,38,39,40,45,46];
 		base.lastCaret = { start:0, end:0 };
 		base.$preview
 			.bind('keypress.keyboard', function(e){
@@ -283,8 +285,8 @@ $.keyboard = function(el, options){
 					// allow navigation keys to work - Chrome doesn't fire a keypress event (8 = bksp)
 					if ( (e.which === 8 || e.which === 0) && $.inArray( e.keyCode, base.alwaysAllowed ) ) { return; }
 					if ($.inArray(k, base.acceptedKeys) === -1) { e.preventDefault(); } // quick key check
-				} else if ( (e.ctrlKey || e.metaKey) && (e.which === 97 || e.which === 99 || e.which === 118 || e.which === 120) ) {
-					// Allow select all (ctrl-a:97), copy (ctrl-c:99), paste (ctrl-v:118) & cut (ctrl-x:120); meta key for mac
+				} else if ( (e.ctrlKey || e.metaKey) && (e.which === 97 || e.which === 99 || e.which === 118 || (e.which >= 120 && e.which <=122)) ) {
+					// Allow select all (ctrl-a:97), copy (ctrl-c:99), paste (ctrl-v:118) & cut (ctrl-x:120) & redo (ctrl-y:121)& undo (ctrl-z:122); meta key for mac
 					return;
 				}
 				// Mapped Keys - allows typing on a regular keyboard and the mapped key is entered
@@ -456,19 +458,13 @@ $.keyboard = function(el, options){
 			scrT = base.$preview.scrollTop(),
 			len = val.length; // save original content length
 
-		// silly caret hacks (IE & Opera)... it should work correctly, but navigating using arrow keys in a textarea is still difficult
+		// silly IE caret hacks... it should work correctly, but navigating using arrow keys in a textarea is still difficult
 		if (pos.end < pos.start) { pos.end = pos.start; } // in IE, pos.end can be zero after input loses focus
 		if (pos.start > len) { pos.end = pos.start = len; }
 
 		if (base.preview.tagName === 'TEXTAREA') {
 			// This makes sure the caret moves to the next line after clicking on enter (manual typing works fine)
 			if (base.msie && val.substr(pos.start, 1) === '\n') { pos.start += 1; pos.end += 1; }
-			// Opera still needs to subtract out the carriage returns
-			if ( (base.msie || base.opera) && val.substr(0,pos.start).split('\n').length - 1 > 0) {
-				t = val.substr(0,pos.start).split('\n').length - 1;
-				pos.start += t;
-				pos.end += t;
-			}
 			// Set scroll top so current text is in view - needed for virtual keyboard typing, not manual typing
 			// this doesn't appear to work correctly in Opera
 			h = (val.split('\n').length - 1);
@@ -481,7 +477,7 @@ $.keyboard = function(el, options){
 		scrL += parseInt(base.$preview.css('fontSize'),10) * (txt === 'bksp' ? -1 : 1);
 
 		base.$preview
-			.val( val.substr(0, pos.start - (bksp ? 1 : 0)) + txt + val.substr(pos.end) )
+			.val( base.$preview.val().substr(0, pos.start - (bksp ? 1 : 0)) + txt + base.$preview.val().substr(pos.end) )
 			.caret(t, t)
 			.scrollLeft(scrL);
 
@@ -547,17 +543,11 @@ $.keyboard = function(el, options){
 			pos = base.$preview.caret(),
 			len = val.length; // save original content length
 
-		// silly caret hacks (IE & Opera)... it should work correctly, but navigating using arrow keys in a textarea is still difficult
+		// silly IE caret hacks... it should work correctly, but navigating using arrow keys in a textarea is still difficult
 		if (pos.end < pos.start) { pos.end = pos.start; } // in IE, pos.end can be zero after input loses focus
 		if (pos.start > len) { pos.end = pos.start = len; }
 		// This makes sure the caret moves to the next line after clicking on enter (manual typing works fine)
 		if (base.msie && val.substr(pos.start, 1) === '\n') { pos.start += 1; pos.end += 1; }
-		// Opera still needs to subtract out the carriage returns
-		if ( (base.msie || base.opera) && val.substr(0,pos.start).split('\n').length - 1 > 0) {
-			t = val.substr(0,pos.start).split('\n').length - 1;
-			pos.start += t;
-			pos.end += t;
-		}
 
 		if (o.useCombos) {
 			// keep 'a' and 'o' in the regex for ae and oe ligature (æ,œ)
@@ -1160,57 +1150,73 @@ $.keyboard = function(el, options){
 
 })(jQuery);
 
-/*
- *
- * Copyright (c) 2010 C. F., Wong (<a href="http://cloudgen.w0ng.hk">Cloudgen Examplet Store</a>)
+/* Copyright (c) 2010 C. F., Wong (<a href="http://cloudgen.w0ng.hk">Cloudgen Examplet Store</a>)
  * Licensed under the MIT License:
  * http://www.opensource.org/licenses/mit-license.php
- *
  */
 (function($, len, createRange, duplicate){
 $.fn.caret = function(options,opt2) {
-	var s, start, e, end, selRange, range, stored_range, te, val,
-		selection = document.selection, t = this[0], sTop = t.scrollTop, browser = $.browser.msie;
-	if (typeof t === 'undefined') { return; }
-	if (typeof options === "number" && typeof opt2 === "number") {
+	if (typeof this[0] === 'undefined') { return; }
+	var n, s, start, e, end, selRange, range, stored_range, te, val,
+		selection = document.selection, t = this[0], sTop = t.scrollTop,
+		opera = window.opera && window.opera.toString() === '[object Opera]',
+		ss = typeof t.selectionStart !== 'undefined';
+	if (typeof options === 'number' && typeof opt2 === 'number') {
 		start = options;
 		end = opt2;
 	}
-	if (typeof start !== "undefined") {
-		if (browser){
+	if (typeof start !== 'undefined') {
+		if (ss){
+			// hack around Opera bug
+			if (t.tagName === 'TEXTAREA' && opera) {
+				val = this.val();
+				n = val.substring(0,start).split('\n')[len] - 1;
+				start += (n>0) ? n : 0;
+				end += (n>0) ? n : 0;
+			}
+			t.selectionStart=start;
+			t.selectionEnd=end;
+		} else {
 			selRange = t.createTextRange();
 			selRange.collapse(true);
 			selRange.moveStart('character', start);
 			selRange.moveEnd('character', end-start);
 			selRange.select();
-		} else {
-			t.selectionStart=start;
-			t.selectionEnd=end;
 		}
 		t.focus();
 		t.scrollTop = sTop;
 		return this;
 	} else {
-		if (browser) {
-			if (t.tagName.toLowerCase() !== "textarea") {
+		if (ss) {
+			s = t.selectionStart;
+			e = t.selectionEnd;
+			// hack around Opera bug (reported)
+			// try this demo - http://jsfiddle.net/vwb3c/ - keep entering carriage returns
+			if (t.tagName === 'TEXTAREA' && opera) {
 				val = this.val();
-				range = selection[createRange]()[duplicate]();
-				range.moveEnd("character", val[len]);
-				s = (range.text === "" ? val[len] : val.lastIndexOf(range.text));
-				range = selection[createRange]()[duplicate]();
-				range.moveStart("character", -val[len]);
-				e = range.text[len];
-			} else {
+				n = val.substring(0,s).split('\n')[len] - 1;
+				s += (n>0) ? -n : 0;
+				e += (n>0) ? -n : 0;
+			}
+		} else {
+			if (t.tagName === 'TEXTAREA') {
+				val = this.val();
 				range = selection[createRange]();
 				stored_range = range[duplicate]();
 				stored_range.moveToElementText(t);
 				stored_range.setEndPoint('EndToEnd', range);
-				s = stored_range.text[len] - range.text[len];
-				e = s + range.text[len];
+				// thanks to the awesome comments in the rangy plugin
+				s = stored_range.text.replace(/\r\n/g, '\r')[len];
+				e = s + range.text.replace(/\r\n/g, '\r')[len];
+			} else {
+				val = this.val().replace(/\r\n/g, '\r');
+				range = selection[createRange]()[duplicate]();
+				range.moveEnd('character', val[len]);
+				s = (range.text === '' ? val[len] : val.lastIndexOf(range.text));
+				range = selection[createRange]()[duplicate]();
+				range.moveStart('character', -val[len]);
+				e = range.text[len];
 			}
-		} else {
-			s = t.selectionStart;
-			e = t.selectionEnd;
 		}
 		te = t.value.substring(s,e);
 		return { start : s, end : e, text : te, replace : function(st){
@@ -1218,4 +1224,4 @@ $.fn.caret = function(options,opt2) {
 		}};
 	}
 };
-})(jQuery, "length", "createRange", "duplicate");
+})(jQuery, 'length', 'createRange', 'duplicate');
