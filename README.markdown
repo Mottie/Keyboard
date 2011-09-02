@@ -46,7 +46,7 @@ Moved to the Wiki Pages: [Home][6] | [FAQ][7] | [Setup][8] | [Options][9] ( [Lay
     * In a text area with multiple carriage returns, the caret positioning will be off when repositioning it with the mouse.
     * Using the right and left arrow keys to navigate through a text area with multiple carriage returns is problematic. The caret doesn't behave like in other browsers when moving from one line to the next. You can always reposition the caret using the mouse.
 * *Opera*: When pressing the tab key while inside a textarea, all browsers but Opera add the tab to the virtual keyboard textarea.
-* *Safari*: See the QWERTY Text Area demo with a locked input. While using the virtual keyboard to type, it enters the text in backwards! I can't see anyway to fix this as you can't differentiate webkit browsers (it works fine in Chrome).
+* *Safari*: See the QWERTY Text Area demo with a locked input. While using the virtual keyboard to type, it enters the text in backwards! This is because textareas with a "readonly" attribute always returns zero for the caret postion.
 * *Typing Extension*:
     * When pressing "Alt", the key set will change to the alt key set, but the focus will be moved to the browser menu. Pressing it quickly a second time will return the focus. This is build into the browser and it isn't possible (as far as I know) to automatically restore the window focus the first time alt is pressed.
     * Holding down the Alt key and trying to type is also not possible since the Windows OS is assuming you are trying to type a shortcut key to access the browser menu. You can still click the keys in the alt key set with the mouse.
@@ -72,6 +72,12 @@ Moved to the Wiki Pages: [Home][6] | [FAQ][7] | [Setup][8] | [Options][9] ( [Lay
 ###Change Log
 
 Only the latest changes will be shown below, see the wiki log to view older versions.
+
+####Version 1.8.13
+* Updates for changes brought up in [issue #20](https://github.com/Mottie/Keyboard/issues/20):
+  * Fixed the ability to switch to the base meta keyset if the meta set doesn't have a shift or alt key. Previously, it would just ignore the keyset change.
+  * When the `stickyShift` is `false`, switching to any meta key set will now release the shift key.
+  * Thanks for the suggestions Pascal-bach!
 
 ####Version 1.8.12
 * Updated the caret script

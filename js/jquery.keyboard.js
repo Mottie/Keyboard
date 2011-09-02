@@ -1,6 +1,6 @@
 /*
 jQuery UI Virtual Keyboard
-Version 1.8.12
+Version 1.8.13
 
 Author: Jeremy Satterfield
 Modified: Rob Garrison (Mottie on github)
@@ -514,6 +514,12 @@ $.keyboard = function(el, options){
 				key = (base.metaActive === true) ? '' : base.metaActive;
 			} else {
 				base.metaActive = key;
+			}
+			// if meta keyset doesn't have a shift or alt keyset, then show just the meta key set
+			if ( (!o.stickyShift && base.lastKeyset[2] !== base.metaActive) ||
+				( (base.shiftActive || base.altActive) && !base.$keyboard.find('.ui-keyboard-keyset-' + key + base.rows[toShow]).length) ) {
+				base.shiftActive = base.altActive = false;
+				toShow = 0;
 			}
 		}
 		key = (toShow === 0 && !base.metaActive) ? '-default' : (key === '') ? '' : '-' + key;
