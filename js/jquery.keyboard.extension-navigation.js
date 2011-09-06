@@ -53,6 +53,7 @@ $.fn.addNavigation = function(){
 						.find('.ui-keyboard-keyset:visible')
 						.find('.ui-keyboard-button[data-pos="' + base.nav[0] + ',' + base.nav[1] + '"]')
 						.trigger(base.options.keyBinding);
+					return false;
 				}
 			});
 

@@ -72,6 +72,9 @@ Moved to the Wiki Pages: [Home][6] | [FAQ][7] | [Setup][8] | [Options][9] ( [Lay
 
 Only the latest changes will be shown below, see the wiki log to view older versions.
 
+####Version 1.8.14.1
+* Fixed the navigation extension to not include a return key to the input area unintentionally.
+
 ####Version 1.8.14
 * Changed some of the data attributes for each virtual keyboard key
   * Added `data-pos` which contains the button's row and row-index - used by the navigation extension.
