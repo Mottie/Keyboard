@@ -1,5 +1,5 @@
 /*
- * jQuery UI Virtual Keyboard Autocomplete v1.1 for Keyboard v1.8+ only
+ * jQuery UI Virtual Keyboard Autocomplete v1.2 for Keyboard v1.8+ only
  *
  * By Rob Garrison (aka Mottie & Fudgey)
  * Dual licensed under the MIT and GPL licenses.
@@ -35,19 +35,15 @@ $.fn.addAutocomplete = function(){
 
 		// Setup
 		base.autocomplete_init = function(txt, delay, accept){
+
+			// visible event is fired before this extension is initialized, so check!
+			if (base.options.alwaysOpen && base.isVisible) {
+				base.autocomplete_setup();
+			}
+
 			base.$el
 				.bind('visible.keyboard',function(){
-					// look for autocomplete
-					base.$autocomplete = base.$el.data('autocomplete');
-					base.hasAutocomplete = (typeof(base.$autocomplete) === 'undefined') ? false : (base.$autocomplete.options.disabled) ? false : true;
-					// only bind to keydown once
-					if (base.hasAutocomplete && !base.autocomplete_bind) {
-						base.$preview.bind('keydown.keyboard',function(e){
-							// send keys to the autocomplete widget (arrow, pageup/down, etc)
-							base.autocomplete_input(e);
-						});
-						base.autocomplete_bind = true;
-					}
+					base.autocomplete_setup();
 				})
 				.bind('change.keyboard',function(e){
 					if (base.hasAutocomplete && base.isVisible) {
@@ -77,6 +73,21 @@ $.fn.addAutocomplete = function(){
 							.focus();
 					}
 				});
+		};
+
+		// set up after keyboard is visible
+		base.autocomplete_setup = function(){
+			// look for autocomplete
+			base.$autocomplete = base.$el.data('autocomplete');
+			base.hasAutocomplete = (typeof(base.$autocomplete) === 'undefined') ? false : (base.$autocomplete.options.disabled) ? false : true;
+			// only bind to keydown once
+			if (base.hasAutocomplete && !base.autocomplete_bind) {
+				base.$preview.bind('keydown.keyboard',function(e){
+					// send keys to the autocomplete widget (arrow, pageup/down, etc)
+					base.autocomplete_input(e);
+				});
+				base.autocomplete_bind = true;
+			}
 		};
 
 		// Navigate and select inside autocomplete popup

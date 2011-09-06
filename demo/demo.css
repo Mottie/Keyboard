@@ -14,20 +14,23 @@ a:visited,a:active { color: #53a5ff; }
 h1, h2, h3, h4 { color: #ddd; text-align: center; }
 h2 { margin: 5px; font-size: 130%; cursor: pointer; }
 
-#nav { display: block; width: auto; text-align: center; white-space: nowrap; line-height: 3em; margin: 10px auto; }
+#nav { display: block; width: auto; text-align: center; white-space: nowrap; margin: 20px auto 0 auto; }
 #nav a { text-align: center; background: #000; color: #FFF; border-radius: 5px; -moz-border-radius: 5px; -webkit-border-radius: 5px; padding: 10px; }
 #nav a.git { background: #006; }
 #nav a.play { background: #060; }
 #nav a.issue { background: #600; }
 #nav a:hover,#nav a.current{ background: #666; }
 
-#switcher, #wrap { width: 150px; margin: 10px auto; }
+#switcher, #wrap { width: 260px; margin: 10px auto; }
+#switcher a { margin: 0 auto; }
+#wrap { margin-top: 30px; }
+
 #console { width: 800px; list-style-type: none; margin: 0 auto; padding: 0; }
 #console li { text-align: center; }
 
 .block { float: left; padding-left: 30px; margin-bottom: 30px; text-align: center; position: relative; }
 .block2 { margin: 0 auto; text-align: center; }
-textarea, input { width: 240px; background: #333; color: #ddd; border: #777 1px solid; padding: 5px 0; }
+textarea, input { width: 260px; background: #333; color: #ddd; border: #777 1px solid; padding: 5px 0; }
 .hiddenInput { display: inline-block; width: 240px; }
 .code { display: none; }
 
@@ -51,6 +54,10 @@ textarea, input { width: 240px; background: #333; color: #ddd; border: #777 1px 
 /* used .alignRight instead of #num (for the number pad) here because the virtual keyboard
  strips IDs from the input - ID's are supposed to be unique! */
 .alignRight { text-align: right; }
+
+#info { margin: 250px auto; width: 300px; padding-left: 20px; }
+#info ul { padding-left: 15px; }
+.underline { text-decoration: underline; }
 
 #footer { height: 150px; }
 #footer2 { position: fixed; bottom: 0; left: 0; width: 100%; z-index: 0; font-size: small; margin-bottom: 5px; text-align: center; }

@@ -1,5 +1,5 @@
 /*
- * jQuery UI Virtual Keyboard Typing Simulator v1.2 for Keyboard v1.8+ only
+ * jQuery UI Virtual Keyboard Typing Simulator v1.3 for Keyboard v1.8.14+ only
  *
  * By Rob Garrison (aka Mottie & Fudgey)
  * Dual licensed under the MIT and GPL licenses.
@@ -69,55 +69,52 @@
 				13 : 'enter',
 				32 : 'space'
 			};
-			base.typing_event = false;
+			base.typing_event = base.typing_flag = false;
 			// no manual typing simulation if lockInput is true; but the typeIn() function still works
 //			if (base.options.lockInput) { base.typing_options.showTyping = false; }
 
-			if (base.typing_options.showTyping) {
-				// capture and simulate typing
-				base.$el.bind('visible.keyboard', function(e){
-					if (base.typing_flag) { return; }
-					base.typing_flag = true;
-					var el = (base.$preview) ? base.$preview : base.$el;
+			base.typing_setup = function(){
+				if (base.typing_flag) { return; }
+				base.typing_flag = true;
+				var el = (base.$preview) ? base.$preview : base.$el;
 
-					el
-					.bind('keyup.keyboard', function(e){
-						if (e.which >= 37 && e.which <=40) { return; } // ignore arrow keys
-						if (e.which === 16) { base.shiftActive = false; }
-						if (e.which === 18) { base.altActive = false; }
-						if (e.which === 16 || e.which === 18) {
-							base.showKeySet();
-							setTimeout(function(){ base.$preview.focus(); }, 200); // Alt key will shift focus to the menu - doesn't work in Windows
-							return;
-						}
-					})
-					// change keyset when either shift or alt is held down
-					.bind('keydown.keyboard', function(e){
-						e.temp = false; // prevent repetitive calls while keydown repeats.
-						if (e.which === 16) { e.temp = (base.shiftActive) ? false : true; base.shiftActive = true; }
-						// it should be ok to reset e.temp, since both alt and shift will call this function separately
-						if (e.which === 18) { e.temp = (base.altActive) ? false : true; base.altActive = true; }
-						if (e.temp) {
-							base.showKeySet();
-							base.$preview.focus(); // Alt shift focus to the menu
-						}
-						base.typing_event = true;
-						// Simulate key press for tab and backspace since they don't fire the keypress event
-						if (e.which === 8 || e.which === 9) {
-							base.typeIn( '', base.typing_options.delay || 250, function(){
-								base.typing_event = false;
-							}, e); // pass event object
-						}
+				el
+				.bind('keyup.keyboard', function(e){
+					if (e.which >= 37 && e.which <=40) { return; } // ignore arrow keys
+					if (e.which === 16) { base.shiftActive = false; }
+					if (e.which === 18) { base.altActive = false; }
+					if (e.which === 16 || e.which === 18) {
+						base.showKeySet();
+						setTimeout(function(){ base.$preview.focus(); }, 200); // Alt key will shift focus to the menu - doesn't work in Windows
+						return;
+					}
+				})
+				// change keyset when either shift or alt is held down
+				.bind('keydown.keyboard', function(e){
+					e.temp = false; // prevent repetitive calls while keydown repeats.
+					if (e.which === 16) { e.temp = (base.shiftActive) ? false : true; base.shiftActive = true; }
+					// it should be ok to reset e.temp, since both alt and shift will call this function separately
+					if (e.which === 18) { e.temp = (base.altActive) ? false : true; base.altActive = true; }
+					if (e.temp) {
+						base.showKeySet();
+						base.$preview.focus(); // Alt shift focus to the menu
+					}
+					base.typing_event = true;
+					// Simulate key press for tab and backspace since they don't fire the keypress event
+					if (e.which === 8 || e.which === 9) {
+						base.typeIn( '', base.typing_options.delay || 250, function(){
+							base.typing_event = false;
+						}, e); // pass event object
+					}
 
-					})
-					.bind('keypress.keyboard', function(e){
-						// Simulate key press on virtual keyboard
-						if (base.typing_event && !base.options.lockInput) {
-							base.typeIn( '', base.typing_options.delay || 250, function(){
-								base.typing_event = false;
-							}, e); // pass event object
-						}
-					});
+				})
+				.bind('keypress.keyboard', function(e){
+					// Simulate key press on virtual keyboard
+					if (base.typing_event && !base.options.lockInput) {
+						base.typeIn( '', base.typing_options.delay || 250, function(){
+							base.typing_event = false;
+						}, e); // pass event object
+					}
 				});
 			}
 
@@ -180,13 +177,13 @@
 					if (set.attr('name')) {
 						// get meta key name
 						meta = set.attr('name');
-
 						// show correct key set
 						base.shiftActive = /shift/.test(meta);
 						base.altActive = /alt/.test(meta);
-						base.metaActive = (meta).match(/meta\d+/) || false;
+						base.metaActive = base.lastKeyset[2] = (meta).match(/meta\d+/) || false;
 						// make the plugin think we're passing it a jQuery object with a name
-						base.showKeySet({ name : '_' + base.metaActive});
+
+						base.showKeySet({ name : base.metaActive});
 
 						// Add the key
 						base.typing_simulateKey(key,txt);
@@ -228,6 +225,17 @@
 					}
 				}, base.typing_options.delay/3);
 			};
+
+			if (base.typing_options.showTyping) {
+				// visible event is fired before this extension is initialized, so check!
+				if (base.options.alwaysOpen && base.isVisible) {
+					base.typing_setup();
+				}
+				// capture and simulate typing
+				base.$el.bind('visible.keyboard', function(e){
+					base.typing_setup();
+				});
+			}
 
 		});
 	};

@@ -20,7 +20,6 @@ Originally posted by Jeremy Satterfield in his [blog][1], [jQuery plugins][2] an
     * " + vowel ( vowel with diaeresis, e.g., " + e = ë )
     * ^ + vowel ( vowel with circumflex accent, e.g., ^ + e = ê )
     * ~ + certain letters ( letter with tilde, e.g. ~ + n = ñ, ~ + o = õ )
-    * ' + c ( becomes ç )
 
 * Enable, disable or add more diacritic functionality as desired.
 * Use callbacks and event triggers that occur when the keyboard is open or closed and when the content has changed, been accepted or canceled.
@@ -72,6 +71,20 @@ Moved to the Wiki Pages: [Home][6] | [FAQ][7] | [Setup][8] | [Options][9] ( [Lay
 ###Change Log
 
 Only the latest changes will be shown below, see the wiki log to view older versions.
+
+####Version 1.8.14
+* Changed some of the data attributes for each virtual keyboard key
+  * Added `data-pos` which contains the button's row and row-index - used by the navigation extension.
+  * Removed the data that is now in `data-pos` from the button name attribute.
+  * The name attribute now contains the action key name (e.g. Enter, Accept, etc) or the key's ascii character code (e.g. "a" has a name attribute of "97").
+* Typing Extension (v1.3)
+  * Updated to work when `alwaysOpen` is `true` - it never knew the keyboard was open.
+* Autocomplete Extension (v1.2)
+  * Updated to work when `alwaysOpen` is `true`.
+* Added navigation extension (v1.0)
+  * This extension allows you to navigate the virtual keyboard using the navigation keys: up, down, left, right, pageUp, pageDown, home and end.
+  * The disadvantage is that now you will need to use the mouse to position the caret inside of the input or textarea.
+  * Pressing enter will trigger the key - same as mouse clicking on it.
 
 ####Version 1.8.13
 * Updates for changes brought up in [issue #20](https://github.com/Mottie/Keyboard/issues/20):
