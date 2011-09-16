@@ -55,7 +55,7 @@ textarea, input { width: 260px; background: #333; color: #ddd; border: #777 1px 
  strips IDs from the input - ID's are supposed to be unique! */
 .alignRight { text-align: right; }
 
-#info { margin: 250px auto; width: 300px; padding-left: 20px; }
+#info { margin: 250px auto; width: 400px; padding-left: 20px; }
 #info ul { padding-left: 15px; }
 .underline { text-decoration: underline; }
 

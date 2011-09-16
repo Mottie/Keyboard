@@ -31,6 +31,8 @@
 		-webkit-box-shadow: 1px 1em 1px #ffba2b inset;
 		box-shadow: 1px 1em 1px #ffba2b inset;
 	}
+	/* Class added to indicate the virtual keyboard has navigation focus */
+	.hasFocus { border-color: #59b4d4; }
 	</style>
 
 	<!-- initialize keyboard (required) -->
@@ -39,7 +41,12 @@
 
 		$('#keyboard')
 			.keyboard()
-			.addNavigation();
+			.addNavigation({
+				position   : [0,0],     // set start position [row-number, key-index]
+				toggleMode : false,     // true = navigate the virtual keyboard, false = navigate in input/textarea
+				toggleKey  : 112,       // toggle key; F1 = 112 (event.which value for function 1 key)
+				focusClass : 'hasFocus' // css class added when toggle mode is on
+			});
 
 	});
 	</script>
@@ -74,6 +81,7 @@
 
 	<div id="info">
 		<ul>
+			<li>F1 - Toggle navigation (textarea and keyboard).</li>
 			<li>Left - Move one key left.</li>
 			<li>Right - Move one key right.</li>
 			<li>Up - Move up one row.</li>

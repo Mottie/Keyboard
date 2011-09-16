@@ -26,32 +26,46 @@
  */
 
 (function($){
-$.fn.addNavigation = function(){
+$.fn.addNavigation = function(options){
+
+	//Set the default values, use comma to separate the settings, example:
+	var o, defaults = {
+		position   : [0,0],     // set start position [row-number, key-index]
+		toggleMode : false,     // true = navigate the virtual keyboard, false = navigate in input/textarea
+		toggleKey  : 112,       // toggle key; F1 = 112 (event.which value for function 1 key)
+		focusClass : 'hasFocus' // css class added when toggle mode is on
+	};
+
 	return this.each(function(){
 		// make sure a keyboard is attached
 		var base = $(this).data('keyboard');
 		if (!base) { return; }
 
-		// Start on top left key
-		base.nav = [0,0];
+		base.navigation_options = o = $.extend({}, defaults, options);
 
 		// Setup
 		base.navigation_init = function(){
 
-			base.$keyboard
+			base.$keyboard[(o.toggleMode) ? 'addClass' : 'removeClass'](o.focusClass)
 				.find('.ui-keyboard-keyset:visible')
-				.find('.ui-keyboard-button[data-pos="' + base.nav[0] + ',' + base.nav[1] + '"]')
+				.find('.ui-keyboard-button[data-pos="' + o.position[0] + ',' + o.position[1] + '"]')
 				.addClass('ui-state-hover');
 
-			base.$preview.bind('keydown.keyboard',function(e){
-				if ( e.which > 32 && e.which < 41 ) {
+			base.$preview
+			.unbind('keydown.keyboardNav')
+			.bind('keydown.keyboardNav',function(e){
+				if (e.which === o.toggleKey) {
+					o.toggleMode = !o.toggleMode;
+				}
+				base.$keyboard[(o.toggleMode) ? 'addClass' : 'removeClass'](o.focusClass);
+				if ( o.toggleMode && e.which > 32 && e.which < 41 ) {
 					base.navigateKeys(e.which);
 					return false;
 				}
-				if ( e.which === 13 ) {
+				if ( o.toggleMode && e.which === 13 ) {
 					base.$keyboard
 						.find('.ui-keyboard-keyset:visible')
-						.find('.ui-keyboard-button[data-pos="' + base.nav[0] + ',' + base.nav[1] + '"]')
+						.find('.ui-keyboard-button[data-pos="' + o.position[0] + ',' + o.position[1] + '"]')
 						.trigger(base.options.keyBinding);
 					return false;
 				}
@@ -60,8 +74,8 @@ $.fn.addNavigation = function(){
 		};
 
 		base.navigateKeys = function(key){
-			var maxIndx, indx = base.nav[1],
-				row = base.nav[0],
+			var indx = o.position[1],
+				row = o.position[0],
 				vis = base.$keyboard.find('.ui-keyboard-keyset:visible'),
 				maxRow = vis.find('.ui-keyboard-button-endrow').length - 1,
 				maxIndx = vis.find('.ui-keyboard-button[data-pos^="' + row + ',"]').length - 1,
@@ -84,7 +98,7 @@ $.fn.addNavigation = function(){
 
 			vis.find('.ui-state-hover').removeClass('ui-state-hover');
 			vis.find('.ui-keyboard-button[data-pos="' + row + ',' + indx + '"]').addClass('ui-state-hover');
-			base.nav = [ row, indx ];
+			o.position = [ row, indx ];
 		};
 
 		// visible event is fired before this extension is initialized, so check!

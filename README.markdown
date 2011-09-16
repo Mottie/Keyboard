@@ -72,6 +72,13 @@ Moved to the Wiki Pages: [Home][6] | [FAQ][7] | [Setup][8] | [Options][9] ( [Lay
 
 Only the latest changes will be shown below, see the wiki log to view older versions.
 
+####Version 1.8.14.2
+* Added options to the Navigation extension
+ * `position : [0,0]` - This sets the current highlighted key position. The array contains the row number and the key index (zero based index).
+ * `toggleMode : false` - Sets the focus of the navigation keys. When true, the focus is the virtual keyboard and when false the input/textarea gets focus.
+ * `toggleKey  : 112` - This sets which key is used to toggle the navigation focus. The function 1 (F1) key has an `event.which` key value of 112.
+ * `focusClass : 'hasFocus'` - This sets the css class to add to the virtual keyboard to indicate that it has focus (toggleMode is true).
+
 ####Version 1.8.14.1
 * Fixed the navigation extension to not include a return key to the input area unintentionally.
 
