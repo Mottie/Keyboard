@@ -1,5 +1,5 @@
 ﻿/*
- * jQuery UI Virtual Keyboard Navigation v1.0 for Keyboard v1.8.14+ only
+ * jQuery UI Virtual Keyboard Navigation v1.1 for Keyboard v1.8.14+ only
  *
  * By Rob Garrison (aka Mottie & Fudgey)
  * Dual licensed under the MIT and GPL licenses.

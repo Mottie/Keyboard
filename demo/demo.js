@@ -21,7 +21,7 @@ jQuery(function($) {
 	});
 	// since IE adds an overlay behind the input to prevent clicking in other inputs (the keyboard may not automatically open on focus... silly IE bug)
 	// We can remove the overlay (transparent) if desired using this code:
-	$('.qwerty:eq(1)').bind('visible.keyboard', function(e, el){
+	$('.qwerty:eq(1)').bind('visible.keyboard', function(e, keyboard, el){
 	 $('.ui-keyboard-overlay').remove(); // remove overlay because clicking on it will close the keyboard... we set "openOn" to null to prevent closing.
 	});
 
@@ -198,7 +198,7 @@ jQuery(function($) {
 			'A' : { E: '\u00c6' }
 		},
 		// example callback function
-		accepted : function(e, el){ alert('The content "' + el.value + '" was accepted!'); }
+		accepted : function(e, keyboard, el){ alert('The content "' + el.value + '" was accepted!'); }
 	});
 
 	// Custom: Mapped keys

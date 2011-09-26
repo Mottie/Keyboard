@@ -175,16 +175,18 @@ Only the latest changes will be shown below, see the wiki log to view older vers
     * Previously you had to use "$(el).getkeyboard()" function inside of the event function to get the keyboard object.
     * In the event callback, the order is now (event, keyboard, elem). Where "event" is the event object, "keyboard" is the keyboard object and "elem" is the input element (non jQuery).
     * The only event function that is different from the above order is the "beforeClose" event! The old order was (event, element, accepted). The new order is now as in this example:
-    ```javascript
-    // Binding to the "beforeClose" event - it has an extra parameter ("accepted")
-    $('.ui-keyboard-input').bind('beforeClose.keyboard', function(event, keyboard, elem, accepted){
-      var txt = "Virtual Keyboard for " + elem.id + " is about to close, and it's contents were ";
-      txt += (accepted ? 'accepted' : 'ignored');
-      txt += '. Current content = ' + elem.value;
-      txt += '. Original content = ' + keyboard.originalContent;
-      alert(txt);
-    });
-    ```
+
+      ```javascript
+// Binding to the "beforeClose" event - it has an extra parameter ("accepted")
+$('.ui-keyboard-input').bind('beforeClose.keyboard', function(event, keyboard, elem, accepted){
+  var txt = "Virtual Keyboard for " + elem.id + " is about to close, and it's contents were ";
+  txt += (accepted ? 'accepted' : 'ignored');
+  txt += '. Current content = ' + elem.value;
+  txt += '. Original content = ' + keyboard.originalContent;
+  alert(txt);
+});
+```
+
     * see the <a href="https://github.com/Mottie/Keyboard/wiki/Methods">Methods</a> wiki documents page for more details.
 * Fixed an issue in Chrome where the caret would go out of view while typing on the virtual keyboard (horizontal scrolling of inputs).
 * Fixed the typing extension not highlighting the tab or backspace while typing.
@@ -208,10 +210,13 @@ Only the latest changes will be shown below, see the wiki log to view older vers
 * Added event namespacing
     * If you used any custom binding events (i.e. keyboard 'visible', 'hidden' or content 'accepted', etc.), then just add '.keyboard' to the end of the event to make your script compatable with this version. Example:
 
-            $('.ui-keyboard-input').bind('accepted.keyboard canceled.keyboard', function(event, elemnt){
-              // event.type will contain "accepted" or "canceled" as before, event.namespace will contain "keyboard"
-              var txt = $(elemnt).attr('name') + ' keyboard was closed and its content was ' + event.type;
-            });
+    ```javascript
+$('.ui-keyboard-input').bind('accepted.keyboard canceled.keyboard', function(event, elemnt){
+  // event.type will contain "accepted" or "canceled" as before, event.namespace will contain "keyboard"
+  var txt = $(elemnt).attr('name') + ' keyboard was closed and its content was ' + event.type;
+});
+```
+
     * Namespacing was added because of the addition of multiple new keyboard layouts. Use the destroy method when switching layouts (see the layouts.html source for an example).
     * Because of the namespacing, this version now requires **a minimum of jQuery 1.4.3+**
 * Added `{combo}` action toggle key. While active, typing combo keys will continue to work as before. When inactive, combo keys are ignored, but all combos will be formed once active again.
