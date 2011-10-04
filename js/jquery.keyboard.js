@@ -1,6 +1,6 @@
 /*
 jQuery UI Virtual Keyboard
-Version 1.8.14
+Version 1.8.15
 
 Author: Jeremy Satterfield
 Modified: Rob Garrison (Mottie on github)
@@ -568,12 +568,17 @@ $.keyboard = function(el, options){
 		}
 
 		// check input restrictions - in case content was pasted
-		if (o.restrictInput) {
-			t = val.split('');
-			r = t.length;
+		if (o.restrictInput && val !== '') {
+			t = val;
+			r = base.acceptedKeys.length;
 			for (i=0; i < r; i++){
-				if ($.inArray( t[i], base.acceptedKeys ) < 0) { val = val.replace(t[i], ''); }
+				if (t === '') { continue; }
+				if (val.indexOf(base.acceptedKeys[i]) >= 0) {
+					t = t.replace( (new RegExp(base.acceptedKeys[i], "g")), '');
+				}
 			}
+			// what's left over are keys that aren't in the acceptedKeys array
+			if (t !== '') { val = val.replace(t, ''); }
 		}
 
 		// save changes, then reposition caret

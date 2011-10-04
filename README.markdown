@@ -72,6 +72,14 @@ Moved to the Wiki Pages: [Home][6] | [FAQ][7] | [Setup][8] | [Options][9] ( [Lay
 
 Only the latest changes will be shown below, see the wiki log to view older versions.
 
+####Version 1.8.15
+* Fixed `restrictInput` to better work with multiple length keys
+ * It is now designed to remove any non-matching characters or letter groups. For example, if you clicked a key to enter "Hello" then hit the backspace, what would be left is "Hell" which doesn't match any keys, so "Hell" will also be removed.
+ * One issue I noticed is with entering numbers, as mentioned in [issue #28](https://github.com/Mottie/Keyboard/issues/28). Say you enter "3131" then hit the backspace, the plugin would see "313". Well there is no lone "3", but there is a "13" and because it starts from the left side of the string, it decides to remove the "3" and you end up with "13".
+* Updated Layouts demo & current layouts
+ * Each language layout now includes the display options to modify the keyboard language (alt, accept, cancel, shift, etc).
+ * Since I'm a silly American that isn't fluent in any other language, I've only attempted (and poorly at that) to change the Albanian display language. All other layout languages still have English as the display language, so please feel free to share any corrections.
+
 ####Version 1.8.14.2
 * Added options to the Navigation extension
  * `position : [0,0]` - This sets the current highlighted key position. The array contains the row number and the key index (zero based index).

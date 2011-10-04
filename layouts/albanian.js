@@ -70,6 +70,40 @@ $.keyboard.layouts['albanian-qwerty'] = {
 	]
 };
 
+// Keyboard Language
+// please update this section to match this language and email me with corrections!
+// ***********************
+if (typeof(language) === 'undefined') { var language = {}; };
+language.albanian = {
+	display : {
+		'a'      : '\u2714:Prano (Shift-Enter)', // check mark - same action as accept
+		'accept' : 'Prano:Prano (Shift-Enter)',
+		'alt'    : 'Alt:Alternativ',
+		'b'      : '\u2190:Hapësirën Mbrapa',    // Left arrow (same as &larr;)
+		'bksp'   : 'Bksp:Hapësirën Mbrapa',
+		'c'      : '\u2716:Anuloj (Arratisjes)', // big X, close - same action as cancel
+		'cancel' : 'Anuloj:Anuloj (Arratisjes)',
+		'clear'  : 'C:Qartë',             // clear num pad
+		'combo'  : '\u00f6:Kombinimi',
+		'dec'    : '.:Decimal',           // decimal point for num pad (optional), change '.' to ',' for European format
+		'e'      : '\u21b5:Shkruani',        // down, then left arrow - enter symbol
+		'enter'  : 'Shkruani:Shkruani',
+		'lock'   : '\u21ea Bllokoj:Caps Lock', // caps lock
+		's'      : '\u21e7:Ndryshim',        // thick hollow up arrow
+		'shift'  : 'Ndryshim:Ndryshim',
+		'sign'   : '\u00b1:Ndryshimi Regjistrohu',  // +/- sign for num pad
+		'space'  : ' :Hapësirë',
+		't'      : '\u21e5:Tab',          // right arrow to bar (used since this virtual keyboard works with one directional tabs)
+		'tab'    : '\u21e5 Tab:Tab'       // \u21b9 is the true tab symbol (left & right arrows)
+	},
+	// Message added to the key title while hovering, if the mousewheel plugin exists
+	wheelMessage : 'Përdorimi mousewheel për të parë çelësat e tjera'
+};
+
+// This will replace all default language options with these language options.
+// it is separated out here so the layout demo will work properly.
+$.extend(true, $.keyboard.defaultOptions, language.albanian);
+
 // New combos using specific accents
 // Not sure what to do with these accents:  ˇ ˘ ˙ ° ˛ ˝
 $.extend(true, $.keyboard.defaultOptions.combos, {
