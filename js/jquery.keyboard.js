@@ -1,6 +1,6 @@
 /*
 jQuery UI Virtual Keyboard
-Version 1.8.15
+Version 1.8.16
 
 Author: Jeremy Satterfield
 Modified: Rob Garrison (Mottie on github)
@@ -333,8 +333,13 @@ $.keyboard = function(el, options){
 				switch (e.which) {
 					// prevent tab key from leaving the preview window
 					case 9 :
-						base.tab = true; // see keyup comment above
-						e.preventDefault(); // Opera ignores this =(
+						if (o.tabNavigation) {
+							base.close(o.autoAccept);
+							return;
+						} else {
+							base.tab = true; // see keyup comment above
+							e.preventDefault(); // Opera ignores this =(
+						}
 						break;
 
 					case 13:
@@ -378,7 +383,11 @@ $.keyboard = function(el, options){
 			base.$el.bind('contextmenu.keyboard', function(e){ e.preventDefault(); });
 		}
 
-		base.$keyboard.appendTo('body');
+		if (o.appendLocally) {
+			base.$el.after( base.$keyboard );
+		} else {
+			base.$keyboard.appendTo('body');
+		}
 
 		base.$allKeys
 			.bind(o.keyBinding + '.keyboard', function(e){
@@ -667,7 +676,7 @@ $.keyboard = function(el, options){
 
 	// Build default button
 	base.keyBtn = $('<button />')
-		.attr({ 'role': 'button', 'aria-disabled': 'false' })
+		.attr({ 'role': 'button', 'aria-disabled': 'false', 'tabindex' : '-1' })
 		.addClass('ui-keyboard-button ui-state-default ui-corner-all');
 
 	// Add key function
@@ -1114,6 +1123,13 @@ $.keyboard = function(el, options){
 
 		// Prevent keys not in the displayed keyboard from being typed in
 		restrictInput: false,
+
+		// Use tab to navigate between input fields
+		tabNavigation: false,
+
+		// Set this to append the keyboard immediately after the input/textarea it is attached to. This option
+		// works best when the input container doesn't have a set width and when the "tabNavigation" option is true
+		appendLocally: false,
 
 		// If false, the shift key will remain active until the next key is (mouse) clicked on; if true it will stay active until pressed again
 		stickyShift  : true,

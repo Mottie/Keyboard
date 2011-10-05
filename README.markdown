@@ -72,6 +72,15 @@ Moved to the Wiki Pages: [Home][6] | [FAQ][7] | [Setup][8] | [Options][9] ( [Lay
 
 Only the latest changes will be shown below, see the wiki log to view older versions.
 
+####Version 1.8.16
+* Added `tabNavigation` option:
+  * Setting this option to `true` allows the tab key (on the real keyboard) to tab into the next input/textarea.
+  * When true, this option works best when the `usePreview` option is `false`.
+* Added `appendLocally` option:
+  * This option was added to append the keyboard within the same container as the input it is attached to.
+  * The advantage of doing this allows for setting the `tabNavigation` option to `true` and tab to the next input area. Otherwise, the keyboard is appended to the body of the page and the next tab will switch the focus to the browser location window.
+  * The disadvantage of setting this option to `true` is that the keyboard width will be limited by the width of the input container. If you set this option to true on the main demo page (index.html), all keyboard widths will be limited to the width of the `.block` class which groups each demo - it's not pretty.
+
 ####Version 1.8.15
 * Fixed `restrictInput` to better work with multiple length keys
  * It is now designed to remove any non-matching characters or letter groups. For example, if you clicked a key to enter "Hello" then hit the backspace, what would be left is "Hell" which doesn't match any keys, so "Hell" will also be removed.
