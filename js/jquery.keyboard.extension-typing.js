@@ -2,7 +2,7 @@
  * jQuery UI Virtual Keyboard Typing Simulator v1.3 for Keyboard v1.8.14+ only
  *
  * By Rob Garrison (aka Mottie & Fudgey)
- * Dual licensed under the MIT and GPL licenses.
+ * Licensed under the MIT License
  *
  * Use this extension with the Virtual Keyboard to simulate
  * typing for tutorials or whatever else use you can find

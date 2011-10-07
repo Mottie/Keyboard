@@ -1,12 +1,11 @@
 /*
 jQuery UI Virtual Keyboard
-Version 1.8.16
+Version 1.8.17
 
 Author: Jeremy Satterfield
 Modified: Rob Garrison (Mottie on github)
 -----------------------------------------
-Creative Commons Attribution-Share Alike 3.0 Unported License
-http://creativecommons.org/licenses/by-sa/3.0/
+Licensed under the MIT License
 
 Caret code from jquery.caret.1.02.js
 Licensed under the MIT License:

@@ -2,7 +2,7 @@
  * jQuery UI Virtual Keyboard Autocomplete v1.2 for Keyboard v1.8+ only
  *
  * By Rob Garrison (aka Mottie & Fudgey)
- * Dual licensed under the MIT and GPL licenses.
+ * Licensed under the MIT License
  *
  * Use this extension with the Virtual Keyboard to get
  * the jQuery UI Autocomplete widget to work seamlessly

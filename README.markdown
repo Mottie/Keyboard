@@ -64,13 +64,20 @@ Moved to the Wiki Pages: [Home][6] | [FAQ][7] | [Setup][8] | [Options][9] ( [Lay
 
 ###Licensing
 
-* Keyboard code: [Creative Commons Attribution-Share Alike 3.0 Unported License][17]
+* Keyboard code: [MIT License][18] for all versions.
 * Caret code by C. F., Wong (Cloudgen): [MIT License][18]
 * Layouts files: Most are under [WTFPL][19], unless the file itself specifies otherwise.
 
 ###Change Log
 
 Only the latest changes will be shown below, see the wiki log to view older versions.
+
+####Version 1.8.17
+* Changed the license to a [MIT License][18].
+ * Previous versions will be retroactively converted from a [Creative Commons Attribution-Share Alike 3.0 Unported License][17] to a [MIT License][18].
+ * I have spoken with the original author, Jeremy Satterfield, and he has agreed to this change.
+ * This licensing change applies to all of the extensions as well, which were previously dual licensed under MIT and GPLv2.
+* The layout files will remain under [WTFPL][19].
 
 ####Version 1.8.16
 * Added `tabNavigation` option:
