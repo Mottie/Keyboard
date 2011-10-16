@@ -1,6 +1,6 @@
 /*
 jQuery UI Virtual Keyboard
-Version 1.9
+Version 1.9.1
 
 Author: Jeremy Satterfield
 Modified: Rob Garrison (Mottie on github)
@@ -141,8 +141,7 @@ $.keyboard = function(el, options){
 		// Close with esc key & clicking outside
 		if (o.alwaysOpen) { o.stayOpen = true; }
 		if (!o.stayOpen){
-			// changed from document to body because using the scroll bar would close the keyboard
-			$('body').bind('mousedown.keyboard keyup.keyboard', function(e){
+			$(document).bind('mousedown.keyboard keyup.keyboard', function(e){
 				// Moved base.escClose() function inside of here
 				if ( !base.isVisible ) { return; }
 				// ignore autoaccept if using escape - good idea?

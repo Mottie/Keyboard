@@ -72,6 +72,12 @@ Moved to the Wiki Pages: [Home][6] | [FAQ][7] | [Setup][8] | [Options][9] ( [Lay
 
 Only the latest changes will be shown below, see the wiki log to view older versions.
 
+###Version 1.9.1
+
+* Keyboard not closing properly... blond moment alert!
+ * Apparently I forgot that the body doesn't always fill up the browser window. So on the basic demo, you have to click above the input to close the keyboard.
+ * Changed "body" back to document, so ummm ignore that comment about clicking on the scroll bar not closing the keyboard anymore.
+
 ###Version 1.9
 
 * Fixed caret positioning issues in IE9 introduced in v1.8.12:
