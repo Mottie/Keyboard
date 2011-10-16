@@ -14,12 +14,12 @@ a:visited,a:active { color: #53a5ff; }
 h1, h2, h3, h4 { color: #ddd; text-align: center; }
 h2 { margin: 5px; font-size: 130%; cursor: pointer; }
 
-#nav { display: block; width: auto; text-align: center; white-space: nowrap; margin: 20px auto 0 auto; }
-#nav a { text-align: center; background: #000; color: #FFF; border-radius: 5px; -moz-border-radius: 5px; -webkit-border-radius: 5px; padding: 10px; }
+#nav { display: block; width: auto; text-align: center; margin: 20px auto 0 auto; line-height: 45px; }
+#nav a { text-align: center; background: #000; color: #FFF; border-radius: 5px; -moz-border-radius: 5px; -webkit-border-radius: 5px; padding: 10px; white-space: nowrap; }
 #nav a.git { background: #006; }
 #nav a.play { background: #060; }
 #nav a.issue { background: #600; }
-#nav a:hover,#nav a.current{ background: #666; }
+#nav a:hover,#nav a.current{ background: #555; }
 
 #switcher, #wrap { width: 260px; margin: 10px auto; }
 #switcher a { margin: 0 auto; }
@@ -33,6 +33,7 @@ h2 { margin: 5px; font-size: 130%; cursor: pointer; }
 textarea, input { width: 260px; background: #333; color: #ddd; border: #777 1px solid; padding: 5px 0; }
 .hiddenInput { display: inline-block; width: 240px; }
 .code { display: none; }
+.attn { color: #c00; }
 
 #showcode {
  display: none;
@@ -59,6 +60,18 @@ textarea, input { width: 260px; background: #333; color: #ddd; border: #777 1px 
 #info ul { padding-left: 15px; }
 .underline { text-decoration: underline; }
 
+#mobile #wrap { height: 500px; }
+#mobile #switcher { max-width: 750px; width: auto; margin: 0 auto; }
+#mobile #switcher .swatch { width: 180px; height: 80px; display: inline-block; margin: 0; }
+.oldie #switcher .ui-body { float: left; clear: none !important; }
+#mobile #switcher fieldset { text-align: center; white-space: nowrap; margin: 0; height: 20px; }
+#mobile #switcher input { visibility: hidden; }
+#mobile #switcher .ui-btn-active { box-shadow: 0 1px 5px rgba(255, 255, 255, 0.7); }
+#mobile #switcher .ui-controlgroup-label { display: block; margin: 0 0 15px 0; width: auto; }
+#mobile #switcher .ui-btn-inner { padding: 0; }
+#mobile #switcher .ui-radio label { font-size: 10px; width: 20px; height: 20px; }
+#mobile #switcher .ui-btn-text { position: relative; top: 2px; left: 5px; width: 10px; }
+
 #footer { height: 150px; }
 #footer2 { position: fixed; bottom: 0; left: 0; width: 100%; z-index: 0; font-size: small; margin-bottom: 5px; text-align: center; }
 #footer2 div { margin: 0 auto; width: 650px; }
@@ -73,8 +86,13 @@ textarea, input { width: 260px; background: #333; color: #ddd; border: #777 1px 
  display: none;
  opacity: 0.9;
  filter: alpha(opacity=90);
- text-align: left;
+ text-align: center;
  border-radius: 1em;
  -moz-border-radius: 1em;
  -webkit-border-radius: 1em;
+}
+
+/* close button */
+#tooltip .close {
+ display: none;
 }

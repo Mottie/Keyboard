@@ -1,6 +1,6 @@
 /*
 jQuery UI Virtual Keyboard
-Version 1.8.17
+Version 1.9
 
 Author: Jeremy Satterfield
 Modified: Rob Garrison (Mottie on github)
@@ -109,20 +109,27 @@ $.keyboard = function(el, options){
 		// Shift and Alt key toggles, sets is true if a layout has more than one keyset - used for mousewheel message
 		base.shiftActive = base.altActive = base.metaActive = base.sets = base.capsLock = false;
 		base.lastKeyset = [false, false, false]; // [shift, alt, meta]
-		base.temp = [ '', 0, 0 ]; // used when building the keyboard - [keyset element, row, index]
 		// Class names of the basic key set - meta keysets are handled by the keyname
 		base.rows = [ '', '-shift', '-alt', '-alt-shift' ];
 		base.acceptedKeys = [];
 		base.mappedKeys = {}; // for remapping manually typed in keys
 		$('<!--[if lte IE 8]><script>$("body").addClass("oldie");</script><![endif]-->').appendTo('body').remove();
-		base.msie = $('body').is('.oldie'); // IE flag, used for caret positioning
-		base.opera = window.opera && window.opera.toString() === '[object Opera]'; // opera flag (from Modernizr), also for caret positioning
+		base.msie = $('body').is('.oldie'); // Old IE flag, used for caret positioning
+		base.allie = $.browser.msie;
 		base.inPlaceholder = base.$el.attr('placeholder') || '';
 		base.watermark = (typeof(document.createElement('input').placeholder) !== 'undefined' && base.inPlaceholder !== ''); // html 5 placeholder/watermark
 		base.regex = $.keyboard.comboRegex; // save default regex (in case loading another layout changes it)
 		base.decimal = ( /^\./.test(o.display.dec) ) ? true : false; // determine if US "." or European "," system being used
+		base.repeatTime = 1000/o.repeatRate; // convert mouse repeater rate (characters per second) into a time in milliseconds.
 
-		base.checkCaret = (o.lockInput || base.msie || base.opera ) ? true : false; // needed to save caret positions when the input is locked.
+		// Check if caret position is saved when input is hidden or loses focus
+		// (*cough* all versions of IE, and yes I probably could have just used $.browser.msie, but I think Opera has/had an issue as well)
+		base.temp = $('<input style="visibility:hidden" type="text" value="this is a test">').appendTo('body').caret(3,3);
+		// Also save caret position of the input if it is locked
+		base.checkCaret = (o.lockInput || base.temp.caret().start !== 3 ) ? true : false;
+		base.temp.remove();
+
+		base.temp = [ '', 0, 0 ]; // used when building the keyboard - [keyset element, row, index]
 
 		// Bind events
 		$.each('initialized visible change hidden canceled accepted beforeClose'.split(' '), function(i,f){
@@ -134,16 +141,26 @@ $.keyboard = function(el, options){
 		// Close with esc key & clicking outside
 		if (o.alwaysOpen) { o.stayOpen = true; }
 		if (!o.stayOpen){
-			$(document).bind('mousedown.keyboard keyup.keyboard', function(e){
-				if (base.isVisible && ( e.type === 'mousedown' || (e.type === 'keyup' && e.which === 27) )){
-					base.escClose(e);
+			// changed from document to body because using the scroll bar would close the keyboard
+			$('body').bind('mousedown.keyboard keyup.keyboard', function(e){
+				// Moved base.escClose() function inside of here
+				if ( !base.isVisible ) { return; }
+				// ignore autoaccept if using escape - good idea?
+				if ( e.type === 'keyup' && e.which === 27 ) { base.close(); }
+				if ( e.type === 'mousedown' && ( e.target !== base.el && $(e.target).closest('.ui-keyboard')[0] !== base.$keyboard[0]) ) {
+					// stop propogation in IE - an input getting focus doesn't open a keyboard if one is already open
+					if ( base.allie ) {
+						e.preventDefault();
+						$('body').focus(); // make sure no other input gets focus
+					}
+					base.close(o.autoAccept);
 				}
 			});
 		}
 
 		// Display keyboard on focus
 		base.$el
-			.addClass('ui-keyboard-input ui-widget-content ui-corner-all')
+			.addClass('ui-keyboard-input ' + o.css.input)
 			.attr({ 'aria-haspopup' : 'true', 'role' : 'textbox' });
 		// add disabled/readonly class - dynamically updated on reveal
 		if (base.$el.is(':disabled') || base.$el.attr('readonly')) {
@@ -193,7 +210,7 @@ $.keyboard = function(el, options){
 			base.$el.removeClass('ui-keyboard-nokeyboard');
 		}
 
-		// Unbind focus to prevent recursion
+		// Unbind focus to prevent recursion - openOn may be empty if keyboard is opened externally
 		if (!o.usePreview) { base.$el.unbind( (o.openOn) ? o.openOn + '.keyboard' : ''); }
 
 		// build keyboard if it doesn't exist
@@ -216,26 +233,36 @@ $.keyboard = function(el, options){
 
 		// show & position keyboard
 		base.$keyboard
-			// position and show the keyboard before positioning (required for UI position utility)
+			// basic positioning before it is set by position utility
 			.css({ position: 'absolute', left: 0, top: 0 })
 			.addClass('ui-keyboard-has-focus')
-			.show()
-			.position(position);
+			.show();
 
 		// adjust keyboard preview window width - save width so IE won't keep expanding (fix issue #6)
-		if (typeof base.width === 'undefined') {
-			base.width = Math.ceil(base.$keyboard.width());
+		if (o.usePreview && base.msie) {
+			if (typeof base.width === 'undefined') {
+				base.$preview.hide(); // preview is 100% browser width in IE7, so hide the damn thing
+				base.width = Math.ceil(base.$keyboard.width()); // set input width to match the widest keyboard row
+				base.$preview.show();
+			}
+			base.$preview.width(base.width);
 		}
-		if (o.usePreview) {
-			base.$preview.width(base.width); // set preview width to fill keyboard IE7 thinks 100% means across the screen
-		}
+
+		base.$keyboard.position(position); // position after keyboard is visible (required for UI position utility) and appropriately sized (*cough*)
+
+		$(window).resize(function(){
+			if (base.isVisible) {
+				base.$keyboard.position(position);
+			}
+		});
+
 		base.preview.focus();
 		base.isVisible = true;
 
 		base.checkDecimal();
 
 		// get preview area line height
-		// add roughly 4px to get line height from font height, works well for font-sizes from 14-36px.
+		// add roughly 4px to get line height from font height, works well for font-sizes from 14-36px - needed for textareas
 		base.lineHeight = parseInt( base.$preview.css('lineHeight'), 10) || parseInt(base.$preview.css('font-size') ,10) + 4;
 
 		// IE caret haxx0rs
@@ -247,24 +274,15 @@ $.keyboard = function(el, options){
 			if (base.lastCaret.end === 0 && base.lastCaret.start > 0) { base.lastCaret.end = base.lastCaret.start; } // sometimes end = 0 while start is > 0
 			if (base.lastCaret.start < 0) { base.lastCaret = p; } // IE will have start -1, end of 0 when not focused (see demo: http://jsfiddle.net/Mottie/fgryQ/3/).
 			base.$preview.caret( base.lastCaret.start, base.lastCaret.end );
-
-			// Add overlay under the keyboard to prevent clicking in and not opening a new keyboard while one is open
-			$('<div class="ui-keyboard-overlay"></div>')
-				.click(function(){
-					$(this).remove();
-					base.close();
-					return false;
-				})
-				.appendTo('body');
-			if (!o.usePreview) { base.$el.addClass('ui-keyboard-overlay-input'); }
 		}
+
 		base.$el.trigger( 'visible.keyboard', [ base, base.el ] );
 		return base;
 	};
 
 	base.startup = function(){
 		base.$keyboard = base.buildKeyboard();
-		base.$allKeys = base.$keyboard.find('.ui-keyboard-button');
+		base.$allKeys = base.$keyboard.find('button.ui-keyboard-button');
 		base.$preview = (o.usePreview) ? base.$keyboard.find('.ui-keyboard-preview') : base.$el;
 		base.preview = base.$preview[0];
 		base.$decBtn = base.$keyboard.find('.ui-keyboard-dec');
@@ -389,7 +407,7 @@ $.keyboard = function(el, options){
 		}
 
 		base.$allKeys
-			.bind(o.keyBinding + '.keyboard', function(e){
+			.bind(o.keyBinding.split(' ').join('.keyboard ') + '.keyboard', function(e){
 				// 'key', { action: doAction, original: n, curTxt : n, curNum: 0 }
 				var txt, key = $.data(this, 'key'), action = key.action.split(':')[0];
 				base.preview.focus();
@@ -420,7 +438,7 @@ $.keyboard = function(el, options){
 					key = $.data(el, 'key');
 				if (e.type === 'mouseenter' && base.el.type !== 'password' ){
 					$this
-						.addClass('ui-state-hover')
+						.addClass(o.css.buttonHover)
 						.attr('title', function(i,t){
 							// show mouse wheel message
 							return (base.wheel && t === '' && base.sets) ? o.wheelMessage : t;
@@ -431,7 +449,7 @@ $.keyboard = function(el, options){
 					key.curNum = 0;
 					$.data(el, 'key', key);
 					$this
-						.removeClass( (base.el.type === 'password') ? '' : 'ui-state-hover') // needed or IE flickers really bad
+						.removeClass( (base.el.type === 'password') ? '' : o.css.buttonHover) // needed or IE flickers really bad
 						.attr('title', function(i,t){ return (t === o.wheelMessage) ? '' : t; })
 						.find('span').text( key.original ); // restore original button text
 				}
@@ -451,8 +469,21 @@ $.keyboard = function(el, options){
 					return false;
 				}
 			})
-			.bind('mouseup.keyboard', function(){
+			// using "kb" namespace for mouse repeat functionality to keep it separate
+			// I need to trigger a "mousedown.keyboard" to make it work
+			.bind('mouseup.keyboard mouseleave.kb touchend.kb touchmove.kb touchcancel.kb', function(){
 				base.preview.focus();
+				clearTimeout(base.mouseRepeat);
+			})
+			// no mouse repeat for action keys (shift, ctrl, alt, meta, etc)
+			.filter(':not(.ui-keyboard-actionkey)')
+			// mouse repeated action key exceptions
+			.add('.ui-keyboard-tab, .ui-keyboard-bksp, .ui-keyboard-space, .ui-keyboard-enter')
+			.bind('mousedown.kb touchstart.kb', function(){
+				var key = $(this);
+				base.mouseRepeat = setTimeout(function() {
+					base.repeatKey(key);
+				}, o.repeatDelay);
 			});
 
 	};
@@ -509,6 +540,15 @@ $.keyboard = function(el, options){
 		}
 	};
 
+	// mousedown repeater
+	base.repeatKey = function(key){
+		key.trigger('mousedown.keyboard');
+		base.mouseRepeat = setTimeout(function() {
+			base.repeatKey(key);
+		}, base.repeatTime);
+	};
+
+
 	base.showKeySet = function(el){
 		var key = '',
 		toShow = (base.shiftActive ? 1 : 0) + (base.altActive ? 2 : 0);
@@ -542,19 +582,19 @@ $.keyboard = function(el, options){
 			return;
 		}
 		base.$keyboard
-			.find('.ui-keyboard-alt, .ui-keyboard-shift, .ui-keyboard-actionkey[class*=meta]').removeClass(o.actionClass).end()
-			.find('.ui-keyboard-alt')[(base.altActive) ? 'addClass' : 'removeClass'](o.actionClass).end()
-			.find('.ui-keyboard-shift')[(base.shiftActive) ? 'addClass' : 'removeClass'](o.actionClass).end()
-			.find('.ui-keyboard-lock')[(base.capsLock) ? 'addClass' : 'removeClass'](o.actionClass).end()
+			.find('.ui-keyboard-alt, .ui-keyboard-shift, .ui-keyboard-actionkey[class*=meta]').removeClass(o.css.buttonAction).end()
+			.find('.ui-keyboard-alt')[(base.altActive) ? 'addClass' : 'removeClass'](o.css.buttonAction).end()
+			.find('.ui-keyboard-shift')[(base.shiftActive) ? 'addClass' : 'removeClass'](o.css.buttonAction).end()
+			.find('.ui-keyboard-lock')[(base.capsLock) ? 'addClass' : 'removeClass'](o.css.buttonAction).end()
 			.find('.ui-keyboard-keyset').hide().end()
 			.find('.ui-keyboard-keyset' + key + base.rows[toShow]).show().end()
-			.find('.ui-keyboard-actionkey.ui-keyboard' + key).addClass(o.actionClass);
+			.find('.ui-keyboard-actionkey.ui-keyboard' + key).addClass(o.css.buttonAction);
 		base.lastKeyset = [ base.shiftActive, base.altActive, base.metaActive ];
 	};
 
 	// check for key combos (dead keys)
 	base.checkCombos = function(){
-		var i, r, t,
+		var i, r, t, t2,
 			// use base.$preview.val() instead of base.preview.value (val.length includes carriage returns in IE).
 			val = base.$preview.val(),
 			pos = base.$preview.caret(),
@@ -581,8 +621,11 @@ $.keyboard = function(el, options){
 			r = base.acceptedKeys.length;
 			for (i=0; i < r; i++){
 				if (t === '') { continue; }
-				if (val.indexOf(base.acceptedKeys[i]) >= 0) {
-					t = t.replace( (new RegExp(base.acceptedKeys[i], "g")), '');
+				t2 = base.acceptedKeys[i];
+				if (val.indexOf(t2) >= 0) {
+					// escape out all special characters
+					if (/[\[|\]|\\|\^|\$|\.|\||\?|\*|\+|\(|\)|\{|\}]/g.test(t2)) { t2 = '\\' + t2; }
+					t = t.replace( (new RegExp(t2, "g")), '');
 				}
 			}
 			// what's left over are keys that aren't in the acceptedKeys array
@@ -609,14 +652,14 @@ $.keyboard = function(el, options){
 		if ( ( base.decimal && /\./g.test(base.preview.value) ) || ( !base.decimal && /\,/g.test(base.preview.value) ) ) {
 			base.$decBtn
 				.attr({ 'disabled': 'disabled', 'aria-disabled': 'true' })
-				.removeClass('ui-state-default ui-state-hover')
-				.addClass('ui-state-disabled');
+				.removeClass(o.css.buttonDefault + ' ' + o.css.buttonHover)
+				.addClass(o.css.buttonDisabled);
 		} else {
 			base.$decBtn
 				.removeAttr('disabled')
 				.attr({ 'aria-disabled': 'false' })
-				.addClass('ui-state-default')
-				.removeClass('ui-state-disabled');
+				.addClass(o.css.buttonDefault)
+				.removeClass(o.css.buttonDisabled);
 		}
 	};
 
@@ -625,7 +668,8 @@ $.keyboard = function(el, options){
 		var key, keys;
 		key = el.attr('data-pos');
 		keys = el.closest('.ui-keyboard').find('button[data-pos="' + key + '"]').map(function(){
-			return $(this).find('span').text();
+			// added '> span' because jQuery mobile adds multiple spans inside the button
+			return $(this).find('> span').text();
 		}).get();
 		return keys;
 	};
@@ -639,13 +683,11 @@ $.keyboard = function(el, options){
 				.val( (accepted) ? (o.alwaysOpen ? base.$el.val() : base.checkCombos()) : base.originalContent )
 				.scrollTop( base.el.scrollHeight )
 				.trigger( ((accepted || false) ? 'accepted.keyboard' : 'canceled.keyboard'), [ base, base.el ] )
-				.trigger( (o.alwaysOpen) ? '' : 'hidden.keyboard', [ base, base.el ] )
-				.removeClass('ui-keyboard-overlay-input'); // added for IE overlay
+				.trigger( (o.alwaysOpen) ? '' : 'hidden.keyboard', [ base, base.el ] );
 			if (!o.usePreview && o.openOn !== '') {
 				// rebind input focus
 				base.$el.bind( o.openOn + '.keyboard', function(){ base.focusOn(); });
 			}
-			$('.ui-keyboard-overlay').remove(); // IE overlay
 			if ( !o.alwaysOpen ) {
 				base.$keyboard.hide();
 				base.isVisible = false;
@@ -663,20 +705,10 @@ $.keyboard = function(el, options){
 		base.close(true);
 	};
 
-	base.escClose = function(e){
-		// necessary to prevent keyboard closing when usePreview is false
-		if ( e.target === base.el ) { return; }
-		if ( !$(e.target).closest('.ui-keyboard').length ) {
-			base.close( (o.autoAccept) ? true : false );
-		}
-		// stop propogation in IE - an input getting focus doesn't open a keyboard if one is already open
-		if (base.msie) { e.preventDefault(); }
-	};
-
 	// Build default button
 	base.keyBtn = $('<button />')
 		.attr({ 'role': 'button', 'aria-disabled': 'false', 'tabindex' : '-1' })
-		.addClass('ui-keyboard-button ui-state-default ui-corner-all');
+		.addClass('ui-keyboard-button');
 
 	// Add key function
 	// keyName = the name of the function called in $.keyboard.keyaction when the button is clicked
@@ -716,7 +748,7 @@ $.keyboard = function(el, options){
 			.data('key', { action: keyName, original: n, curTxt : n, curNum: 0 })
 			// add "ui-keyboard-" + keyName, if this is an action key (e.g. "Bksp" will have 'ui-keyboard-bskp' class)
 			// add "ui-keyboard-" + unicode of 1st character (e.g. "~" is a regular key, class = 'ui-keyboard-126' (126 is the unicode value - same as typing &#126;)
-			.addClass('ui-keyboard-' + kn + keyType)
+			.addClass('ui-keyboard-' + kn + keyType + ' ' + o.css.buttonDefault)
 			.html('<span>' + n + '</span>')
 			.appendTo(base.temp[0]);
 	};
@@ -727,7 +759,7 @@ $.keyboard = function(el, options){
 			sets = 0,
 
 		container = $('<div />')
-			.addClass('ui-keyboard ui-widget-content ui-widget ui-corner-all ui-helper-clearfix' + (o.alwaysOpen ? ' ui-keyboard-always-open' : '') )
+			.addClass('ui-keyboard ' + o.css.container + (o.alwaysOpen ? ' ui-keyboard-always-open' : '') )
 			.attr({ 'role': 'textbox' })
 			.hide();
 
@@ -737,7 +769,7 @@ $.keyboard = function(el, options){
 				.removeAttr('id')
 				.removeAttr('placeholder')
 				.removeClass('ui-keyboard-placeholder')
-				.addClass('ui-widget-content ui-keyboard-preview ui-corner-all')
+				.addClass('ui-keyboard-preview ' + o.css.input)
 				.show(); // for hidden inputs
 		} else {
 			// No preview display, use element and reposition the keyboard under it.
@@ -749,6 +781,7 @@ $.keyboard = function(el, options){
 		// build preview container and append preview display
 		if (o.usePreview) {
 			$('<div />')
+				.addClass('ui-keyboard-preview-wrapper')
 				.append(base.$preview)
 				.appendTo(container);
 		}
@@ -790,6 +823,7 @@ $.keyboard = function(el, options){
 								margin = action.match(/^sp:(\.?\d+)$/)[1] || 0;
 								$('<span>&nbsp;</span>')
 									.css('margin','0 ' + margin + 'em')
+									.addClass('ui-keyboard-button')
 									.appendTo(newSet);
 							}
 
@@ -807,7 +841,7 @@ $.keyboard = function(el, options){
 								case 'accept':
 									base
 										.addKey('accept', action)
-										.addClass(o.actionClass);
+										.addClass(o.css.buttonAction);
 									break;
 
 								case 'alt':
@@ -824,14 +858,14 @@ $.keyboard = function(el, options){
 								case 'cancel':
 									base
 										.addKey('cancel', action)
-										.addClass(o.actionClass);
+										.addClass(o.css.buttonAction);
 									break;
 
 								// toggle combo/diacritic key
 								case 'combo':
 									base
 										.addKey('combo', 'combo')
-										.addClass(o.actionClass);
+										.addClass(o.css.buttonAction);
 									break;
 
 								// Decimal - unique decimal point (num pad layout)
@@ -844,7 +878,7 @@ $.keyboard = function(el, options){
 								case 'enter':
 									base
 										.addKey('enter', action)
-										.addClass(o.actionClass);
+										.addClass(o.css.buttonAction);
 									break;
 
 								case 's':
@@ -895,11 +929,11 @@ $.keyboard = function(el, options){
 	};
 
 	base.destroy = function() {
-		$(document).unbind('mousedown.keyboard keyup.keyboard', base.escClose );
+		$('body').unbind('mousedown.keyboard keyup.keyboard');
 		if (base.$keyboard) { base.$keyboard.remove(); }
 		var unb = o.openOn + ' accepted beforeClose blur canceled change contextmenu hidden initialized keydown keypress keyup visible'.split(' ').join('.keyboard ');
 		base.$el
-			.removeClass('ui-keyboard-input ui-widget-content ui-corner-all ui-keyboard-placeholder ui-keyboard-notallowed ui-keyboard-always-open')
+			.removeClass('ui-keyboard-input ui-keyboard-placeholder ui-keyboard-notallowed ui-keyboard-always-open ' + o.css.input)
 			.removeAttr('aria-haspopup')
 			.removeAttr('role')
 			.unbind( unb + '.keyboard')
@@ -933,7 +967,7 @@ $.keyboard = function(el, options){
 		combo : function(base){
 			var c = !base.options.useCombos;
 			base.options.useCombos = c;
-			base.$keyboard.find('.ui-keyboard-combo')[(c) ? 'addClass' : 'removeClass'](base.options.actionClass);
+			base.$keyboard.find('.ui-keyboard-combo')[(c) ? 'addClass' : 'removeClass'](base.options.css.buttonAction);
 			if (c) { base.checkCombos(); }
 			return false;
 		},
@@ -942,14 +976,14 @@ $.keyboard = function(el, options){
 		},
 		enter : function(base) {
 			if (base.el.tagName === 'INPUT') { return; } // ignore enter key in input
-			base.insertText('\r\n');
+			base.insertText('\n');
 		},
 		lock : function(base,el){
 			base.lastKeyset[0] = base.shiftActive = base.capsLock = !base.capsLock;
 			base.showKeySet(el);
 		},
 		meta : function(base,el){
-			base.metaActive = ($(el).is('.' + base.options.actionClass)) ? false : true;
+			base.metaActive = ($(el).is('.' + base.options.css.buttonAction)) ? false : true;
 			base.showKeySet(el);
 		},
 		shift : function(base,el){
@@ -1110,8 +1144,14 @@ $.keyboard = function(el, options){
 		// Message added to the key title while hovering, if the mousewheel plugin exists
 		wheelMessage : 'Use mousewheel to see other keys',
 
-		// Class added to the Accept and cancel buttons (originally 'ui-state-highlight')
-		actionClass  : 'ui-state-active',
+		css : {
+			input          : 'ui-widget-content ui-corner-all', // input & preview
+			container      : 'ui-widget-content ui-widget ui-corner-all ui-helper-clearfix', // keyboard container
+			buttonDefault  : 'ui-state-default ui-corner-all', // default state
+			buttonHover    : 'ui-state-hover',  // hovered button
+			buttonAction   : 'ui-state-active', // Action keys (e.g. Accept, Cancel, Tab, etc); this replaces "actionClass" option
+			buttonDisabled : 'ui-state-disabled' // used when disabling the decimal button {dec} when a decimal exists in the input area
+		},
 
 		// *** Useability ***
 		// Auto-accept content when clicking outside the keyboard (popup will close)
@@ -1138,6 +1178,14 @@ $.keyboard = function(el, options){
 
 		// Set the max number of characters allowed in the input, setting it to false disables this option
 		maxLength    : false,
+
+		// Mouse repeat delay - when clicking/touching a virtual keyboard key, after this delay the key will start repeating
+		repeatDelay  : 500,
+
+		// Mouse repeat rate - after the repeatDelay, this is the rate (characters per second) at which the key is repeated
+		// Added to simulate holding down a real keyboard key and having it repeat. I haven't calculated the upper limit of
+		// this rate, but it is limited to how fast the javascript can process the keys. And for me, in Firefox, it's around 20.
+		repeatRate   : 20,
 
 		// Event (namespaced) on the input to reveal the keyboard. To disable it, just set it to ''.
 		openOn       : 'focus',

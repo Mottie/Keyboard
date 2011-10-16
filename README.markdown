@@ -72,6 +72,57 @@ Moved to the Wiki Pages: [Home][6] | [FAQ][7] | [Setup][8] | [Options][9] ( [Lay
 
 Only the latest changes will be shown below, see the wiki log to view older versions.
 
+###Version 1.9
+
+* Fixed caret positioning issues in IE9 introduced in v1.8.12:
+ * IE9 caret position is now saved so if the input loses focus, the caret position is restored. Fix for [issue #24](https://github.com/Mottie/Keyboard/issues/24).
+ * IE9 caret position can now be set by mouse clicking inside the input/textarea.
+
+* Fixed an issue with restricted input causing an error when trying to add any of these special characters: []\^$.|?*+(){}
+
+* Rewrote the code that closes the keyboard when clicking outside of the keyboard.
+ * Done because of the above IE9 caret issue.
+ * The overlay that was added to all IE browsers was removed, along with its css. It was originally added because if a keyboard was already visible, a new keyboard would not open when focus is given to a new input/textarea. This is no longer an issue with the new code.
+ * Clicking on the scrollbar to scroll down the page will no longer close the keyboard.
+
+* The keyboard will now stay in place when resizing the browser window. YAY!
+
+* Added `repeatDelay` and `repeatRate` options:
+ * These options work with the new mouse key repeat functionality.
+ * Basically holding down a virtual keyboard key with your mouse or finger on a touch device, will now cause that key to repeat after an initial delay. Similar to what the real keyboard does while typing.
+ * Adjust the `repeatDelay` to change the amount of time to pause before starting to repeat the key.
+ * Adjust the `repeatRate` value to change the characters per second entered into the input area. Please note that due to the variation in javascript speeds between browsers, the maxiumum repeat rate my vary - in Firefox, it appears that there is no difference in rate with numbers above 20.
+ * This enhancement was added thanks to Pascal-bach's request in [issue #32](https://github.com/Mottie/Keyboard/issues/32).
+
+* Added css3 media queries to the keyboard.css file, so the keyboard should resize to match the available screen width.
+
+* Added a `css` option:
+ * This option contains all of the jQuery UI class names used by the plugin to allow for further customization.
+ * The css option include css for the major elements ("input" and "container") and the different button states ("buttonDefault", "buttonHover", "buttonActive" and "buttonDisabled").
+ * I was going to try to replace these classes to make the keyboard work with jQuery Mobile themes, but that theming system is a bit more convoluted, so I made a mobile extension instead (see below).
+
+    ```javascript
+    css : {
+      input          : 'ui-widget-content ui-corner-all', // input & preview
+      container      : 'ui-widget-content ui-widget ui-corner-all ui-helper-clearfix', // keyboard container
+      buttonDefault  : 'ui-state-default ui-corner-all', // default state
+      buttonHover    : 'ui-state-hover',  // hovered button
+      buttonAction   : 'ui-state-active', // Action keys (e.g. Accept, Cancel, Tab, etc); this replaces "actionClass" option
+      buttonDisabled : 'ui-state-disabled' // used when disabling the decimal button {dec} when a decimal exists in the input area
+    }
+    ```
+
+* Removed the "actionClass" option in favor of the "css" option above.
+
+* Added a jQuery Mobile extension (v1.0)
+ * This extension allows jQuery Mobile themes to be applied to the keyboard.
+ * Set the desired theme swatch letter in the options for the container, regular buttons, action buttons and active buttons.
+ * Updated keyboard.css with mobile specific definitions - wider keys needed because of font size and "text-overflow:ellipsis" use
+ * Note:
+   * The new css3 media queries may not work perfectly for the jQuery Mobile themes - I don't own an iPad/iPhone/iWhatever, so please adjust and report back to me any issues.
+   * The "Active Buttons" setting is limited in that if the swatch letter of the Regular buttons is greater than the swatch letter of the Active Buttons, the theme doesn't apply properly. For example, Regular button swatch B with Active Button swatch A won't work because of the way the css is set up.
+   * When the jQuery Mobile Theme Roller become available, I will add it to the demo page.
+
 ####Version 1.8.17
 * Changed the license to a [MIT License][18].
  * Previous versions will be retroactively converted from a [Creative Commons Attribution-Share Alike 3.0 Unported License][17] to a [MIT License][18].

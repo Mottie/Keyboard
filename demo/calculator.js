@@ -8,18 +8,18 @@ $(document).ready(function() {
 		// ***************************
 		rad : function(base){
 			base.mode = 0; // 0 = radians, 1 = degrees, 2 = grads
-			base.$keyboard.find('.ui-keyboard-rad').addClass(base.options.actionClass);
-			base.$keyboard.find('.ui-keyboard-deg, .ui-keyboard-grad').removeClass(base.options.actionClass);
+			base.$keyboard.find('.ui-keyboard-rad').addClass(base.options.css.buttonAction);
+			base.$keyboard.find('.ui-keyboard-deg, .ui-keyboard-grad').removeClass(base.options.css.buttonAction);
 		},
 		deg : function(base){
 			base.mode = 1; // 0 = radians, 1 = degrees, 2 = grads
-			base.$keyboard.find('.ui-keyboard-deg').addClass(base.options.actionClass);
-			base.$keyboard.find('.ui-keyboard-rad, .ui-keyboard-grad').removeClass(base.options.actionClass);
+			base.$keyboard.find('.ui-keyboard-deg').addClass(base.options.css.buttonAction);
+			base.$keyboard.find('.ui-keyboard-rad, .ui-keyboard-grad').removeClass(base.options.css.buttonAction);
 		},
 		grad : function(base){
 			base.mode = 2; // 0 = radians, 1 = degrees, 2 = grads
-			base.$keyboard.find('.ui-keyboard-grad').addClass(base.options.actionClass);
-			base.$keyboard.find('.ui-keyboard-deg, .ui-keyboard-rad').removeClass(base.options.actionClass);
+			base.$keyboard.find('.ui-keyboard-grad').addClass(base.options.css.buttonAction);
+			base.$keyboard.find('.ui-keyboard-deg, .ui-keyboard-rad').removeClass(base.options.css.buttonAction);
 		},
 
 		// Memory storage functions (sorta)
@@ -30,14 +30,14 @@ $(document).ready(function() {
 		},
 		mc : function(base){ // memory clear
 			base.memory = base.memory2 = '';
-			base.$keyboard.find('.ui-keyboard-mc').removeClass(base.options.actionClass);
+			base.$keyboard.find('.ui-keyboard-mc').removeClass(base.options.css.buttonAction);
 		},
 		mr : function(base){ // memory recall
 			base.$preview.val(function(i,v){ return v + base.memory; });
 		},
 		ms : function(base){ // memory store
 			base.memory = base.$preview.val();
-			base.$keyboard.find('.ui-keyboard-mc').addClass(base.options.actionClass);
+			base.$keyboard.find('.ui-keyboard-mc').addClass(base.options.css.buttonAction);
 		},
 		mplus : function(base){
 			if (base.memory === '') {
@@ -194,12 +194,12 @@ $(document).ready(function() {
 		// ***************************
 		yroot : function(base){
 			base.memory2 = [ 'yroot', base.$preview.val() ]; // base.$preview.val(function(i,v){ return v + ' yroot '; });
-			base.$keyboard.find('.ui-keyboard-yroot').addClass(base.options.actionClass);
+			base.$keyboard.find('.ui-keyboard-yroot').addClass(base.options.css.buttonAction);
 			base.$preview.val('');
 		},
 		xy : function(base){
 			base.memory2 = [ 'xy', base.$preview.val() ]; // base.$preview.val(function(i,v){ return v + ' ^ '; });
-			base.$keyboard.find('.ui-keyboard-xy').addClass(base.options.actionClass);
+			base.$keyboard.find('.ui-keyboard-xy').addClass(base.options.css.buttonAction);
 			base.$preview.val('');
 		},
 		mod : function(base){
@@ -286,14 +286,14 @@ $(document).ready(function() {
 		visible : function(e, kb, el){ // e = event, kb = keyboard object, el = original input
 			var mode = kb.mode || 0, sel = '.ui-keyboard-';
 			sel += (mode === 1) ? 'deg' : (mode === 2) ? 'grad' : 'rad';
-			kb.$keyboard.find(sel).addClass(kb.options.actionClass);
+			kb.$keyboard.find(sel).addClass(kb.options.css.buttonAction);
 		},
 
 		// multiple parameter functions highlight when first parameter is saved,
 		// this makes sure the buttons aren't highlighted when the memory storage clears.
 		change : function(e, kb, el){
 			if (kb.memory2 === '') {
-				kb.$keyboard.find('.ui-keyboard-xy, .ui-keyboard-yroot').removeClass(kb.options.actionClass);
+				kb.$keyboard.find('.ui-keyboard-xy, .ui-keyboard-yroot').removeClass(kb.options.css.buttonAction);
 			}
 		}
 
