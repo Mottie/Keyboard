@@ -11,6 +11,7 @@
 .ui-keyboard-preview { text-align: left; margin: 0 0 3px 0; display: inline; width: 99%;} /* width is calculated in IE, since 99% = 99% full browser width =( */ 
 .ui-keyboard-keyset { text-align: center; }
 .ui-keyboard-input { text-align: left; }
+.ui-keyboard-input-current { -moz-box-shadow: 1px 1px 10px #00f; -webkit-box-shadow: 1px 1px 10px #00f; box-shadow: 1px 1px 10px #00f; }
 .ui-keyboard-placeholder { color: #888; }
 .ui-keyboard-nokeyboard { color: #888; border-color: #888; } /* disabled or readonly inputs, or use input[disabled='disabled'] { color: #f00; } */
 

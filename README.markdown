@@ -72,6 +72,15 @@ Moved to the Wiki Pages: [Home][6] | [FAQ][7] | [Setup][8] | [Options][9] ( [Lay
 
 Only the latest changes will be shown below, see the wiki log to view older versions.
 
+###Version 1.9.2
+
+* Added "ui-keyboard-input-current" to the input that has a keyboard open - useful for highlighting the input when `usePreview` is `false`.
+* Added `enterNavigation` option:
+ * When true, pressing enter (shift-enter in textarea) on either the real or virtual keyboard will shift focus to the next input with a keyboard attached. I am considering changing this to the next input ( with or without a keyboard attached ).
+ * When false, pressing enter do nothing in an input and shift to the next line in a textarea.
+* Fixed the mouse repeat code to not repeat action keys. Fix for <a href="https://github.com/Mottie/Keyboard/issues/32">issue #32</a>.
+* FIxed space bar title from the mousewheel message to the space bar message.
+
 ###Version 1.9.1
 
 * Keyboard not closing properly... blond moment alert!

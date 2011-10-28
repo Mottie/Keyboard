@@ -1,6 +1,6 @@
 /*
 jQuery UI Virtual Keyboard
-Version 1.9.1
+Version 1.9.2
 
 Author: Jeremy Satterfield
 Modified: Rob Garrison (Mottie on github)
@@ -230,6 +230,7 @@ $.keyboard = function(el, options){
 		position.of = position.of || base.$el.data('keyboardPosition') || base.$el;
 		position.collision = (o.usePreview) ? position.collision || 'fit fit' : 'flip flip';
 
+		base.$el.addClass('ui-keyboard-input-current');
 		// show & position keyboard
 		base.$keyboard
 			// basic positioning before it is set by position utility
@@ -288,6 +289,7 @@ $.keyboard = function(el, options){
 		base.wheel = $.isFunction( $.fn.mousewheel ); // is mousewheel plugin loaded?
 		// keyCode of keys always allowed to be typed - caps lock, page up & down, end, home, arrow, insert & delete keys
 		base.alwaysAllowed = [20,33,34,35,36,37,38,39,40,45,46];
+		if (o.enterNavigation) { base.alwaysAllowed.push(13); } // add enter to allowed keys
 		base.lastCaret = { start:0, end:0 };
 		base.$preview
 			.bind('keypress.keyboard', function(e){
@@ -362,6 +364,12 @@ $.keyboard = function(el, options){
 						// Accept content - shift-enter
 						if (e.shiftKey) {
 							base.close(true);
+							if (o.enterNavigation) { base.nextInput(); }
+							return false;
+						}
+						if (o.enterNavigation && base.el.tagName !== 'TEXTAREA') {
+							base.close(base.options.autoAccept);
+							base.nextInput();
 							return false;
 						}
 						break;
@@ -406,7 +414,7 @@ $.keyboard = function(el, options){
 		}
 
 		base.$allKeys
-			.bind(o.keyBinding.split(' ').join('.keyboard ') + '.keyboard', function(e){
+			.bind(o.keyBinding.split(' ').join('.keyboard ') + '.keyboard repeater.keyboard', function(e){
 				// 'key', { action: doAction, original: n, curTxt : n, curNum: 0 }
 				var txt, key = $.data(this, 'key'), action = key.action.split(':')[0];
 				base.preview.focus();
@@ -469,20 +477,23 @@ $.keyboard = function(el, options){
 				}
 			})
 			// using "kb" namespace for mouse repeat functionality to keep it separate
-			// I need to trigger a "mousedown.keyboard" to make it work
+			// I need to trigger a "repeater.keyboard" to make it work
 			.bind('mouseup.keyboard mouseleave.kb touchend.kb touchmove.kb touchcancel.kb', function(){
-				base.preview.focus();
-				clearTimeout(base.mouseRepeat);
+				if (base.visible) { base.preview.focus(); }
+				base.mouseRepeat = [false,''];
+				return false;
 			})
 			// no mouse repeat for action keys (shift, ctrl, alt, meta, etc)
 			.filter(':not(.ui-keyboard-actionkey)')
 			// mouse repeated action key exceptions
-			.add('.ui-keyboard-tab, .ui-keyboard-bksp, .ui-keyboard-space, .ui-keyboard-enter')
+			.add('.ui-keyboard-tab, .ui-keyboard-bksp, .ui-keyboard-space, .ui-keyboard-enter', base.$keyboard)
 			.bind('mousedown.kb touchstart.kb', function(){
 				var key = $(this);
-				base.mouseRepeat = setTimeout(function() {
-					base.repeatKey(key);
+				base.mouseRepeat = [true, key]; // save the key, make sure we are repeating the right one (fast typers)
+				setTimeout(function() {
+					if (base.mouseRepeat[0] && base.mouseRepeat[1] === key) { base.repeatKey(key); }
 				}, o.repeatDelay);
+				return false;
 			});
 
 	};
@@ -541,12 +552,13 @@ $.keyboard = function(el, options){
 
 	// mousedown repeater
 	base.repeatKey = function(key){
-		key.trigger('mousedown.keyboard');
-		base.mouseRepeat = setTimeout(function() {
-			base.repeatKey(key);
-		}, base.repeatTime);
+		key.trigger('repeater.keyboard');
+		if (base.mouseRepeat[0]) {
+			setTimeout(function() {
+				base.repeatKey(key);
+			}, base.repeatTime);
+		}
 	};
-
 
 	base.showKeySet = function(el){
 		var key = '',
@@ -678,6 +690,7 @@ $.keyboard = function(el, options){
 		if (base.$keyboard.is(':visible')) {
 			clearTimeout(base.throttled);
 			base.$el
+				.removeClass('ui-keyboard-input-current')
 				.trigger( (o.alwaysOpen) ? '' : 'beforeClose.keyboard', [ base, base.el, (accepted || false) ] )
 				.val( (accepted) ? (o.alwaysOpen ? base.$el.val() : base.checkCombos()) : base.originalContent )
 				.scrollTop( base.el.scrollHeight )
@@ -702,6 +715,12 @@ $.keyboard = function(el, options){
 
 	base.accept = function(){
 		base.close(true);
+	};
+
+	base.nextInput = function(){
+		// maybe add code here to go back to the first input? or add next/prev buttons
+		base.$el.nextAll('.ui-keyboard-input:not(.ui-keyboard-preview)').eq(0).focus();
+		return false;
 	};
 
 	// Build default button
@@ -732,7 +751,6 @@ $.keyboard = function(el, options){
 
 		// find key label
 		nm = n.split(':');
-
 		if (nm[0] === '' && nm[1] === '') { n = ':'; } // corner case of ":(:):;" reduced to "::;", split as ["", "", ";"]
 		n = (nm[0] !== '' && nm.length > 1) ? $.trim(nm[0]) : n;
 		t = (nm.length > 1) ? $.trim(nm[1]).replace(/_/g, " ") || '' : ''; // added to title
@@ -893,7 +911,7 @@ $.keyboard = function(el, options){
 
 								case 'space':
 									base.acceptedKeys.push(' ');
-									base.addKey('space', '&nbsp;');
+									base.addKey('space', 'space');
 									break;
 
 								case 't':
@@ -974,8 +992,16 @@ $.keyboard = function(el, options){
 			base.insertText((base.decimal) ? '.' : ',');
 		},
 		enter : function(base) {
-			if (base.el.tagName === 'INPUT') { return; } // ignore enter key in input
-			base.insertText('\n');
+			var tag = base.el.tagName, o = base.options;
+			// shift-enter in textareas
+			if ((tag !== 'TEXTAREA' && o.enterNavigation) || (o.enterNavigation && base.shiftActive && tag === 'TEXTAREA')) {
+				base.close(o.autoAccept);
+				base.nextInput();
+				return false;
+			} else {
+				if (tag === 'INPUT') { return; } // ignore enter key in input
+				base.insertText('\n');
+			}
 		},
 		lock : function(base,el){
 			base.lastKeyset[0] = base.shiftActive = base.capsLock = !base.capsLock;
@@ -1135,7 +1161,7 @@ $.keyboard = function(el, options){
 			's'      : '\u21e7:Shift',        // thick hollow up arrow
 			'shift'  : 'Shift:Shift',
 			'sign'   : '\u00b1:Change Sign',  // +/- sign for num pad
-			'space'  : ' :Space',
+			'space'  : '&nbsp;:Space',
 			't'      : '\u21e5:Tab',          // right arrow to bar (used since this virtual keyboard works with one directional tabs)
 			'tab'    : '\u21e5 Tab:Tab'       // \u21b9 is the true tab symbol (left & right arrows)
 		},
@@ -1164,6 +1190,9 @@ $.keyboard = function(el, options){
 
 		// Use tab to navigate between input fields
 		tabNavigation: false,
+
+		// press enter (shift-enter in textarea) to go to the next input field
+		enterNavigation : true,
 
 		// Set this to append the keyboard immediately after the input/textarea it is attached to. This option
 		// works best when the input container doesn't have a set width and when the "tabNavigation" option is true
