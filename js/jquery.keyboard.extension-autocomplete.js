@@ -1,5 +1,5 @@
 /*
- * jQuery UI Virtual Keyboard Autocomplete v1.2 for Keyboard v1.8+ only
+ * jQuery UI Virtual Keyboard Autocomplete v1.3 for Keyboard v1.8+ only
  *
  * By Rob Garrison (aka Mottie & Fudgey)
  * Licensed under the MIT License
@@ -84,7 +84,7 @@ $.fn.addAutocomplete = function(){
 			if (base.hasAutocomplete && !base.autocomplete_bind) {
 				base.$preview.bind('keydown.keyboard',function(e){
 					// send keys to the autocomplete widget (arrow, pageup/down, etc)
-					base.autocomplete_input(e);
+					return base.autocomplete_input(e);
 				});
 				base.autocomplete_bind = true;
 			}
@@ -131,13 +131,13 @@ $.fn.addAutocomplete = function(){
 			}
 		};
 
+		base.origEscClose = base.escClose;
+
 		// replace original function with this one
 		base.escClose = function(e){
 			// prevent selecting an item in autocomplete from closing keyboard
 			if (base.hasAutocomplete && e.target.id === 'ui-active-menuitem') { return; }
-			if ( !$(e.target).closest('.ui-keyboard').length ) {
-				base.close( (base.options.autoAccept) ? true : false );
-			}
+			base.origEscClose(e);
 		};
 
 		base.autocomplete_init();

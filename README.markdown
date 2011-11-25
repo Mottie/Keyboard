@@ -72,6 +72,18 @@ Moved to the Wiki Pages: [Home][6] | [FAQ][7] | [Setup][8] | [Options][9] ( [Lay
 
 Only the latest changes will be shown below, see the wiki log to view older versions.
 
+
+###Version 1.9.3
+
+* Added `switchInput` callback to the options; it replaces the default switching input code if added.
+* Fixed Navigation extension to not repeat keys. Fix for [issue #36](https://github.com/Mottie/Keyboard/issues/36).
+* Fixed Autocomplete extension to allow selecting an item on click. Fix for [issue #35](https://github.com/Mottie/Keyboard/issues/35).
+* Fixed key repeat problem reported in [issue #32](https://github.com/Mottie/Keyboard/issues/32).
+* The placeholder attribute in the preview window is no longer being removed. So, if the preview input loses focus, the placeholder message will return; but this will only work in broswers that support the HTML5 placeholder attribute. The plugin only adds this enhancement to the original input, if the browser doesn't support it. Requested by Attila.
+* Fixed the spacer key to now accept decimal numbers `{sp:1.3}`; previously only `{sp:1}` or `{sp:.5}` would work. Additionally, a new class name for these spacers was added - `ui-keyboard-spacer` with some css to prevent Opera from increasing the line-height of the row - reported by Attila, Thanks!
+* Opera should now also give the input/textarea focus when the keyboard opens. Reported by Attila.
+* Main demo page will now dynamically adjust in width, except in older IE.
+
 ###Version 1.9.2
 
 * Added "ui-keyboard-input-current" to the input that has a keyboard open - useful for highlighting the input when `usePreview` is `false`.
@@ -79,7 +91,7 @@ Only the latest changes will be shown below, see the wiki log to view older vers
  * When true, pressing enter (shift-enter in textarea) on either the real or virtual keyboard will shift focus to the next input with a keyboard attached. I am considering changing this to the next input ( with or without a keyboard attached ).
  * When false, pressing enter do nothing in an input and shift to the next line in a textarea.
 * Fixed the mouse repeat code to not repeat action keys. Fix for <a href="https://github.com/Mottie/Keyboard/issues/32">issue #32</a>.
-* FIxed space bar title from the mousewheel message to the space bar message.
+* Fixed space bar title from the mousewheel message to the space bar message.
 
 ###Version 1.9.1
 

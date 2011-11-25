@@ -1,5 +1,5 @@
 ﻿/*
- * jQuery UI Virtual Keyboard Navigation v1.1 for Keyboard v1.8.14+ only
+ * jQuery UI Virtual Keyboard Navigation v1.2 for Keyboard v1.8.14+ only
  *
  * By Rob Garrison (aka Mottie & Fudgey)
  * Licensed under the MIT License
@@ -42,6 +42,8 @@ $.fn.addNavigation = function(options){
 		if (!base) { return; }
 
 		base.navigation_options = o = $.extend({}, defaults, options);
+		// save navigation settings - disabled when the toggled
+		base.saveNav = [ base.options.tabNavigation, base.options.enterNavigation ];
 
 		// Setup
 		base.navigation_init = function(){
@@ -54,23 +56,29 @@ $.fn.addNavigation = function(options){
 			base.$preview
 			.unbind('keydown.keyboardNav')
 			.bind('keydown.keyboardNav',function(e){
-				if (e.which === o.toggleKey) {
-					o.toggleMode = !o.toggleMode;
-				}
-				base.$keyboard[(o.toggleMode) ? 'addClass' : 'removeClass'](o.focusClass);
-				if ( o.toggleMode && e.which > 32 && e.which < 41 ) {
-					base.navigateKeys(e.which);
-					return false;
-				}
-				if ( o.toggleMode && e.which === 13 ) {
-					base.$keyboard
-						.find('.ui-keyboard-keyset:visible')
-						.find('.ui-keyboard-button[data-pos="' + o.position[0] + ',' + o.position[1] + '"]')
-						.trigger(base.options.keyBinding);
-					return false;
-				}
+				return base.checkKeys(e);
 			});
 
+		};
+
+		base.checkKeys = function(e, disable){
+			if (e.which === o.toggleKey || disable) {
+				o.toggleMode = (disable) ? false : !o.toggleMode;
+				base.options.tabNavigation = (o.toggleMode) ? false : base.saveNav[0];
+				base.options.enterNavigation = (o.toggleMode) ? false : base.saveNav[1];
+			}
+			base.$keyboard[(o.toggleMode) ? 'addClass' : 'removeClass'](o.focusClass);
+			if ( o.toggleMode && e.which > 32 && e.which < 41 ) {
+				base.navigateKeys(e.which);
+				return false;
+			}
+			if ( o.toggleMode && e.which === 13 ) {
+				base.$keyboard
+					.find('.ui-keyboard-keyset:visible')
+					.find('.ui-keyboard-button[data-pos="' + o.position[0] + ',' + o.position[1] + '"]')
+					.trigger('repeater.keyboard');
+				return false;
+			}
 		};
 
 		base.navigateKeys = function(key){
@@ -106,9 +114,13 @@ $.fn.addNavigation = function(options){
 			base.navigation_init();
 		}
 		// capture and simulate typing
-		base.$el.bind('visible.keyboard', function(e){
-			base.navigation_init();
-		});
+		base.$el
+			.bind('visible.keyboard', function(e){
+				base.navigation_init();
+			})
+			.bind('inactive.keyboard hidden.keyboard', function(e){
+				base.checkKeys(e, true); // disable toggle mode & revert navigation options
+			});
 
 	});
 };

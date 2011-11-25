@@ -15,6 +15,8 @@
 .ui-keyboard-placeholder { color: #888; }
 .ui-keyboard-nokeyboard { color: #888; border-color: #888; } /* disabled or readonly inputs, or use input[disabled='disabled'] { color: #f00; } */
 
+span.ui-keyboard-spacer { display: inline-block; width: 0px; height: 0px; } /* needed for Opera */
+
 /* combo key styling - toggles diacritics on/off */
 .ui-keyboard-button.ui-keyboard-combo.ui-state-default { border-color: #ffaf0f; }
 

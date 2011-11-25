@@ -4,12 +4,12 @@ html, body, div, input, textarea {
  font-size: 14px;
 }
 
-body { background: #333; color: #ddd; height: 98%; margin: 0; padding: 0; }
+body { background: #333; color: #ddd; height: 98%; margin: 0 auto; padding: 0; }
 a:link { color: #9fcdff; text-decoration: none; }
 a:hover { color: #fff; }
 a:visited,a:active { color: #53a5ff; }
 
-#page-wrap { width: 900px; margin: 0 auto; height: 98%; min-height: 350px; }
+#page-wrap { display: block; width: 90%; margin: 0 auto; text-align: center; height: 98%; min-height: 350px; }
 
 h1, h2, h3, h4 { color: #ddd; text-align: center; }
 h2 { margin: 5px; font-size: 130%; cursor: pointer; }
@@ -25,21 +25,25 @@ h2 { margin: 5px; font-size: 130%; cursor: pointer; }
 #switcher a { margin: 0 auto; }
 #wrap { margin-top: 30px; }
 
-#console { width: 800px; list-style-type: none; margin: 0 auto; padding: 0; }
+#console { width: 90%; list-style-type: none; margin: 0 auto; padding: 0; }
 #console li { text-align: center; }
 
-.block { float: left; padding-left: 30px; margin-bottom: 30px; text-align: center; position: relative; }
+.block { width: 270px; display: inline-block; height: 170px;  padding-left: 30px; padding-bottom: 30px; text-align: center; vertical-align: top; position: relative; }
 .block2 { margin: 0 auto; text-align: center; }
 textarea, input { width: 260px; background: #333; color: #ddd; border: #777 1px solid; padding: 5px 0; }
 .hiddenInput { display: inline-block; width: 240px; }
 .code { display: none; }
 .attn { color: #c00; }
 
+#nav-demo .block { height: 250px; padding: 0; }
+#nav-demo input, #nav-demo textarea { margin: 2px; }
+
 #showcode {
  display: none;
  background: #333;
  overflow: auto;
- width: 850px;
+ width: 100%;
+ margin: 0 auto;
  border: #555 1px solid;
  z-index: 1;
 }
@@ -50,14 +54,19 @@ textarea, input { width: 260px; background: #333; color: #ddd; border: #777 1px 
 #showcode .ct { font-weight: 700; color: #9fcdff; }
 #showcode .comment { color: #92d050; }
 
+.oldie #page-wrap { width: 900px; }
+.oldie .block { float: left; display: inherit; }
+.oldie #showcode { width: 850px; }
+
 .clear { clear: both; }
 
 /* used .alignRight instead of #num (for the number pad) here because the virtual keyboard
  strips IDs from the input - ID's are supposed to be unique! */
 .alignRight { text-align: right; }
 
-#info { margin: 250px auto; width: 400px; padding-left: 20px; }
+#info { margin: 220px auto 0 auto; width: 400px; padding-left: 20px; }
 #info ul { padding-left: 15px; }
+#info .key { font-weight: 700; color: #59b4d4; }
 .underline { text-decoration: underline; }
 
 #mobile #wrap { height: 500px; }

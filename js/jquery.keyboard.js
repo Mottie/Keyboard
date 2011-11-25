@@ -1,6 +1,6 @@
 /*
 jQuery UI Virtual Keyboard
-Version 1.9.2
+Version 1.9.3
 
 Author: Jeremy Satterfield
 Modified: Rob Garrison (Mottie on github)
@@ -80,16 +80,18 @@ CSS:
 	.ui-keyboard { padding: .3em; position: absolute; left: 0; top: 0; z-index: 16000; }
 	.ui-keyboard-has-focus { z-index: 16001; }
 	.ui-keyboard div { font-size: 1.1em; }
-	.ui-keyboard-button { height: 2em; width: 2em; margin: .1em; cursor: pointer; overflow: hidden; }
+	.ui-keyboard-button { height: 2em; width: 2em; margin: .1em; cursor: pointer; overflow: hidden; line-height: 2em; }
 	.ui-keyboard-button span { padding: 0; margin: 0; white-space:nowrap; }
 	.ui-keyboard-button-endrow { clear: left; }
 	.ui-keyboard-widekey { width: 4em; }
 	.ui-keyboard-space { width: 15em; text-indent: -999em; }
-	.ui-keyboard-preview { text-align: left; margin: 0 0 3px 0; display: inline; }
+	.ui-keyboard-preview-wrapper { text-align: center; }
+	.ui-keyboard-preview { text-align: left; margin: 0 0 3px 0; display: inline; width: 99%;} - width is calculated in IE, since 99% = 99% full browser width
 	.ui-keyboard-keyset { text-align: center; }
 	.ui-keyboard-input { text-align: left; }
+	.ui-keyboard-input-current { -moz-box-shadow: 1px 1px 10px #00f; -webkit-box-shadow: 1px 1px 10px #00f; box-shadow: 1px 1px 10px #00f; }
 	.ui-keyboard-placeholder { color: #888; }
-	.ui-keyboard-nokeyboard { color: #888; border-color: #888; }
+	.ui-keyboard-nokeyboard { color: #888; border-color: #888; } - disabled or readonly inputs, or use input[disabled='disabled'] { color: #f00; }
 */
 
 (function($){
@@ -142,18 +144,7 @@ $.keyboard = function(el, options){
 		if (o.alwaysOpen) { o.stayOpen = true; }
 		if (!o.stayOpen){
 			$(document).bind('mousedown.keyboard keyup.keyboard', function(e){
-				// Moved base.escClose() function inside of here
-				if ( !base.isVisible ) { return; }
-				// ignore autoaccept if using escape - good idea?
-				if ( e.type === 'keyup' && e.which === 27 ) { base.close(); }
-				if ( e.type === 'mousedown' && ( e.target !== base.el && $(e.target).closest('.ui-keyboard')[0] !== base.$keyboard[0]) ) {
-					// stop propogation in IE - an input getting focus doesn't open a keyboard if one is already open
-					if ( base.allie ) {
-						e.preventDefault();
-						$('body').focus(); // make sure no other input gets focus
-					}
-					base.close(o.autoAccept);
-				}
+				base.escClose(e);
 			});
 		}
 
@@ -191,7 +182,7 @@ $.keyboard = function(el, options){
 		if (!base.isVisible || o.alwaysOpen) {
 			clearTimeout(base.timer);
 			base.reveal();
-			if (!o.usePreview) { setTimeout(function(){ base.preview.focus(); }, 100); } // needed for Opera
+			setTimeout(function(){ base.$preview.focus(); }, 100);
 		}
 	};
 
@@ -200,6 +191,7 @@ $.keyboard = function(el, options){
 		$('.ui-keyboard:not(.ui-keyboard-always-open)').hide();
 		// ui-keyboard-has-focus is applied in case multiple keyboards have alwaysOpen = true and are stacked
 		$('.ui-keyboard-has-focus').removeClass('ui-keyboard-has-focus');
+		$('.ui-keyboard-input-current').removeClass('ui-keyboard-input-current');
 
 		// Don't open if disabled
 		if (base.$el.is(':disabled') || base.$el.attr('readonly')) {
@@ -231,6 +223,8 @@ $.keyboard = function(el, options){
 		position.collision = (o.usePreview) ? position.collision || 'fit fit' : 'flip flip';
 
 		base.$el.addClass('ui-keyboard-input-current');
+		base.isCurrent = true;
+
 		// show & position keyboard
 		base.$keyboard
 			// basic positioning before it is set by position utility
@@ -256,7 +250,7 @@ $.keyboard = function(el, options){
 			}
 		});
 
-		base.preview.focus();
+		base.$preview.focus();
 		base.isVisible = true;
 
 		base.checkDecimal();
@@ -329,6 +323,8 @@ $.keyboard = function(el, options){
 						if (base.tab && !o.lockInput) {
 							$.keyboard.keyaction.tab(base);
 							base.tab = false;
+						} else {
+							e.preventDefault();
 						}
 						break;
 
@@ -353,24 +349,27 @@ $.keyboard = function(el, options){
 					case 9 :
 						if (o.tabNavigation) {
 							base.close(o.autoAccept);
+							// allow tab to pass through - tab to next input/shift-tab for prev
 							return;
 						} else {
 							base.tab = true; // see keyup comment above
-							e.preventDefault(); // Opera ignores this =(
+							return false;
 						}
-						break;
 
 					case 13:
 						// Accept content - shift-enter
 						if (e.shiftKey) {
-							base.close(true);
-							if (o.enterNavigation) { base.nextInput(); }
-							return false;
+							if (o.enterNavigation) {
+								// textarea & input - enterMod + shift + enter = accept, then go to prev
+								return base.switchInput(!e[o.enterMod], true); // (goToNext, autoAccept)
+							} else {
+								// textarea & input - shift + enter = accept (no navigation)
+								return base.close(true);
+							}
 						}
-						if (o.enterNavigation && base.el.tagName !== 'TEXTAREA') {
-							base.close(base.options.autoAccept);
-							base.nextInput();
-							return false;
+						// input only - enterMod + enter to navigate
+						if (o.enterNavigation && (base.el.tagName !== 'TEXTAREA' || e[o.enterMod])) {
+							return base.switchInput(!e[o.enterMod], o.autoAccept);
 						}
 						break;
 
@@ -393,11 +392,15 @@ $.keyboard = function(el, options){
 				if (base.checkCaret) { base.lastCaret = base.$preview.caret(); }
 			})
 			.bind('blur.keyboard', function(e){
-				if (o.alwaysOpen) {
-					clearTimeout(base.timer);
-					base.timer = setTimeout(function(){
-						if ($(':focus')[0] !== base.el) { base.close(o.autoAccept); }
-					}, 300);
+				// when keyboard is always open, make sure base.close is called on blur
+				if (o.alwaysOpen && base.isCurrent && !base.$el.is('.ui-keyboard-input-current')) {
+						clearTimeout(base.timer);
+						base.timer = setTimeout(function(){
+							if (base.isCurrent && !base.$el.is('.ui-keyboard-input-current')) {
+								base.close(o.autoAccept);
+							}
+						}, 300);
+					return false;
 				}
 			});
 
@@ -417,7 +420,7 @@ $.keyboard = function(el, options){
 			.bind(o.keyBinding.split(' ').join('.keyboard ') + '.keyboard repeater.keyboard', function(e){
 				// 'key', { action: doAction, original: n, curTxt : n, curNum: 0 }
 				var txt, key = $.data(this, 'key'), action = key.action.split(':')[0];
-				base.preview.focus();
+				base.$preview.focus();
 				// Start caret in IE when not focused (happens with each virtual keyboard button click
 				if (base.checkCaret) { base.$preview.caret( base.lastCaret.start, base.lastCaret.end ); }
 				if (action.match('meta')) { action = 'meta'; }
@@ -435,7 +438,7 @@ $.keyboard = function(el, options){
 				base.checkCombos();
 				base.checkMaxLength();
 				base.$el.trigger( 'change.keyboard', [ base, base.el ] );
-				if (o.usePreview) { base.preview.focus(); }
+				base.$preview.focus();
 				e.preventDefault();
 			})
 			// Change hover class and tooltip
@@ -479,7 +482,7 @@ $.keyboard = function(el, options){
 			// using "kb" namespace for mouse repeat functionality to keep it separate
 			// I need to trigger a "repeater.keyboard" to make it work
 			.bind('mouseup.keyboard mouseleave.kb touchend.kb touchmove.kb touchcancel.kb', function(){
-				if (base.visible) { base.preview.focus(); }
+				if (base.visible) { base.$preview.focus(); }
 				base.mouseRepeat = [false,''];
 				return false;
 			})
@@ -685,22 +688,39 @@ $.keyboard = function(el, options){
 		return keys;
 	};
 
+	// Go to next or prev inputs
+	// goToNext = true, then go to next input; if false go to prev
+	// isAccepted is from autoAccept option or true if user presses shift-enter
+	base.switchInput = function(goToNext, isAccepted){
+		if (typeof o.switchInput === "function") {
+			o.switchInput(base, goToNext, isAccepted);
+		} else {
+			base.close(isAccepted);
+			var all = $('.ui-keyboard-input:not(.ui-keyboard-preview)'),
+				indx = all.index(base.$el) + (goToNext ? 1 : -1);
+			if (indx > all.length - 1) { indx = 0; } // go to first input
+			all.eq(indx).focus();
+		}
+		return false;
+	};
+
 	// Close the keyboard, if visible. Pass a status of true, if the content was accepted (for the event trigger).
 	base.close = function(accepted){
-		if (base.$keyboard.is(':visible')) {
+		if (base.isVisible) {
 			clearTimeout(base.throttled);
+			base.isCurrent = false;
 			base.$el
 				.removeClass('ui-keyboard-input-current')
 				.trigger( (o.alwaysOpen) ? '' : 'beforeClose.keyboard', [ base, base.el, (accepted || false) ] )
-				.val( (accepted) ? (o.alwaysOpen ? base.$el.val() : base.checkCombos()) : base.originalContent )
+				.val( (accepted) ?  base.checkCombos() : base.originalContent )
 				.scrollTop( base.el.scrollHeight )
 				.trigger( ((accepted || false) ? 'accepted.keyboard' : 'canceled.keyboard'), [ base, base.el ] )
-				.trigger( (o.alwaysOpen) ? '' : 'hidden.keyboard', [ base, base.el ] );
+				.trigger( (o.alwaysOpen) ? 'inactive.keyboard' : 'hidden.keyboard', [ base, base.el ] );
 			if (!o.usePreview && o.openOn !== '') {
 				// rebind input focus
 				base.$el.bind( o.openOn + '.keyboard', function(){ base.focusOn(); });
 			}
-			if ( !o.alwaysOpen ) {
+			if (!o.alwaysOpen) {
 				base.$keyboard.hide();
 				base.isVisible = false;
 			}
@@ -717,10 +737,17 @@ $.keyboard = function(el, options){
 		base.close(true);
 	};
 
-	base.nextInput = function(){
-		// maybe add code here to go back to the first input? or add next/prev buttons
-		base.$el.nextAll('.ui-keyboard-input:not(.ui-keyboard-preview)').eq(0).focus();
-		return false;
+	base.escClose = function(e){
+		if ( !base.isVisible ) { return; }
+		// ignore autoaccept if using escape - good idea?
+		if ( e.type === 'keyup' && e.which === 27 ) { base.close(); }
+		if ( e.type === 'mousedown' && ( e.target !== base.el && $(e.target).closest('.ui-keyboard')[0] !== base.$keyboard[0]) ) {
+			// stop propogation in IE - an input getting focus doesn't open a keyboard if one is already open
+			if ( base.allie ) {
+				e.preventDefault();
+			}
+			base.close(o.autoAccept);
+		}
 	};
 
 	// Build default button
@@ -784,7 +811,6 @@ $.keyboard = function(el, options){
 		if (o.usePreview) {
 			base.$preview = base.$el.clone(false)
 				.removeAttr('id')
-				.removeAttr('placeholder')
 				.removeClass('ui-keyboard-placeholder')
 				.addClass('ui-keyboard-preview ' + o.css.input)
 				.show(); // for hidden inputs
@@ -836,11 +862,11 @@ $.keyboard = function(el, options){
 							action = keys[key].match(/^\{(\S+)\}$/)[1].toLowerCase();
 
 							// add empty space
-							if (/^sp:(\.?\d+)$/.test(action)) {
-								margin = action.match(/^sp:(\.?\d+)$/)[1] || 0;
+							if (/^sp:((\d+)?(\.\d+)?)$/.test(action)) {
+								margin = action.match(/^sp:((\d+)?(\.\d+)?)$/)[1] || 0;
 								$('<span>&nbsp;</span>')
 									.css('margin','0 ' + margin + 'em')
-									.addClass('ui-keyboard-button')
+									.addClass('ui-keyboard-button ui-keyboard-spacer')
 									.appendTo(newSet);
 							}
 
@@ -946,7 +972,7 @@ $.keyboard = function(el, options){
 	};
 
 	base.destroy = function() {
-		$('body').unbind('mousedown.keyboard keyup.keyboard');
+		$(document).unbind('mousedown.keyboard keyup.keyboard');
 		if (base.$keyboard) { base.$keyboard.remove(); }
 		var unb = o.openOn + ' accepted beforeClose blur canceled change contextmenu hidden initialized keydown keypress keyup visible'.split(' ').join('.keyboard ');
 		base.$el
@@ -994,12 +1020,10 @@ $.keyboard = function(el, options){
 		enter : function(base) {
 			var tag = base.el.tagName, o = base.options;
 			// shift-enter in textareas
-			if ((tag !== 'TEXTAREA' && o.enterNavigation) || (o.enterNavigation && base.shiftActive && tag === 'TEXTAREA')) {
-				base.close(o.autoAccept);
-				base.nextInput();
-				return false;
+			if ( o.enterNavigation && ( tag !== 'TEXTAREA' || ( base.shiftActive && tag === 'TEXTAREA' ) ) ) {
+				return base.switchInput(true, o.autoAccept); // true = go to next, not prev
 			} else {
-				if (tag === 'INPUT') { return; } // ignore enter key in input
+				if (tag === 'INPUT') { return false; } // ignore enter key in input
 				base.insertText('\n');
 			}
 		},
@@ -1024,7 +1048,7 @@ $.keyboard = function(el, options){
 			base.insertText(' ');
 		},
 		tab : function(base) {
-			if (base.el.tagName === 'INPUT') { return; } // ignore tab key in input
+			if (base.el.tagName === 'INPUT') { return false; } // ignore tab key in input
 			base.insertText('\t');
 		}
 	};
@@ -1188,11 +1212,14 @@ $.keyboard = function(el, options){
 		// Prevent keys not in the displayed keyboard from being typed in
 		restrictInput: false,
 
-		// Use tab to navigate between input fields
+		// tab to go to next, shift-tab for previous (default behavior)
 		tabNavigation: false,
 
-		// press enter (shift-enter in textarea) to go to the next input field
-		enterNavigation : true,
+		// enter for next input; shift-enter accepts content & goes to next
+		// shift + "enterMod" + enter ("enterMod" is the alt as set below) will accept content and go to previous in a textarea
+		enterNavigation : false,
+		// mod key options: 'ctrlKey', 'shiftKey', 'altKey', 'metaKey' (MAC only)
+		enterMod : 'altKey', // alt-enter to go to previous; shift-alt-enter to accept & go to previous
 
 		// Set this to append the keyboard immediately after the input/textarea it is attached to. This option
 		// works best when the input container doesn't have a set width and when the "tabNavigation" option is true
@@ -1239,7 +1266,8 @@ $.keyboard = function(el, options){
 		canceled    : null,
 		hidden      : null,
 		visible     : null,
-		beforeClose : null
+		beforeClose : null,
+		switchInput : null // called instead of base.switchInput
 
 	};
 
@@ -1264,7 +1292,7 @@ $.keyboard = function(el, options){
  */
 (function($, len, createRange, duplicate){
 $.fn.caret = function(options,opt2) {
-	if (typeof this[0] === 'undefined') { return; }
+	if ( typeof this[0] === 'undefined' || (this && $(this).is(':hidden')) ) { return false; }
 	var n, s, start, e, end, selRange, range, stored_range, te, val,
 		selection = document.selection, t = this[0], sTop = t.scrollTop,
 		opera = window.opera && window.opera.toString() === '[object Opera]',
@@ -1291,7 +1319,7 @@ $.fn.caret = function(options,opt2) {
 			selRange.moveEnd('character', end-start);
 			selRange.select();
 		}
-		t.focus();
+		$(t).focus();
 		t.scrollTop = sTop;
 		return this;
 	} else {
