@@ -72,6 +72,9 @@ Moved to the Wiki Pages: [Home][6] | [FAQ][7] | [Setup][8] | [Options][9] ( [Lay
 
 Only the latest changes will be shown below, see the wiki log to view older versions.
 
+###Version 1.9.4
+
+* Modified to prevent the keyboard from being added multiple times to a single element. Previously, calling the keyboard on an element a second time would add a second keyboard and detach the first one from the plugin.
 
 ###Version 1.9.3
 
