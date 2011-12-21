@@ -72,6 +72,17 @@ Moved to the Wiki Pages: [Home][6] | [FAQ][7] | [Setup][8] | [Options][9] ( [Lay
 
 Only the latest changes will be shown below, see the wiki log to view older versions.
 
+###Version 1.9.6
+
+* Added `acceptValid` option
+  * When true, all input is continually checked using the `validate` callback function, if valid, then the accept button is enabled; otherwise it is disabled.
+  * When false, the input is not checked after each input; but the `validate` callback is still called when the input is accepted.
+  * Added a "disabled" class to the css which is applied to the accept button when disabled.
+* Changed the `validate` callback function
+  * It no longer automatically triggers the "canceled" event, you can do that within the callback.
+  * If the input is invalid and the keyboard is closed/canceled, the `validate` callback will no longer abort the close.
+  * Added an `isClosing` variable which is only `true` when the content was accepted. The `isClosing` variable is `false` when the validate callback is called during input.
+
 ###Version 1.9.5
 
 * Added a `validate` callback function

@@ -1,6 +1,6 @@
 /*
 jQuery UI Virtual Keyboard
-Version 1.9.5
+Version 1.9.6
 
 Author: Jeremy Satterfield
 Modified: Rob Garrison (Mottie on github)
@@ -216,6 +216,9 @@ $.keyboard = function(el, options){
 		// save starting content, in case we cancel
 		base.originalContent = base.$el.val();
 		base.$preview.val( base.originalContent );
+
+		// disable/enable accept button
+		if (o.acceptValid) { base.checkValid(); }
 
 		// get single target position || target stored in element data (multiple targets) || default, at the element
 		var p, s, position = o.position;
@@ -657,7 +660,23 @@ $.keyboard = function(el, options){
 		base.preview.scrollTop = base.lineHeight * (val.substring(0, pos.start).split('\n').length - 1); // find row, multiply by font-size
 
 		base.lastCaret = { start: pos.start, end: pos.end };
+
+		if (o.acceptValid) { base.checkValid(); }
+
 		return val; // return text, used for keyboard closing section
+	};
+
+	// Toggle accept button if validating
+	base.checkValid = function(){
+		var valid = true;
+		if (o.validate && typeof o.validate === "function") {
+			 valid = o.validate(base, base.$preview.val(), false);
+		}
+		// toggle accept button, "disabled" class defined in the css
+		base.$keyboard.find('.ui-keyboard-accept')
+			[valid ? 'removeClass' : 'addClass']('disabled')
+			[valid ? 'removeAttr' : 'attr']('disabled', 'disabled')
+			.attr('aria-disabled', !valid);
 	};
 
 	// Decimal button for num pad - only allow one (not used by default)
@@ -710,12 +729,8 @@ $.keyboard = function(el, options){
 			clearTimeout(base.throttled);
 			base.isCurrent = false;
 			var val = (accepted) ?  base.checkCombos() : base.originalContent;
-			if (o.validate && typeof(o.validate) === "function") {
-				if (!o.validate(base, val)) {
-					base.$el.trigger('canceled.keyboard', [ base, base.el ] );
-					return;
-				}
-			}
+			// validate input if accepted
+			if (accepted && o.validate && typeof(o.validate) === "function" && !o.validate(base, val, true)) { return; }
 			base.$el
 				.removeClass('ui-keyboard-input-current')
 				.trigger( (o.alwaysOpen) ? '' : 'beforeClose.keyboard', [ base, base.el, (accepted || false) ] )
@@ -1219,6 +1234,9 @@ $.keyboard = function(el, options){
 		// Prevent keys not in the displayed keyboard from being typed in
 		restrictInput: false,
 
+		// Check input against validate function, if valid the accept button is clickable; if invalid, the accept button is disabled.
+		acceptValid  : true,
+
 		// tab to go to next, shift-tab for previous (default behavior)
 		tabNavigation: false,
 
@@ -1279,7 +1297,8 @@ $.keyboard = function(el, options){
 		// this callback is called just before the "beforeClose" to check the value
 		// if the value is valid, return true and the keyboard will continue as it should (close if not always open, etc)
 		// if the value is not value, return false and the clear the keyboard value ( like this "keyboard.$preview.val('');" ), if desired
-		validate    : function(keyboard, value) { return true; }
+		// The validate function is called after each input, the "isClosing" value will be false; when the accept button is clicked, "isClosing" is true
+		validate    : function(keyboard, value, isClosing) { return true; }
 
 	};
 
