@@ -1,6 +1,6 @@
 /*
 jQuery UI Virtual Keyboard
-Version 1.9.4
+Version 1.9.5
 
 Author: Jeremy Satterfield
 Modified: Rob Garrison (Mottie on github)
@@ -709,10 +709,17 @@ $.keyboard = function(el, options){
 		if (base.isVisible) {
 			clearTimeout(base.throttled);
 			base.isCurrent = false;
+			var val = (accepted) ?  base.checkCombos() : base.originalContent;
+			if (o.validate && typeof(o.validate) === "function") {
+				if (!o.validate(base, val)) {
+					base.$el.trigger('canceled.keyboard', [ base, base.el ] );
+					return;
+				}
+			}
 			base.$el
 				.removeClass('ui-keyboard-input-current')
 				.trigger( (o.alwaysOpen) ? '' : 'beforeClose.keyboard', [ base, base.el, (accepted || false) ] )
-				.val( (accepted) ?  base.checkCombos() : base.originalContent )
+				.val( val )
 				.scrollTop( base.el.scrollHeight )
 				.trigger( ((accepted || false) ? 'accepted.keyboard' : 'canceled.keyboard'), [ base, base.el ] )
 				.trigger( (o.alwaysOpen) ? 'inactive.keyboard' : 'hidden.keyboard', [ base, base.el ] );
@@ -1267,7 +1274,12 @@ $.keyboard = function(el, options){
 		hidden      : null,
 		visible     : null,
 		beforeClose : null,
-		switchInput : null // called instead of base.switchInput
+		switchInput : null, // called instead of base.switchInput
+
+		// this callback is called just before the "beforeClose" to check the value
+		// if the value is valid, return true and the keyboard will continue as it should (close if not always open, etc)
+		// if the value is not value, return false and the clear the keyboard value ( like this "keyboard.$preview.val('');" ), if desired
+		validate    : function(keyboard, value) { return true; }
 
 	};
 

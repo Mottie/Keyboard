@@ -72,6 +72,27 @@ Moved to the Wiki Pages: [Home][6] | [FAQ][7] | [Setup][8] | [Options][9] ( [Lay
 
 Only the latest changes will be shown below, see the wiki log to view older versions.
 
+###Version 1.9.5
+
+* Added a `validate` callback function
+  * This function is called when the keyboard is attempting to close.
+  * If the function returns true, the keyboard will continue on, accept the content and close (if not always open).
+  * If this function returns false, then a "canceled" event will fire and the keyboard will abort the close.
+  * Any other actions can be performed or called from inside of this function. For example, if the value is invalid, you can clear the keyboard input:
+
+    ```javascript
+    $('#keyboard').keyboard({
+      validate: function(keyboard, value){
+        // test value to only allow numbers
+        var test = /\d+/.test(value);
+        // if the value is invalid, clear the input
+        if (!test) { keyboard.$preview.val(''); }
+        // return valid test (true or false)
+        return test;
+      }
+    });
+    ```
+
 ###Version 1.9.4
 
 * Modified to prevent the keyboard from being added multiple times to a single element. Previously, calling the keyboard on an element a second time would add a second keyboard and detach the first one from the plugin.
@@ -153,212 +174,6 @@ Only the latest changes will be shown below, see the wiki log to view older vers
    * The "Active Buttons" setting is limited in that if the swatch letter of the Regular buttons is greater than the swatch letter of the Active Buttons, the theme doesn't apply properly. For example, Regular button swatch B with Active Button swatch A won't work because of the way the css is set up.
    * When the jQuery Mobile Theme Roller become available, I will add it to the demo page.
 
-####Version 1.8.17
-* Changed the license to a [MIT License][18].
- * Previous versions will be retroactively converted from a [Creative Commons Attribution-Share Alike 3.0 Unported License][17] to a [MIT License][18].
- * I have spoken with the original author, Jeremy Satterfield, and he has agreed to this change.
- * This licensing change applies to all of the extensions as well, which were previously dual licensed under MIT and GPLv2.
-* The layout files will remain under [WTFPL][19].
-
-####Version 1.8.16
-* Added `tabNavigation` option:
-  * Setting this option to `true` allows the tab key (on the real keyboard) to tab into the next input/textarea.
-  * When true, this option works best when the `usePreview` option is `false`.
-* Added `appendLocally` option:
-  * This option was added to append the keyboard within the same container as the input it is attached to.
-  * The advantage of doing this allows for setting the `tabNavigation` option to `true` and tab to the next input area. Otherwise, the keyboard is appended to the body of the page and the next tab will switch the focus to the browser location window.
-  * The disadvantage of setting this option to `true` is that the keyboard width will be limited by the width of the input container. If you set this option to true on the main demo page (index.html), all keyboard widths will be limited to the width of the `.block` class which groups each demo - it's not pretty.
-
-####Version 1.8.15
-* Fixed `restrictInput` to better work with multiple length keys
- * It is now designed to remove any non-matching characters or letter groups. For example, if you clicked a key to enter "Hello" then hit the backspace, what would be left is "Hell" which doesn't match any keys, so "Hell" will also be removed.
- * One issue I noticed is with entering numbers, as mentioned in [issue #28](https://github.com/Mottie/Keyboard/issues/28). Say you enter "3131" then hit the backspace, the plugin would see "313". Well there is no lone "3", but there is a "13" and because it starts from the left side of the string, it decides to remove the "3" and you end up with "13".
-* Updated Layouts demo & current layouts
- * Each language layout now includes the display options to modify the keyboard language (alt, accept, cancel, shift, etc).
- * Since I'm a silly American that isn't fluent in any other language, I've only attempted (and poorly at that) to change the Albanian display language. All other layout languages still have English as the display language, so please feel free to share any corrections.
-
-####Version 1.8.14.2
-* Added options to the Navigation extension
- * `position : [0,0]` - This sets the current highlighted key position. The array contains the row number and the key index (zero based index).
- * `toggleMode : false` - Sets the focus of the navigation keys. When true, the focus is the virtual keyboard and when false the input/textarea gets focus.
- * `toggleKey  : 112` - This sets which key is used to toggle the navigation focus. The function 1 (F1) key has an `event.which` key value of 112.
- * `focusClass : 'hasFocus'` - This sets the css class to add to the virtual keyboard to indicate that it has focus (toggleMode is true).
-
-####Version 1.8.14.1
-* Fixed the navigation extension to not include a return key to the input area unintentionally.
-
-####Version 1.8.14
-* Changed some of the data attributes for each virtual keyboard key
-  * Added `data-pos` which contains the button's row and row-index - used by the navigation extension.
-  * Removed the data that is now in `data-pos` from the button name attribute.
-  * The name attribute now contains the action key name (e.g. Enter, Accept, etc) or the key's ascii character code (e.g. "a" has a name attribute of "97").
-* Typing Extension (v1.3)
-  * Updated to work when `alwaysOpen` is `true` - it never knew the keyboard was open.
-* Autocomplete Extension (v1.2)
-  * Updated to work when `alwaysOpen` is `true`.
-* Added navigation extension (v1.0)
-  * This extension allows you to navigate the virtual keyboard using the navigation keys: up, down, left, right, pageUp, pageDown, home and end.
-  * The disadvantage is that now you will need to use the mouse to position the caret inside of the input or textarea.
-  * Pressing enter will trigger the key - same as mouse clicking on it.
-
-####Version 1.8.13
-* Updates for changes brought up in [issue #20](https://github.com/Mottie/Keyboard/issues/20):
-  * Fixed the ability to switch to the base meta keyset if the meta set doesn't have a shift or alt key. Previously, it would just ignore the keyset change.
-  * When the `stickyShift` is `false`, switching to any meta key set will now release the shift key.
-  * Thanks for the suggestions Pascal-bach!
-
-####Version 1.8.12
-* Updated the caret script
- * It will now differentiate IE9 from older versions, as IE9 behaves like the other modern browsers.
- * There are still problems with Opera, IE7 and IE8 in textareas with multiple carriage returns; but it's a little bit easier to deal with.
- * Safari still does not return the correct caret position in the [QWERTY Text Area](http://mottie.github.com/Keyboard/) demo with locked input (readonly is applied to the textarea). So any entered text will always be positioned at the start of the text area. I'll try to figure out a work around for this.
-* Ctrl (or Command) Y and Z are now allowed keys to enable use of the redo and undo keyboard shortcuts.
-
-####Version 1.8.11
-* Added `{lock}` action toggle key.
- * This key will act like a caps lock key, but as described in the last update, its status does not always match the actual caps lock key
- * This behaviour could be very confusing to users, so I decided not to include the caps lock key in any of the default keyboards. But it is available.
- * When active, the shift key set will be visible until the caps lock or shift key is pressed.
-* Added `stickyShift` option
- * This option only applies to the virtual keyboard keys (mouse clicks), the actual keyboard overrides this option.
- * When true, the shift key will behave as it always has - it will toggle the shift key set until pressed again.
- * If false, the shift key set will remain active until after the next key is clicked on.
-* Removed some uncommon default diacritics & ligatures
- * they can easily be added back using the [`combos` option](https://github.com/Mottie/Keyboard/wiki/Useability) - the regex wasn't changed
- * ' + c = ç, ' + C = Ç
- * ~ + n = ñ, ~ + N = Ñ
- * a + e = æ, A + E = Æ
- * o + e = œ, O + E = Œ
-
-####Version 1.8.10
-* Added caps lock key functionality
- * No caps lock key was added to the keyboard. The existing shift key should show the status of the caps lock (inconsistently).
- * There is no reliable method to detect the state of the caps lock key, except while typing the normal alphabet.
- * The displayed key set will properly update when the user starts typing.
- * Pressing the shift key on the keyboard will override the key set shown; but if the caps lock is enabled, the shift state will correct itself when typing is resumed.
- * Using a mouse still functions as before - clicking the shift key toggles its state.
-
-####Version 1.8.9
-* Added shift, alt and shift-alt keysets to meta keysets.
- * When adding these keysets to the layout, use `meta#`, `meta#-shift`, `meta#-alt` and `meta#-alt-shift`.
- * Enhancement request from [pascal-bach](https://github.com/pascal-bach) in [issue #17](https://github.com/Mottie/Keyboard/issues/17), thanks for the suggestion!
- * Updated the [Custom: Meta Sets](http://mottie.github.com/Keyboard/) demo to reflect these enhancements. 
-
-####Version 1.8.8
-* Fixed a bug where multiple "alwaysOpen" keyboards would not switch focus.
-
-####Version 1.8.7
-* Fixed a bug that expanded the keyboard/moved it each time it is opened - one pixel at a time.
-
-####Version 1.8.6a
-* Added a Danish keyboard layout, thanks to Torben Junker Kjær!
-* Changed the name of the Scandinavian keyboard layout to Swedish. Also thanks to Torben.
-
-####Version 1.8.6
-* Added `ui-keyboard-has-focus`
- * This class is added to the keyboard when it opens
- * If the keyboard has `alwaysOpen` set to `true`, the currently focused keyboard will have this class applied.
- * In the base css, the z-index of this class is slightly bigger than the open keyboard.
-
-####Version 1.8.5
-* Added Russian layout - thanks to Yury Kotlyarov (https://github.com/yura).
-* Added `alwaysOpen` option
-  * Setting this option to `true` will keep the keyboard open at all times.
-  * The keyboard will automatically open when initialized.
-  * The class `ui-keyboard-always-open` will be added to the keyboard.
-  * See the Layout demo page to see this option in action!
-* Renamed `placeholder` class to `ui-keyboard-placeholder`.
-
-####Version 1.8.4
-* Fixed lockedInput causing errors in Firefox - fix for [issue #12](https://github.com/Mottie/Keyboard/issues/12).
-
-####Version 1.8.3
-* Replaced all the keyboard keys with `<buttons>` instead of `<input>` to allow adding of an image overlay.
-* Removed all keyrow wrappers, so now every key is floating inside the keyset. This allows you to make different sized keys and position them however you want with the CSS.
-* *NOTE* Changed the order of parameters in every event!
-    * Sorry if this breaks any extra coding you may have added, but I did it to provide a keyboard object with every event and make everything more consistent.
-    * Previously you had to use "$(el).getkeyboard()" function inside of the event function to get the keyboard object.
-    * In the event callback, the order is now (event, keyboard, elem). Where "event" is the event object, "keyboard" is the keyboard object and "elem" is the input element (non jQuery).
-    * The only event function that is different from the above order is the "beforeClose" event! The old order was (event, element, accepted). The new order is now as in this example:
-
-      ```javascript
-// Binding to the "beforeClose" event - it has an extra parameter ("accepted")
-$('.ui-keyboard-input').bind('beforeClose.keyboard', function(event, keyboard, elem, accepted){
-  var txt = "Virtual Keyboard for " + elem.id + " is about to close, and it's contents were ";
-  txt += (accepted ? 'accepted' : 'ignored');
-  txt += '. Current content = ' + elem.value;
-  txt += '. Original content = ' + keyboard.originalContent;
-  alert(txt);
-});
-```
-
-    * see the <a href="https://github.com/Mottie/Keyboard/wiki/Methods">Methods</a> wiki documents page for more details.
-* Fixed an issue in Chrome where the caret would go out of view while typing on the virtual keyboard (horizontal scrolling of inputs).
-* Fixed the typing extension not highlighting the tab or backspace while typing.
-* Added "initialized" event which is triggered when the keyboard script has completed initialization.
-* Added a basic demo page, called "basic.html". This is a minimal setup.
-* Added a basic scientific calculator demo page. For demonstration only, it's not meant to replace your calculator but to show how to add more key actions, change display names and apply image overlays to the keys.
-* Moved demo files into a separate directory.
-* Updated all demo pages to HTML5 formatting.
-
-####Version 1.8.2
-* Fixed a problem with decimals not working in Eurpoean format when `restrictedInput` is `true`.
-* Fixed code that allows adding custom action keys. It now works properly when adding a corresponding `display` option. Examples added to the [Actions][13] wiki page.
-
-####Version 1.8.1
-* Added `beforeClose` trigger and callback which is called just before the contents are accepted/canceled.
-* Fixed keyboard positioning to now include `offset` options... opps!
-
-####Version 1.8
-
-* This version is **NOT BACKWARDS COMPATABLE!**
-* Added event namespacing
-    * If you used any custom binding events (i.e. keyboard 'visible', 'hidden' or content 'accepted', etc.), then just add '.keyboard' to the end of the event to make your script compatable with this version. Example:
-
-    ```javascript
-$('.ui-keyboard-input').bind('accepted.keyboard canceled.keyboard', function(event, elemnt){
-  // event.type will contain "accepted" or "canceled" as before, event.namespace will contain "keyboard"
-  var txt = $(elemnt).attr('name') + ' keyboard was closed and its content was ' + event.type;
-});
-```
-
-    * Namespacing was added because of the addition of multiple new keyboard layouts. Use the destroy method when switching layouts (see the layouts.html source for an example).
-    * Because of the namespacing, this version now requires **a minimum of jQuery 1.4.3+**
-* Added `{combo}` action toggle key. While active, typing combo keys will continue to work as before. When inactive, combo keys are ignored, but all combos will be formed once active again.
-* Improved the caret positioning to now allow replacing selected text - special thanks to Derek Wickwire for the code!
-* Text selection and navigation using arrow key shortcuts (shift-arrow, shift-ctrl-arrow, etc) now work as expected (except maybe in IE & Opera textareas with multiple carriage returns).
-* Fixed an issue with the keyboard closing automatically when a key set doesn't exist.
-* Virtual keyboards with `restrictInput` enabled (set to true) will now allow the use of delete, backspace and some navigation keys (arrows, home & end).
-* Typing on the virtual keyboard should now keep the cursor in view (in a textarea). It may be a bit buggy in IE.
-* Updated the typing extension (also not backwards compatable):
-    * Fixed a bug introduced into the typing extension with the last update... it wouldn't change keysets properly while typing - oops!
-    * It will now simulate typing on the virtual keyboard while typing on your real keyboard.
-    * When the extension is enabled, pressing Shift or alt on your real keyboard will change the displayed keyset on the virtual keyboard; but when using the alt in Windows, you'll have to press it twice to return focus from the menu back into the keyboard window (see known issues above).
-    * Two new options were added to the typing extension. `showTyping` and `delay`.
-        * `showTyping` (default is true) will enable or disable the virtual keyboard typing simulation, but the "typeIn()" function simulation will continue to work as it did before.
-        * `delay` will set the delay of the virtual keyboard highlighting that occurs while the user types on the real keyboard.
-* Fixed autocomplete extension problem with arrow key navigation reseting the list. It still does it, but very rarely.
-* Changed mapped keys introduced in version 1.7.7 to allow entering the actual key to change instead of the "event.which" value (which ends up being different depending on your browser - see http://unixpapa.com/js/key.html).
-    * Mapped keys will allow the user to type directly from the keyboard and enter the keys seen on the virtual keyboard.
-    * When defining a keyboard layout, assign the map value along with the key as follows:
-
-            "n(a):title/tooltip \u03b5(e):lower_case_epsilon_(type_e) \u0395(E):upper_case_epsilon_(type_E)"
-
-    * `n` is the key value (\u03b5 in the second example).
-    * `(a)` is now the actual keyboard character to replace (e in the second example). So in this example, when the user presses the "a" key on the keyboard, the character "n" will be entered into the input.
-    * `:title/tooltip` is the title/tooltip added to the key's title attribute and pops up when hovering over the key. All spaces must be replaced with an underscore "_". If you use spaces, the script will assume you are assigning a new key.
-    * See the "Mapped keys" demo for a full example and code.
-* The Decimal key (for a unique decimal) will now function properly when changing the display option for decimal from ".:Decimal" to ",:Decimal" (European notation).
-* Added a layouts directory which contains the first few of many new layouts for various languages.
-    * Not that many layouts are available yet... adding more as I have time.
-    * To use a keyboard layout, include the file in the page header
-
-            <script src="layouts/albanian.js" type="text/javascript"></script>
-
-    * Then initialize the keyboard using the appropriate layout name (found inside the file).
-
-            $('input').keyboard({ layout: 'qwertz-albanian' });
-    * See the "layouts.htm" page source
 
   [1]: http://jsatt.blogspot.com/2010/01/on-screen-keyboard-widget-using-jquery.html
   [2]: http://plugins.jquery.com/project/virtual_keyboard
