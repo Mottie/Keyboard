@@ -72,6 +72,13 @@ Moved to the Wiki Pages: [Home][6] | [FAQ][7] | [Setup][8] | [Options][9] ( [Lay
 
 Only the latest changes will be shown below, see the wiki log to view older versions.
 
+###Version 1.9.7
+
+* Fixed a problem with the mouse up event not returning focus to the input, possible fix for [issue #45](https://github.com/Mottie/Keyboard/issues/45).
+* Changed `acceptValid` default value from `true` to `false`.
+* Updated link to jQuery Mobile from 1.0rc1 to 1.0.
+* Added package.json in anticipation of the [jQuery plugin](http://plugins.jquery.com/) site.
+
 ###Version 1.9.6
 
 * Added `acceptValid` option

@@ -1,0 +1,43 @@
+﻿{
+    "name": "Keyboard",
+    "version": "1.9.7",
+    "title": "Keyboard",
+    "author": {
+        "name": "Jeremy Satterfield",
+        "url": "https://github.com/jsatt"
+    },
+    "licenses": [
+        {
+            "type": "MIT",
+            "url": "http://www.opensource.org/licenses/mit-license.php"
+        }
+    ],
+    "dependencies": {
+        "jquery": ">=1.4.3"
+    },
+    "description": "Virtual Keyboard using jQuery UI",
+    "keywords": [
+        "customizable",
+        "keyboard",
+        "virtual keyboard"
+    ],
+    "homepage": "http://wowmotty.blogspot.com/2010/11/jquery-ui-keyboard-widget.html",
+    "demo": "http://mottie.github.com/Keyboard/",
+    "docs": "https://github.com/Mottie/Keyboard/wiki",
+    "maintainers": [
+        {
+            "name": "Rob Garrison",
+            "url": "https://github.com/Mottie"
+        }
+    ],
+    "files": [
+        "css/keyboard.css",
+        "js/jquery.keyboard.js",
+        "js/jquery.keyboard.min.js",
+        "js/jquery.keyboard.extension-autocomplete.js",
+        "js/jquery.keyboard.extension-mobile.js",
+        "js/jquery.keyboard.extension-navigation.js",
+        "js/jquery.keyboard.extension-typing.js",
+        "jquery.mousewheel.js"
+    ]
+}

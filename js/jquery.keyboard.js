@@ -1,6 +1,6 @@
 /*
 jQuery UI Virtual Keyboard
-Version 1.9.6
+Version 1.9.7
 
 Author: Jeremy Satterfield
 Modified: Rob Garrison (Mottie on github)
@@ -485,7 +485,7 @@ $.keyboard = function(el, options){
 			// using "kb" namespace for mouse repeat functionality to keep it separate
 			// I need to trigger a "repeater.keyboard" to make it work
 			.bind('mouseup.keyboard mouseleave.kb touchend.kb touchmove.kb touchcancel.kb', function(){
-				if (base.visible) { base.$preview.focus(); }
+				if (base.isVisible) { base.$preview.focus(); }
 				base.mouseRepeat = [false,''];
 				return false;
 			})
@@ -1235,7 +1235,7 @@ $.keyboard = function(el, options){
 		restrictInput: false,
 
 		// Check input against validate function, if valid the accept button is clickable; if invalid, the accept button is disabled.
-		acceptValid  : true,
+		acceptValid  : false,
 
 		// tab to go to next, shift-tab for previous (default behavior)
 		tabNavigation: false,
