@@ -1,6 +1,6 @@
-Originally posted by Jeremy Satterfield in his [blog][1], [jQuery plugins][2] and on [Snipplr][3]. Currently maintained by [Mottie][4].
+Originally posted by Jeremy Satterfield in his [blog](http://jsatt.blogspot.com/2010/01/on-screen-keyboard-widget-using-jquery.html), [jQuery plugins](http://plugins.jquery.com/project/virtual_keyboard) and on [Snipplr](http://snipplr.com/view/21577/virtual-keyboard-widget/). Currently maintained by [Mottie](https://github.com/Mottie/Keyboard).
 
-###Features ([Demo][5])
+## Features ([Demo](http://mottie.github.com/Keyboard/))
 
 * An on-screen virtual keyboard embedded within the browser window which will popup when a specified entry field is focused.
 * The user can then type and preview their input before Accepting or Canceling.
@@ -30,16 +30,16 @@ Originally posted by Jeremy Satterfield in his [blog][1], [jQuery plugins][2] an
 * Autocomplete extension will integrate this keyboard plugin with jQuery UI's autocomplete widget.
 * Multiple region specific keyboard layouts included in a separate directory. This is a work in progress and slowly growing.
 
-###Documentation
+## Documentation
 
-Moved to the Wiki Pages: [Home][6] | [FAQ][7] | [Setup][8] | [Options][9] ( [Layout][10], [Language][11], [Useability][12], [Actions][13] ) | [Methods][14] | [Theme][15] | [Log][16]
+Moved to the Wiki Pages: [Home](https://github.com/Mottie/Keyboard/wiki/Home) | [FAQ](https://github.com/Mottie/Keyboard/wiki/FAQ) | [Setup](https://github.com/Mottie/Keyboard/wiki/Setup) | [Usage](https://github.com/Mottie/Keyboard/wiki/Usage) | [Options](https://github.com/Mottie/Keyboard/wiki/Options) ( [Layout](https://github.com/Mottie/Keyboard/wiki/Layout), [Language](https://github.com/Mottie/Keyboard/wiki/Language), [Useability](https://github.com/Mottie/Keyboard/wiki/Useability), [Actions](https://github.com/Mottie/Keyboard/wiki/Actions) ) | [Methods](https://github.com/Mottie/Keyboard/wiki/Methods) | [Theme](https://github.com/Mottie/Keyboard/wiki/Theme) | [Log](https://github.com/Mottie/Keyboard/wiki/Log)
 
-###To Do
+## To Do
 
 * Waiting for requests :)
 * Add more regional keyboard layouts.
 
-###Known Problems 
+## Known Problems 
 
 * *IE* and *Opera*:
     * In a text area with multiple carriage returns, the caret positioning will be off when repositioning it with the mouse.
@@ -51,7 +51,7 @@ Moved to the Wiki Pages: [Home][6] | [FAQ][7] | [Setup][8] | [Options][9] ( [Lay
     * Holding down the Alt key and trying to type is also not possible since the Windows OS is assuming you are trying to type a shortcut key to access the browser menu. You can still click the keys in the alt key set with the mouse.
     * Simulated typing on the keyboard breaks when the CapLock is on. Still looking for a cross-browser solution.
 
-### Dependencies
+## Dependencies
 * Required
     * jQuery 1.4.3+
     * jQuery UI Positioning Utility
@@ -62,24 +62,29 @@ Moved to the Wiki Pages: [Home][6] | [FAQ][7] | [Setup][8] | [Options][9] ( [Lay
     * jQuery keyboard typing extension - simulate typing on the virtual keyboard
     * jQuery keyboard autocomplete extension - for use with jQuery UI autocomplete
 
-###Licensing
+## Licensing
 
-* Keyboard code: [MIT License][18] for all versions.
-* Caret code by C. F., Wong (Cloudgen): [MIT License][18]
-* Layouts files: Most are under [WTFPL][19], unless the file itself specifies otherwise.
+* Keyboard code: [MIT License](http://www.opensource.org/licenses/mit-license.php) for all versions.
+* Caret code by C. F., Wong (Cloudgen): [MIT License](http://www.opensource.org/licenses/mit-license.php)
+* Layouts files: Most are under [WTFPL](http://sam.zoy.org/wtfpl/), unless the file itself specifies otherwise.
 
-###Change Log
+## Change Log
 
 Only the latest changes will be shown below, see the wiki log to view older versions.
 
-###Version 1.9.7
+### Version 1.9.8
+
+* Pressing the real keyboard enter key will now use the `$.keyboard.keyaction.enter` function. Discussed in [issue #47](https://github.com/Mottie/Keyboard/issues/47).
+* Updated all demos to use jQuery 1.7+.
+
+### Version 1.9.7
 
 * Fixed a problem with the mouse up event not returning focus to the input, possible fix for [issue #45](https://github.com/Mottie/Keyboard/issues/45).
 * Changed `acceptValid` default value from `true` to `false`.
 * Updated link to jQuery Mobile from 1.0rc1 to 1.0.
 * Added package.json in anticipation of the [jQuery plugin](http://plugins.jquery.com/) site.
 
-###Version 1.9.6
+### Version 1.9.6
 
 * Added `acceptValid` option
   * When true, all input is continually checked using the `validate` callback function, if valid, then the accept button is enabled; otherwise it is disabled.
@@ -90,7 +95,7 @@ Only the latest changes will be shown below, see the wiki log to view older vers
   * If the input is invalid and the keyboard is closed/canceled, the `validate` callback will no longer abort the close.
   * Added an `isClosing` variable which is only `true` when the content was accepted. The `isClosing` variable is `false` when the validate callback is called during input.
 
-###Version 1.9.5
+### Version 1.9.5
 
 * Added a `validate` callback function
   * This function is called when the keyboard is attempting to close.
@@ -111,104 +116,6 @@ Only the latest changes will be shown below, see the wiki log to view older vers
     });
     ```
 
-###Version 1.9.4
+### Version 1.9.4
 
 * Modified to prevent the keyboard from being added multiple times to a single element. Previously, calling the keyboard on an element a second time would add a second keyboard and detach the first one from the plugin.
-
-###Version 1.9.3
-
-* Added `switchInput` callback to the options; it replaces the default switching input code if added.
-* Fixed Navigation extension to not repeat keys. Fix for [issue #36](https://github.com/Mottie/Keyboard/issues/36).
-* Fixed Autocomplete extension to allow selecting an item on click. Fix for [issue #35](https://github.com/Mottie/Keyboard/issues/35).
-* Fixed key repeat problem reported in [issue #32](https://github.com/Mottie/Keyboard/issues/32).
-* The placeholder attribute in the preview window is no longer being removed. So, if the preview input loses focus, the placeholder message will return; but this will only work in broswers that support the HTML5 placeholder attribute. The plugin only adds this enhancement to the original input, if the browser doesn't support it. Requested by Attila.
-* Fixed the spacer key to now accept decimal numbers `{sp:1.3}`; previously only `{sp:1}` or `{sp:.5}` would work. Additionally, a new class name for these spacers was added - `ui-keyboard-spacer` with some css to prevent Opera from increasing the line-height of the row - reported by Attila, Thanks!
-* Opera should now also give the input/textarea focus when the keyboard opens. Reported by Attila.
-* Main demo page will now dynamically adjust in width, except in older IE.
-
-###Version 1.9.2
-
-* Added "ui-keyboard-input-current" to the input that has a keyboard open - useful for highlighting the input when `usePreview` is `false`.
-* Added `enterNavigation` option:
- * When true, pressing enter (shift-enter in textarea) on either the real or virtual keyboard will shift focus to the next input with a keyboard attached. I am considering changing this to the next input ( with or without a keyboard attached ).
- * When false, pressing enter do nothing in an input and shift to the next line in a textarea.
-* Fixed the mouse repeat code to not repeat action keys. Fix for <a href="https://github.com/Mottie/Keyboard/issues/32">issue #32</a>.
-* Fixed space bar title from the mousewheel message to the space bar message.
-
-###Version 1.9.1
-
-* Keyboard not closing properly... blond moment alert!
- * Apparently I forgot that the body doesn't always fill up the browser window. So on the basic demo, you have to click above the input to close the keyboard.
- * Changed "body" back to document, so ummm ignore that comment about clicking on the scroll bar not closing the keyboard anymore.
-
-###Version 1.9
-
-* Fixed caret positioning issues in IE9 introduced in v1.8.12:
- * IE9 caret position is now saved so if the input loses focus, the caret position is restored. Fix for [issue #24](https://github.com/Mottie/Keyboard/issues/24).
- * IE9 caret position can now be set by mouse clicking inside the input/textarea.
-
-* Fixed an issue with restricted input causing an error when trying to add any of these special characters: []\^$.|?*+(){}
-
-* Rewrote the code that closes the keyboard when clicking outside of the keyboard.
- * Done because of the above IE9 caret issue.
- * The overlay that was added to all IE browsers was removed, along with its css. It was originally added because if a keyboard was already visible, a new keyboard would not open when focus is given to a new input/textarea. This is no longer an issue with the new code.
- * Clicking on the scrollbar to scroll down the page will no longer close the keyboard.
-
-* The keyboard will now stay in place when resizing the browser window. YAY!
-
-* Added `repeatDelay` and `repeatRate` options:
- * These options work with the new mouse key repeat functionality.
- * Basically holding down a virtual keyboard key with your mouse or finger on a touch device, will now cause that key to repeat after an initial delay. Similar to what the real keyboard does while typing.
- * Adjust the `repeatDelay` to change the amount of time to pause before starting to repeat the key.
- * Adjust the `repeatRate` value to change the characters per second entered into the input area. Please note that due to the variation in javascript speeds between browsers, the maxiumum repeat rate my vary - in Firefox, it appears that there is no difference in rate with numbers above 20.
- * This enhancement was added thanks to Pascal-bach's request in [issue #32](https://github.com/Mottie/Keyboard/issues/32).
-
-* Added css3 media queries to the keyboard.css file, so the keyboard should resize to match the available screen width.
-
-* Added a `css` option:
- * This option contains all of the jQuery UI class names used by the plugin to allow for further customization.
- * The css option include css for the major elements ("input" and "container") and the different button states ("buttonDefault", "buttonHover", "buttonActive" and "buttonDisabled").
- * I was going to try to replace these classes to make the keyboard work with jQuery Mobile themes, but that theming system is a bit more convoluted, so I made a mobile extension instead (see below).
-
-    ```javascript
-    css : {
-      input          : 'ui-widget-content ui-corner-all', // input & preview
-      container      : 'ui-widget-content ui-widget ui-corner-all ui-helper-clearfix', // keyboard container
-      buttonDefault  : 'ui-state-default ui-corner-all', // default state
-      buttonHover    : 'ui-state-hover',  // hovered button
-      buttonAction   : 'ui-state-active', // Action keys (e.g. Accept, Cancel, Tab, etc); this replaces "actionClass" option
-      buttonDisabled : 'ui-state-disabled' // used when disabling the decimal button {dec} when a decimal exists in the input area
-    }
-    ```
-
-* Removed the "actionClass" option in favor of the "css" option above.
-
-* Added a jQuery Mobile extension (v1.0)
- * This extension allows jQuery Mobile themes to be applied to the keyboard.
- * Set the desired theme swatch letter in the options for the container, regular buttons, action buttons and active buttons.
- * Updated keyboard.css with mobile specific definitions - wider keys needed because of font size and "text-overflow:ellipsis" use
- * Note:
-   * The new css3 media queries may not work perfectly for the jQuery Mobile themes - I don't own an iPad/iPhone/iWhatever, so please adjust and report back to me any issues.
-   * The "Active Buttons" setting is limited in that if the swatch letter of the Regular buttons is greater than the swatch letter of the Active Buttons, the theme doesn't apply properly. For example, Regular button swatch B with Active Button swatch A won't work because of the way the css is set up.
-   * When the jQuery Mobile Theme Roller become available, I will add it to the demo page.
-
-
-  [1]: http://jsatt.blogspot.com/2010/01/on-screen-keyboard-widget-using-jquery.html
-  [2]: http://plugins.jquery.com/project/virtual_keyboard
-  [3]: http://snipplr.com/view/21577/virtual-keyboard-widget/
-  [4]: https://github.com/Mottie/Keyboard
-  [5]: http://mottie.github.com/Keyboard/
-  [6]: https://github.com/Mottie/Keyboard/wiki/Home
-  [7]: https://github.com/Mottie/Keyboard/wiki/FAQ
-  [8]: https://github.com/Mottie/Keyboard/wiki/Setup
-  [9]: https://github.com/Mottie/Keyboard/wiki/Options
-  [10]: https://github.com/Mottie/Keyboard/wiki/Layout
-  [11]: https://github.com/Mottie/Keyboard/wiki/Language
-  [12]: https://github.com/Mottie/Keyboard/wiki/Useability
-  [13]: https://github.com/Mottie/Keyboard/wiki/Actions
-  [14]: https://github.com/Mottie/Keyboard/wiki/Methods
-  [15]: https://github.com/Mottie/Keyboard/wiki/Theme
-  [16]: https://github.com/Mottie/Keyboard/wiki/Log
-  [17]: http://creativecommons.org/licenses/by-sa/3.0/
-  [18]: http://www.opensource.org/licenses/mit-license.php
-  [19]: http://sam.zoy.org/wtfpl/

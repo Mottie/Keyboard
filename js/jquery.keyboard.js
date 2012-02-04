@@ -1,6 +1,6 @@
 /*
 jQuery UI Virtual Keyboard
-Version 1.9.7
+Version 1.9.8
 
 Author: Jeremy Satterfield
 Modified: Rob Garrison (Mottie on github)
@@ -69,8 +69,9 @@ Options:
 				{combo}       - Toggle combo (diacritic) key
 				{dec}         - Decimal for numeric entry, only allows one decimal (optional use in num pad)
 				{e}, {enter}  - Return/New Line
+				{lock}        - Caps lock key
 				{meta#}       - Meta keys that change the key set (# can be any integer)
-				{s}, {shift}  - Shift/Capslock
+				{s}, {shift}  - Shift
 				{sign}        - Change sign of numeric entry (positive or negative)
 				{sp:#}        - Replace # with a numerical value, adds blank space, value of 1 ~ width of one key
 				{space}       - Spacebar
@@ -116,7 +117,7 @@ $.keyboard = function(el, options){
 		base.acceptedKeys = [];
 		base.mappedKeys = {}; // for remapping manually typed in keys
 		$('<!--[if lte IE 8]><script>$("body").addClass("oldie");</script><![endif]-->').appendTo('body').remove();
-		base.msie = $('body').is('.oldie'); // Old IE flag, used for caret positioning
+		base.msie = $('body').hasClass('oldie'); // Old IE flag, used for caret positioning
 		base.allie = $.browser.msie;
 		base.inPlaceholder = base.$el.attr('placeholder') || '';
 		base.watermark = (typeof(document.createElement('input').placeholder) !== 'undefined' && base.inPlaceholder !== ''); // html 5 placeholder/watermark
@@ -360,20 +361,7 @@ $.keyboard = function(el, options){
 						}
 
 					case 13:
-						// Accept content - shift-enter
-						if (e.shiftKey) {
-							if (o.enterNavigation) {
-								// textarea & input - enterMod + shift + enter = accept, then go to prev
-								return base.switchInput(!e[o.enterMod], true); // (goToNext, autoAccept)
-							} else {
-								// textarea & input - shift + enter = accept (no navigation)
-								return base.close(true);
-							}
-						}
-						// input only - enterMod + enter to navigate
-						if (o.enterNavigation && (base.el.tagName !== 'TEXTAREA' || e[o.enterMod])) {
-							return base.switchInput(!e[o.enterMod], o.autoAccept);
-						}
+						$.keyboard.keyaction.enter(base, null, e);
 						break;
 
 					// Show capsLock
@@ -396,10 +384,10 @@ $.keyboard = function(el, options){
 			})
 			.bind('blur.keyboard', function(e){
 				// when keyboard is always open, make sure base.close is called on blur
-				if (o.alwaysOpen && base.isCurrent && !base.$el.is('.ui-keyboard-input-current')) {
+				if (o.alwaysOpen && base.isCurrent && !base.$el.hasClass('ui-keyboard-input-current')) {
 						clearTimeout(base.timer);
 						base.timer = setTimeout(function(){
-							if (base.isCurrent && !base.$el.is('.ui-keyboard-input-current')) {
+							if (base.isCurrent && !base.$el.hasClass('ui-keyboard-input-current')) {
 								base.close(o.autoAccept);
 							}
 						}, 300);
@@ -427,11 +415,11 @@ $.keyboard = function(el, options){
 				// Start caret in IE when not focused (happens with each virtual keyboard button click
 				if (base.checkCaret) { base.$preview.caret( base.lastCaret.start, base.lastCaret.end ); }
 				if (action.match('meta')) { action = 'meta'; }
-				if ($.keyboard.keyaction.hasOwnProperty(action) && $(this).is('.ui-keyboard-actionkey')) {
+				if ($.keyboard.keyaction.hasOwnProperty(action) && $(this).hasClass('ui-keyboard-actionkey')) {
 					// stop processing if action returns false (close & cancel)
-					if ($.keyboard.keyaction[action](base,this) === false) { return; }
+					if ($.keyboard.keyaction[action](base,this,e) === false) { return; }
 				} else if (typeof key.action !== 'undefined') {
-					txt = (base.wheel && !$(this).is('.ui-keyboard-actionkey')) ? key.curTxt : key.action;
+					txt = (base.wheel && !$(this).hasClass('ui-keyboard-actionkey')) ? key.curTxt : key.action;
 					base.insertText(txt);
 					if (!base.capsLock && !o.stickyShift && !e.shiftKey) {
 						base.shiftActive = false;
@@ -1039,22 +1027,35 @@ $.keyboard = function(el, options){
 		dec : function(base){
 			base.insertText((base.decimal) ? '.' : ',');
 		},
-		enter : function(base) {
+		// el is the pressed key (button) object; it is null when the real keyboard enter is pressed
+		enter : function(base, el, e) {
 			var tag = base.el.tagName, o = base.options;
 			// shift-enter in textareas
-			if ( o.enterNavigation && ( tag !== 'TEXTAREA' || ( base.shiftActive && tag === 'TEXTAREA' ) ) ) {
-				return base.switchInput(true, o.autoAccept); // true = go to next, not prev
-			} else {
-				if (tag === 'INPUT') { return false; } // ignore enter key in input
+			if (e.shiftKey) {
+				if (o.enterNavigation) {
+					// textarea & input - enterMod + shift + enter = accept, then go to prev
+					return base.switchInput(!e[o.enterMod], true); // (goToNext, autoAccept)
+				} else {
+					// textarea & input - shift + enter = accept (no navigation)
+					return base.close(true);
+				}
+			}
+			// input only - enterMod + enter to navigate
+			if (o.enterNavigation && (tag !== 'TEXTAREA' || e[o.enterMod])) {
+				return base.switchInput(!e[o.enterMod], o.autoAccept);
+			}
+			// pressing virtual enter button inside of a textarea - add a carriage return
+			if (tag === 'TEXTAREA' && e.target.parentNode.tagName === 'BUTTON') {
 				base.insertText('\n');
 			}
 		},
+		// caps lock key
 		lock : function(base,el){
 			base.lastKeyset[0] = base.shiftActive = base.capsLock = !base.capsLock;
 			base.showKeySet(el);
 		},
 		meta : function(base,el){
-			base.metaActive = ($(el).is('.' + base.options.css.buttonAction)) ? false : true;
+			base.metaActive = ($(el).hasClass(base.options.css.buttonAction)) ? false : true;
 			base.showKeySet(el);
 		},
 		shift : function(base,el){
@@ -1284,15 +1285,19 @@ $.keyboard = function(el, options){
 			'~' : { a:"\u00e3", A:"\u00c3", e:"\u1ebd", E:"\u1ebc", i:"\u0129", I:"\u0128", o:"\u00f5", O:"\u00d5", u:"\u0169", U:"\u0168", y:"\u1ef9", Y:"\u1ef8", n:"\u00f1", N:"\u00d1" } // tilde
 		},
 
+/*
 		// *** Methods ***
+		// commenting these out to reduce the size of the minified version
 		// Callbacks - attach a function to any of these callbacks as desired
-		initialized : null,
-		accepted    : null,
-		canceled    : null,
-		hidden      : null,
-		visible     : null,
-		beforeClose : null,
+		initialized : function(e, keyboard, el) {},
+		visible     : function(e, keyboard, el) {},
+		change      : function(e, keyboard, el) {},
+		beforeClose : function(e, keyboard, el, accepted) {},
+		accepted    : function(e, keyboard, el) {},
+		canceled    : function(e, keyboard, el) {},
+		hidden      : function(e, keyboard, el) {},
 		switchInput : null, // called instead of base.switchInput
+*/
 
 		// this callback is called just before the "beforeClose" to check the value
 		// if the value is valid, return true and the keyboard will continue as it should (close if not always open, etc)
