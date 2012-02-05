@@ -1,6 +1,6 @@
 /*
 jQuery UI Virtual Keyboard
-Version 1.9.8
+Version 1.9.9
 
 Author: Jeremy Satterfield
 Modified: Rob Garrison (Mottie on github)
@@ -872,10 +872,14 @@ $.keyboard = function(el, options){
 							action = keys[key].match(/^\{(\S+)\}$/)[1].toLowerCase();
 
 							// add empty space
-							if (/^sp:((\d+)?(\.\d+)?)$/.test(action)) {
-								margin = action.match(/^sp:((\d+)?(\.\d+)?)$/)[1] || 0;
+							if (/^sp:((\d+)?([\.|,]\d+)?)(em|px)?$/.test(action)) {
+								// not perfect globalization, but allows you to use {sp:1,1em}, {sp:1.2em} or {sp:15px}
+								margin = parseFloat( action.replace(/,/,'.').match(/^sp:((\d+)?([\.|,]\d+)?)(em|px)?$/)[1] || 0 );
 								$('<span>&nbsp;</span>')
-									.css('margin','0 ' + margin + 'em')
+									// previously {sp:1} would add 1em margin to each side of a 0 width span
+									// now Firefox doesn't seem to render 0px dimensions, so now we set the 
+									// 1em margin x 2 for the width
+									.width( (action.match('px') ? margin + 'px' : (margin * 2) + 'em') )
 									.addClass('ui-keyboard-button ui-keyboard-spacer')
 									.appendTo(newSet);
 							}
@@ -1045,7 +1049,8 @@ $.keyboard = function(el, options){
 				return base.switchInput(!e[o.enterMod], o.autoAccept);
 			}
 			// pressing virtual enter button inside of a textarea - add a carriage return
-			if (tag === 'TEXTAREA' && e.target.parentNode.tagName === 'BUTTON') {
+			// e.target is span when clicking on text and button at other times
+			if (tag === 'TEXTAREA' && $(e.target).closest('button').length) {
 				base.insertText('\n');
 			}
 		},

@@ -72,6 +72,17 @@ Moved to the Wiki Pages: [Home](https://github.com/Mottie/Keyboard/wiki/Home) | 
 
 Only the latest changes will be shown below, see the wiki log to view older versions.
 
+### Version 1.9.9
+
+* Fixed an issue with the enter key that was introduced in 1.9.8 - sorry!
+* The way the key spacer `{sp:#}` is added has changed:
+  * In older versions, a span of zero dimensions with a side margin of #em was added, i.e. `{sp:1}` would add a "margin: 0 1em" which adds 1em to the left and right making it 2em wide.
+  * Because newer versions of Firefox do not seem to render a zero dimension span at all, the plugin now sets the span width.
+  * A `{sp:1}` setting now becomes a span of "2em" width, to keep this consistent with the way this method worked previously.
+  * In case this causes problems, one additional change was made so the space can now be set using pixels: `{sp:20px}` which makes the width 20 pixels.
+  * Additionally, non-western formats are now supported. Using `{sp:1,5}` or `{sp:1,5em}` will set the span to 3em's in width.
+  * This will fix the problem brought up in [issue #48](https://github.com/Mottie/Keyboard/issues/48).
+
 ### Version 1.9.8
 
 * Pressing the real keyboard enter key will now use the `$.keyboard.keyaction.enter` function. Discussed in [issue #47](https://github.com/Mottie/Keyboard/issues/47).
