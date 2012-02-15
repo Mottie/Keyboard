@@ -116,7 +116,7 @@ $.keyboard = function(el, options){
 		base.rows = [ '', '-shift', '-alt', '-alt-shift' ];
 		base.acceptedKeys = [];
 		base.mappedKeys = {}; // for remapping manually typed in keys
-		$('<!--[if lte IE 8]><script>$("body").addClass("oldie");</script><![endif]-->').appendTo('body').remove();
+		$('<!--[if lte IE 8]><script>jQuery("body").addClass("oldie");</script><![endif]-->').appendTo('body').remove();
 		base.msie = $('body').hasClass('oldie'); // Old IE flag, used for caret positioning
 		base.allie = $.browser.msie;
 		base.inPlaceholder = base.$el.attr('placeholder') || '';
