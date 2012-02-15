@@ -93,7 +93,7 @@ language.french = {
 		's'      : '\u21e7:Majuscule',        // thick hollow up arrow
 		'shift'  : 'Maj:Majuscule',
 		'sign'   : '\u00b1:Change de signe',  // +/- sign for num pad
-		'space'  : ' :Espace',
+		'space'  : '&nbsp;:Espace',
 		't'      : '\u21e5:Tabulation',          // right arrow to bar (used since this virtual keyboard works with one directional tabs)
 		'tab'    : '\u21e5 Tab:Tabulation'       // \u21b9 is the true tab symbol (left & right arrows)
 	},

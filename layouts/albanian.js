@@ -92,7 +92,7 @@ language.albanian = {
 		's'      : '\u21e7:Ndryshim',        // thick hollow up arrow
 		'shift'  : 'Ndryshim:Ndryshim',
 		'sign'   : '\u00b1:Ndryshimi Regjistrohu',  // +/- sign for num pad
-		'space'  : ' :Hapësirë',
+		'space'  : '&nbsp;:Hapësirë',
 		't'      : '\u21e5:Tab',          // right arrow to bar (used since this virtual keyboard works with one directional tabs)
 		'tab'    : '\u21e5 Tab:Tab'       // \u21b9 is the true tab symbol (left & right arrows)
 	},
