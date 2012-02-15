@@ -1,6 +1,6 @@
 /*
 jQuery UI Virtual Keyboard
-Version 1.9.9
+Version 1.9.10
 
 Author: Jeremy Satterfield
 Modified: Rob Garrison (Mottie on github)
@@ -1332,6 +1332,7 @@ $.keyboard = function(el, options){
 /* Copyright (c) 2010 C. F., Wong (<a href="http://cloudgen.w0ng.hk">Cloudgen Examplet Store</a>)
  * Licensed under the MIT License:
  * http://www.opensource.org/licenses/mit-license.php
+ * Highly modified from the original
  */
 (function($, len, createRange, duplicate){
 $.fn.caret = function(options,opt2) {
@@ -1362,7 +1363,8 @@ $.fn.caret = function(options,opt2) {
 			selRange.moveEnd('character', end-start);
 			selRange.select();
 		}
-		$(t).focus();
+		// must be visible or IE8 crashes; IE9 in compatibility mode works fine - issue #56
+		if ($(t).is(':visible')) { $(t).focus(); }
 		t.scrollTop = sTop;
 		return this;
 	} else {
