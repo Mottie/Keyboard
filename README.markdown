@@ -72,6 +72,12 @@ Moved to the Wiki Pages: [Home](https://github.com/Mottie/Keyboard/wiki/Home) | 
 
 Only the latest changes will be shown below, see the wiki log to view older versions.
 
+### Version 1.9.10
+
+* Fixed an issue with using `jQuery.noConflict()` in older IE. Fix for [issue #55](https://github.com/Mottie/Keyboard/issues/55).
+* Added two Hungarian (Magyar) keyboard layouts. Thanks to Tóth Gergely for sharing - from [issue #48](https://github.com/Mottie/Keyboard/issues/48).
+* Fixed a problem with IE8 and hidden inputs. Apparently the original IE8 and not IE9 in compatibility mode has this problem. Thanks to Chris Mullins in [issue #56](https://github.com/Mottie/Keyboard/issues/56).
+
 ### Version 1.9.9
 
 * Fixed an issue with the enter key that was introduced in 1.9.8 - sorry!
