@@ -72,6 +72,19 @@ Moved to the Wiki Pages: [Home](https://github.com/Mottie/Keyboard/wiki/Home) | 
 
 Only the latest changes will be shown below, see the wiki log to view older versions.
 
+### Version 1.9.11
+
+* Updated mobile extension
+ * It now works with jQuery Mobile v1.0.1.
+ * The extension no longer uses the mobile buttonMarkup function, it just applies the css class names.
+ * Added a hover button option and theme selector.
+ * I don't think I'll support the Mobile theme selector because it's not a bookmarklet like I thought it would be. But please feel free to point the mobile stylesheet to a custom mobile theme. The extension will support any of the theme letters (A through whatever).
+* Caret position is now saved
+ * This started as a fix for all versions of IE, but now applies to Firefox and Opera. It's not working in Webkit (Chrome &amp; Safari) for some reason.
+ * When clicking in an input, the keyboard will now open with a new preview window showing or with the existing input with the caret in the position where it was clicked in the text.
+ * Hidden inputs will remember the last caret position when revealed.
+ * Fix for the new issue added into [issue #24](https://github.com/Mottie/Keyboard/issues/24).
+
 ### Version 1.9.10
 
 * Fixed an issue with using `jQuery.noConflict()` in older IE. Fix for [issue #55](https://github.com/Mottie/Keyboard/issues/55).

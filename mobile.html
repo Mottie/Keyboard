@@ -13,9 +13,9 @@
 	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7/jquery.min.js"></script>
 	<script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/jquery-ui.min.js"></script>
 
-	<link rel="stylesheet" href="http://code.jquery.com/mobile/1.0/jquery.mobile-1.0.min.css" /> 
+	<link rel="stylesheet" href="http://code.jquery.com/mobile/1.0.1/jquery.mobile-1.0.1.min.css" /> 
+	<script src="http://code.jquery.com/mobile/1.0.1/jquery.mobile-1.0.1.min.js"></script>
 	<script src="http://jquerymobile.com/demos/1.0rc1/experiments/themeswitcher/jquery.mobile.themeswitcher.js"></script>
-	<script src="http://code.jquery.com/mobile/1.0/jquery.mobile-1.0.min.js"></script>
 
 	<!-- keyboard widget css & script (required) -->
 	<link href="css/keyboard.css" rel="stylesheet">
@@ -59,7 +59,9 @@
 				// keyboard wrapper theme
 				container    : { theme:'a' },
 				// theme added to all regular buttons
-				buttonMarkup : { theme:'a', shadow:'true', inline:'true', corners:'false' },
+				buttonMarkup : { theme:'a', shadow:'true', corners:'true' },
+				// theme added to all buttons when they are being hovered
+				buttonHover  : { theme:'c' },
 				// theme added to action buttons (e.g. tab, shift, accept, cancel);
 				// parameters here will override the settings in the buttonMarkup
 				buttonAction : { theme:'b' },
@@ -75,9 +77,10 @@
 			.keyboard(kbOptions) // build a new one, ready for a new theme
 			.addMobile({
 				container    : { theme : set.eq(0).find(':checked').attr('data-theme') },
-				buttonMarkup : { theme : set.eq(1).find(':checked').attr('data-theme'), shadow:'true', inline:'true', corners:'false' },
-				buttonAction : { theme : set.eq(2).find(':checked').attr('data-theme') },
-				buttonActive : { theme : set.eq(3).find(':checked').attr('data-theme') }
+				buttonMarkup : { theme : set.eq(1).find(':checked').attr('data-theme'), shadow:'true', corners:'true' },
+				buttonHover  : { theme : set.eq(2).find(':checked').attr('data-theme') },
+				buttonAction : { theme : set.eq(3).find(':checked').attr('data-theme') },
+				buttonActive : { theme : set.eq(4).find(':checked').attr('data-theme') }
 			});
 		});
 
@@ -129,6 +132,17 @@
 					<input type="radio" id="radio-rc" name="radio-r" class="custom" data-theme="c"><label for="radio-rc">C</label>
 					<input type="radio" id="radio-rd" name="radio-r" class="custom" data-theme="d"><label for="radio-rd">D</label>
 					<input type="radio" id="radio-re" name="radio-r" class="custom" data-theme="e"><label for="radio-re">E</label>
+				</fieldset>
+			</div>
+
+			<div class="swatch" data-role="fieldcontain">
+				<fieldset data-role="controlgroup" data-type="horizontal">
+					<legend>Hovered Buttons</legend>
+					<input type="radio" id="radio-ha" name="radio-h" class="custom" data-theme="a"><label for="radio-ha">A</label>
+					<input type="radio" id="radio-hb" name="radio-h" class="custom" data-theme="b"><label for="radio-hb">B</label>
+					<input type="radio" id="radio-hc" name="radio-h" class="custom" data-theme="c" checked><label for="radio-hc">C</label>
+					<input type="radio" id="radio-hd" name="radio-h" class="custom" data-theme="d"><label for="radio-hd">D</label>
+					<input type="radio" id="radio-he" name="radio-h" class="custom" data-theme="e"><label for="radio-he">E</label>
 				</fieldset>
 			</div>
 

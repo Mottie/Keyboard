@@ -70,7 +70,7 @@ textarea, input { width: 260px; background: #333; color: #ddd; border: #777 1px 
 .underline { text-decoration: underline; }
 
 #mobile #wrap { height: 500px; }
-#mobile #switcher { max-width: 750px; width: auto; margin: 0 auto; }
+#mobile #switcher { max-width: 920px; width: auto; margin: 0 auto; }
 #mobile #switcher .swatch { width: 180px; height: 80px; display: inline-block; margin: 0; }
 .oldie #switcher .ui-body { float: left; clear: none !important; }
 #mobile #switcher fieldset { text-align: center; white-space: nowrap; margin: 0; height: 20px; }

@@ -1,5 +1,5 @@
 ﻿/*
- * jQuery UI Virtual Keyboard for jQuery Mobile Themes v1.0
+ * jQuery UI Virtual Keyboard for jQuery Mobile Themes v1.0.1 (updated 2/23/2012)
  *
  * By Rob Garrison (aka Mottie & Fudgey)
  * Licensed under the MIT License
@@ -10,8 +10,8 @@
  *
  * Requires:
  *  jQuery - http://ajax.googleapis.com/ajax/libs/jquery/1.6/jquery.min.js
- *  jQuery Mobile - http://code.jquery.com/mobile/1.0rc1/jquery.mobile-1.0rc1.min.js
- *  jQuery Mobile themes -  http://code.jquery.com/mobile/1.0rc1/jquery.mobile-1.0rc1.min.css
+ *  jQuery Mobile - http://code.jquery.com/mobile/1.0.1/jquery.mobile-1.0.1.min.js
+ *  jQuery Mobile themes -  http://code.jquery.com/mobile/1.0.1/jquery.mobile-1.0.1.min.css
  *
  * Setup:
  *  $('.ui-keyboard-input')
@@ -32,7 +32,9 @@ $.fn.addMobile = function(options){
 		// keyboard wrapper theme
 		container    : { theme:'a' },
 		// theme added to all regular buttons
-		buttonMarkup : { theme:'a', shadow:'true', inline:'true', corners:'false' },
+		buttonMarkup : { theme:'a', shadow:'true', corners:'true' },
+		// theme added to all buttons when they are being hovered
+		buttonHover  : { theme:'c' },
 		// theme added to action buttons (e.g. tab, shift, accept, cancel);
 		// parameters here will override the settings in the buttonMarkup
 		buttonAction : { theme:'b' },
@@ -79,9 +81,15 @@ $.fn.addMobile = function(options){
 				// removing 'ui-widget-content' will prevent jQuery UI theme from applying to the keyboard
 				.removeClass('ui-widget ui-widget-content')
 				// apply jQuery Mobile button markup
-				.find('button:not(.' + base.options.css.buttonAction + ')').buttonMarkup(o.buttonMarkup).end()
-				.find('.' + base.options.css.buttonAction).buttonMarkup(actn).end()
-				.find('button').removeClass('ui-corner-all ui-state-default');
+				// removed call to jQuery Mobile buttonMarkup function; replaced with base.modButton
+				.find('button:not(.' + base.options.css.buttonAction + ')').addClass( base.modButton(o.buttonMarkup) ).end()
+				.find('.' + base.options.css.buttonAction).addClass( base.modButton(actn) ).end()
+				.find('button').removeClass('ui-corner-all ui-state-default')
+				.hover(function(){
+					$(this).addClass('ui-btn-hover-' + o.buttonHover.theme);
+				},function(){
+					$(this).removeClass('ui-btn-hover-' + o.buttonHover.theme);
+				});
 
 			// set actionClass (default for jQuery UI = 'ui-state-active'),
 			// which is the active state of the button (shift is down)
@@ -104,6 +112,12 @@ $.fn.addMobile = function(options){
 			base.$keyboard.position(p);
 
 			base.mobile_initialized = true;
+		};
+
+		base.modButton = function(t){
+			// Using this instead of the jQuery Mobile buttonMarkup because it is expecting <a>'s instead of <button>
+			// theme:'a', shadow:'true', inline:'true', corners:'false'
+			return 'ui-btn ui-btn-up-' + t.theme + (t.shadow == 'true' ? ' ui-shadow' : '') + (t.corners == 'true' ? ' ui-btn-corner-all' : '');
 		};
 
 		base.mobile_init();

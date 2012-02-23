@@ -1,6 +1,6 @@
 /*
 jQuery UI Virtual Keyboard
-Version 1.9.10
+Version 1.9.11
 
 Author: Jeremy Satterfield
 Modified: Rob Garrison (Mottie on github)
@@ -116,9 +116,9 @@ $.keyboard = function(el, options){
 		base.rows = [ '', '-shift', '-alt', '-alt-shift' ];
 		base.acceptedKeys = [];
 		base.mappedKeys = {}; // for remapping manually typed in keys
-		$('<!--[if lte IE 8]><script>jQuery("body").addClass("oldie");</script><![endif]-->').appendTo('body').remove();
+		$('<!--[if lte IE 8]><script>jQuery("body").addClass("oldie");</script><![endif]--><!--[if IE]><script>jQuery("body").addClass("ie");</script><![endif]-->').appendTo('body').remove();
 		base.msie = $('body').hasClass('oldie'); // Old IE flag, used for caret positioning
-		base.allie = $.browser.msie;
+		base.allie = $('body').hasClass('ie'); // $.browser.msie being removed soon
 		base.inPlaceholder = base.$el.attr('placeholder') || '';
 		base.watermark = (typeof(document.createElement('input').placeholder) !== 'undefined' && base.inPlaceholder !== ''); // html 5 placeholder/watermark
 		base.regex = $.keyboard.comboRegex; // save default regex (in case loading another layout changes it)
@@ -131,6 +131,7 @@ $.keyboard = function(el, options){
 		// Also save caret position of the input if it is locked
 		base.checkCaret = (o.lockInput || base.temp.caret().start !== 3 ) ? true : false;
 		base.temp.remove();
+		base.lastCaret = { start:0, end:0 };
 
 		base.temp = [ '', 0, 0 ]; // used when building the keyboard - [keyset element, row, index]
 
@@ -180,6 +181,11 @@ $.keyboard = function(el, options){
 	};
 
 	base.focusOn = function(){
+		if (base.$el.is(':visible')) {
+			// caret position is always 0,0 in webkit; and nothing is focused at this point... odd
+			// save caret position in the input to transfer it to the preview
+			base.lastCaret = base.$el.caret();
+		}
 		if (!base.isVisible || o.alwaysOpen) {
 			clearTimeout(base.timer);
 			base.reveal();
@@ -264,15 +270,15 @@ $.keyboard = function(el, options){
 		base.lineHeight = parseInt( base.$preview.css('lineHeight'), 10) || parseInt(base.$preview.css('font-size') ,10) + 4;
 
 		// IE caret haxx0rs
-		if (base.msie){
+		if (base.allie){
 			// ensure caret is at the end of the text (needed for IE)
-			s = base.originalContent.length;
+			s = base.lastCaret.start || base.originalContent.length;
 			p = { start: s, end: s };
 			if (!base.lastCaret) { base.lastCaret = p; } // set caret at end of content, if undefined
 			if (base.lastCaret.end === 0 && base.lastCaret.start > 0) { base.lastCaret.end = base.lastCaret.start; } // sometimes end = 0 while start is > 0
 			if (base.lastCaret.start < 0) { base.lastCaret = p; } // IE will have start -1, end of 0 when not focused (see demo: http://jsfiddle.net/Mottie/fgryQ/3/).
-			base.$preview.caret( base.lastCaret.start, base.lastCaret.end );
 		}
+		base.$preview.caret(base.lastCaret.start, base.lastCaret.end );
 
 		base.$el.trigger( 'visible.keyboard', [ base, base.el ] );
 		return base;
@@ -288,7 +294,6 @@ $.keyboard = function(el, options){
 		// keyCode of keys always allowed to be typed - caps lock, page up & down, end, home, arrow, insert & delete keys
 		base.alwaysAllowed = [20,33,34,35,36,37,38,39,40,45,46];
 		if (o.enterNavigation) { base.alwaysAllowed.push(13); } // add enter to allowed keys
-		base.lastCaret = { start:0, end:0 };
 		base.$preview
 			.bind('keypress.keyboard', function(e){
 				var k = String.fromCharCode(e.charCode || e.which);
@@ -1336,7 +1341,7 @@ $.keyboard = function(el, options){
  */
 (function($, len, createRange, duplicate){
 $.fn.caret = function(options,opt2) {
-	if ( typeof this[0] === 'undefined' || (this && $(this).is(':hidden')) ) { return false; }
+	if ( typeof this[0] === 'undefined' || this.is(':hidden') ) { return false; }
 	var n, s, start, e, end, selRange, range, stored_range, te, val,
 		selection = document.selection, t = this[0], sTop = t.scrollTop,
 		opera = window.opera && window.opera.toString() === '[object Opera]',
@@ -1364,7 +1369,7 @@ $.fn.caret = function(options,opt2) {
 			selRange.select();
 		}
 		// must be visible or IE8 crashes; IE9 in compatibility mode works fine - issue #56
-		if ($(t).is(':visible')) { $(t).focus(); }
+		if (this.is(':visible')) { this.focus(); }
 		t.scrollTop = sTop;
 		return this;
 	} else {
