@@ -72,6 +72,10 @@ Moved to the Wiki Pages: [Home](https://github.com/Mottie/Keyboard/wiki/Home) | 
 
 Only the latest changes will be shown below, see the wiki log to view older versions.
 
+### Version 1.9.12
+
+* Fixed an issue with an internal caret positioning flag not being set correctly. This change also fixes [issue #57](https://github.com/Mottie/Keyboard/issues/57).
+
 ### Version 1.9.11
 
 * Updated mobile extension

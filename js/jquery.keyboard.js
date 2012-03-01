@@ -1,6 +1,6 @@
 /*
 jQuery UI Virtual Keyboard
-Version 1.9.11
+Version 1.9.12
 
 Author: Jeremy Satterfield
 Modified: Rob Garrison (Mottie on github)
@@ -126,10 +126,10 @@ $.keyboard = function(el, options){
 		base.repeatTime = 1000/o.repeatRate; // convert mouse repeater rate (characters per second) into a time in milliseconds.
 
 		// Check if caret position is saved when input is hidden or loses focus
-		// (*cough* all versions of IE, and yes I probably could have just used $.browser.msie, but I think Opera has/had an issue as well)
-		base.temp = $('<input style="visibility:hidden" type="text" value="this is a test">').appendTo('body').caret(3,3);
+		// (*cough* all versions of IE and I think Opera has/had an issue as well
+		base.temp = $('<input style="position:absolute;left:-9999em;top:-9999em;" type="text" value="testing">').appendTo('body').caret(3,3);
 		// Also save caret position of the input if it is locked
-		base.checkCaret = (o.lockInput || base.temp.caret().start !== 3 ) ? true : false;
+		base.checkCaret = (o.lockInput || base.temp.hide().show().caret().start !== 3 ) ? true : false;
 		base.temp.remove();
 		base.lastCaret = { start:0, end:0 };
 
@@ -1041,13 +1041,9 @@ $.keyboard = function(el, options){
 			var tag = base.el.tagName, o = base.options;
 			// shift-enter in textareas
 			if (e.shiftKey) {
-				if (o.enterNavigation) {
-					// textarea & input - enterMod + shift + enter = accept, then go to prev
-					return base.switchInput(!e[o.enterMod], true); // (goToNext, autoAccept)
-				} else {
-					// textarea & input - shift + enter = accept (no navigation)
-					return base.close(true);
-				}
+				// textarea & input - enterMod + shift + enter = accept, then go to prev; base.switchInput(goToNext, autoAccept)
+				// textarea & input - shift + enter = accept (no navigation)
+				return (o.enterNavigation) ? base.switchInput(!e[o.enterMod], true) : base.close(true);
 			}
 			// input only - enterMod + enter to navigate
 			if (o.enterNavigation && (tag !== 'TEXTAREA' || e[o.enterMod])) {
@@ -1341,7 +1337,7 @@ $.keyboard = function(el, options){
  */
 (function($, len, createRange, duplicate){
 $.fn.caret = function(options,opt2) {
-	if ( typeof this[0] === 'undefined' || this.is(':hidden') ) { return false; }
+	if ( typeof this[0] === 'undefined' || this.is(':hidden') || this.css('visibility') === 'hidden' ) { return this; }
 	var n, s, start, e, end, selRange, range, stored_range, te, val,
 		selection = document.selection, t = this[0], sTop = t.scrollTop,
 		opera = window.opera && window.opera.toString() === '[object Opera]',
@@ -1369,7 +1365,7 @@ $.fn.caret = function(options,opt2) {
 			selRange.select();
 		}
 		// must be visible or IE8 crashes; IE9 in compatibility mode works fine - issue #56
-		if (this.is(':visible')) { this.focus(); }
+		if (this.is(':visible') || this.css('visibility') !== 'hidden') { this.focus(); }
 		t.scrollTop = sTop;
 		return this;
 	} else {
