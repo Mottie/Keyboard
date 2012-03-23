@@ -72,6 +72,10 @@ Moved to the Wiki Pages: [Home](https://github.com/Mottie/Keyboard/wiki/Home) | 
 
 Only the latest changes will be shown below, see the wiki log to view older versions.
 
+### Version 1.9.14
+
+* Multiple synchronized keyboards with `alwaysOpen` and `autoAccept` set to `true` should now switch properly. Fix for [issue #58](https://github.com/Mottie/Keyboard/issues/58).
+
 ### Version 1.9.13
 
 * Multiple synchronized keyboards with `alwaysOpen` set to `true` should now switch properly. Fix for [issue #58](https://github.com/Mottie/Keyboard/issues/58).
@@ -136,28 +140,3 @@ Only the latest changes will be shown below, see the wiki log to view older vers
   * It no longer automatically triggers the "canceled" event, you can do that within the callback.
   * If the input is invalid and the keyboard is closed/canceled, the `validate` callback will no longer abort the close.
   * Added an `isClosing` variable which is only `true` when the content was accepted. The `isClosing` variable is `false` when the validate callback is called during input.
-
-### Version 1.9.5
-
-* Added a `validate` callback function
-  * This function is called when the keyboard is attempting to close.
-  * If the function returns true, the keyboard will continue on, accept the content and close (if not always open).
-  * If this function returns false, then a "canceled" event will fire and the keyboard will abort the close.
-  * Any other actions can be performed or called from inside of this function. For example, if the value is invalid, you can clear the keyboard input:
-
-    ```javascript
-    $('#keyboard').keyboard({
-      validate: function(keyboard, value){
-        // test value to only allow numbers
-        var test = /\d+/.test(value);
-        // if the value is invalid, clear the input
-        if (!test) { keyboard.$preview.val(''); }
-        // return valid test (true or false)
-        return test;
-      }
-    });
-    ```
-
-### Version 1.9.4
-
-* Modified to prevent the keyboard from being added multiple times to a single element. Previously, calling the keyboard on an element a second time would add a second keyboard and detach the first one from the plugin.

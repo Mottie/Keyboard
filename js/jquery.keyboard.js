@@ -1,6 +1,6 @@
 /*!
 jQuery UI Virtual Keyboard
-Version 1.9.13
+Version 1.9.14
 
 Author: Jeremy Satterfield
 Modified: Rob Garrison (Mottie on github)
@@ -394,8 +394,10 @@ $.keyboard = function(el, options){
 						base.timer = setTimeout(function(){
 							if (base.isCurrent && !base.$el.hasClass('ui-keyboard-input-current')) {
 								base.close(o.autoAccept);
+							} else {
+								base.$preview.focus();
 							}
-						}, 300);
+						}, 100);
 					return false;
 				}
 			});
@@ -720,10 +722,10 @@ $.keyboard = function(el, options){
 	base.close = function(accepted){
 		if (base.isVisible) {
 			clearTimeout(base.throttled);
-			base.isCurrent = false;
 			var val = (accepted) ?  base.checkCombos() : base.originalContent;
 			// validate input if accepted
 			if (accepted && o.validate && typeof(o.validate) === "function" && !o.validate(base, val, true)) { return; }
+			base.isCurrent = false;
 			base.$el
 				.removeClass('ui-keyboard-input-current')
 				.trigger( (o.alwaysOpen) ? '' : 'beforeClose.keyboard', [ base, base.el, (accepted || false) ] )
@@ -733,7 +735,7 @@ $.keyboard = function(el, options){
 				.trigger( (o.alwaysOpen) ? 'inactive.keyboard' : 'hidden.keyboard', [ base, base.el ] );
 			if (!o.usePreview && o.openOn !== '') {
 				// rebind input focus
-				base.$el.bind( o.openOn + '.keyboard', function(){ base.focusOn(); });
+				base.$el.blur().bind( o.openOn + '.keyboard', function(){ base.focusOn(); });
 			}
 			if (!o.alwaysOpen) {
 				base.$keyboard.hide();
