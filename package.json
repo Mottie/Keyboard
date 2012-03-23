@@ -1,6 +1,6 @@
 ﻿{
     "name": "Keyboard",
-    "version": "1.9.12.1",
+    "version": "1.9.13",
     "title": "Keyboard",
     "author": {
         "name": "Jeremy Satterfield",
@@ -38,6 +38,6 @@
         "js/jquery.keyboard.extension-mobile.js",
         "js/jquery.keyboard.extension-navigation.js",
         "js/jquery.keyboard.extension-typing.js",
-        "jquery.mousewheel.js"
+        "js/jquery.mousewheel.js"
     ]
 }

@@ -72,6 +72,10 @@ Moved to the Wiki Pages: [Home](https://github.com/Mottie/Keyboard/wiki/Home) | 
 
 Only the latest changes will be shown below, see the wiki log to view older versions.
 
+### Version 1.9.13
+
+* Multiple synchronized keyboards with `alwaysOpen` set to `true` should now switch properly. Fix for [issue #58](https://github.com/Mottie/Keyboard/issues/58).
+
 ### Version 1.9.12.1
 
 * Updated jquery.mousewheel.js, as the it was only scrolling in one direction.

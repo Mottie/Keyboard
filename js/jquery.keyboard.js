@@ -1,6 +1,6 @@
-/*
+/*!
 jQuery UI Virtual Keyboard
-Version 1.9.12
+Version 1.9.13
 
 Author: Jeremy Satterfield
 Modified: Rob Garrison (Mottie on github)
@@ -95,7 +95,7 @@ CSS:
 	.ui-keyboard-nokeyboard { color: #888; border-color: #888; } - disabled or readonly inputs, or use input[disabled='disabled'] { color: #f00; }
 */
 
-(function($){
+;(function($){
 $.keyboard = function(el, options){
 	var base = this, o;
 
@@ -389,7 +389,7 @@ $.keyboard = function(el, options){
 			})
 			.bind('blur.keyboard', function(e){
 				// when keyboard is always open, make sure base.close is called on blur
-				if (o.alwaysOpen && base.isCurrent && !base.$el.hasClass('ui-keyboard-input-current')) {
+				if (o.alwaysOpen && base.isCurrent) {
 						clearTimeout(base.timer);
 						base.timer = setTimeout(function(){
 							if (base.isCurrent && !base.$el.hasClass('ui-keyboard-input-current')) {
