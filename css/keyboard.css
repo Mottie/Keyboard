@@ -22,7 +22,7 @@
 
 /*** jQuery Mobile definitions ***/
 /* jQuery Mobile styles - need wider buttons because of font size and text-overflow:ellipsis */
-.ui-bar .ui-keyboard-button { width: 3em; }
+.ui-bar .ui-keyboard-button { width: 3em; display: inline-block; }
 .ui-bar .ui-keyboard-widekey { width: 5.5em; }
 .ui-bar .ui-keyboard-space { width: 15em; }
 .ui-bar .ui-keyboard-space span { visibility: hidden; } /* hides the ellipsis */

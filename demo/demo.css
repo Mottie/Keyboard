@@ -69,7 +69,7 @@ textarea, input { width: 260px; background: #333; color: #ddd; border: #777 1px 
 #info .key { font-weight: 700; color: #59b4d4; }
 .underline { text-decoration: underline; }
 
-#mobile #wrap { height: 500px; }
+#mobile #wrap { height: 200px; }
 #mobile #switcher { max-width: 920px; width: auto; margin: 0 auto; }
 #mobile #switcher .swatch { width: 180px; height: 80px; display: inline-block; margin: 0; }
 .oldie #switcher .ui-body { float: left; clear: none !important; }
@@ -82,8 +82,7 @@ textarea, input { width: 260px; background: #333; color: #ddd; border: #777 1px 
 #mobile #switcher .ui-btn-text { position: relative; top: 2px; left: 5px; width: 10px; }
 
 #footer { height: 150px; }
-#footer2 { position: fixed; bottom: 0; left: 0; width: 100%; z-index: 0; font-size: small; margin-bottom: 5px; text-align: center; }
-#footer2 div { margin: 0 auto; width: 650px; }
+#footer2 div { margin: 160px auto; width: 650px; text-align: center; }
 
 /* tooltip (jatt) */
 #tooltip {

@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -109,13 +110,21 @@
 
 		<h1><a href="https://github.com/Mottie/Keyboard">Virtual Keyboard jQuery Mobile Themes</a></h1>
 		<h4>Until the jQurey Mobile Theme Roller is complete, use the color selections below to change the keyboard</h4>
-	
+
+		<div id="wrap"> <!-- wrapper only needed to center the input -->
+
+			<!-- keyboard input -->
+			<label for="keyboard"></label>
+			<input id="keyboard" name="keyboard" type="text">
+
+		</div> <!-- End wrapper -->
+
 		<!-- Once jQuery Mobile Theme Roller is complete, add it here -->
 		<div id="switcher">
 
 			<div class="swatch" data-role="fieldcontain">
 				<fieldset data-role="controlgroup" data-type="horizontal">
-					<legend>Container</legend>
+					<legend>Container<br>(background)</legend>
 					<input type="radio" id="radio-ca" name="radio-c" class="custom" data-theme="a" checked><label for="radio-ca">A</label>
 					<input type="radio" id="radio-cb" name="radio-c" class="custom" data-theme="b"><label for="radio-cb">B</label>
 					<input type="radio" id="radio-cc" name="radio-c" class="custom" data-theme="c"><label for="radio-cc">C</label>
@@ -126,7 +135,7 @@
 
 			<div class="swatch" data-role="fieldcontain">
 				<fieldset data-role="controlgroup" data-type="horizontal">
-					<legend>Regular Buttons</legend>
+					<legend>Regular Buttons<br>(non-action)</legend>
 					<input type="radio" id="radio-ra" name="radio-r" class="custom" data-theme="a" checked><label for="radio-ra">A</label>
 					<input type="radio" id="radio-rb" name="radio-r" class="custom" data-theme="b"><label for="radio-rb">B</label>
 					<input type="radio" id="radio-rc" name="radio-r" class="custom" data-theme="c"><label for="radio-rc">C</label>
@@ -137,7 +146,7 @@
 
 			<div class="swatch" data-role="fieldcontain">
 				<fieldset data-role="controlgroup" data-type="horizontal">
-					<legend>Hovered Buttons</legend>
+					<legend>Hovered Buttons<br>(all)</legend>
 					<input type="radio" id="radio-ha" name="radio-h" class="custom" data-theme="a"><label for="radio-ha">A</label>
 					<input type="radio" id="radio-hb" name="radio-h" class="custom" data-theme="b"><label for="radio-hb">B</label>
 					<input type="radio" id="radio-hc" name="radio-h" class="custom" data-theme="c" checked><label for="radio-hc">C</label>
@@ -148,7 +157,7 @@
 
 			<div class="swatch" data-role="fieldcontain">
 				<fieldset data-role="controlgroup" data-type="horizontal">
-					<legend>Action Buttons</legend>
+					<legend>Action Buttons<br>(Enter)</legend>
 					<input type="radio" id="radio-aa" name="radio-a" class="custom" data-theme="a"><label for="radio-aa">A</label>
 					<input type="radio" id="radio-ab" name="radio-a" class="custom" data-theme="b" checked><label for="radio-ab">B</label>
 					<input type="radio" id="radio-ac" name="radio-a" class="custom" data-theme="c"><label for="radio-ac">C</label>
@@ -159,7 +168,7 @@
 
 			<div class="swatch" data-role="fieldcontain">
 				<fieldset data-role="controlgroup" data-type="horizontal">
-					<legend>Active Buttons</legend>
+					<legend>Active Buttons<br>(Shift down)</legend>
 					<input type="radio" id="radio-va" name="radio-v" class="custom" data-theme="a"><label for="radio-va">A</label>
 					<input type="radio" id="radio-vb" name="radio-v" class="custom" data-theme="b"><label for="radio-vb">B</label>
 					<input type="radio" id="radio-vc" name="radio-v" class="custom" data-theme="c"><label for="radio-vc">C</label>
@@ -169,15 +178,6 @@
 			</div>
 
 		</div>
-
-		<div id="wrap"> <!-- wrapper only needed to center the input -->
-
-			<!-- keyboard input -->
-			<label for="keyboard"></label>
-			<input id="keyboard" name="keyboard" type="text">
-
-		</div> <!-- End wrapper -->
-
 
 	<div id="footer2">
 		<div>
