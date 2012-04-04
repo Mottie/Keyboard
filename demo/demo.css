@@ -75,10 +75,11 @@ textarea, input { width: 260px; background: #333; color: #ddd; border: #777 1px 
 .oldie #switcher .ui-body { float: left; clear: none !important; }
 #mobile #switcher fieldset { text-align: center; white-space: nowrap; margin: 0; height: 20px; }
 #mobile #switcher input { visibility: hidden; }
+#mobile .ui-icon-radio-on, #mobile .ui-icon-radio-off { display: none; }
 #mobile #switcher .ui-btn-active { box-shadow: 0 1px 5px rgba(255, 255, 255, 0.7); }
 #mobile #switcher .ui-controlgroup-label { display: block; margin: 0 0 15px 0; width: auto; }
 #mobile #switcher .ui-btn-inner { padding: 0; }
-#mobile #switcher .ui-radio label { font-size: 10px; width: 20px; height: 20px; }
+#mobile #switcher .ui-radio, #mobile #switcher .ui-radio label { font-size: 10px; width: 20px; height: 20px; margin: 0; display: inline-block; }
 #mobile #switcher .ui-btn-text { position: relative; top: 2px; left: 5px; width: 10px; }
 
 #footer { height: 150px; }
