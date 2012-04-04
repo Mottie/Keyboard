@@ -72,6 +72,14 @@ Moved to the Wiki Pages: [Home](https://github.com/Mottie/Keyboard/wiki/Home) | 
 
 Only the latest changes will be shown below, see the wiki log to view older versions.
 
+### Version 1.9.15
+
+* Updated Mobile demo
+  * Updated to [jQuery Mobile version 1.1.0 RC1](http://jquerymobile.com/blog/2012/02/28/announcing-jquery-mobile-1-1-0-rc1/)
+  * Extra demo css added because the theme selector radio buttons were not displaying properly due to some issues with the data-attributes showing "[Object object]" instead of true or false. I'm not sure why, and don't have the time to investigate.
+* Fixed a problem where keyboards with `alwaysOpen` and `autoAccept` set to `true` would keep focus on the input when clicking outside the input. Fix for [issue #59](https://github.com/Mottie/Keyboard/issues/59).
+* Fixed an issue with `tabNavigation` not working properly. Also, discovered that `tabindex="0"` should not be used. Fix for [issue #60](https://github.com/Mottie/Keyboard/issues/60).
+
 ### Version 1.9.14
 
 * Multiple synchronized keyboards with `alwaysOpen` and `autoAccept` set to `true` should now switch properly. Fix for [issue #58](https://github.com/Mottie/Keyboard/issues/58).

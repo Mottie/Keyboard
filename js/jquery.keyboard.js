@@ -1,6 +1,6 @@
 /*!
 jQuery UI Virtual Keyboard
-Version 1.9.14
+Version 1.9.15
 
 Author: Jeremy Satterfield
 Modified: Rob Garrison (Mottie on github)
@@ -154,6 +154,7 @@ $.keyboard = function(el, options){
 		base.$el
 			.addClass('ui-keyboard-input ' + o.css.input)
 			.attr({ 'aria-haspopup' : 'true', 'role' : 'textbox' });
+
 		// add disabled/readonly class - dynamically updated on reveal
 		if (base.$el.is(':disabled') || base.$el.attr('readonly')) {
 			base.$el.addClass('ui-keyboard-nokeyboard');
@@ -196,9 +197,6 @@ $.keyboard = function(el, options){
 	base.reveal = function(){
 		// close all keyboards
 		$('.ui-keyboard:not(.ui-keyboard-always-open)').hide();
-		// ui-keyboard-has-focus is applied in case multiple keyboards have alwaysOpen = true and are stacked
-		$('.ui-keyboard-has-focus').removeClass('ui-keyboard-has-focus');
-		$('.ui-keyboard-input-current').removeClass('ui-keyboard-input-current');
 
 		// Don't open if disabled
 		if (base.$el.is(':disabled') || base.$el.attr('readonly')) {
@@ -209,10 +207,17 @@ $.keyboard = function(el, options){
 		}
 
 		// Unbind focus to prevent recursion - openOn may be empty if keyboard is opened externally
-		if (!o.usePreview) { base.$el.unbind( (o.openOn) ? o.openOn + '.keyboard' : ''); }
+		base.$el.unbind( (o.openOn) ? o.openOn + '.keyboard' : '');
 
 		// build keyboard if it doesn't exist
 		if (typeof(base.$keyboard) === 'undefined') { base.startup(); }
+
+		// ui-keyboard-has-focus is applied in case multiple keyboards have alwaysOpen = true and are stacked
+		$('.ui-keyboard-has-focus').removeClass('ui-keyboard-has-focus');
+		$('.ui-keyboard-input-current').removeClass('ui-keyboard-input-current');
+
+		base.$el.addClass('ui-keyboard-input-current');
+		base.isCurrent = true;
 
 		// clear watermark
 		if (!base.watermark && base.el.value === base.inPlaceholder) {
@@ -231,9 +236,6 @@ $.keyboard = function(el, options){
 		var p, s, position = o.position;
 		position.of = position.of || base.$el.data('keyboardPosition') || base.$el;
 		position.collision = (o.usePreview) ? position.collision || 'fit fit' : 'flip flip';
-
-		base.$el.addClass('ui-keyboard-input-current');
-		base.isCurrent = true;
 
 		// show & position keyboard
 		base.$keyboard
@@ -357,9 +359,8 @@ $.keyboard = function(el, options){
 					// prevent tab key from leaving the preview window
 					case 9 :
 						if (o.tabNavigation) {
-							base.close(o.autoAccept);
 							// allow tab to pass through - tab to next input/shift-tab for prev
-							return;
+							return true;
 						} else {
 							base.tab = true; // see keyup comment above
 							return false;
@@ -390,14 +391,11 @@ $.keyboard = function(el, options){
 			.bind('blur.keyboard', function(e){
 				// when keyboard is always open, make sure base.close is called on blur
 				if (o.alwaysOpen && base.isCurrent) {
-						clearTimeout(base.timer);
-						base.timer = setTimeout(function(){
-							if (base.isCurrent && !base.$el.hasClass('ui-keyboard-input-current')) {
-								base.close(o.autoAccept);
-							} else {
-								base.$preview.focus();
-							}
-						}, 100);
+					if ( e.target === base.el || $(e.target).closest('.ui-keyboard')[0] === base.$keyboard[0] ) {
+						base.close(o.autoAccept);
+					} else {
+						base.$preview.focus();
+					}
 					return false;
 				}
 			});
@@ -480,7 +478,7 @@ $.keyboard = function(el, options){
 			// using "kb" namespace for mouse repeat functionality to keep it separate
 			// I need to trigger a "repeater.keyboard" to make it work
 			.bind('mouseup.keyboard mouseleave.kb touchend.kb touchmove.kb touchcancel.kb', function(){
-				if (base.isVisible) { base.$preview.focus(); }
+				if (base.isVisible && base.isCurrent) { base.$preview.focus(); }
 				base.mouseRepeat = [false,''];
 				return false;
 			})
@@ -710,7 +708,7 @@ $.keyboard = function(el, options){
 			o.switchInput(base, goToNext, isAccepted);
 		} else {
 			base.close(isAccepted);
-			var all = $('.ui-keyboard-input:not(.ui-keyboard-preview)'),
+			var all = $('.ui-keyboard-input'),
 				indx = all.index(base.$el) + (goToNext ? 1 : -1);
 			if (indx > all.length - 1) { indx = 0; } // go to first input
 			all.eq(indx).focus();
@@ -731,11 +729,12 @@ $.keyboard = function(el, options){
 				.trigger( (o.alwaysOpen) ? '' : 'beforeClose.keyboard', [ base, base.el, (accepted || false) ] )
 				.val( val )
 				.scrollTop( base.el.scrollHeight )
+				.blur()
 				.trigger( ((accepted || false) ? 'accepted.keyboard' : 'canceled.keyboard'), [ base, base.el ] )
 				.trigger( (o.alwaysOpen) ? 'inactive.keyboard' : 'hidden.keyboard', [ base, base.el ] );
-			if (!o.usePreview && o.openOn !== '') {
+			if (o.openOn) {
 				// rebind input focus
-				base.$el.blur().bind( o.openOn + '.keyboard', function(){ base.focusOn(); });
+				base.$el.bind( o.openOn + '.keyboard', function(){ base.focusOn(); });
 			}
 			if (!o.alwaysOpen) {
 				base.$keyboard.hide();
@@ -758,7 +757,7 @@ $.keyboard = function(el, options){
 		if ( !base.isVisible ) { return; }
 		// ignore autoaccept if using escape - good idea?
 		if ( e.type === 'keyup' && e.which === 27 ) { base.close(); }
-		if ( e.type === 'mousedown' && ( e.target !== base.el && $(e.target).closest('.ui-keyboard')[0] !== base.$keyboard[0]) ) {
+		if ( e.type === 'mousedown' && ( e.target !== base.el && $(e.target).closest('.ui-keyboard')[0] !== base.$keyboard[0] ) ) {
 			// stop propogation in IE - an input getting focus doesn't open a keyboard if one is already open
 			if ( base.allie ) {
 				e.preventDefault();
@@ -828,8 +827,9 @@ $.keyboard = function(el, options){
 		if (o.usePreview) {
 			base.$preview = base.$el.clone(false)
 				.removeAttr('id')
-				.removeClass('ui-keyboard-placeholder')
+				.removeClass('ui-keyboard-placeholder ui-keyboard-input')
 				.addClass('ui-keyboard-preview ' + o.css.input)
+				.attr('tabindex', '-1')
 				.show(); // for hidden inputs
 		} else {
 			// No preview display, use element and reposition the keyboard under it.
