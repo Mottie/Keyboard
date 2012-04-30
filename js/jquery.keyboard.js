@@ -123,7 +123,8 @@ $.keyboard = function(el, options){
 		base.watermark = (typeof(document.createElement('input').placeholder) !== 'undefined' && base.inPlaceholder !== ''); // html 5 placeholder/watermark
 		base.regex = $.keyboard.comboRegex; // save default regex (in case loading another layout changes it)
 		base.decimal = ( /^\./.test(o.display.dec) ) ? true : false; // determine if US "." or European "," system being used
-		base.repeatTime = 1000/o.repeatRate; // convert mouse repeater rate (characters per second) into a time in milliseconds.
+		// convert mouse repeater rate (characters per second) into a time in milliseconds.
+		base.repeatTime = 1000/(o.repeatRate || 20);
 
 		// Check if caret position is saved when input is hidden or loses focus
 		// (*cough* all versions of IE and I think Opera has/had an issue as well
@@ -480,6 +481,7 @@ $.keyboard = function(el, options){
 			.bind('mouseup.keyboard mouseleave.kb touchend.kb touchmove.kb touchcancel.kb', function(){
 				if (base.isVisible && base.isCurrent) { base.$preview.focus(); }
 				base.mouseRepeat = [false,''];
+				clearTimeout(base.repeater); // make sure key repeat stops!
 				return false;
 			})
 			// prevent form submits when keyboard is bound locally - issue #64
@@ -491,11 +493,13 @@ $.keyboard = function(el, options){
 			// mouse repeated action key exceptions
 			.add('.ui-keyboard-tab, .ui-keyboard-bksp, .ui-keyboard-space, .ui-keyboard-enter', base.$keyboard)
 			.bind('mousedown.kb touchstart.kb', function(){
-				var key = $(this);
-				base.mouseRepeat = [true, key]; // save the key, make sure we are repeating the right one (fast typers)
-				setTimeout(function() {
-					if (base.mouseRepeat[0] && base.mouseRepeat[1] === key) { base.repeatKey(key); }
-				}, o.repeatDelay);
+				if (o.repeatRate !== 0) {
+					var key = $(this);
+					base.mouseRepeat = [true, key]; // save the key, make sure we are repeating the right one (fast typers)
+					setTimeout(function() {
+						if (base.mouseRepeat[0] && base.mouseRepeat[1] === key) { base.repeatKey(key); }
+					}, o.repeatDelay);
+				}
 				return false;
 			});
 
@@ -557,7 +561,7 @@ $.keyboard = function(el, options){
 	base.repeatKey = function(key){
 		key.trigger('repeater.keyboard');
 		if (base.mouseRepeat[0]) {
-			setTimeout(function() {
+			base.repeater = setTimeout(function() {
 				base.repeatKey(key);
 			}, base.repeatTime);
 		}
