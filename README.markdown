@@ -72,6 +72,13 @@ Moved to the Wiki Pages: [Home](https://github.com/Mottie/Keyboard/wiki/Home) | 
 
 Only the latest changes will be shown below, see the wiki log to view older versions.
 
+### Version 1.9.16 (4/30/2012)
+
+* Caret position is now better retained in older IE. Fix for [issue #61](https://github.com/Mottie/Keyboard/issues/61).
+* Invalid input should now revert back to the last valid input instead of breaking the keyboard. Fix for [issue #62](https://github.com/Mottie/Keyboard/issues/62).
+* The repeating key obtained by holding down the mouse on a virtual key can now be disabled by setting the `repeatRate` to `0` (zero). Fix for [issue #63](https://github.com/Mottie/Keyboard/issues/63).
+* Clicking on a virtual keyboard key will no longer submit a form - fix for [issue #64](https://github.com/Mottie/Keyboard/issues/64).
+
 ### Version 1.9.15
 
 * Updated Mobile demo
@@ -91,60 +98,3 @@ Only the latest changes will be shown below, see the wiki log to view older vers
 ### Version 1.9.12.1
 
 * Updated jquery.mousewheel.js, as the it was only scrolling in one direction.
-
-### Version 1.9.12
-
-* Fixed an issue with an internal caret positioning flag not being set correctly. This change also fixes [issue #57](https://github.com/Mottie/Keyboard/issues/57).
-
-### Version 1.9.11
-
-* Updated mobile extension
- * It now works with jQuery Mobile v1.0.1.
- * The extension no longer uses the mobile buttonMarkup function, it just applies the css class names.
- * Added a hover button option and theme selector.
- * I don't think I'll support the Mobile theme selector because it's not a bookmarklet like I thought it would be. But please feel free to point the mobile stylesheet to a custom mobile theme. The extension will support any of the theme letters (A through whatever).
-* Caret position is now saved
- * This started as a fix for all versions of IE, but now applies to Firefox and Opera. It's not working in Webkit (Chrome &amp; Safari) for some reason.
- * When clicking in an input, the keyboard will now open with a new preview window showing or with the existing input with the caret in the position where it was clicked in the text.
- * Hidden inputs will remember the last caret position when revealed.
- * Fix for the new issue added into [issue #24](https://github.com/Mottie/Keyboard/issues/24).
-
-### Version 1.9.10
-
-* Fixed an issue with using `jQuery.noConflict()` in older IE. Fix for [issue #55](https://github.com/Mottie/Keyboard/issues/55).
-* Added two Hungarian (Magyar) keyboard layouts. Thanks to Tóth Gergely for sharing - from [issue #48](https://github.com/Mottie/Keyboard/issues/48).
-* Fixed a problem with IE8 and hidden inputs. Apparently the original IE8 and not IE9 in compatibility mode has this problem. Thanks to Chris Mullins in [issue #56](https://github.com/Mottie/Keyboard/issues/56).
-
-### Version 1.9.9
-
-* Fixed an issue with the enter key that was introduced in 1.9.8 - sorry!
-* The way the key spacer `{sp:#}` is added has changed:
-  * In older versions, a span of zero dimensions with a side margin of #em was added, i.e. `{sp:1}` would add a "margin: 0 1em" which adds 1em to the left and right making it 2em wide.
-  * Because newer versions of Firefox do not seem to render a zero dimension span at all, the plugin now sets the span width.
-  * A `{sp:1}` setting now becomes a span of "2em" width, to keep this consistent with the way this method worked previously.
-  * In case this causes problems, one additional change was made so the space can now be set using pixels: `{sp:20px}` which makes the width 20 pixels.
-  * Additionally, non-western formats are now supported. Using `{sp:1,5}` or `{sp:1,5em}` will set the span to 3em's in width.
-  * This will fix the problem brought up in [issue #48](https://github.com/Mottie/Keyboard/issues/48).
-
-### Version 1.9.8
-
-* Pressing the real keyboard enter key will now use the `$.keyboard.keyaction.enter` function. Discussed in [issue #47](https://github.com/Mottie/Keyboard/issues/47).
-* Updated all demos to use jQuery 1.7+.
-
-### Version 1.9.7
-
-* Fixed a problem with the mouse up event not returning focus to the input, possible fix for [issue #45](https://github.com/Mottie/Keyboard/issues/45).
-* Changed `acceptValid` default value from `true` to `false`.
-* Updated link to jQuery Mobile from 1.0rc1 to 1.0.
-* Added package.json in anticipation of the [jQuery plugin](http://plugins.jquery.com/) site.
-
-### Version 1.9.6
-
-* Added `acceptValid` option
-  * When true, all input is continually checked using the `validate` callback function, if valid, then the accept button is enabled; otherwise it is disabled.
-  * When false, the input is not checked after each input; but the `validate` callback is still called when the input is accepted.
-  * Added a "disabled" class to the css which is applied to the accept button when disabled.
-* Changed the `validate` callback function
-  * It no longer automatically triggers the "canceled" event, you can do that within the callback.
-  * If the input is invalid and the keyboard is closed/canceled, the `validate` callback will no longer abort the close.
-  * Added an `isClosing` variable which is only `true` when the content was accepted. The `isClosing` variable is `false` when the validate callback is called during input.

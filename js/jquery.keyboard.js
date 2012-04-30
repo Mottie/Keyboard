@@ -1,6 +1,6 @@
 /*!
 jQuery UI Virtual Keyboard
-Version 1.9.15
+Version 1.9.16
 
 Author: Jeremy Satterfield
 Modified: Rob Garrison (Mottie on github)
@@ -731,7 +731,10 @@ $.keyboard = function(el, options){
 			clearTimeout(base.throttled);
 			var val = (accepted) ?  base.checkCombos() : base.originalContent;
 			// validate input if accepted
-			if (accepted && o.validate && typeof(o.validate) === "function" && !o.validate(base, val, true)) { return; }
+			if (accepted && o.validate && typeof(o.validate) === "function" && !o.validate(base, val, true)) {
+				val = base.originalContent;
+				accepted = false;
+			}
 			base.isCurrent = false;
 			base.$el
 				.removeClass('ui-keyboard-input-current')
