@@ -482,6 +482,10 @@ $.keyboard = function(el, options){
 				base.mouseRepeat = [false,''];
 				return false;
 			})
+			// prevent form submits when keyboard is bound locally - issue #64
+			.bind('click.keyboard', function(){
+				return false;
+			})
 			// no mouse repeat for action keys (shift, ctrl, alt, meta, etc)
 			.filter(':not(.ui-keyboard-actionkey)')
 			// mouse repeated action key exceptions
