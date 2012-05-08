@@ -83,7 +83,7 @@ textarea, input { width: 260px; background: #333; color: #ddd; border: #777 1px 
 #mobile #switcher .ui-btn-text { position: relative; top: 2px; left: 5px; width: 10px; }
 
 #footer { height: 150px; }
-#footer2 div { margin: 160px auto; width: 650px; text-align: center; }
+#footer2 div { margin: 220px auto; width: 650px; text-align: center; }
 
 /* tooltip (jatt) */
 #tooltip {
