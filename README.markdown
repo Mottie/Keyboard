@@ -72,6 +72,10 @@ Moved to the Wiki Pages: [Home](https://github.com/Mottie/Keyboard/wiki/Home) | 
 
 Only the latest changes will be shown below, see the wiki log to view older versions.
 
+### Version 1.9.17 (5/8/2012)
+
+* Added Turkish layouts. Thanks to [barisaydinoglu](https://github.com/barisaydinoglu)!
+
 ### Version 1.9.16 (4/30/2012)
 
 * Caret position is now better retained in older IE. Fix for [issue #61](https://github.com/Mottie/Keyboard/issues/61).
