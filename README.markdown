@@ -72,6 +72,10 @@ Moved to the Wiki Pages: [Home](https://github.com/Mottie/Keyboard/wiki/Home) | 
 
 Only the latest changes will be shown below, see the wiki log to view older versions.
 
+### Version 1.9.18 (5/13/2012)
+
+* Fixed an issue of the input clearing when `usePreview` is `false` and `alwaysOpen` is `true`. Brought up in [issue #37](https://github.com/Mottie/Keyboard/issues/37#issuecomment-5298677).
+
 ### Version 1.9.17 (5/8/2012)
 
 * Added Turkish layouts. Thanks to [barisaydinoglu](https://github.com/barisaydinoglu)!

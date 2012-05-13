@@ -1,6 +1,6 @@
 /*!
 jQuery UI Virtual Keyboard
-Version 1.9.17
+Version 1.9.18
 
 Author: Jeremy Satterfield
 Modified: Rob Garrison (Mottie on github)
@@ -145,11 +145,9 @@ $.keyboard = function(el, options){
 
 		// Close with esc key & clicking outside
 		if (o.alwaysOpen) { o.stayOpen = true; }
-		if (!o.stayOpen){
-			$(document).bind('mousedown.keyboard keyup.keyboard', function(e){
-				base.escClose(e);
-			});
-		}
+		$(document).bind('mousedown.keyboard keyup.keyboard', function(e){
+			base.escClose(e);
+		});
 
 		// Display keyboard on focus
 		base.$el
@@ -290,7 +288,6 @@ $.keyboard = function(el, options){
 	base.startup = function(){
 		base.$keyboard = base.buildKeyboard();
 		base.$allKeys = base.$keyboard.find('button.ui-keyboard-button');
-		base.$preview = (o.usePreview) ? base.$keyboard.find('.ui-keyboard-preview') : base.$el;
 		base.preview = base.$preview[0];
 		base.$decBtn = base.$keyboard.find('.ui-keyboard-dec');
 		base.wheel = $.isFunction( $.fn.mousewheel ); // is mousewheel plugin loaded?
@@ -388,17 +385,6 @@ $.keyboard = function(el, options){
 			})
 			.bind('mouseup.keyboard', function(){
 				if (base.checkCaret) { base.lastCaret = base.$preview.caret(); }
-			})
-			.bind('blur.keyboard', function(e){
-				// when keyboard is always open, make sure base.close is called on blur
-				if (o.alwaysOpen && base.isCurrent) {
-					if ( e.target === base.el || $(e.target).closest('.ui-keyboard')[0] === base.$keyboard[0] ) {
-						base.close(o.autoAccept);
-					} else {
-						base.$preview.focus();
-					}
-					return false;
-				}
 			});
 
 		// If preventing paste, block context menu (right click)
@@ -769,7 +755,7 @@ $.keyboard = function(el, options){
 		if ( !base.isVisible ) { return; }
 		// ignore autoaccept if using escape - good idea?
 		if ( e.type === 'keyup' && e.which === 27 ) { base.close(); }
-		if ( e.type === 'mousedown' && ( e.target !== base.el && $(e.target).closest('.ui-keyboard')[0] !== base.$keyboard[0] ) ) {
+		if ( e.target !== base.el && $(e.target).closest('.ui-keyboard')[0] !== base.$keyboard[0] ) {
 			// stop propogation in IE - an input getting focus doesn't open a keyboard if one is already open
 			if ( base.allie ) {
 				e.preventDefault();
@@ -843,20 +829,17 @@ $.keyboard = function(el, options){
 				.addClass('ui-keyboard-preview ' + o.css.input)
 				.attr('tabindex', '-1')
 				.show(); // for hidden inputs
+			// build preview container and append preview display
+			$('<div />')
+				.addClass('ui-keyboard-preview-wrapper')
+				.append(base.$preview)
+				.appendTo(container);
 		} else {
 			// No preview display, use element and reposition the keyboard under it.
 			base.$preview = base.$el;
 			o.position.at = o.position.at2;
 		}
 		base.$preview.attr( (o.lockInput) ? { 'readonly': 'readonly'} : {} );
-
-		// build preview container and append preview display
-		if (o.usePreview) {
-			$('<div />')
-				.addClass('ui-keyboard-preview-wrapper')
-				.append(base.$preview)
-				.appendTo(container);
-		}
 
 		// verify layout or setup custom keyboard
 		if (o.layout === 'custom' || !$.keyboard.layouts.hasOwnProperty(o.layout)) {
