@@ -85,7 +85,8 @@
 				file = $(this).val();
 			$('h2').text(opt.text());
 			$('#multi')[file.match('arabic') ? 'addClass' : 'removeClass']('rtl');
-			if (!$('script[src*=' + file + ']').length) {
+			if (kb.data('keyboard')) { kb.getkeyboard().destroy(); }
+			if (!language.hasOwnProperty(file)) {
 				$.getScript('layouts/' + file + '.js', function(){
 					if (kb.data('keyboard')) { kb.getkeyboard().destroy(); }
 					showKb( layout, file );
@@ -153,6 +154,7 @@
 			<option value="french" class="french-azerty-2">French (azerty-2)</option>
 			<option value="german" class="german-qwertz-1">German (qwertz-1)</option>
 			<option value="german" class="german-qwertz-2">German (qwertz-2)</option>
+			<option value="hebrew" class="hebrew-qwerty">Hebrew (qwerty)</option>
 			<option value="hungarian" class="hungarian-qwertz-1">Magyar (qwertz-1) utf8</option>
 			<option value="hungarian" class="hungarian-qwertz-2">Magyar (qwertz-2) utf8</option>
 			<option value="hungarianansi" class="hungarianansi-qwertz-1">Magyar (qwertz-1) ansi</option>
