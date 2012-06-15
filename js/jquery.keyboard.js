@@ -155,7 +155,7 @@ $.keyboard = function(el, options){
 			.attr({ 'aria-haspopup' : 'true', 'role' : 'textbox' });
 
 		// add disabled/readonly class - dynamically updated on reveal
-		if (base.$el.is(':disabled') || base.$el.attr('readonly') && !base.$el.hasClass('lockedinput')) {
+		if (base.$el.is(':disabled') || base.$el.attr('readonly') && !base.$el.hasClass('ui-keyboard-lockedinput')) {
 			base.$el.addClass('ui-keyboard-nokeyboard');
 		}
 		if (o.openOn) {
@@ -198,7 +198,7 @@ $.keyboard = function(el, options){
 		$('.ui-keyboard:not(.ui-keyboard-always-open)').hide();
 
 		// Don't open if disabled
-		if (base.$el.is(':disabled') || base.$el.attr('readonly') && !base.$el.hasClass('lockedinput')) {
+		if (base.$el.is(':disabled') || base.$el.attr('readonly') && !base.$el.hasClass('ui-keyboard-lockedinput')) {
 			base.$el.addClass('ui-keyboard-nokeyboard');
 			return;
 		} else {
@@ -723,7 +723,9 @@ $.keyboard = function(el, options){
 			}
 			base.isCurrent = false;
 			base.$el
-				.removeClass('ui-keyboard-input-current')
+				.removeClass('ui-keyboard-input-current ui-keyboard-autoaccepted')
+				// add "ui-keyboard-autoaccepted" to inputs
+				.addClass( (accepted || false) ? accepted === true ? '' : 'ui-keyboard-autoaccepted' : '' )
 				.trigger( (o.alwaysOpen) ? '' : 'beforeClose.keyboard', [ base, base.el, (accepted || false) ] )
 				.val( val )
 				.scrollTop( base.el.scrollHeight )
@@ -760,7 +762,7 @@ $.keyboard = function(el, options){
 			if ( base.allie ) {
 				e.preventDefault();
 			}
-			base.close(o.autoAccept);
+			base.close( o.autoAccept ? 'true' : false );
 		}
 	};
 
@@ -839,7 +841,9 @@ $.keyboard = function(el, options){
 			base.$preview = base.$el;
 			o.position.at = o.position.at2;
 		}
-		base.$preview.addClass('lockedinput').attr( (o.lockInput) ? { 'readonly': 'readonly'} : {} );
+		if (o.lockInput) {
+			base.$preview.addClass('ui-keyboard-lockedinput').attr({ 'readonly': 'readonly'});
+		}
 
 		// verify layout or setup custom keyboard
 		if (o.layout === 'custom' || !$.keyboard.layouts.hasOwnProperty(o.layout)) {
@@ -1044,7 +1048,7 @@ $.keyboard = function(el, options){
 			}
 			// input only - enterMod + enter to navigate
 			if (o.enterNavigation && (tag !== 'TEXTAREA' || e[o.enterMod])) {
-				return base.switchInput(!e[o.enterMod], o.autoAccept);
+				return base.switchInput(!e[o.enterMod], o.autoAccept ? 'true' : false);
 			}
 			// pressing virtual enter button inside of a textarea - add a carriage return
 			// e.target is span when clicking on text and button at other times
