@@ -205,7 +205,7 @@
 					if ($.isFunction(o.callback)) {
 						// ensure all typing animation is done before the callback
 						setTimeout(function(){
-							o.callback();
+							o.callback(base);
 						}, o.delay);
 					}
 					return;
