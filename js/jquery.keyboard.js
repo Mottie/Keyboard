@@ -155,7 +155,7 @@ $.keyboard = function(el, options){
 			.attr({ 'aria-haspopup' : 'true', 'role' : 'textbox' });
 
 		// add disabled/readonly class - dynamically updated on reveal
-		if (base.$el.is(':disabled') || base.$el.attr('readonly')) {
+		if (base.$el.is(':disabled') || base.$el.attr('readonly') && !base.$el.hasClass('lockedinput')) {
 			base.$el.addClass('ui-keyboard-nokeyboard');
 		}
 		if (o.openOn) {
@@ -198,7 +198,7 @@ $.keyboard = function(el, options){
 		$('.ui-keyboard:not(.ui-keyboard-always-open)').hide();
 
 		// Don't open if disabled
-		if (base.$el.is(':disabled') || base.$el.attr('readonly')) {
+		if (base.$el.is(':disabled') || base.$el.attr('readonly') && !base.$el.hasClass('lockedinput')) {
 			base.$el.addClass('ui-keyboard-nokeyboard');
 			return;
 		} else {
@@ -839,7 +839,7 @@ $.keyboard = function(el, options){
 			base.$preview = base.$el;
 			o.position.at = o.position.at2;
 		}
-		base.$preview.attr( (o.lockInput) ? { 'readonly': 'readonly'} : {} );
+		base.$preview.addClass('lockedinput').attr( (o.lockInput) ? { 'readonly': 'readonly'} : {} );
 
 		// verify layout or setup custom keyboard
 		if (o.layout === 'custom' || !$.keyboard.layouts.hasOwnProperty(o.layout)) {
