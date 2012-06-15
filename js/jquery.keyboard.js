@@ -236,6 +236,11 @@ $.keyboard = function(el, options){
 		position.of = position.of || base.$el.data('keyboardPosition') || base.$el;
 		position.collision = (o.usePreview) ? position.collision || 'fit fit' : 'flip flip';
 
+		if (o.resetDefault) {
+			base.shiftActive = base.altActive = base.metaActive = false;
+			base.showKeySet();
+		}
+
 		// show & position keyboard
 		base.$keyboard
 			// basic positioning before it is set by position utility
@@ -1274,6 +1279,9 @@ $.keyboard = function(el, options){
 		// Added to simulate holding down a real keyboard key and having it repeat. I haven't calculated the upper limit of
 		// this rate, but it is limited to how fast the javascript can process the keys. And for me, in Firefox, it's around 20.
 		repeatRate   : 20,
+
+		// resets the keyboard to the default keyset when visible
+		resetDefault : false,
 
 		// Event (namespaced) on the input to reveal the keyboard. To disable it, just set it to ''.
 		openOn       : 'focus',
