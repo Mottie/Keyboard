@@ -206,7 +206,9 @@ $.keyboard = function(el, options){
 		}
 
 		// Unbind focus to prevent recursion - openOn may be empty if keyboard is opened externally
-		base.$el.unbind( (o.openOn) ? o.openOn + '.keyboard' : '');
+		if (o.openOn) {
+			base.$el.unbind( o.openOn + '.keyboard' );
+		}
 
 		// build keyboard if it doesn't exist
 		if (typeof(base.$keyboard) === 'undefined') { base.startup(); }
@@ -999,9 +1001,9 @@ $.keyboard = function(el, options){
 	base.destroy = function() {
 		$(document).unbind('mousedown.keyboard keyup.keyboard');
 		if (base.$keyboard) { base.$keyboard.remove(); }
-		var unb = o.openOn + ' accepted beforeClose blur canceled change contextmenu hidden initialized keydown keypress keyup visible'.split(' ').join('.keyboard ');
+		var unb = $.trim(o.openOn + ' accepted beforeClose blur canceled change contextmenu hidden initialized keydown keypress keyup visible').split(' ').join('.keyboard ');
 		base.$el
-			.removeClass('ui-keyboard-input ui-keyboard-placeholder ui-keyboard-notallowed ui-keyboard-always-open ' + o.css.input)
+			.removeClass('ui-keyboard-input ui-keyboard-lockedinput ui-keyboard-placeholder ui-keyboard-notallowed ui-keyboard-always-open ' + o.css.input)
 			.removeAttr('aria-haspopup')
 			.removeAttr('role')
 			.unbind( unb + '.keyboard')
