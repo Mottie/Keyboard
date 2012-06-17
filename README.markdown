@@ -72,6 +72,18 @@ Moved to the Wiki Pages: [Home](https://github.com/Mottie/Keyboard/wiki/Home) | 
 
 Only the latest changes will be shown below, see the wiki log to view older versions.
 
+### Version 1.9.19 (6/17/2012)
+
+* Modified script to add "ui-keyboard-autoaccepted" class name to the original input if the content was autoaccepted. Discussed in [issue #66](https://github.com/Mottie/Keyboard/issues/66).
+* Mulitple keyboards that are always open will not keep focus properly. Fixes issues [#69](https://github.com/Mottie/Keyboard/issues/69), [#73](https://github.com/Mottie/Keyboard/issues/73) and [#75](https://github.com/Mottie/Keyboard/issues/75).
+* Fixed carriage return issue in a textarea in IE8 (hopefully). Thanks to [blookie](https://github.com/blookie) for reporting it and providing a fix in [issue #71](https://github.com/Mottie/Keyboard/issues/71).
+* IE should now close the keyboard after clicking accept. Base element will no longer maintain focus. Fix for [issue #72](https://github.com/Mottie/Keyboard/issues/72).
+* Reveal will no longer unbind all events when `openOn` is empty. Fix for [issue #74](https://github.com/Mottie/Keyboard/issues/74).
+* Fixed locked keyboard input not allowing opening the keyboard a second time. Fix for [issue #77](https://github.com/Mottie/Keyboard/issues/77).
+* Fixed `stayOpen` option not working at all.
+* Added Hebrew layout. Thanks to Ofir Klinger for contributing the work!
+* Added a keyboard object as a variable in the typing callback function. Probably not necessary, but added anyway :P
+
 ### Version 1.9.18 (5/13/2012)
 
 * Fixed an issue of the input clearing when `usePreview` is `false` and `alwaysOpen` is `true`. Brought up in [issue #37](https://github.com/Mottie/Keyboard/issues/37#issuecomment-5298677).

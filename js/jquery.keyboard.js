@@ -1,6 +1,6 @@
 /*!
 jQuery UI Virtual Keyboard
-Version 1.9.18
+Version 1.9.19
 
 Author: Jeremy Satterfield
 Modified: Rob Garrison (Mottie on github)
@@ -88,7 +88,7 @@ CSS:
 	.ui-keyboard-space { width: 15em; text-indent: -999em; }
 	.ui-keyboard-preview-wrapper { text-align: center; }
 	.ui-keyboard-preview { text-align: left; margin: 0 0 3px 0; display: inline; width: 99%;} - width is calculated in IE, since 99% = 99% full browser width
-	.ui-keyboard-keyset { text-align: center; }
+	.ui-keyboard-keyset { text-align: center; white-space: nowrap; }
 	.ui-keyboard-input { text-align: left; }
 	.ui-keyboard-input-current { -moz-box-shadow: 1px 1px 10px #00f; -webkit-box-shadow: 1px 1px 10px #00f; box-shadow: 1px 1px 10px #00f; }
 	.ui-keyboard-placeholder { color: #888; }
@@ -155,7 +155,7 @@ $.keyboard = function(el, options){
 			.attr({ 'aria-haspopup' : 'true', 'role' : 'textbox' });
 
 		// add disabled/readonly class - dynamically updated on reveal
-		if (base.$el.is(':disabled') || base.$el.attr('readonly') && !base.$el.hasClass('ui-keyboard-lockedinput')) {
+		if (base.$el.is(':disabled') || (base.$el.attr('readonly') && !base.$el.hasClass('ui-keyboard-lockedinput'))) {
 			base.$el.addClass('ui-keyboard-nokeyboard');
 		}
 		if (o.openOn) {
@@ -198,7 +198,7 @@ $.keyboard = function(el, options){
 		$('.ui-keyboard:not(.ui-keyboard-always-open)').hide();
 
 		// Don't open if disabled
-		if (base.$el.is(':disabled') || base.$el.attr('readonly') && !base.$el.hasClass('ui-keyboard-lockedinput')) {
+		if (base.$el.is(':disabled') || (base.$el.attr('readonly') && !base.$el.hasClass('ui-keyboard-lockedinput'))) {
 			base.$el.addClass('ui-keyboard-nokeyboard');
 			return;
 		} else {
