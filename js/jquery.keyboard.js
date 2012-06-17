@@ -736,12 +736,16 @@ $.keyboard = function(el, options){
 				.trigger( (o.alwaysOpen) ? '' : 'beforeClose.keyboard', [ base, base.el, (accepted || false) ] )
 				.val( val )
 				.scrollTop( base.el.scrollHeight )
-				.blur()
 				.trigger( ((accepted || false) ? 'accepted.keyboard' : 'canceled.keyboard'), [ base, base.el ] )
-				.trigger( (o.alwaysOpen) ? 'inactive.keyboard' : 'hidden.keyboard', [ base, base.el ] );
+				.trigger( (o.alwaysOpen) ? 'inactive.keyboard' : 'hidden.keyboard', [ base, base.el ] )
+				.blur();
 			if (o.openOn) {
-				// rebind input focus
-				base.$el.bind( o.openOn + '.keyboard', function(){ base.focusOn(); });
+				// rebind input focus - delayed to fix IE issue #72
+				base.timer = setTimeout(function(){
+					base.$el.bind( o.openOn + '.keyboard', function(){ base.focusOn(); });
+					// remove focus from element (needed for IE since blur doesn't seem to work)
+					if ($(':focus')[0] === base.el) { base.$el.blur(); }
+				}, 100);
 			}
 			if (!o.alwaysOpen) {
 				base.$keyboard.hide();
@@ -1002,7 +1006,7 @@ $.keyboard = function(el, options){
 	base.destroy = function() {
 		$(document).unbind('mousedown.keyboard keyup.keyboard');
 		if (base.$keyboard) { base.$keyboard.remove(); }
-		var unb = $.trim(o.openOn + ' accepted beforeClose blur canceled change contextmenu hidden initialized keydown keypress keyup visible').split(' ').join('.keyboard ');
+		var unb = $.trim(o.openOn + ' accepted beforeClose canceled change contextmenu hidden initialized keydown keypress keyup visible').split(' ').join('.keyboard ');
 		base.$el
 			.removeClass('ui-keyboard-input ui-keyboard-lockedinput ui-keyboard-placeholder ui-keyboard-notallowed ui-keyboard-always-open ' + o.css.input)
 			.removeAttr('aria-haspopup')
