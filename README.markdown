@@ -79,6 +79,7 @@ Only the latest changes will be shown below, see the wiki log to view older vers
 ### Version 1.9.19 (6/17/2012)
 
 * Modified script to add "ui-keyboard-autoaccepted" class name to the original input if the content was autoaccepted. Discussed in [issue #66](https://github.com/Mottie/Keyboard/issues/66).
+* Added `resetDefault` option which when `true` will force the keyset to reset to the default when the keyboard becomes visible.
 * Mulitple keyboards that are always open will not keep focus properly. Fixes issues [#69](https://github.com/Mottie/Keyboard/issues/69), [#73](https://github.com/Mottie/Keyboard/issues/73) and [#75](https://github.com/Mottie/Keyboard/issues/75).
 * Fixed carriage return issue in a textarea in IE8 (hopefully). Thanks to [blookie](https://github.com/blookie) for reporting it and providing a fix in [issue #71](https://github.com/Mottie/Keyboard/issues/71).
 * IE should now close the keyboard after clicking accept. Base element will no longer maintain focus. Fix for [issue #72](https://github.com/Mottie/Keyboard/issues/72).
