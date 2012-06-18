@@ -1,6 +1,6 @@
 /*!
 jQuery UI Virtual Keyboard
-Version 1.9.20
+Version 1.9.21
 
 Author: Jeremy Satterfield
 Modified: Rob Garrison (Mottie on github)
@@ -147,6 +147,8 @@ $.keyboard = function(el, options){
 		if (o.alwaysOpen) { o.stayOpen = true; }
 		$(document).bind('mousedown.keyboard keyup.keyboard', function(e){
 			base.escClose(e);
+			// needed for IE to allow switching between keyboards smoothly
+			if (base.allie && $(e.target).hasClass('ui-keyboard-input')) { $(e.target).focus(); }
 		});
 
 		// Display keyboard on focus

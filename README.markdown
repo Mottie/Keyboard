@@ -72,6 +72,10 @@ Moved to the Wiki Pages: [Home](https://github.com/Mottie/Keyboard/wiki/Home) | 
 
 Only the latest changes will be shown below, see the wiki log to view older versions.
 
+### Version 1.9.21 (6/18/2012)
+
+* IE should now behave like other browsers when switching inputs; clicking on another input with a keyboard open will now switch immediately instead of requiring a second click.
+
 ### Version 1.9.20 (6/17/2012)
 
 * Added Latvian layout. Thanks to Ivars via email.
