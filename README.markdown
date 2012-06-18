@@ -72,6 +72,10 @@ Moved to the Wiki Pages: [Home](https://github.com/Mottie/Keyboard/wiki/Home) | 
 
 Only the latest changes will be shown below, see the wiki log to view older versions.
 
+### Version 1.9.20 (6/17/2012)
+
+* Added Latvian layout. Thanks to Ivars via email.
+
 ### Version 1.9.19 (6/17/2012)
 
 * Modified script to add "ui-keyboard-autoaccepted" class name to the original input if the content was autoaccepted. Discussed in [issue #66](https://github.com/Mottie/Keyboard/issues/66).
