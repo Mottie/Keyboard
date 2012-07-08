@@ -243,9 +243,10 @@ $.keyboard = function(el, options){
 		if (o.acceptValid) { base.checkValid(); }
 
 		// get single target position || target stored in element data (multiple targets) || default, at the element
-		var p, s, position = o.position;
-		position.of = position.of || base.$el.data('keyboardPosition') || base.$el;
-		position.collision = (o.usePreview) ? position.collision || 'fit fit' : 'flip flip';
+		var p, s;
+		base.position = o.position;
+		base.position.of = base.position.of || base.$el.data('keyboardPosition') || base.$el;
+		base.position.collision = (o.usePreview) ? base.position.collision || 'fit fit' : 'flip flip';
 
 		if (o.resetDefault) {
 			base.shiftActive = base.altActive = base.metaActive = false;
@@ -270,7 +271,7 @@ $.keyboard = function(el, options){
 		}
 
 		// position after keyboard is visible (required for UI position utility) and appropriately sized
-		base.$keyboard.position(position); 
+		base.$keyboard.position(base.position); 
 
 		base.$preview.focus();
 		base.isVisible = true;
@@ -514,7 +515,7 @@ $.keyboard = function(el, options){
 		// adjust with window resize
 		$(window).resize(function(){
 			if (base.isVisible) {
-				base.$keyboard.position(position);
+				base.$keyboard.position(base.position);
 			}
 		});
 
