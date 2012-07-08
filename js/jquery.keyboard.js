@@ -1,6 +1,6 @@
 /*!
 jQuery UI Virtual Keyboard
-Version 1.9.21
+Version 1.9.22
 
 Author: Jeremy Satterfield
 Modified: Rob Garrison (Mottie on github)
@@ -770,6 +770,7 @@ $.keyboard = function(el, options){
 		// keep keyboard open if alwaysOpen or stayOpen is true - fixes mutliple always open keyboards or single stay open keyboard
 		if ( !base.isVisible || (o.alwaysOpen && !base.isCurrent) || (!o.alwaysOpen && o.stayOpen && base.isCurrent) ) { return; }
 		if ( e.type === 'keyup' && e.which === 27 ) { return base.close(); }
+
 		// ignore autoaccept if using escape - good idea?
 		if ( e.target !== base.el && $(e.target).closest('.ui-keyboard')[0] !== base.$keyboard[0] ) {
 			// stop propogation in IE - an input getting focus doesn't open a keyboard if one is already open
@@ -828,7 +829,7 @@ $.keyboard = function(el, options){
 	};
 
 	base.buildKeyboard = function(){
-		var action, row, newSet,
+		var action, row, newSet, isAction,
 			currentSet, key, keys, margin,
 			sets = 0,
 
@@ -883,6 +884,7 @@ $.keyboard = function(el, options){
 					for ( key = 0; key < keys.length; key++ ) {
 						// used by addKey function
 						base.temp = [ newSet, row, key ];
+						isAction = false;
 
 						// ignore empty keys
 						if (keys[key].length === 0) { continue; }
@@ -890,6 +892,10 @@ $.keyboard = function(el, options){
 						// process here if it's an action key
 						if( /^\{\S+\}$/.test(keys[key])){
 							action = keys[key].match(/^\{(\S+)\}$/)[1].toLowerCase();
+							if (/\!\!/.test(action)) {
+								action = action.replace('!!','');
+								isAction = true;
+							}
 
 							// add empty space
 							if (/^sp:((\d+)?([\.|,]\d+)?)(em|px)?$/.test(action)) {
@@ -982,7 +988,7 @@ $.keyboard = function(el, options){
 								default:
 									if ($.keyboard.keyaction.hasOwnProperty(action)){
 										// base.acceptedKeys.push(action);
-										base.addKey(action, action);
+										base.addKey(action, action)[isAction ? 'addClass' : 'removeClass'](o.css.buttonAction);
 									}
 
 							}
@@ -992,7 +998,6 @@ $.keyboard = function(el, options){
 							// regular button (not an action key)
 							base.acceptedKeys.push(keys[key].split(':')[0]);
 							base.addKey(keys[key], keys[key], true);
-
 						}
 					}
 					newSet.find('.ui-keyboard-button:last').after('<br class="ui-keyboard-button-endrow">');
@@ -1067,7 +1072,7 @@ $.keyboard = function(el, options){
 			// pressing virtual enter button inside of a textarea - add a carriage return
 			// e.target is span when clicking on text and button at other times
 			if (tag === 'TEXTAREA' && $(e.target).closest('button').length) {
-				base.insertText(' \n');
+				base.insertText(' \n'); // IE8 fix (space + \n) - fixes #71 thanks Blookie!
 			}
 		},
 		// caps lock key
