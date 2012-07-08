@@ -148,7 +148,7 @@ $.keyboard = function(el, options){
 		$(document).bind('mousedown.keyboard keyup.keyboard', function(e){
 			base.escClose(e);
 			// needed for IE to allow switching between keyboards smoothly
-			if (base.allie && $(e.target).hasClass('ui-keyboard-input')) { $(e.target).focus(); }
+			if (base.allie && $(e.target).hasClass('ui-keyboard-input')) { $(e.target)[o.openOn](); }
 		});
 
 		// Display keyboard on focus
@@ -711,11 +711,21 @@ $.keyboard = function(el, options){
 		if (typeof o.switchInput === "function") {
 			o.switchInput(base, goToNext, isAccepted);
 		} else {
-			base.close(isAccepted);
-			var all = $('.ui-keyboard-input'),
+			var stopped = false,
+				all = $('.ui-keyboard-input'),
 				indx = all.index(base.$el) + (goToNext ? 1 : -1);
-			if (indx > all.length - 1) { indx = 0; } // go to first input
-			all.eq(indx).focus();
+			if (indx > all.length - 1) {
+				stopped = o.stopAtEnd;
+				indx = 0; // go to first input
+			}
+			if (indx < 0) {
+				stopped = o.stopAtEnd;
+				indx = all.length - 1; // stop or go to last
+			}
+			if (!stopped) {
+				base.close(isAccepted);
+				all.eq(indx)[o.openOn]();
+			}
 		}
 		return false;
 	};
@@ -1282,6 +1292,10 @@ $.keyboard = function(el, options){
 		enterNavigation : false,
 		// mod key options: 'ctrlKey', 'shiftKey', 'altKey', 'metaKey' (MAC only)
 		enterMod : 'altKey', // alt-enter to go to previous; shift-alt-enter to accept & go to previous
+
+		// if true, the next button will stop on the last keyboard input/textarea; prev button stops at first
+		// if false, the next button will wrap to target the first input/textarea; prev will go to the last
+		stopAtEnd : true,
 
 		// Set this to append the keyboard immediately after the input/textarea it is attached to. This option
 		// works best when the input container doesn't have a set width and when the "tabNavigation" option is true
