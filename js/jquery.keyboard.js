@@ -1084,6 +1084,14 @@ $.keyboard = function(el, options){
 			base.metaActive = ($(el).hasClass(base.options.css.buttonAction)) ? false : true;
 			base.showKeySet(el);
 		},
+		next : function(base) {
+			base.switchInput(true, base.options.autoAccept);
+			return false;
+		},
+		prev : function(base) {
+			base.switchInput(false, base.options.autoAccept);
+			return false;
+		},
 		shift : function(base,el){
 			base.lastKeyset[0] = base.shiftActive = !base.shiftActive;
 			base.showKeySet(el);
@@ -1231,6 +1239,8 @@ $.keyboard = function(el, options){
 			'e'      : '\u21b5:Enter',        // down, then left arrow - enter symbol
 			'enter'  : 'Enter:Enter',
 			'lock'   : '\u21ea Lock:Caps Lock', // caps lock
+			'next'   : 'Next',
+			'prev'   : 'Prev',
 			's'      : '\u21e7:Shift',        // thick hollow up arrow
 			'shift'  : 'Shift:Shift',
 			'sign'   : '\u00b1:Change Sign',  // +/- sign for num pad
