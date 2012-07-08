@@ -146,9 +146,15 @@ $.keyboard = function(el, options){
 		// Close with esc key & clicking outside
 		if (o.alwaysOpen) { o.stayOpen = true; }
 		$(document).bind('mousedown.keyboard keyup.keyboard', function(e){
+			if (base.opening) { return; }
 			base.escClose(e);
 			// needed for IE to allow switching between keyboards smoothly
-			if (base.allie && $(e.target).hasClass('ui-keyboard-input')) { $(e.target)[o.openOn](); }
+			if ( e.target && $(e.target).hasClass('ui-keyboard-input') ) {
+				var kb = $(e.target).data('keyboard');
+				if (kb && kb.options.openOn.length) {
+					kb.focusOn();
+				}
+			}
 		});
 
 		// Display keyboard on focus
@@ -196,6 +202,7 @@ $.keyboard = function(el, options){
 	};
 
 	base.reveal = function(){
+		base.opening = true;
 		// close all keyboards
 		$('.ui-keyboard:not(.ui-keyboard-always-open)').hide();
 
@@ -220,7 +227,7 @@ $.keyboard = function(el, options){
 		$('.ui-keyboard-input-current').removeClass('ui-keyboard-input-current');
 
 		base.$el.addClass('ui-keyboard-input-current');
-		base.isCurrent = true;
+		base.isCurrent(true);
 
 		// clear watermark
 		if (!base.watermark && base.el.value === base.inPlaceholder) {
@@ -262,13 +269,8 @@ $.keyboard = function(el, options){
 			base.$preview.width(base.width);
 		}
 
-		base.$keyboard.position(position); // position after keyboard is visible (required for UI position utility) and appropriately sized (*cough*)
-
-		$(window).resize(function(){
-			if (base.isVisible) {
-				base.$keyboard.position(position);
-			}
-		});
+		// position after keyboard is visible (required for UI position utility) and appropriately sized
+		base.$keyboard.position(position); 
 
 		base.$preview.focus();
 		base.isVisible = true;
@@ -291,6 +293,12 @@ $.keyboard = function(el, options){
 		base.$preview.caret(base.lastCaret.start, base.lastCaret.end );
 
 		base.$el.trigger( 'visible.keyboard', [ base, base.el ] );
+		// opening keyboard flag; delay allows switching between keyboards without immediately closing the keyboard
+		setTimeout(function(){
+			base.opening = false;
+		}, 500);
+
+		// return base to allow chaining in typing extension
 		return base;
 	};
 
@@ -395,6 +403,10 @@ $.keyboard = function(el, options){
 			.bind('mouseup.keyboard', function(){
 				if (base.checkCaret) { base.lastCaret = base.$preview.caret(); }
 			});
+			// prevent keyboard event bubbling
+			base.$keyboard.bind('mousedown.keyboard click.keyboard', function(){
+				return false;
+			});
 
 		// If preventing paste, block context menu (right click)
 		if (o.preventPaste){
@@ -474,7 +486,7 @@ $.keyboard = function(el, options){
 			// using "kb" namespace for mouse repeat functionality to keep it separate
 			// I need to trigger a "repeater.keyboard" to make it work
 			.bind('mouseup.keyboard mouseleave.kb touchend.kb touchmove.kb touchcancel.kb', function(){
-				if (base.isVisible && base.isCurrent) { base.$preview.focus(); }
+				if (base.isVisible && base.isCurrent()) { base.$preview.focus(); }
 				base.mouseRepeat = [false,''];
 				clearTimeout(base.repeater); // make sure key repeat stops!
 				if (base.checkCaret) { base.$preview.caret( base.lastCaret.start, base.lastCaret.end ); }
@@ -498,6 +510,13 @@ $.keyboard = function(el, options){
 				}
 				return false;
 			});
+
+		// adjust with window resize
+		$(window).resize(function(){
+			if (base.isVisible) {
+				base.$keyboard.position(position);
+			}
+		});
 
 	};
 
@@ -704,6 +723,16 @@ $.keyboard = function(el, options){
 		return keys;
 	};
 
+	base.isCurrent = function(set){
+		var cur = $.keyboard.currentKeyboard || false;
+		if (set) {
+			cur = $.keyboard.currentKeyboard = base.el;
+		} else if (set === false && cur === base.el) {
+			cur = $.keyboard.currentKeyboard = '';
+		}
+		return cur === base.el;
+	};
+
 	// Go to next or prev inputs
 	// goToNext = true, then go to next input; if false go to prev
 	// isAccepted is from autoAccept option or true if user presses shift-enter
@@ -711,7 +740,7 @@ $.keyboard = function(el, options){
 		if (typeof o.switchInput === "function") {
 			o.switchInput(base, goToNext, isAccepted);
 		} else {
-			var stopped = false,
+			var kb, stopped = false,
 				all = $('.ui-keyboard-input'),
 				indx = all.index(base.$el) + (goToNext ? 1 : -1);
 			if (indx > all.length - 1) {
@@ -724,7 +753,10 @@ $.keyboard = function(el, options){
 			}
 			if (!stopped) {
 				base.close(isAccepted);
-				all.eq(indx)[o.openOn]();
+				kb = all.eq(indx).data('keyboard');
+				if (kb && kb.options.openOn.length) {
+					kb.focusOn();
+				}
 			}
 		}
 		return false;
@@ -740,7 +772,7 @@ $.keyboard = function(el, options){
 				val = base.originalContent;
 				accepted = false;
 			}
-			base.isCurrent = false;
+			base.isCurrent(false);
 			base.$el
 				.removeClass('ui-keyboard-input-current ui-keyboard-autoaccepted')
 				// add "ui-keyboard-autoaccepted" to inputs
@@ -757,7 +789,7 @@ $.keyboard = function(el, options){
 					base.$el.bind( o.openOn + '.keyboard', function(){ base.focusOn(); });
 					// remove focus from element (needed for IE since blur doesn't seem to work)
 					if ($(':focus')[0] === base.el) { base.$el.blur(); }
-				}, 100);
+				}, 500);
 			}
 			if (!o.alwaysOpen) {
 				base.$keyboard.hide();
@@ -777,12 +809,13 @@ $.keyboard = function(el, options){
 	};
 
 	base.escClose = function(e){
-		// keep keyboard open if alwaysOpen or stayOpen is true - fixes mutliple always open keyboards or single stay open keyboard
-		if ( !base.isVisible || (o.alwaysOpen && !base.isCurrent) || (!o.alwaysOpen && o.stayOpen && base.isCurrent) ) { return; }
 		if ( e.type === 'keyup' && e.which === 27 ) { return base.close(); }
 
+		var cur = base.isCurrent();
+		// keep keyboard open if alwaysOpen or stayOpen is true - fixes mutliple always open keyboards or single stay open keyboard
+		if ( !base.isVisible || (o.alwaysOpen && !cur) || (!o.alwaysOpen && o.stayOpen && cur && !base.isVisible) ) { return; }
 		// ignore autoaccept if using escape - good idea?
-		if ( e.target !== base.el && $(e.target).closest('.ui-keyboard')[0] !== base.$keyboard[0] ) {
+		if ( e.target !== base.el && cur ) {
 			// stop propogation in IE - an input getting focus doesn't open a keyboard if one is already open
 			if ( base.allie ) {
 				e.preventDefault();
@@ -902,6 +935,7 @@ $.keyboard = function(el, options){
 						// process here if it's an action key
 						if( /^\{\S+\}$/.test(keys[key])){
 							action = keys[key].match(/^\{(\S+)\}$/)[1].toLowerCase();
+							// add active class if there are double exclamation points in the name
 							if (/\!\!/.test(action)) {
 								action = action.replace('!!','');
 								isAction = true;
@@ -1362,6 +1396,9 @@ $.keyboard = function(el, options){
 
 	// for checking combos
 	$.keyboard.comboRegex = /([`\'~\^\"ao])([a-z])/mig;
+
+	// store current keyboard element; used by base.isCurrent()
+	$.keyboard.currentKeyboard = '';
 
 	$.fn.keyboard = function(options){
 		return this.each(function(){
