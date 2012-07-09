@@ -1,13 +1,13 @@
 /*!
 jQuery UI Virtual Keyboard
-Version 1.9.22
+Version 1.10
 
 Author: Jeremy Satterfield
 Modified: Rob Garrison (Mottie on github)
 -----------------------------------------
 Licensed under the MIT License
 
-Caret code from jquery.caret.1.02.js
+Caret code modified from jquery.caret.1.02.js
 Licensed under the MIT License:
 http://www.opensource.org/licenses/mit-license.php
 -----------------------------------------
@@ -71,6 +71,8 @@ Options:
 				{e}, {enter}  - Return/New Line
 				{lock}        - Caps lock key
 				{meta#}       - Meta keys that change the key set (# can be any integer)
+				{next}        - Switch to next keyboard input/textarea
+				{prev}        - Switch to previous keyboard input/textarea
 				{s}, {shift}  - Shift
 				{sign}        - Change sign of numeric entry (positive or negative)
 				{sp:#}        - Replace # with a numerical value, adds blank space, value of 1 ~ width of one key
@@ -94,7 +96,6 @@ CSS:
 	.ui-keyboard-placeholder { color: #888; }
 	.ui-keyboard-nokeyboard { color: #888; border-color: #888; } - disabled or readonly inputs, or use input[disabled='disabled'] { color: #f00; }
 */
-
 ;(function($){
 $.keyboard = function(el, options){
 	var base = this, o;

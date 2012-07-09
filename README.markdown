@@ -38,6 +38,7 @@ Moved to the Wiki Pages: [Home](https://github.com/Mottie/Keyboard/wiki/Home) | 
 
 * Waiting for requests :)
 * Add more regional keyboard layouts.
+* Add an input mask extension. I think I'll try to make it compatible with [this plugin](https://github.com/RobinHerbots/jquery.inputmask).
 
 ## Known Problems 
 
@@ -71,6 +72,21 @@ Moved to the Wiki Pages: [Home](https://github.com/Mottie/Keyboard/wiki/Home) | 
 ## Change Log
 
 Only the latest changes will be shown below, see the wiki log to view older versions.
+
+### Version 1.10 (7/9/2012)
+
+* Added `{next}` and `{prev}` action keys which makes switching between input/textareas easier.
+* Added the ability to make some action keys get the button action class applied
+  * The action class (options.css.buttonAction) makes the button stand out like the `{accept}`, `{cancel}` & `{enter}` keys.
+  * Add double exclamation point to the custom key name `{custom!!}` or to any built-in action key except: `{accept}`, `{alt}`, `{bksp}`, `{cancel}`, `{combo}`, `{dec}`, `{enter}`, `{meta#}`, `{shift}`, `{sign}`, `{sp:#}`, `{space}` or `{tab}`.
+  * See a demo named "Custom Action Key" in the *More Demos* section of the [home page wiki documentation](https://github.com/Mottie/Keyboard/wiki).
+* Added `stopAtEnd` option which when `true` prevents the default switch input function from wrapping to the first or last element. Useful when used in combination with the new `{next}` and `{prev}` action keys.
+* Modified diacritic key modification code:
+  * As before, diacritic (dead) key combinations will be ignored when the `{combo}` key is inactive.
+  * But now, in modern browsers, when the `{combo}` key is reactivated, only the two characters immediately to the left of the caret will be evaluated for key combinations instead of the entire input string.
+  * Older IE (IE8 and older) will continue to check and update the entire input string.
+  * Change made to make dead keys more useful as described in [issue #79](https://github.com/Mottie/Keyboard/issues/79).
+* Fixed `stayOpen` function not allowing keyboards to open/close with multiple keyboards. Hopefully this new method will squash all the problems with `stayOpen` and `alwaysOpen` options. Fixes [issue #82](https://github.com/Mottie/Keyboard/issues/82).
 
 ### Version 1.9.21 (6/18/2012)
 
