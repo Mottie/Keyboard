@@ -644,9 +644,24 @@ $.keyboard = function(el, options){
 			// keep 'a' and 'o' in the regex for ae and oe ligature (æ,œ)
 			// thanks to KennyTM: http://stackoverflow.com/questions/4275077/replace-characters-to-make-international-letters-diacritics
 			// original regex /([`\'~\^\"ao])([a-z])/mig moved to $.keyboard.comboRegex
-			val = val.replace(base.regex, function(s, accent, letter){
-				return (o.combos.hasOwnProperty(accent)) ? o.combos[accent][letter] || s : s;
-			});
+			if (base.msie) {
+				// old IE may not have the caret positioned correctly, so just check the whole thing
+				val = val.replace(base.regex, function(s, accent, letter){
+					return (o.combos.hasOwnProperty(accent)) ? o.combos[accent][letter] || s : s;
+				});
+			} else {
+				// Modern browsers - check for combos from last two characters left of the caret
+				t = pos.start - (pos.start - 2 >= 0 ? 2 : 0);
+				// target last two characters
+				base.$preview.caret(t, pos.end);
+				// do combo replace
+				t2 = base.$preview.caret().text.replace(base.regex, function(s, accent, letter){
+					return (o.combos.hasOwnProperty(accent)) ? o.combos[accent][letter] || s : s;
+				});
+				// add combo back
+				base.$preview.val( base.$preview.caret().replace(t2) );
+				val = base.$preview.val();
+			}
 		}
 
 		// check input restrictions - in case content was pasted
