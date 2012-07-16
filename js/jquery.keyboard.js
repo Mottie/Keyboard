@@ -758,7 +758,7 @@ $.keyboard = function(el, options){
 			o.switchInput(base, goToNext, isAccepted);
 		} else {
 			var kb, stopped = false,
-				all = $('.ui-keyboard-input'),
+				all = $('.ui-keyboard-input:visible'),
 				indx = all.index(base.$el) + (goToNext ? 1 : -1);
 			if (indx > all.length - 1) {
 				stopped = o.stopAtEnd;
@@ -1168,7 +1168,18 @@ $.keyboard = function(el, options){
 			base.insertText(' ');
 		},
 		tab : function(base) {
-			if (base.el.tagName === 'INPUT') { return false; } // ignore tab key in input
+			var tag = base.el.tagName, 
+				o = base.options;
+			
+			if (tag === 'INPUT') {
+				if (o.tabNavigation) {
+					return base.switchInput(!base.shiftActive, true);    
+				} else {
+					// ignore tab key in input
+					return false;
+				}
+			}
+			
 			base.insertText('\t');
 		}
 	};
