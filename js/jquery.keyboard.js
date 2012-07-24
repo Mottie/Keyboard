@@ -195,7 +195,7 @@ $.keyboard = function(el, options){
 			// save caret position in the input to transfer it to the preview
 			base.lastCaret = base.$el.caret();
 		}
-		if (!base.isVisible || o.alwaysOpen) {
+		if (!base.isVisible() || o.alwaysOpen) {
 			clearTimeout(base.timer);
 			base.reveal();
 			setTimeout(function(){ base.$preview.focus(); }, 100);
@@ -275,7 +275,6 @@ $.keyboard = function(el, options){
 		base.$keyboard.position(base.position); 
 
 		base.$preview.focus();
-		base.isVisible = true;
 
 		base.checkDecimal();
 
@@ -488,7 +487,7 @@ $.keyboard = function(el, options){
 			// using "kb" namespace for mouse repeat functionality to keep it separate
 			// I need to trigger a "repeater.keyboard" to make it work
 			.bind('mouseup.keyboard mouseleave.kb touchend.kb touchmove.kb touchcancel.kb', function(){
-				if (base.isVisible && base.isCurrent()) { base.$preview.focus(); }
+				if (base.isVisible() && base.isCurrent()) { base.$preview.focus(); }
 				base.mouseRepeat = [false,''];
 				clearTimeout(base.repeater); // make sure key repeat stops!
 				if (base.checkCaret) { base.$preview.caret( base.lastCaret.start, base.lastCaret.end ); }
@@ -515,11 +514,18 @@ $.keyboard = function(el, options){
 
 		// adjust with window resize
 		$(window).resize(function(){
-			if (base.isVisible) {
+			if (base.isVisible()) {
 				base.$keyboard.position(base.position);
 			}
 		});
 
+	};
+
+	base.isVisible = function() {
+		if (typeof(base.$keyboard) === 'undefined') {
+			return false;
+		}
+		return base.$keyboard.is(":visible");
 	};
 
 	// Insert text at caret/selection - thanks to Derek Wickwire for fixing this up!
@@ -780,7 +786,7 @@ $.keyboard = function(el, options){
 
 	// Close the keyboard, if visible. Pass a status of true, if the content was accepted (for the event trigger).
 	base.close = function(accepted){
-		if (base.isVisible) {
+		if (base.isVisible()) {
 			clearTimeout(base.throttled);
 			var val = (accepted) ?  base.checkCombos() : base.originalContent;
 			// validate input if accepted
@@ -810,7 +816,6 @@ $.keyboard = function(el, options){
 			}
 			if (!o.alwaysOpen) {
 				base.$keyboard.hide();
-				base.isVisible = false;
 			}
 			if (!base.watermark && base.el.value === '' && base.inPlaceholder !== '') {
 				base.$el
@@ -831,7 +836,7 @@ $.keyboard = function(el, options){
 		}
 		var cur = base.isCurrent();
 		// keep keyboard open if alwaysOpen or stayOpen is true - fixes mutliple always open keyboards or single stay open keyboard
-		if ( !base.isVisible || (o.alwaysOpen && !cur) || (!o.alwaysOpen && o.stayOpen && cur && !base.isVisible) ) { return; }
+		if ( !base.isVisible() || (o.alwaysOpen && !cur) || (!o.alwaysOpen && o.stayOpen && cur && !base.isVisible()) ) { return; }
 		// ignore autoaccept if using escape - good idea?
 
 		if ( e.target !== base.el && cur ) {
