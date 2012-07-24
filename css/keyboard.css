@@ -21,10 +21,10 @@
 .ui-keyboard-button.ui-keyboard-combo.ui-state-default { border-color: #ffaf0f; }
 
 /* (in)valid inputs */
-.ui-keyboard-accept.ui-keyboard-valid-input { border-color: #0c0; background: #080; }
-.ui-keyboard-accept.ui-keyboard-valid-input:hover { background: #0a0; }
-.ui-keyboard-accept.ui-keyboard-invalid-input { border-color: #c00; background: #800; }
-.ui-keyboard-accept.ui-keyboard-invalid-input:hover { background: #a00; }
+button.ui-keyboard-accept.ui-keyboard-valid-input { border-color: #0c0; background: #080; color: #fff; }
+button.ui-keyboard-accept.ui-keyboard-valid-input:hover { background: #0a0; }
+button.ui-keyboard-accept.ui-keyboard-invalid-input { border-color: #c00; background: #800; color: #fff; }
+button.ui-keyboard-accept.ui-keyboard-invalid-input:hover { background: #a00; }
 
 /*** jQuery Mobile definitions ***/
 /* jQuery Mobile styles - need wider buttons because of font size and text-overflow:ellipsis */

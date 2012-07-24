@@ -705,13 +705,13 @@ $.keyboard = function(el, options){
 		return val; // return text, used for keyboard closing section
 	};
 
-	// Toggle accept button if validating
+	// Toggle accept button classes, if validating
 	base.checkValid = function(){
 		var valid = true;
 		if (o.validate && typeof o.validate === "function") {
 			valid = o.validate(base, base.$preview.val(), false);
 		}
-		// toggle accept button, "disabled" class defined in the css
+		// toggle accept button classes; defined in the css
 		base.$keyboard.find('.ui-keyboard-accept')
 			[valid ? 'removeClass' : 'addClass']('ui-keyboard-invalid-input')
 			[valid ? 'addClass' : 'removeClass']('ui-keyboard-valid-input');
