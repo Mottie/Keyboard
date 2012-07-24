@@ -1,6 +1,6 @@
 /*!
 jQuery UI Virtual Keyboard
-Version 1.11
+Version 1.12
 
 Author: Jeremy Satterfield
 Modified: Rob Garrison (Mottie on github)
@@ -823,11 +823,11 @@ $.keyboard = function(el, options){
 					.val(base.inPlaceholder);
 			}
 		}
-		return false;
+		return !!accepted;
 	};
 
 	base.accept = function(){
-		base.close(true);
+		return base.close(true);
 	};
 
 	base.escClose = function(e){

@@ -73,6 +73,12 @@ Moved to the Wiki Pages: [Home](https://github.com/Mottie/Keyboard/wiki/Home) | 
 
 Only the latest changes will be shown below, see the wiki log to view older versions.
 
+### Version 1.12 (7/24/2012)
+
+* Made api functions `accept()` and `close()` return a boolean showing if the content was accepted or not.
+  * See [this demo](http://jsfiddle.net/Mottie/MK947/77/) for an example of how to use this returns when replacing the Accept action key function.
+  * See [issue #88](https://github.com/Mottie/Keyboard/issues/88) for details.
+
 ### Version 1.11 (7/24/2012)
 
 * Switching inputs should now work properly
