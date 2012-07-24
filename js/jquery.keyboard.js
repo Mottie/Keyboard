@@ -707,9 +707,8 @@ $.keyboard = function(el, options){
 		}
 		// toggle accept button, "disabled" class defined in the css
 		base.$keyboard.find('.ui-keyboard-accept')
-			[valid ? 'removeClass' : 'addClass']('disabled')
-			[valid ? 'removeAttr' : 'attr']('disabled', 'disabled')
-			.attr('aria-disabled', !valid);
+			[valid ? 'removeClass' : 'addClass']('ui-keyboard-invalid-input')
+			[valid ? 'addClass' : 'removeClass']('ui-keyboard-valid-input');
 	};
 
 	// Decimal button for num pad - only allow one (not used by default)
@@ -788,6 +787,7 @@ $.keyboard = function(el, options){
 			if (accepted && o.validate && typeof(o.validate) === "function" && !o.validate(base, val, true)) {
 				val = base.originalContent;
 				accepted = false;
+				if (o.cancelClose) { return; }
 			}
 			base.isCurrent(false);
 			base.$el
@@ -1345,8 +1345,13 @@ $.keyboard = function(el, options){
 		// Prevent keys not in the displayed keyboard from being typed in
 		restrictInput: false,
 
-		// Check input against validate function, if valid the accept button is clickable; if invalid, the accept button is disabled.
+		// Check input against validate function, if valid the accept button gets a class name of "ui-keyboard-valid-input"
+		// if invalid, the accept button gets a class name of "ui-keyboard-invalid-input"
 		acceptValid  : false,
+
+		// if acceptValid is true & the validate function returns a false, this option will cancel a keyboard
+		// close only after the accept button is pressed
+		cancelClose  : true,
 
 		// tab to go to next, shift-tab for previous (default behavior)
 		tabNavigation: false,
