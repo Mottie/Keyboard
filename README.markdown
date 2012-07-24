@@ -73,6 +73,20 @@ Moved to the Wiki Pages: [Home](https://github.com/Mottie/Keyboard/wiki/Home) | 
 
 Only the latest changes will be shown below, see the wiki log to view older versions.
 
+### Version 1.11 (7/24/2012)
+
+* Switching inputs should now work properly
+  * Extra thanks to [david-hollifield](https://github.com/david-hollifield) for the help in fixing this bug!
+  * Fixes [issues #86](https://github.com/Mottie/Keyboard/issues/86).
+* Modified the validate procressing to no longer disable the accept button.
+  * The accept button now gets a class applied indicating if the input is valid (`ui-keyboard-valid-input`) or invalid (`ui-keyboard-invalid-input`).
+  * Very basic css added to colorize the accept button for these states.
+  * Fixes [issue #88](https://github.com/Mottie/Keyboard/issues/88).
+* Added `cancelClose` option
+  * This option only works with `acceptValid` is `true` and the `validate` function returns `false`.
+  * If `true`, this option will cancel the keyboard close initiated by the accept button. The keyboard can still be closed by pressing escape or the cancel button.
+  * If `false`, the validate function will ignore the user input, restore the input's previous value, and close the keyboard.
+
 ### Version 1.10 (7/9/2012)
 
 * Added `{next}` and `{prev}` action keys which makes switching between input/textareas easier.

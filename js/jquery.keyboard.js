@@ -1,6 +1,6 @@
 /*!
 jQuery UI Virtual Keyboard
-Version 1.10
+Version 1.11
 
 Author: Jeremy Satterfield
 Modified: Rob Garrison (Mottie on github)
@@ -709,7 +709,7 @@ $.keyboard = function(el, options){
 	base.checkValid = function(){
 		var valid = true;
 		if (o.validate && typeof o.validate === "function") {
-			 valid = o.validate(base, base.$preview.val(), false);
+			valid = o.validate(base, base.$preview.val(), false);
 		}
 		// toggle accept button, "disabled" class defined in the css
 		base.$keyboard.find('.ui-keyboard-accept')
