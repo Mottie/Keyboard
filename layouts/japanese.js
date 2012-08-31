@@ -1,0 +1,104 @@
+/* Japanese (hiragana and katakana) keyboard layouts
+ * contains layouts for: 'hiragana-katakana' & 'japanese-qwerty'
+ *
+ * To use:
+ *  Point to this js file into your page header: <script src="layouts/japanese.js" type="text/javascript"></script>
+ *  Initialize the keyboard using: $('input').keyboard({ layout: 'hiragana-katakana' });
+ *
+ * license for this file: WTFPL, unless the source layout site has a problem with me using them as a reference
+ *
+ * Japanese layout by Paco Alcantara (https://github.com/pacoalcantara), based on: 	
+ * http://www.fileformat.info/info/unicode/char/search.htm 
+ * http://www.tamasoft.co.jp/en/general-info/unicode.html
+ * http://ascii-table.com/keyboard.php/194
+ */
+$.keyboard.layouts['hiragana-katakana'] = {
+	'default' : [
+		'0 1 2 3 4 5 6 7 8 9',
+		'\u3042 \u3044 \u3046 \u3048 \u304a \u306f \u3072 \u3075 \u3078 \u307b',
+        '\u304b \u304d \u304f \u3051 \u3053 \u307e \u307f \u3080 \u3081 \u3082',
+		'\u3055 \u3057 \u3059 \u305b \u305d \u3084 \u3000 \u3086 \u3088  {bksp}',
+		'\u305f \u3061 \u3064 \u3066 \u3068 \u3089 \u308a \u308b \u308c \u308d',
+		'\u306a \u306b \u306c \u306d \u306e \u308f \u3092 \u3093 \u3090 \u3091',
+		'\u3041 \u3043 \u3045 \u3047 \u3049 \u3099 \u309a \u3000 \u3000 {shift}',
+		'\u3083 \u3085 \u3087 \u3063 \u3000 \u30fb \u30fc \u301c \u3000 {alt}',
+		'{accept} {space} {cancel} {enter}'
+	],
+	'shift' : [
+		'0 1 2 3 4 5 6 7 8 9',
+		'\u30a2 \u30a4 \u30a6 \u30a8 \u30aa \u30cf \u30d2 \u30d5 \u30d8 \u30db',
+        '\u30ab \u30ad \u30af \u30b1 \u30b3 \u30de \u30df \u30e0 \u30e1 \u30e2',
+		'\u30b5 \u30b7 \u30b9 \u30bb \u30bd \u30e4 \u3000 \u30e6 \u30e8  {bksp}',
+		'\u30bf \u30c1 \u30c4 \u30c6 \u30c8 \u30e9 \u30ea \u30eb \u30ec \u30ed',
+		'\u30ca \u30cb \u30cc \u30cd \u30ce \u30ef \u30f2 \u30f3 \u30f0 \u30f1',
+		'\u30a1 \u30a3 \u30a5 \u30a7 \u30a9 \u3099 \u309a \u3000 \u3000 {shift}',
+		'\u30e3 \u30e5 \u30e7 \u30c3 \u3000 \u30fb \u30fc \u301c \u3000 {alt}',
+		'{accept} {space} {cancel} {enter}'
+	],
+	'alt' : [
+		'0 1 2 3 4 5 6 7 8 9 - ^ \uffe5 {bksp}',
+		"{tab} Q W E R T Y U I O P \u0040 [",
+		"A S D F G H J K L ; : ] {enter}",
+		"{alt} Z X C V B N M , . / \\ {alt}",
+		"{accept} {space} {cancel}"
+	]
+};
+
+/* from http://ascii-table.com/keyboard.php/150G-1 */
+$.keyboard.layouts['japanese-qwerty'] = {
+	'default' : [
+		"\u00a7 1 2 3 4 5 6 7 8 9 0 ' \u0302 {bksp}",
+		"{tab} q w e r t z u i o p \u00fc \u0308",
+		"a s d f g h j k l \u00f6 \u00e4 $ {enter}",
+		"{shift} < y x c v b n m , . - {shift}",
+		"{accept} {alt} {space} {alt} {cancel}"
+	],
+	'shift' : [
+		'\u00b0 + " * \u00e7 % & / ( ) = ? \u0300 {bksp}',
+		"{tab} Q W E R T Z U I O P \u00e8 !",
+		"A S D F G H J K L \u00e9 \u00e0 \u00a3 {enter}",
+		"{shift} > Y X C V B N M ; : _ {shift}",
+		"{accept} {alt} {space} {alt} {cancel}"
+	],
+	'alt' : [
+		"\u00a7 \u007c @ # 4 5 \u00ac \u00a6 \u00a2 9 0 \u0301 \u0303 {bksp}",
+		"{tab} q w \u20ac r t z u i o p [ ]",
+		"a s d f g h j k l \u00f6 { } {enter}",
+		"{shift} \\ y x c v b n m , . - {shift}",
+		"{accept} {alt} {space} {alt} {cancel}"
+	]
+};
+
+// Keyboard Language
+// please update this section to match this language and email me with corrections!
+// ***********************
+if (typeof(language) === 'undefined') { var language = {}; };
+language.japanese = {
+	display : {
+		'a'      : '\u2714:Accept (Shift-Enter)', // check mark - same action as accept
+		'accept' : 'Accept:Accept (Shift-Enter)',
+		'alt'    : 'AltGr:Roma-ji | Hiragana/Kana',
+		'b'      : '\u2190:Backspace',    // Left arrow (same as &larr;)
+		'bksp'   : 'Bksp:Backspace',
+		'c'      : '\u2716:Cancel (Esc)', // big X, close - same action as cancel
+		'cancel' : 'Cancel:Cancel (Esc)',
+		'clear'  : 'C:Clear',             // clear num pad
+		'combo'  : '\u00f6:Toggle Combo Keys',
+		'dec'    : '.:Decimal',           // decimal point for num pad (optional), change '.' to ',' for European format
+		'e'      : '\u21b5:Enter',        // down, then left arrow - enter symbol
+		'enter'  : 'Enter:Enter',
+		'lock'   : '\u21ea Lock:Caps Lock', // caps lock
+		's'      : '\u21e7:Shift',        // thick hollow up arrow
+		'shift'  : 'Shift:Katakana |Hiragana',
+		'sign'   : '\u00b1:Change Sign',  // +/- sign for num pad
+		'space'  : '&nbsp;:Space',
+		't'      : '\u21e5:Tab',          // right arrow to bar (used since this virtual keyboard works with one directional tabs)
+		'tab'    : '\u21e5 Tab:Tab'       // \u21b9 is the true tab symbol (left & right arrows)
+	},
+	// Message added to the key title while hovering, if the mousewheel plugin exists
+	wheelMessage : 'Use mousewheel to see other keys',
+};
+
+// This will replace all default language options with these language options.
+// it is separated out here so the layout demo will work properly.
+$.extend(true, $.keyboard.defaultOptions, language.japanese);
