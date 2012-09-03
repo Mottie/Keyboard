@@ -6,9 +6,10 @@
  *  Initialize the keyboard using: $('input').keyboard({ layout: 'spanish-qwerty' });
  *
  * license for this file: WTFPL, unless the source layout site has a problem with me using them as a reference
+ *
+ * Spanish layouts by Paco Alcantara (https://github.com/pacoalcantara)  
+ * Based on: http://ascii-table.com/keyboard.php/171 and http://ascii-table.com/keyboard.php/071-2
  */
-
-/* Based on: http://ascii-table.com/keyboard.php/171 and http://ascii-table.com/keyboard.php/071-2*/
 $.keyboard.layouts['spanish-qwerty'] = {
 	'default' : [
 		"\u007c 1 2 3 4 5 6 7 8 9 0 \' \u00bf {bksp}",
@@ -97,8 +98,7 @@ language.spanish = {
 		't'      : '\u21e5:Tab',          // right arrow to bar (used since this virtual keyboard works with one directional tabs)
 		'tab'    : '\u21e5 Tab:Tab'       // \u21b9 is the true tab symbol (left & right arrows)
 	},
-	// Message added to the key title while hovering, if the mousewheel plugin exists
-	wheelMessage : 'Utilice la rueda del mouse para ver otras teclas',
+	wheelMessage : 'Utilice la rueda del mouse para ver otras teclas', 
 };
 
 // This will replace all default language options with these language options.
