@@ -98,8 +98,7 @@ language.spanish = {
 		't'      : '\u21e5:Tab',          // right arrow to bar (used since this virtual keyboard works with one directional tabs)
 		'tab'    : '\u21e5 Tab:Tab'       // \u21b9 is the true tab symbol (left & right arrows)
 	},
-	// Message added to the key title while hovering, if the mousewheel plugin exists
-	wheelMessage : 'Utilice la rueda del mouse para ver otras teclas',
+	wheelMessage : 'Utilice la rueda del mouse para ver otras teclas', 
 };
 
 // This will replace all default language options with these language options.
