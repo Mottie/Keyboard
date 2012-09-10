@@ -10,7 +10,7 @@
 
 	<!-- jQuery & jQuery UI + theme (required) -->
 	<link href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/themes/ui-darkness/jquery-ui.css" rel="stylesheet">
-	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7/jquery.min.js"></script>
+	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.8/jquery.min.js"></script>
 	<script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/jquery-ui.min.js"></script>
 
 	<!-- keyboard widget css & script (required) -->
@@ -39,14 +39,43 @@
 	<script>
 	$(function(){
 
+		// change default navigation keys
+		$.extend($.keyboard.navigationKeys, {
+			toggle     : 112, // toggle key; F1 = 112 (event.which value for function 1 key)
+			enter      : 13,  // Enter
+			pageup     : 33,  // PageUp key
+			pagedown   : 34,  // PageDown key
+			end        : 35,  // End key
+			home       : 36,  // Home key
+			left       : 37,  // Left arrow key
+			up         : 38,  // Up arrow key
+			right      : 39,  // Right arrow key
+			down       : 40   // Down arrow key
+		});
+
+		// External trigger using any of the $.keyboard.navigationKeys keys (key:value)
+		// no need to toggle first
+		// $('#keyboard').trigger('navigate', 'home');
+
+		// or, navigate to a specific key [ row, index ] (both use zero-based indexes)
+		// $('#keyboard').trigger('navigateTo', [2,3]);
+
+		// mini navigation block
+		$('#info button').click(function(){
+			$('textarea').trigger('navigate', $(this).text()); 
+		});
+
 		$('#keyboard')
-			.keyboard()
+			.keyboard({
+				alwaysOpen: true
+			})
 			.addNavigation({
 				position   : [0,0],     // set start position [row-number, key-index]
 				toggleMode : false,     // true = navigate the virtual keyboard, false = navigate in input/textarea
-				toggleKey  : 112,       // toggle key; F1 = 112 (event.which value for function 1 key)
 				focusClass : 'hasFocus' // css class added when toggle mode is on
 			});
+
+
 
 	});
 	</script>
@@ -93,6 +122,13 @@
 			<li>Page Down - Move to the last row.</li>
 			<li>Enter - Add the highlighted key.</li>
 		</ul>
+
+		<div class="nav">
+			<button class="home">Home</button><button class="up">Up</button><button class="pageUp">PageUp</button><br>
+			<button class="left">Left</button><button class="toggle">Toggle</button><button class="right">Right</button><br>
+			<button class="end">End</button><button class="down">Down</button><button class="pageDown">PageDown</button><br>
+			<button class="enter">Enter</button>
+		</div>
 
 	</div>
 

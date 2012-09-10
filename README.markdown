@@ -73,6 +73,50 @@ Moved to the Wiki Pages: [Home](https://github.com/Mottie/Keyboard/wiki/Home) | 
 
 Only the latest changes will be shown below, see the wiki log to view older versions.
 
+### Version 1.13 (9/9/2012)
+
+* Fixed error caused by closing a keyboard in OSX using ctrl-esc or alt-esc. Fixes [issue #102](https://github.com/Mottie/Keyboard/issues/102).
+* Added Japanese and Spanish layouts thanks to [pacoalcantara](https://github.com/pacoalcantara)!
+* Added Polish layout thanks to Piotr (via email)!
+* Wide keys now use a `min-width` instead of `width`. This allows the key to properly expand to fit the text within it.
+* Updated autocomplete extension to save the caret position in IE9. Thanks to [banku](https://github.com/banku) for the fix in [issue #95](https://github.com/Mottie/Keyboard/issues/95).
+* Updated navigation extension:
+  * Removed the `toggleKey` option.
+  * Custom key codes can be assigned to any of the navigation keys within the new `$.keyboard.navigationKeys` object. Extend it as follows:
+
+    ```javascript
+    // change default navigation keys
+    $.extend($.keyboard.navigationKeys, {
+      toggle     : 112, // toggle key; F1 = 112 (event.which value for function 1 key)
+      enter      : 13,  // Enter
+      pageup     : 33,  // PageUp key
+      pagedown   : 34,  // PageDown key
+      end        : 35,  // End key
+      home       : 36,  // Home key
+      left       : 37,  // Left arrow key
+      up         : 38,  // Up arrow key
+      right      : 39,  // Right arrow key
+      down       : 40   // Down arrow key
+    });
+    ```
+
+   Enhancement request from [issue #90](https://github.com/Mottie/Keyboard/issues/90). Thanks [faboudib](https://github.com/faboudib)!
+
+  * Movement of the highlighted navigation key can now be triggered using `navigate` for predefined movement; see the [updated demo](http://mottie.github.com/Keyboard/navigate.html)
+
+    ```javascript
+    // navkey contains the name of the key: e.g. "home", "right", "pageup", etc
+    var navkey = "pageup";
+    $('#keyboard').trigger('navigate', navkey);
+    ```
+
+    Or, highlight a specific navigation key using the `navigateTo` trigger:
+
+    ```javascript
+    // navigate to the third row and fourth key (zero-based indexes) - [ row, index ]
+    $('#keyboard').trigger('navigateTo', [2,3]);
+    ```
+
 ### Version 1.12 (7/24/2012)
 
 * Made api functions `accept()` and `close()` return a boolean showing if the content was accepted or not.

@@ -2,10 +2,10 @@
 .ui-keyboard { padding: .3em; position: absolute; left: 0; top: 0; z-index: 16000; }
 .ui-keyboard-has-focus { z-index: 16001; }
 .ui-keyboard div { font-size: 1.1em; }
-.ui-keyboard-button { height: 2em; width: 2em; margin: .1em; cursor: pointer; overflow: hidden; line-height: 2em; }
+.ui-keyboard-button { height: 2em; width: 2em; min-width: 2em; margin: .1em; cursor: pointer; overflow: hidden; line-height: 2em; }
 .ui-keyboard-button span { padding: 0; margin: 0; white-space:nowrap; }
 .ui-keyboard-button-endrow { clear: left; }
-.ui-keyboard-widekey { width: 4em; }
+.ui-keyboard-widekey { min-width: 4em; width: auto; }
 .ui-keyboard-space { width: 15em; text-indent: -999em; }
 .ui-keyboard-preview-wrapper { text-align: center; }
 .ui-keyboard-preview { text-align: left; margin: 0 0 3px 0; display: inline; width: 99%;} /* width is calculated in IE, since 99% = 99% full browser width =( */ 
