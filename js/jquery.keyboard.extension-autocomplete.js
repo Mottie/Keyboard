@@ -67,10 +67,13 @@ $.fn.addAutocomplete = function(){
 					}
 				})
 				.bind('autocompleteselect', function(e,ui){
-					if (base.hasAutocomplete && ui.item.value !== ''){
+					var v = ui.item.value;
+					if (base.hasAutocomplete && v !== ''){
 						base.$preview
-							.val( ui.item.value )
+							.val( v )
 							.focus();
+						// see issue #95 - thanks banku!
+						base.lastCaret = { start: v.length, end: v.length };
 					}
 				});
 		};
