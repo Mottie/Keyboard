@@ -1,6 +1,6 @@
 /*!
 jQuery UI Virtual Keyboard
-Version 1.12
+Version 1.13
 
 Author: Jeremy Satterfield
 Modified: Rob Garrison (Mottie on github)
@@ -152,7 +152,7 @@ $.keyboard = function(el, options){
 			// needed for IE to allow switching between keyboards smoothly
 			if ( e.target && $(e.target).hasClass('ui-keyboard-input') ) {
 				var kb = $(e.target).data('keyboard');
-				if (kb && kb.options.openOn.length) {
+				if (kb && kb.options.openOn) {
 					kb.focusOn();
 				}
 			}
@@ -364,7 +364,10 @@ $.keyboard = function(el, options){
 				// throttle the check combo function because fast typers will have an incorrectly positioned caret
 				clearTimeout(base.throttled);
 				base.throttled = setTimeout(function(){
-					base.checkCombos();
+					// fix error in OSX? see issue #102
+					if (base.isVisible()) {
+						base.checkCombos();
+					}
 				}, 100);
 
 				base.checkMaxLength();
@@ -1307,23 +1310,23 @@ $.keyboard = function(el, options){
 		display : {
 			'a'      : '\u2714:Accept (Shift-Enter)', // check mark - same action as accept
 			'accept' : 'Accept:Accept (Shift-Enter)',
-			'alt'    : 'AltGr:Alternate Graphemes',
-			'b'      : '\u2190:Backspace',    // Left arrow (same as &larr;)
+			'alt'    : 'Alt:\u2325 AltGr',        // other alternatives \u2311 
+			'b'      : '\u232b:Backspace',    // Left arrow (same as &larr;)
 			'bksp'   : 'Bksp:Backspace',
 			'c'      : '\u2716:Cancel (Esc)', // big X, close - same action as cancel
 			'cancel' : 'Cancel:Cancel (Esc)',
 			'clear'  : 'C:Clear',             // clear num pad
 			'combo'  : '\u00f6:Toggle Combo Keys',
 			'dec'    : '.:Decimal',           // decimal point for num pad (optional), change '.' to ',' for European format
-			'e'      : '\u21b5:Enter',        // down, then left arrow - enter symbol
-			'enter'  : 'Enter:Enter',
-			'lock'   : '\u21ea Lock:Caps Lock', // caps lock
-			'next'   : 'Next',
-			'prev'   : 'Prev',
+			'e'      : '\u23ce:Enter',        // down, then left arrow - enter symbol
+			'enter'  : 'Enter:Enter \u23ce',
+			'lock'   : 'Lock:\u21ea Caps Lock', // caps lock
+			'next'   : 'Next \u21e8',
+			'prev'   : '\u21e6 Prev',
 			's'      : '\u21e7:Shift',        // thick hollow up arrow
 			'shift'  : 'Shift:Shift',
 			'sign'   : '\u00b1:Change Sign',  // +/- sign for num pad
-			'space'  : '&nbsp;:Space',
+			'space'  : '\ufe42\ufe41:Space',
 			't'      : '\u21e5:Tab',          // right arrow to bar (used since this virtual keyboard works with one directional tabs)
 			'tab'    : '\u21e5 Tab:Tab'       // \u21b9 is the true tab symbol (left & right arrows)
 		},
