@@ -241,12 +241,13 @@ jQuery(function($) {
 
 		display: {
 			'bksp': '←',
-			'accept': 'return',
+			'enter': 'return',
 			'meta1': 'ABC',
 			'meta2': '⇑',
 			'meta3': '⇑',
 			'meta4': '.?123',
-			'meta5': '#+='
+			'meta5': '#+=',
+			'accept': '⇓'
 		},
 
 		layout: 'custom',
@@ -255,39 +256,39 @@ jQuery(function($) {
 
 			'default': [
 				'q w e r t y u i o p {bksp}',
-				'a s d f g h j k l {accept}',
+				'a s d f g h j k l {enter}',
 				'{meta3} z x c v b n m , . {meta3}',
-				'{meta4} {space} {meta4}'
+				'{meta4} {space} {meta4} {accept}'
 			],
 			'meta1': [
 				'q w e r t y u i o p {bksp}',
-				'a s d f g h j k l {accept}',
+				'a s d f g h j k l {enter}',
 				'{meta3} z x c v b n m , . {meta3}',
-				'{meta4} {space} {meta4}'
+				'{meta4} {space} {meta4} {accept}'
 			],
 			'meta2': [
 				'q w e r t y u i o p {bksp}',
-				'a s d f g h j k l {accept}',
+				'a s d f g h j k l {enter}',
 				'{meta3} z x c v b n m , . {meta3}',
-				'{meta4} {space} {meta4}'
+				'{meta4} {space} {meta4} {accept}'
 			],
 			'meta3': [
 				'Q W E R T Y U I O P {bksp}',
-				'A S D F G H J K L {accept}',
+				'A S D F G H J K L {enter}',
 				'{meta2} Z X C V B N M ! ? {meta2}',
-				'{meta4} {space} {meta4}'
+				'{meta4} {space} {meta4} {accept}'
 			],
 			'meta4': [
 				'1 2 3 4 5 6 7 8 9 0 {bksp}',
-				'- / : ; ( ) € & @ {accept}',
+				'- / : ; ( ) € & @ {enter}',
 				'{meta5} . , ? ! \' " {meta5}',
-				'{meta1} {space} {meta1}'
+				'{meta1} {space} {meta1} {accept}'
 			],
 			'meta5': [
 				'[ ] { } # % ^ * + = {bksp}',
-				'_ \\ | ~ < > $ £ ¥ {accept}',
+				'_ \\ | ~ < > $ £ ¥ {enter}',
 				'{meta4} . , ? ! \' " {meta4}',
-				'{meta1} {space} {meta1}'
+				'{meta1} {space} {meta1} {accept}'
 			]
 
 		}
