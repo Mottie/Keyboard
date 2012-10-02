@@ -73,6 +73,10 @@ Moved to the Wiki Pages: [Home](https://github.com/Mottie/Keyboard/wiki/Home) | 
 
 Only the latest changes will be shown below, see the wiki log to view older versions.
 
+### Version 1.14 (10/2/2012)
+
+* Added iPad &amp; iPad email demos by [gitaarik](https://github.com/gitaarik).
+
 ### Version 1.13 (9/9/2012)
 
 * Fixed error caused by closing a keyboard in OSX using ctrl-esc or alt-esc. Fixes [issue #102](https://github.com/Mottie/Keyboard/issues/102).

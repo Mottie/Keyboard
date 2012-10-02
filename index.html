@@ -71,7 +71,7 @@
 			* Placeholder (watermark).<br>
 			* Autocomplete.
 		</small>
-		<div class="code ui-corner-all" style="width: 585px; height: 365px;">
+		<div class="code ui-corner-all">
 			<pre><code><span class="ct">HTML
 =======</span>
 &lt;input class="qwerty" type="text" placeholder="Enter something..."&gt;
@@ -96,7 +96,7 @@ $('.qwerty:eq(0)')
 	<div class="block">
 		<h2><span class="tooltip" title="Click to see code">QWERTY Password</span> <img id="passwd" class="tooltip" title="Click to open the virtual keyboard" src="demo/keyboard.png"></h2>
 		<input class="qwerty" type="password">
-		<div class="code ui-corner-all" style="width: 350px; height: 200px;">
+		<div class="code ui-corner-all">
 			<pre><code><span class="ct">HTML
 =======</span>
 &lt;input class="qwerty" type="password"&gt;
@@ -131,7 +131,7 @@ $('#passwd').click(function(){
 			* Position the hidden caret!<br>
 			* Known readonly bug in Safari.
 		</small>
-		<div class="code ui-corner-all" style="width: 350px; height: 200px;">
+		<div class="code ui-corner-all">
 			<pre><code><span class="ct">HTML
 =======</span>
 &lt;textarea class="qwerty"&gt;&lt;/textarea&gt;
@@ -150,7 +150,7 @@ $('.qwerty:eq(2)')
 	<div class="block">
 		<h2><span class="tooltip" title="Click to see code">International</span> <img id="inter-type" class="tooltip" title="Try out the typing extension!" src="demo/keyboard.png"></h2>
 		<textarea id="inter"></textarea>
-		<div class="code ui-corner-all" style="width: 350px; height: 200px;">
+		<div class="code ui-corner-all">
 			<pre><code><span class="ct">HTML
 =======</span>
 &lt;textarea id="inter"&gt;&lt;/textarea&gt;
@@ -170,7 +170,7 @@ $('#inter').getkeyboard().reveal().typeIn('\tHello \b\n\tWorld', 500);</code></p
 	<div class="block">
 		<h2><span class="tooltip" title="Click to see code">Alphabetical</span></h2>
 		<textarea id="alpha"></textarea>
-		<div class="code ui-corner-all" style="width: 350px; height: 200px;">
+		<div class="code ui-corner-all">
 			<pre><code><span class="ct">HTML
 =======</span>
 &lt;textarea id="alpha"&gt;&lt;/textarea&gt;
@@ -186,7 +186,7 @@ $('#alpha')
 	<div class="block">
 		<h2><span class="tooltip" title="Click to see code">Dvorak</span></h2>
 		<textarea id="dvorak"></textarea>
-		<div class="code ui-corner-all" style="width: 350px; height: 200px;">
+		<div class="code ui-corner-all">
 			<pre><code><span class="ct">HTML
 =======</span>
 &lt;textarea id="dvorak"&gt;&lt;/textarea&gt;
@@ -202,7 +202,7 @@ $('#dvorak')
 	<div class="block">
 		<h2><span class="tooltip" title="Click to see code">Num Pad</span></h2>
 		<input id="num" class="alignRight" type="text">
-		<div class="code ui-corner-all" style="width: 745px; height: 285px;">
+		<div class="code ui-corner-all">
 			<pre><code><span class="ct">HTML
 =======</span>
 &lt;input id="num" class="alignRight" type="text"&gt;
@@ -229,7 +229,7 @@ $('#num')
 	<div class="block">
 		<h2><span class="tooltip" title="Click to see code">Custom: Hex</span></h2>
 		<input id="hex" type="text">
-		<div class="code ui-corner-all" style="width: 740px; height: 420px;">
+		<div class="code ui-corner-all">
 			<pre><code><span class="ct">HTML
 =======</span>
 &lt;input id="hex" type="text"&gt;
@@ -264,7 +264,7 @@ $('#hex')
 	<div class="block">
 		<h2><span class="tooltip" title="Click to see code">Custom: Meta Sets</span> <img id="meta-type" class="tooltip" title="Try out the typing extension!" src="demo/keyboard.png"></h2>
 		<textarea id="meta"></textarea>
-		<div class="code ui-corner-all" style="width: 740px; height: 420px;">
+		<div class="code ui-corner-all">
 			<pre><code><span class="ct">HTML
 =======</span>
 &lt;textarea id="meta"&gt;&lt;/textarea&gt;
@@ -358,7 +358,7 @@ meta.reveal().typeIn('aBcD1112389\u2648\u2649', 700, function(){ meta.accept(); 
 	<div class="block">
 		<h2><span class="tooltip" title="Click to see code">Custom: Junk</span></h2>
 		<textarea id="junk"></textarea>
-		<div class="code ui-corner-all" style="width: 745px; height: 285px;">
+		<div class="code ui-corner-all">
 			<pre><code><span class="ct">HTML
 =======</span>
 &lt;textarea id="junk"&gt;&lt;/textarea&gt;
@@ -406,7 +406,7 @@ $('#junk')
 	<div class="block">
 		<h2><span class="tooltip" title="Click to see code">Custom: Mapped Keys</span></h2>
 		<textarea id="map"></textarea>
-		<div class="code ui-corner-all" style="width: 745px; height: 285px;">
+		<div class="code ui-corner-all">
 			<pre><code><span class="ct">HTML
 =======</span>
 &lt;textarea id="map"&gt;&lt;/textarea&gt;
@@ -443,7 +443,7 @@ $('#map').keyboard({
 		<a href="#" class="hiddenInput">Hidden input</a>
 		<!-- DON'T use type="hidden" because IE doesn't like hidden inputs -->
 		<input id="hidden" type="text" style="display:none;">
-		<div class="code ui-corner-all" style="width: 350px; height: 200px;">
+		<div class="code ui-corner-all">
 			<pre><code><span class="ct">HTML
 =======</span>
 &lt;a href="#" class="hiddenInput"&gt;Hidden input&lt;/a&gt;
@@ -471,6 +471,157 @@ $('#hidden')
  })
  .addTyping();</code></pre>
 		</div>
+	</div>
+
+	<div class="block">
+		<h2><span class="tooltip" title="Click to see code">Custom: iPad</span></h2>
+		<textarea id="ipad"></textarea>
+		<div class="code ui-corner-all">
+			<pre><code><span class="ct">HTML
+=======</span>
+&lt;textarea id="ipad"&gt;&lt;/textarea&gt;
+
+<span class="ct">Script
+=======</span>
+$('#ipad').keyboard({
+
+	display: {
+		'bksp'   : '\u2190',
+		'accept' : 'return',
+		'meta1'  : 'ABC',
+		'meta2'  : '\u21d1',
+		'meta3'  : '\u21d1',
+		'meta4'  : '.?123',
+		'meta5'  : '#+='
+	},
+
+	layout: 'custom',
+
+	customLayout: {
+
+		'default': [
+			'q w e r t y u i o p {bksp}',
+			'a s d f g h j k l {enter}',
+			'{meta3} z x c v b n m , . {meta3}',
+			'{meta4} {space} {meta4} {accept}'
+		],
+		'meta1': [
+			'q w e r t y u i o p {bksp}',
+			'a s d f g h j k l {enter}',
+			'{meta3} z x c v b n m , . {meta3}',
+			'{meta4} {space} {meta4} {accept}'
+		],
+		'meta2': [
+			'q w e r t y u i o p {bksp}',
+			'a s d f g h j k l {enter}',
+			'{meta3} z x c v b n m , . {meta3}',
+			'{meta4} {space} {meta4} {accept}'
+		],
+		'meta3': [
+			'Q W E R T Y U I O P {bksp}',
+			'A S D F G H J K L {enter}',
+			'{meta2} Z X C V B N M ! ? {meta2}',
+			'{meta4} {space} {meta4} {accept}'
+		],
+		'meta4': [
+			'1 2 3 4 5 6 7 8 9 0 {bksp}',
+			'- / : ; ( ) \u20ac & @ {enter}',
+			'{meta5} . , ? ! \' " {meta5}',
+			'{meta1} {space} {meta1} {accept}'
+		],
+		'meta5': [
+			'[ ] { } # % ^ * + = {bksp}',
+			'_ \\ | ~ &lt; &gt; $ \u00a3 \u00a5 {enter}',
+			'{meta4} . , ? ! \' " {meta4}',
+			'{meta1} {space} {meta1} {accept}'
+		]
+
+	}
+
+});
+</code>
+</pre>
+		</div>
+		<br>
+		<small>
+			* Thanks to <a href="https://github.com/gitaarik">gitaarik</a> for sharing!.
+		</small>
+	</div>
+
+	<div class="block">
+		<h2><span class="tooltip" title="Click to see code">Custom: iPad email input</span></h2>
+		<textarea id="ipad-email"></textarea>
+		<div class="code ui-corner-all">
+			<pre><code><span class="ct">HTML
+=======</span>
+&lt;textarea id="ipad-email"&gt;&lt;/textarea&gt;
+
+<span class="ct">Script
+=======</span>
+$('#ipad-email').keyboard({
+
+	display: {
+		'bksp'  : '\u2190',
+		'enter' : 'return',
+		'meta1' : 'ABC',
+		'meta2' : '\u21d1',
+		'meta3' : '\u21d1',
+		'meta4' : '.?123',
+		'meta5' : '#+=',
+		'accept': '\u21d3'
+	},
+
+	layout: 'custom',
+
+	customLayout: {
+
+		'default': [
+			'q w e r t y u i o p {bksp}',
+			'a s d f g h j k l {enter}',
+			'{meta3} z x c v b n m @ . {meta3}',
+			'{meta4} {space} _ - {accept}'
+		],
+		'meta1': [
+			'q w e r t y u i o p {bksp}',
+			'a s d f g h j k l {enter}',
+			'{meta3} z x c v b n m @ . {meta3}',
+			'{meta4} {space} _ - {accept}'
+		],
+		'meta2': [
+			'q w e r t y u i o p {bksp}',
+			'a s d f g h j k l {enter}',
+			'{meta3} z x c v b n m @ . {meta3}',
+			'{meta4} {space} _ - {accept}'
+		],
+		'meta3': [
+			'Q W E R T Y U I O P {bksp}',
+			'A S D F G H J K L {enter}',
+			'{meta2} Z X C V B N M @ . {meta2}',
+			'{meta4} {space} _ - {accept}'
+		],
+		'meta4': [
+			'1 2 3 4 5 6 7 8 9 0 {bksp}',
+			'` | { } % ^ * / \' {enter}',
+			'{meta5} $ & ~ # = + . {meta5}',
+			'{meta1} {space} ! ? {accept}'
+		],
+		'meta5': [
+			'[ ] { } \u2039 \u203a ^ * " , {bksp}',
+			'\\ | / &lt; &gt; $ \u00a3 \u00a5 \u2022 {enter}',
+			'{meta4} \u20ac & ~ # = + . {meta4}',
+			'{meta1} {space} ! ? {accept}'
+		]
+
+	}
+
+});
+</code>
+</pre>
+		</div>
+		<br>
+		<small>
+			* Thanks to <a href="https://github.com/gitaarik">gitaarik</a> for sharing!.
+		</small>
 	</div>
 
 	<div id="showcode"></div>
