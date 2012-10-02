@@ -240,11 +240,11 @@ jQuery(function($) {
 	$('#ipad').keyboard({
 
 		display: {
-			'bksp': '←',
+			'bksp': '?',
 			'accept': 'return',
 			'meta1': 'ABC',
-			'meta2': '⇑',
-			'meta3': '⇑',
+			'meta2': '?',
+			'meta3': '?',
 			'meta4': '.?123',
 			'meta5': '#+='
 		},
@@ -289,6 +289,63 @@ jQuery(function($) {
 				'{meta4} . , ? ! \' "',
 				'{meta1} {space}'
 			]
+
+		}
+
+	});
+
+	$('#ipad-email').keyboard({
+
+		display: {
+			'bksp': '?',
+			'accept': 'return',
+			'meta1': 'ABC',
+			'meta2': '?',
+			'meta3': '?',
+			'meta4': '.?123',
+			'meta5': '#+='
+		},
+
+		layout: 'custom',
+
+		customLayout: {
+
+				'default': [
+					'q w e r t y u i o p {bksp}',
+					'a s d f g h j k l',
+					'{meta3} z x c v b n m @ .',
+					'{meta4} {space} _ - {accept}'
+				],
+				'meta1': [
+					'q w e r t y u i o p {bksp}',
+					'a s d f g h j k l',
+					'{meta3} z x c v b n m @ .',
+					'{meta4} {space} _ - {accept}'
+				],
+				'meta2': [
+					'q w e r t y u i o p {bksp}',
+					'a s d f g h j k l',
+					'{meta3} z x c v b n m @ .',
+					'{meta4} {space} _ - {accept}'
+				],
+				'meta3': [
+					'Q W E R T Y U I O P {bksp}',
+					'A S D F G H J K L',
+					'{meta2} Z X C V B N M @ .',
+					'{meta4} {space} _ - {accept}'
+				],
+				'meta4': [
+					'1 2 3 4 5 6 7 8 9 0 {bksp}',
+					'` | { } % ^ * / \'',
+					'{meta5} $ & ~ # = + .',
+					'{meta1} {space} ! ? {accept}'
+				],
+				'meta5': [
+					'[ ] { } ‹ › ^ * " , {bksp}',
+					'\\ | / < > $ £ ¥ •',
+					'{meta4} € & ~ # = + .',
+					'{meta1} {space} ! ? {accept}'
+				]
 
 		}
 
