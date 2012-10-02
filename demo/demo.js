@@ -325,7 +325,7 @@ jQuery(function($) {
 				'meta2': [
 					'q w e r t y u i o p {bksp}',
 					'a s d f g h j k l {accept}',
-					'{meta3} z x c v b n m @ .',
+					'{meta3} z x c v b n m @ . {meta3}',
 					'{meta4} {space} _ -'
 				],
 				'meta3': [
