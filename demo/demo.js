@@ -299,54 +299,55 @@ jQuery(function($) {
 
 		display: {
 			'bksp': '←',
-			'accept': 'return',
+			'enter': 'return',
 			'meta1': 'ABC',
 			'meta2': '⇑',
 			'meta3': '⇑',
 			'meta4': '.?123',
-			'meta5': '#+='
+			'meta5': '#+=',
+			'accept': '⇓'
 		},
 
 		layout: 'custom',
 
 		customLayout: {
 
-				'default': [
-					'q w e r t y u i o p {bksp}',
-					'a s d f g h j k l {accept}',
-					'{meta3} z x c v b n m @ . {meta3}',
-					'{meta4} {space} _ -'
-				],
-				'meta1': [
-					'q w e r t y u i o p {bksp}',
-					'a s d f g h j k l {accept}',
-					'{meta3} z x c v b n m @ . {meta3}',
-					'{meta4} {space} _ -'
-				],
-				'meta2': [
-					'q w e r t y u i o p {bksp}',
-					'a s d f g h j k l {accept}',
-					'{meta3} z x c v b n m @ . {meta3}',
-					'{meta4} {space} _ -'
-				],
-				'meta3': [
-					'Q W E R T Y U I O P {bksp}',
-					'A S D F G H J K L {accept}',
-					'{meta2} Z X C V B N M @ . {meta2}',
-					'{meta4} {space} _ -'
-				],
-				'meta4': [
-					'1 2 3 4 5 6 7 8 9 0 {bksp}',
-					'` | { } % ^ * / \' {accept}',
-					'{meta5} $ & ~ # = + . {meta5}',
-					'{meta1} {space} ! ?'
-				],
-				'meta5': [
-					'[ ] { } ‹ › ^ * " , {bksp}',
-					'\\ | / < > $ £ ¥ • {accept}',
-					'{meta4} € & ~ # = + . {meta4}',
-					'{meta1} {space} ! ?'
-				]
+			'default': [
+				'q w e r t y u i o p {bksp}',
+				'a s d f g h j k l {enter}',
+				'{meta3} z x c v b n m @ . {meta3}',
+				'{meta4} {space} _ - {accept}'
+			],
+			'meta1': [
+				'q w e r t y u i o p {bksp}',
+				'a s d f g h j k l {enter}',
+				'{meta3} z x c v b n m @ . {meta3}',
+				'{meta4} {space} _ - {accept}'
+			],
+			'meta2': [
+				'q w e r t y u i o p {bksp}',
+				'a s d f g h j k l {enter}',
+				'{meta3} z x c v b n m @ . {meta3}',
+				'{meta4} {space} _ - {accept}'
+			],
+			'meta3': [
+				'Q W E R T Y U I O P {bksp}',
+				'A S D F G H J K L {enter}',
+				'{meta2} Z X C V B N M @ . {meta2}',
+				'{meta4} {space} _ - {accept}'
+			],
+			'meta4': [
+				'1 2 3 4 5 6 7 8 9 0 {bksp}',
+				'` | { } % ^ * / \' {enter}',
+				'{meta5} $ & ~ # = + . {meta5}',
+				'{meta1} {space} ! ? {accept}'
+			],
+			'meta5': [
+				'[ ] { } ‹ › ^ * " , {bksp}',
+				'\\ | / < > $ £ ¥ • {enter}',
+				'{meta4} € & ~ # = + . {meta4}',
+				'{meta1} {space} ! ? {accept}'
+			]
 
 		}
 
