@@ -240,14 +240,14 @@ jQuery(function($) {
 	$('#ipad').keyboard({
 
 		display: {
-			'bksp': '←',
+			'bksp': '\u2190',
 			'enter': 'return',
 			'meta1': 'ABC',
-			'meta2': '⇑',
-			'meta3': '⇑',
+			'meta2': '\u21d1',
+			'meta3': '\u21d1',
 			'meta4': '.?123',
 			'meta5': '#+=',
-			'accept': '⇓'
+			'accept': '\u21d3'
 		},
 
 		layout: 'custom',
@@ -298,14 +298,14 @@ jQuery(function($) {
 	$('#ipad-email').keyboard({
 
 		display: {
-			'bksp': '←',
+			'bksp': '\u2190',
 			'enter': 'return',
 			'meta1': 'ABC',
-			'meta2': '⇑',
-			'meta3': '⇑',
+			'meta2': '\u21d1',
+			'meta3': '\u21d1',
 			'meta4': '.?123',
 			'meta5': '#+=',
-			'accept': '⇓'
+			'accept': '\u21d3'
 		},
 
 		layout: 'custom',
