@@ -73,6 +73,11 @@ Moved to the Wiki Pages: [Home](https://github.com/Mottie/Keyboard/wiki/Home) | 
 
 Only the latest changes will be shown below, see the wiki log to view older versions.
 
+### Version 1.14.1 (10/8/2012)
+
+* Disabled jQuery UI Themeswitcher from the main and layouts demo pages, as the script is no longer available.
+* Updated demos to use jQuery 1.8 and jQuery UI 1.9.
+
 ### Version 1.14 (10/2/2012)
 
 * Added iPad &amp; iPad email demos by [gitaarik](https://github.com/gitaarik).

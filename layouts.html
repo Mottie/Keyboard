@@ -9,9 +9,9 @@
 	<link href="demo/demo.css" rel="stylesheet">
 
 	<!-- jQuery & jQuery UI + theme (required) -->
-	<link href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/themes/ui-darkness/jquery-ui.css" rel="stylesheet">
-	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.8/jquery.min.js"></script>
-	<script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/jquery-ui.min.js"></script>
+	<link href="http://code.jquery.com/ui/1.9.0/themes/ui-darkness/jquery-ui.css" rel="stylesheet">
+	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.8/jquery.js"></script>
+	<script src="http://code.jquery.com/ui/1.9.0/jquery-ui.min.js"></script>
 
 	<!-- keyboard widget css & script (required) -->
 	<link href="css/keyboard.css" rel="stylesheet">
@@ -25,8 +25,8 @@
 	<!-- preloaded keyboard layout -->
 	<script src="layouts/albanian.js" charset="utf-8"></script>
 
-	<!-- theme switcher -->
-	<script src="http://jqueryui.com/themeroller/themeswitchertool/"></script>
+	<!-- theme switcher
+	<script src="http://jqueryui.com/themeroller/themeswitchertool/"></script> -->
 
 	<script>
 	// Change display language, if the definitions are available
@@ -76,7 +76,7 @@
 	$(function(){
 
 		// Theme switcher
-		$('#switcher').themeswitcher();
+		// $('#switcher').themeswitcher();
 
 		$('#lang').change(function(){
 			var kb = $('#multi'),

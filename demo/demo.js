@@ -2,7 +2,7 @@ jQuery(function($) {
 
 	// Theme switcher
 	// ********************
-	$('#switcher').themeswitcher();
+	// $('#switcher').themeswitcher();
 
 	// QWERTY Text Input
 	// The bottom of this file is where the autocomplete extension is added
