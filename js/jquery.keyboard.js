@@ -1,6 +1,6 @@
 /*!
 jQuery UI Virtual Keyboard
-Version 1.14
+Version 1.15
 
 Author: Jeremy Satterfield
 Modified: Rob Garrison (Mottie on github)
@@ -81,23 +81,11 @@ Options:
 				{t}, {tab}    - Tab
 
 CSS:
-	.ui-keyboard { padding: .3em; position: absolute; left: 0; top: 0; z-index: 16000; }
-	.ui-keyboard-has-focus { z-index: 16001; }
-	.ui-keyboard div { font-size: 1.1em; }
-	.ui-keyboard-button { height: 2em; width: 2em; margin: .1em; cursor: pointer; overflow: hidden; line-height: 2em; }
-	.ui-keyboard-button span { padding: 0; margin: 0; white-space:nowrap; }
-	.ui-keyboard-button-endrow { clear: left; }
-	.ui-keyboard-widekey { width: 4em; }
-	.ui-keyboard-space { width: 15em; text-indent: -999em; }
-	.ui-keyboard-preview-wrapper { text-align: center; }
-	.ui-keyboard-preview { text-align: left; margin: 0 0 3px 0; display: inline; width: 99%;} - width is calculated in IE, since 99% = 99% full browser width
-	.ui-keyboard-keyset { text-align: center; white-space: nowrap; }
-	.ui-keyboard-input { text-align: left; }
-	.ui-keyboard-input-current { -moz-box-shadow: 1px 1px 10px #00f; -webkit-box-shadow: 1px 1px 10px #00f; box-shadow: 1px 1px 10px #00f; }
-	.ui-keyboard-placeholder { color: #888; }
-	.ui-keyboard-nokeyboard { color: #888; border-color: #888; } - disabled or readonly inputs, or use input[disabled='disabled'] { color: #f00; }
+	Please see the keyboard.css file
 */
+/*jshint browser:true, jquery:true, unused:false */
 ;(function($){
+"use strict";
 $.keyboard = function(el, options){
 	var base = this, o;
 
@@ -385,6 +373,7 @@ $.keyboard = function(el, options){
 							base.tab = true; // see keyup comment above
 							return false;
 						}
+						break; // adding a break here to make jsHint happy
 
 					case 13:
 						$.keyboard.keyaction.enter(base, null, e);
@@ -1129,7 +1118,7 @@ $.keyboard = function(el, options){
 		dec : function(base){
 			base.insertText((base.decimal) ? '.' : ',');
 		},
-		default : function(base,el){
+		"default" : function(base,el){
 			base.shiftActive = base.altActive = base.metaActive = false;
 			base.showKeySet(el);
 		},
@@ -1332,7 +1321,7 @@ $.keyboard = function(el, options){
 			's'      : '\u21e7:Shift',        // thick hollow up arrow
 			'shift'  : 'Shift:Shift',
 			'sign'   : '\u00b1:Change Sign',  // +/- sign for num pad
-			'space'  : ' :Space',
+			'space'  : '&nbsp;:Space',
 			't'      : '\u21e5:Tab',          // right arrow to bar (used since this virtual keyboard works with one directional tabs)
 			'tab'    : '\u21e5 Tab:Tab'       // \u21b9 is the true tab symbol (left & right arrows)
 		},
@@ -1469,6 +1458,7 @@ $.keyboard = function(el, options){
  * Highly modified from the original
  */
 (function($, len, createRange, duplicate){
+"use strict";
 $.fn.caret = function(options,opt2) {
 	if ( typeof this[0] === 'undefined' || this.is(':hidden') || this.css('visibility') === 'hidden' ) { return this; }
 	var n, s, start, e, end, selRange, range, stored_range, te, val,

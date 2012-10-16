@@ -73,6 +73,17 @@ Moved to the Wiki Pages: [Home](https://github.com/Mottie/Keyboard/wiki/Home) | 
 
 Only the latest changes will be shown below, see the wiki log to view older versions.
 
+### Version 1.15 (10/16/2012)
+
+* Added iPad touch events.
+ * Thanks to [mfayez](https://github.com/mfayez) for sharing the code!
+ * Hopefully this fixes issues [#100](https://github.com/Mottie/Keyboard/issues/100) and [#117](https://github.com/Mottie/Keyboard/issues/117).
+* Added a `{default}` action key definition.
+  * Clicking it makes the keyboard show the default keyset.
+  * See gitaarik's updated [iPad demo](http://mottie.github.com/Keyboard/) code to see how it is used.
+* Fixed a problem which should prevent a combo replace error. See [issue #116](https://github.com/Mottie/Keyboard/issues/116#issuecomment-9479917).
+* Modified space bar css to not use a negative text indent. See [this article](http://nicolasgallagher.com/another-css-image-replacement-technique/).
+
 ### Version 1.14.1 (10/8/2012)
 
 * Disabled jQuery UI Themeswitcher from the main and layouts demo pages, as the script is no longer available.

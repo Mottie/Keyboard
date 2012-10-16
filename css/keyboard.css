@@ -6,7 +6,8 @@
 .ui-keyboard-button span { padding: 0; margin: 0; white-space:nowrap; }
 .ui-keyboard-button-endrow { clear: left; }
 .ui-keyboard-widekey { min-width: 4em; width: auto; }
-.ui-keyboard-space { width: 15em; font: 0/0 a; text-shadow: none; color: transparent; } /* see http://nicolasgallagher.com/another-css-image-replacement-technique/ */
+.ui-keyboard-space { width: 15em; }
+.ui-keyboard-space span { font: 0/0 a; text-shadow: none; color: transparent; } /* see http://nicolasgallagher.com/another-css-image-replacement-technique/ */
 .ui-keyboard-preview-wrapper { text-align: center; }
 .ui-keyboard-preview { text-align: left; margin: 0 0 3px 0; display: inline; width: 99%;} /* width is calculated in IE, since 99% = 99% full browser width =( */ 
 .ui-keyboard-keyset { text-align: center; white-space: nowrap; }
