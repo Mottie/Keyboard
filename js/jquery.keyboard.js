@@ -68,6 +68,7 @@ Options:
 				{clear}       - Clear input window - used in num pad
 				{combo}       - Toggle combo (diacritic) key
 				{dec}         - Decimal for numeric entry, only allows one decimal (optional use in num pad)
+				{default}     - Switch to the default keyset
 				{e}, {enter}  - Return/New Line
 				{lock}        - Caps lock key
 				{meta#}       - Meta keys that change the key set (# can be any integer)
@@ -146,7 +147,7 @@ $.keyboard = function(el, options){
 
 		// Close with esc key & clicking outside
 		if (o.alwaysOpen) { o.stayOpen = true; }
-		$(document).bind('mousedown.keyboard keyup.keyboard', function(e){
+		$(document).bind('mousedown.keyboard keyup.keyboard touchstart.keyboard', function(e){
 			if (base.opening) { return; }
 			base.escClose(e);
 			// needed for IE to allow switching between keyboards smoothly
@@ -404,11 +405,11 @@ $.keyboard = function(el, options){
 						break;
 				}
 			})
-			.bind('mouseup.keyboard', function(){
+			.bind('mouseup.keyboard touchend.keyboard', function(){
 				if (base.checkCaret) { base.lastCaret = base.$preview.caret(); }
 			});
 			// prevent keyboard event bubbling
-			base.$keyboard.bind('mousedown.keyboard click.keyboard', function(e){
+			base.$keyboard.bind('mousedown.keyboard click.keyboard touchstart.keyboard', function(e){
 				e.stopPropagation();
 			});
 
@@ -659,6 +660,7 @@ $.keyboard = function(el, options){
 				val = val.replace(base.regex, function(s, accent, letter){
 					return (o.combos.hasOwnProperty(accent)) ? o.combos[accent][letter] || s : s;
 				});
+			// prevent combo replace error, in case the keyboard closes - see issue #116
 			} else if (base.$preview.length) {
 				// Modern browsers - check for combos from last two characters left of the caret
 				t = pos.start - (pos.start - 2 >= 0 ? 2 : 0);
@@ -1082,7 +1084,7 @@ $.keyboard = function(el, options){
 	};
 
 	base.destroy = function() {
-		$(document).unbind('mousedown.keyboard keyup.keyboard');
+		$(document).unbind('mousedown.keyboard keyup.keyboard touchstart.keyboard');
 		if (base.$keyboard) { base.$keyboard.remove(); }
 		var unb = $.trim(o.openOn + ' accepted beforeClose canceled change contextmenu hidden initialized keydown keypress keyup visible').split(' ').join('.keyboard ');
 		base.$el
@@ -1406,7 +1408,7 @@ $.keyboard = function(el, options){
 		openOn       : 'focus',
 
 		// Event (namepaced) for when the character is added to the input (clicking on the keyboard)
-		keyBinding   : 'mousedown',
+		keyBinding   : 'mousedown touchstart',
 
 		// combos (emulate dead keys : http://en.wikipedia.org/wiki/Keyboard_layout#US-International)
 		// if user inputs `a the script converts it to à, ^o becomes ô, etc.
