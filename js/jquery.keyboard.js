@@ -1127,6 +1127,10 @@ $.keyboard = function(el, options){
 		dec : function(base){
 			base.insertText((base.decimal) ? '.' : ',');
 		},
+		default : function(base,el){
+			base.shiftActive = base.altActive = base.metaActive = false;
+			base.showKeySet(el);
+		},
 		// el is the pressed key (button) object; it is null when the real keyboard enter is pressed
 		enter : function(base, el, e) {
 			var tag = base.el.tagName, o = base.options;
