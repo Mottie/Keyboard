@@ -659,7 +659,7 @@ $.keyboard = function(el, options){
 				val = val.replace(base.regex, function(s, accent, letter){
 					return (o.combos.hasOwnProperty(accent)) ? o.combos[accent][letter] || s : s;
 				});
-			} else {
+			} else if (base.$preview.length) {
 				// Modern browsers - check for combos from last two characters left of the caret
 				t = pos.start - (pos.start - 2 >= 0 ? 2 : 0);
 				// target last two characters
