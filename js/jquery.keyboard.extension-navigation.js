@@ -50,6 +50,7 @@ $.fn.addNavigation = function(options){
 			defaults = {
 				position   : [0,0],     // set start position [row-number, key-index]
 				toggleMode : false,     // true = navigate the virtual keyboard, false = navigate in input/textarea
+				
 				focusClass : 'hasFocus' // css class added when toggle mode is on
 			};
 		if (!base) { return; }
@@ -131,7 +132,8 @@ $.fn.addNavigation = function(options){
 		}
 		// capture and simulate typing
 		base.$el
-			.bind('visible.keyboard', function(){
+			.bind('visible.keyboard', function(e){
+				base.$keyboard.find('.ui-state-hover').removeClass('ui-state-hover');
 				base.navigation_init();
 			})
 			.bind('inactive.keyboard hidden.keyboard', function(e){
