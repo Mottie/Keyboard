@@ -127,7 +127,7 @@ $.keyboard = function(el, options){
 		base.temp = [ '', 0, 0 ]; // used when building the keyboard - [keyset element, row, index]
 
 		// Bind events
-		$.each('initialized visible change hidden canceled accepted beforeClose'.split(' '), function(i,f){
+		$.each('initialized beforeVisible visible change hidden canceled accepted beforeClose'.split(' '), function(i,f){
 			if ($.isFunction(o[f])){
 				base.$el.bind(f + '.keyboard', o[f]);
 			}
@@ -243,6 +243,9 @@ $.keyboard = function(el, options){
 			base.showKeySet();
 		}
 
+		// beforeVisible event
+		base.$el.trigger( 'beforeVisible.keyboard', [ base, base.el ] );
+
 		// show & position keyboard
 		base.$keyboard
 			// basic positioning before it is set by position utility
@@ -286,6 +289,7 @@ $.keyboard = function(el, options){
 		// opening keyboard flag; delay allows switching between keyboards without immediately closing the keyboard
 		setTimeout(function(){
 			base.opening = false;
+			base.$preview.focus(); // for IE
 		}, 500);
 
 		// return base to allow chaining in typing extension
@@ -1173,7 +1177,6 @@ $.keyboard = function(el, options){
 		tab : function(base) {
 			var tag = base.el.tagName, 
 				o = base.options;
-			
 			if (tag === 'INPUT') {
 				if (o.tabNavigation) {
 					return base.switchInput(!base.shiftActive, true);    
@@ -1182,7 +1185,6 @@ $.keyboard = function(el, options){
 					return false;
 				}
 			}
-			
 			base.insertText('\t');
 		}
 	};
