@@ -1,6 +1,6 @@
 /*!
 jQuery UI Virtual Keyboard
-Version 1.15
+Version 1.16
 
 Author: Jeremy Satterfield
 Modified: Rob Garrison (Mottie on github)
@@ -243,13 +243,14 @@ $.keyboard = function(el, options){
 			base.showKeySet();
 		}
 
+		// basic positioning before it is set by position utility
+		base.$keyboard.css({ position: 'absolute', left: 0, top: 0 })
+
 		// beforeVisible event
 		base.$el.trigger( 'beforeVisible.keyboard', [ base, base.el ] );
 
-		// show & position keyboard
+		// show keyboard
 		base.$keyboard
-			// basic positioning before it is set by position utility
-			.css({ position: 'absolute', left: 0, top: 0 })
 			.addClass('ui-keyboard-has-focus')
 			.show();
 
@@ -264,7 +265,9 @@ $.keyboard = function(el, options){
 		}
 
 		// position after keyboard is visible (required for UI position utility) and appropriately sized
-		base.$keyboard.position(base.position); 
+		if ($.ui.position) {
+			base.$keyboard.position(base.position);
+		}
 
 		base.$preview.focus();
 
@@ -307,7 +310,8 @@ $.keyboard = function(el, options){
 		if (o.enterNavigation) { base.alwaysAllowed.push(13); } // add enter to allowed keys
 		base.$preview
 			.bind('keypress.keyboard', function(e){
-				var k = String.fromCharCode(e.charCode || e.which);
+				var k = base.lastKey = String.fromCharCode(e.charCode || e.which);
+				base.$lastKey = null; // not a virtual keyboard key
 				if (base.checkCaret) { base.lastCaret = base.$preview.caret(); }
 
 				// update caps lock - can only do this while typing =(
@@ -400,6 +404,9 @@ $.keyboard = function(el, options){
 			})
 			.bind('mouseup.keyboard touchend.keyboard', function(){
 				if (base.checkCaret) { base.lastCaret = base.$preview.caret(); }
+			})
+			.bind('mousemove.keyboard', function(){
+				base.$preview.focus();
 			});
 			// prevent keyboard event bubbling
 			base.$keyboard.bind('mousedown.keyboard click.keyboard touchstart.keyboard', function(e){
@@ -423,6 +430,8 @@ $.keyboard = function(el, options){
 				// 'key', { action: doAction, original: n, curTxt : n, curNum: 0 }
 				var txt, key = $.data(this, 'key'), action = key.action.split(':')[0];
 				base.$preview.focus();
+				base.$lastKey = $(this);
+				base.lastKey = key.curTxt;
 				// Start caret in IE when not focused (happens with each virtual keyboard button click
 				if (base.checkCaret) { base.$preview.caret( base.lastCaret.start, base.lastCaret.end ); }
 				if (action.match('meta')) { action = 'meta'; }
@@ -430,7 +439,7 @@ $.keyboard = function(el, options){
 					// stop processing if action returns false (close & cancel)
 					if ($.keyboard.keyaction[action](base,this,e) === false) { return; }
 				} else if (typeof key.action !== 'undefined') {
-					txt = (base.wheel && !$(this).hasClass('ui-keyboard-actionkey')) ? key.curTxt : key.action;
+					txt = base.lastKey = (base.wheel && !$(this).hasClass('ui-keyboard-actionkey')) ? key.curTxt : key.action;
 					base.insertText(txt);
 					if (!base.capsLock && !o.stickyShift && !e.shiftKey) {
 						base.shiftActive = false;
