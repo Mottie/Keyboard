@@ -1,5 +1,5 @@
 /*
- * jQuery UI Virtual Keyboard Autocomplete v1.3 for Keyboard v1.8+ only
+ * jQuery UI Virtual Keyboard Autocomplete v1.4 for Keyboard v1.8+ only
  *
  * By Rob Garrison (aka Mottie & Fudgey)
  * Licensed under the MIT License
@@ -32,6 +32,9 @@ $.fn.addAutocomplete = function(){
 		// make sure a keyboard is attached
 		var base = $(this).data('keyboard');
 		if (!base) { return; }
+
+		// jQuery UI versions 1.9+ are different
+		base.autocomplete_new_version = parseFloat($.ui.version) >= 1.9;
 
 		// Setup
 		base.autocomplete_init = function(txt, delay, accept){
@@ -101,9 +104,11 @@ $.fn.addAutocomplete = function(){
 			switch( event.keyCode ) {
 			case keyCode.PAGE_UP:
 				base.$autocomplete._move( "previousPage", event );
+				event.preventDefault(); // stop page from moving up
 				break;
 			case keyCode.PAGE_DOWN:
 				base.$autocomplete._move( "nextPage", event );
+				event.preventDefault(); // stop page from moving down
 				break;
 			case keyCode.UP:
 				base.$autocomplete._move( "previous", event );
@@ -117,8 +122,9 @@ $.fn.addAutocomplete = function(){
 				break;
 			case keyCode.ENTER:
 			case keyCode.NUMPAD_ENTER:
-				t = base.$autocomplete.menu.element.find('#ui-active-menuitem').text() || '';
+				t = base.$autocomplete.menu.element.find('#ui-active-menuitem,.ui-state-focus').text() || '';
 				if (t !== '') { base.$preview.val(t); }
+				if (base.autocomplete_new_version) { base.$autocomplete.menu.select( event ); }
 				break;
 			default:
 				// keypress is triggered before the input value is changed
@@ -139,7 +145,7 @@ $.fn.addAutocomplete = function(){
 		// replace original function with this one
 		base.escClose = function(e){
 			// prevent selecting an item in autocomplete from closing keyboard
-			if (base.hasAutocomplete && e.target.id === 'ui-active-menuitem') { return; }
+			if ( base.hasAutocomplete && (e.target.id === 'ui-active-menuitem' || $(e.target).hasClass('ui-state-focus')) ) { return; }
 			base.origEscClose(e);
 		};
 
