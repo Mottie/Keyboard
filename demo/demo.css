@@ -40,7 +40,7 @@ textarea, input { width: 260px; background: #333; color: #ddd; border: #777 1px 
 
 #showcode {
  display: none;
- background: #333;
+ background: #222;
  overflow: auto;
  width: 100%;
  margin: 0 auto;
@@ -51,8 +51,6 @@ textarea, input { width: 260px; background: #333; color: #ddd; border: #777 1px 
  padding: 0 10px;
  text-align: left;
 }
-#showcode .ct { font-weight: 700; color: #9fcdff; }
-#showcode .comment { color: #92d050; }
 
 .oldie #page-wrap { width: 900px; }
 .oldie .block { float: left; display: inherit; }

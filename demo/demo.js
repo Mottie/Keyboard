@@ -1,9 +1,5 @@
 jQuery(function($) {
 
-	// Theme switcher
-	// ********************
-	// $('#switcher').themeswitcher();
-
 	// QWERTY Text Input
 	// The bottom of this file is where the autocomplete extension is added
 	// ********************
@@ -242,12 +238,12 @@ jQuery(function($) {
 	$('#ipad').keyboard({
 
 		display: {
-			'bksp'   :  "\u2190",
-			'accept' : 'return',
-			'default'  : 'ABC',
-			'shift'  : '\u21d1',
-			'meta1'  : '.?123',
-			'meta2'  : '#+='
+			'bksp'    : '\u2190',
+			'accept'  : 'return',
+			'default' : 'ABC',
+			'shift'   : '\u21d1',
+			'meta1'   : '.?123',
+			'meta2'   : '#+='
 		},
 
 		layout: 'custom',
@@ -288,12 +284,12 @@ jQuery(function($) {
 	$('#ipad-email').keyboard({
 
 		display: {
-			'bksp': '\u2190',
-			'enter': 'return',
-			'default': 'ABC',
-			'meta1': '.?123',
-			'meta2': '#+=',
-			'accept': '\u21d3'
+			'bksp'    : '\u2190',
+			'enter'   : 'return',
+			'default' : 'ABC',
+			'meta1'   : '.?123',
+			'meta2'   : '#+=',
+			'accept'  : '\u21d3'
 		},
 
 		layout: 'custom',
@@ -329,7 +325,7 @@ jQuery(function($) {
 
 	});
 
-	// Console showing callback messages under the theme switcher
+	// Console showing callback messages
 	// ********************
 	$('.ui-keyboard-input').bind('visible.keyboard hidden.keyboard beforeClose.keyboard accepted.keyboard canceled.keyboard', function(e, keyboard, el, status){
 		var c = $('#console'),
@@ -351,6 +347,8 @@ jQuery(function($) {
 	$('h2 span').click(function(){
 		var t = '<h2>' + $(this).parent().text() + ' Code</h2>' + $(this).closest('.block').find('.code').html();
 		$('#showcode').html(t).show();
+		$("#showcode .js").chili();
+		$("#showcode .html").chili();
 	});
 
 	// add tooltips

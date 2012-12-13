@@ -24,8 +24,9 @@
  *   .addNavigation();    // this keyboard extension
  * 
  */
-
+/*jshint browser:true, jquery:true, unused:false */
 (function($){
+"use strict";
 $.keyboard = $.keyboard || {};
 
 $.keyboard.navigationKeys = {

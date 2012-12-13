@@ -6,9 +6,9 @@
 	<title>Virtual Keyboard</title>
 
 	<!-- jQuery & jQuery UI + theme (required) -->
-	<link href="http://code.jquery.com/ui/1.9.0/themes/ui-darkness/jquery-ui.css" rel="stylesheet">
+	<link href="http://code.jquery.com/ui/1.9.2/themes/ui-darkness/jquery-ui.css" rel="stylesheet">
 	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.8/jquery.js"></script>
-	<script src="http://code.jquery.com/ui/1.9.0/jquery-ui.min.js"></script>
+	<script src="http://code.jquery.com/ui/1.9.2/jquery-ui.min.js"></script>
 
 	<!-- keyboard widget css & script (required) -->
 	<link href="css/keyboard.css" rel="stylesheet">
@@ -23,9 +23,8 @@
 	<link href="demo/demo.css" rel="stylesheet">
 	<script src="demo/demo.js"></script>
 	<script src="http://mottie.github.com/Jatt/js/jquery.jatt.min.js"></script> <!-- tooltips -->
-
-	<!-- theme switcher
-	<script src="http://jqueryui.com/themeroller/themeswitchertool/"></script> -->
+	<script src="demo/jquery.chili-2.2.js"></script> <!-- syntax highlighting -->
+	<script src="demo/recipes.js"></script>
 
 </head>
 
@@ -44,7 +43,7 @@
 		<a class="play" href="http://jsfiddle.net/Mottie/MK947/">Playground</a>
 		<a class="git" href="https://github.com/Mottie/Keyboard/wiki">Documentation</a>
 		<a class="git" href="http://github.com/Mottie/Keyboard/downloads">Download</a>
-		<a class="issue" href="https://github.com/Mottie/Keyboard/issues">Issues</a><br><br>
+		<a class="issue" href="https://github.com/Mottie/Keyboard/issues">Issues</a><br>
 	</div>
 	<!-- End Links -->
 
@@ -54,7 +53,6 @@
 		updated &amp; maintained by <a href="http://wowmotty.blogspot.com/2010/11/jquery-ui-keyboard-widget.html">Rob Garrison</a>
 	</h4>
 
-	<div id="switcher"></div>
 	<ul id="console">
 		<li>...</li>
 		<li>...</li>
@@ -72,13 +70,11 @@
 			* Autocomplete.
 		</small>
 		<div class="code ui-corner-all">
-			<pre><code><span class="ct">HTML
-=======</span>
-&lt;input class="qwerty" type="text" placeholder="Enter something..."&gt;
-
-<span class="ct">Script
-=======</span>
-<span class="comment">// Autocomplete demo</span>
+			<pre class="html">&lt;!-- HTML --&gt;
+&lt;input class="qwerty" type="text" placeholder="Enter something..."&gt;</pre>
+<pre class="js">
+// Script
+// Autocomplete demo
 var availableTags = ["ActionScript", "AppleScript", "Asp", "BASIC", "C", "C++", "Clojure",
  "COBOL", "ColdFusion", "Erlang", "Fortran", "Groovy", "Haskell", "Java", "JavaScript",
  "Lisp", "Perl", "PHP", "Python", "Ruby", "Scala", "Scheme" ];
@@ -89,7 +85,7 @@ $('.qwerty:eq(0)')
   source: availableTags
  })
  .addAutocomplete()
- .addTyping();</code></pre>
+ .addTyping();</pre>
 		</div>
 	</div>
 
@@ -97,12 +93,10 @@ $('.qwerty:eq(0)')
 		<h2><span class="tooltip" title="Click to see code">QWERTY Password</span> <img id="passwd" class="tooltip" title="Click to open the virtual keyboard" src="demo/keyboard.png"></h2>
 		<input class="qwerty" type="password">
 		<div class="code ui-corner-all">
-			<pre><code><span class="ct">HTML
-=======</span>
-&lt;input class="qwerty" type="password"&gt;
-
-<span class="ct">Script
-=======</span>
+			<pre class="html">&lt;!-- HTML --&gt;
+&lt;input class="qwerty" type="password"&gt;</pre>
+<pre class="js">
+// Script
 $('.qwerty:eq(1)')
  .keyboard({ 
   openOn : null,
@@ -112,7 +106,7 @@ $('.qwerty:eq(1)')
  .addTyping();
 $('#passwd').click(function(){
  $('.qwerty:eq(1)').getkeyboard().reveal();
-});</code></pre>
+});</pre>
 		</div>
 		<br>
 		<small>
@@ -132,18 +126,16 @@ $('#passwd').click(function(){
 			* Known readonly bug in Safari.
 		</small>
 		<div class="code ui-corner-all">
-			<pre><code><span class="ct">HTML
-=======</span>
-&lt;textarea class="qwerty"&gt;&lt;/textarea&gt;
-
-<span class="ct">Script
-=======</span>
+			<pre class="html">&lt;!-- HTML --&gt;
+&lt;textarea class="qwerty"&gt;&lt;/textarea&gt;</pre>
+<pre class="js">
+// Script
 $('.qwerty:eq(2)')
  .keyboard({
   layout   : 'qwerty',
-  lockInput: true <span class="comment">// prevent manual keyboard entry</span>
+  lockInput: true // prevent manual keyboard entry
  })
- .addTyping();</code></pre>
+ .addTyping();</pre>
 		</div>
 	</div>
 
@@ -151,19 +143,16 @@ $('.qwerty:eq(2)')
 		<h2><span class="tooltip" title="Click to see code">International</span> <img id="inter-type" class="tooltip" title="Try out the typing extension!" src="demo/keyboard.png"></h2>
 		<textarea id="inter"></textarea>
 		<div class="code ui-corner-all">
-			<pre><code><span class="ct">HTML
-=======</span>
-&lt;textarea id="inter"&gt;&lt;/textarea&gt;
-
-<span class="ct">Script
-=======</span>
+			<pre class="html">&lt;!-- HTML --&gt;
+&lt;textarea id="inter"&gt;&lt;/textarea&gt;</pre>
+<pre class="js">
+// Script
 $('#inter')
  .keyboard({ layout: 'international' })
  .addTyping();
 
-<span class="ct">Script - typing extension
-=======</span>
-$('#inter').getkeyboard().reveal().typeIn('\tHello \b\n\tWorld', 500);</code></pre>
+// Script - typing extension
+$('#inter').getkeyboard().reveal().typeIn('\tHello \b\n\tWorld', 500);</pre>
 		</div>
 	</div>
 
@@ -171,15 +160,13 @@ $('#inter').getkeyboard().reveal().typeIn('\tHello \b\n\tWorld', 500);</code></p
 		<h2><span class="tooltip" title="Click to see code">Alphabetical</span></h2>
 		<textarea id="alpha"></textarea>
 		<div class="code ui-corner-all">
-			<pre><code><span class="ct">HTML
-=======</span>
-&lt;textarea id="alpha"&gt;&lt;/textarea&gt;
-
-<span class="ct">Script
-=======</span>
+			<pre class="html">&lt;!-- HTML --&gt;
+&lt;textarea id="alpha"&gt;&lt;/textarea&gt;</pre>
+<pre class="js">
+// Script
 $('#alpha')
  .keyboard({ layout: 'alpha' })
- .addTyping();</code></pre>
+ .addTyping();</pre>
 		</div>
 	</div>
 
@@ -187,15 +174,13 @@ $('#alpha')
 		<h2><span class="tooltip" title="Click to see code">Dvorak</span></h2>
 		<textarea id="dvorak"></textarea>
 		<div class="code ui-corner-all">
-			<pre><code><span class="ct">HTML
-=======</span>
-&lt;textarea id="dvorak"&gt;&lt;/textarea&gt;
-
-<span class="ct">Script
-=======</span>
+			<pre class="html">&lt;!-- HTML --&gt;
+&lt;textarea id="dvorak"&gt;&lt;/textarea&gt;</pre>
+<pre class="js">
+// Script
 $('#dvorak')
  .keyboard({ layout: 'dvorak' })
- .addTyping();</code></pre>
+ .addTyping();</pre>
 		</div>
 	</div>
 
@@ -203,20 +188,18 @@ $('#dvorak')
 		<h2><span class="tooltip" title="Click to see code">Num Pad</span></h2>
 		<input id="num" class="alignRight" type="text">
 		<div class="code ui-corner-all">
-			<pre><code><span class="ct">HTML
-=======</span>
-&lt;input id="num" class="alignRight" type="text"&gt;
-
-<span class="ct">Script
-=======</span>
+			<pre class="html">&lt;!-- HTML --&gt;
+&lt;input id="num" class="alignRight" type="text"&gt;</pre>
+<pre class="js">
+// Script
 $('#num')
  .keyboard({
   layout : 'num',
-  restrictInput : true, <span class="comment">// Prevent keys not in the displayed keyboard from being typed in</span>
-  preventPaste : true,  <span class="comment">// prevent ctrl-v and right click</span>
+  restrictInput : true, // Prevent keys not in the displayed keyboard from being typed in
+  preventPaste : true,  // prevent ctrl-v and right click
   autoAccept : true
  })
- .addTyping();</code></pre>
+ .addTyping();</pre>
 		</div>
 		<br>
 		<small>
@@ -230,12 +213,10 @@ $('#num')
 		<h2><span class="tooltip" title="Click to see code">Custom: Hex</span></h2>
 		<input id="hex" type="text">
 		<div class="code ui-corner-all">
-			<pre><code><span class="ct">HTML
-=======</span>
-&lt;input id="hex" type="text"&gt;
-
-<span class="ct">Script
-=======</span>
+			<pre class="html">&lt;!-- HTML --&gt;
+&lt;input id="hex" type="text"&gt;</pre>
+<pre class="js">
+// Script
 $('#hex')
  .keyboard({
   layout: 'custom',
@@ -249,10 +230,10 @@ $('#hex')
    ]
   },
   maxLength : 6,
-  restrictInput : true, <span class="comment">// Prevent keys not in the displayed keyboard from being typed in</span>
-  useCombos : false <span class="comment">// don't want A+E to become a ligature</span>
+  restrictInput : true, // Prevent keys not in the displayed keyboard from being typed in
+  useCombos : false // don't want A+E to become a ligature
  })
- .addTyping();</code></pre>
+ .addTyping();</pre>
 		</div>
 		<br>
 		<small>
@@ -265,26 +246,24 @@ $('#hex')
 		<h2><span class="tooltip" title="Click to see code">Custom: Meta Sets</span> <img id="meta-type" class="tooltip" title="Try out the typing extension!" src="demo/keyboard.png"></h2>
 		<textarea id="meta"></textarea>
 		<div class="code ui-corner-all">
-			<pre><code><span class="ct">HTML
-=======</span>
-&lt;textarea id="meta"&gt;&lt;/textarea&gt;
-
-<span class="ct">Script
-=======</span>
+			<pre class="html">&lt;!-- HTML --&gt;
+&lt;textarea id="meta"&gt;&lt;/textarea&gt;</pre>
+<pre class="js">
+// Script
 $('#meta')
  .keyboard({
   layout: 'custom',
   display: {
    'alt'    : 'AltGr:It\'s all Greek to me',
-   'meta1'  : '\u2666:end of alphabet', <span class="comment">// Diamond with label that shows in the title (spaces are okay here)</span>
-   'meta2'  : '\u2665:Russian',         <span class="comment">// Heart</span>
-   'meta3'  : '\u2663:zodiac',          <span class="comment">// Club</span>
-   'meta99' : '\u2660:numbers'          <span class="comment">// Spade</span>
+   'meta1'  : '\u2666:end of alphabet', // Diamond with label that shows in the title (spaces are okay here)
+   'meta2'  : '\u2665:Russian',         // Heart
+   'meta3'  : '\u2663:zodiac',          // Club
+   'meta99' : '\u2660:numbers'          // Spade
   },
   customLayout: {
    'default' : [
-    <span class="comment">// Add labels using a ":" after the key's name and replace spaces with "_"
-    // without the labels this line is just 'a b c d e f g'</span>
+    // Add labels using a ":" after the key's name and replace spaces with "_"
+    // without the labels this line is just 'a b c d e f g'
     'a:a_letter,_that_sounds_like_"ey" b:a_bug_that_makes_honey c:is_when_I_look_around d:a_grade,_I_never_got e:is_what_girls_say_when_they_run_away_from_me f:u,_is_what_I_say_to_those_screaming_girls! g:gee,_is_that_the_end_of_my_wittiness?',
     '{shift} {alt} {meta1} {meta2} {meta3} {meta99}',
     '{bksp} {sp:1} {accept} {cancel}'
@@ -295,52 +274,52 @@ $('#meta')
     '{bksp} {sp:1} {accept} {cancel}'
    ],
    'alt' : [ 
-    '\u03b1 \u03b2 \u03b3 \u03b4 \u03b5 \u03b6 \u03b7', <span class="comment">// lower case Greek</span>
+    '\u03b1 \u03b2 \u03b3 \u03b4 \u03b5 \u03b6 \u03b7', // lower case Greek
     '{shift} {alt} {meta1} {meta2} {meta3} {meta99}',
     '{bksp} {sp:1} {accept} {cancel}'
    ],
    'alt-shift' : [
-    '\u0391 \u0392 \u0393 \u0394 \u0395 \u0396 \u0397', <span class="comment">// upper case Greek</span>
+    '\u0391 \u0392 \u0393 \u0394 \u0395 \u0396 \u0397', // upper case Greek
     '{shift} {alt} {meta1} {meta2} {meta3} {meta99}',
     '{bksp} {sp:1} {accept} {cancel}'
    ],
    'meta1' : [
-    't u v w x y z', <span class="comment">// lower case end of alphabet</span>
+    't u v w x y z', // lower case end of alphabet
     '{shift} {alt} {meta1} {meta2} {meta3} {meta99}',
     '{bksp} {sp:1} {accept} {cancel}'
    ],
    'meta1-shift' : [
-    'T U V W X Y Z', <span class="comment">// upper case</span>
+    'T U V W X Y Z', // upper case
     '{shift} {alt} {meta1} {meta2} {meta3} {meta99}',
     '{bksp} {sp:1} {accept} {cancel}'
    ],
    'meta1-alt' : [
-    '0 9 8 7 6 5 4', <span class="comment">// numbers</span>
+    '0 9 8 7 6 5 4', // numbers
     '{shift} {alt} {meta1} {meta2} {meta3} {meta99}',
     '{bksp} {sp:1} {accept} {cancel}'
    ],
    'meta1-alt-shift' : [
-    ') ( * & ^ % $', <span class="comment">// shifted numbers</span>
+    ') ( * & ^ % $', // shifted numbers
     '{shift} {alt} {meta1} {meta2} {meta3} {meta99}',
     '{bksp} {sp:1} {accept} {cancel}'
    ],
    'meta2' : [
-    '\u0430 \u0431 \u0432 \u0433 \u0434 \u0435 \u0436', <span class="comment">// lower case Russian</span>
+    '\u0430 \u0431 \u0432 \u0433 \u0434 \u0435 \u0436', // lower case Russian
     '{shift} {alt} {meta1} {meta2} {meta3} {meta99}',
     '{bksp} {sp:1} {accept} {cancel}'
    ],
    'meta2-shift' : [
-    '\u0410 \u0411 \u0412 \u0413 \u0414 \u0415 \u0416', <span class="comment">// upper case Russian</span>
+    '\u0410 \u0411 \u0412 \u0413 \u0414 \u0415 \u0416', // upper case Russian
     '{shift} {alt} {meta1} {meta2} {meta3} {meta99}',
     '{bksp} {sp:1} {accept} {cancel}'
    ],
    'meta3' : [
-    '\u2648 \u2649 \u264A \u264B \u264C \u264D \u264E', <span class="comment">// Zodiac</span>
+    '\u2648 \u2649 \u264A \u264B \u264C \u264D \u264E', // Zodiac
     '{shift} {alt} {meta1} {meta2} {meta3} {meta99}',
     '{bksp} {sp:1} {accept} {cancel}'
    ],
    'meta99' : [
-    '1 2 3 4 5 6 7', <span class="comment">// only because I ran out of ideas</span>
+    '1 2 3 4 5 6 7', // only because I ran out of ideas
     '{shift} {alt} {meta1} {meta2} {meta3} {meta99}',
     '{bksp} {sp:1} {accept} {cancel}'
    ]
@@ -348,10 +327,9 @@ $('#meta')
  })
  .addTyping();
 
-<span class="ct">Script - typing extension
-=======</span>
+//Script - typing extension
 var meta = $('#meta').getkeyboard();
-meta.reveal().typeIn('aBcD1112389\u2648\u2649', 700, function(){ meta.accept(); alert('all done!'); });</code></pre>
+meta.reveal().typeIn('aBcD1112389\u2648\u2649', 700, function(){ meta.accept(); alert('all done!'); });</pre>
 		</div>
 	</div>
 
@@ -359,12 +337,10 @@ meta.reveal().typeIn('aBcD1112389\u2648\u2649', 700, function(){ meta.accept(); 
 		<h2><span class="tooltip" title="Click to see code">Custom: Junk</span></h2>
 		<textarea id="junk"></textarea>
 		<div class="code ui-corner-all">
-			<pre><code><span class="ct">HTML
-=======</span>
-&lt;textarea id="junk"&gt;&lt;/textarea&gt;
-
-<span class="ct">Script
-=======</span>
+			<pre class="html">&lt;!-- HTML --&gt;
+&lt;textarea id="junk"&gt;&lt;/textarea&gt;</pre>
+<pre class="js">
+// Script
 $('#junk')
  .keyboard({
   layout: 'custom',
@@ -384,15 +360,15 @@ $('#junk')
     '{a} {sp:1} {c} {sp:1} {s}'
    ]
   },
-  <span class="comment">// Added here as an example on how to add combos</span>
+  // Added here as an example on how to add combos
   combos : {
    'a' : { e: '\u00e6' },
    'A' : { E: '\u00c6' }
   },
-  <span class="comment">// example callback function</span>
+  // example callback function
   accepted : function(e, keyboard, el){ alert('The content "' + el.value + '" was accepted!'); }
  })
- .addTyping();</code></pre>
+ .addTyping();</pre>
 		</div>
 		<br>
 		<small>
@@ -407,28 +383,26 @@ $('#junk')
 		<h2><span class="tooltip" title="Click to see code">Custom: Mapped Keys</span></h2>
 		<textarea id="map"></textarea>
 		<div class="code ui-corner-all">
-			<pre><code><span class="ct">HTML
-=======</span>
-&lt;textarea id="map"&gt;&lt;/textarea&gt;
-
-<span class="ct">Script
-=======</span>
-<span class="comment">// *** Mapped keys ***</span>
+			<pre class="html">&lt;!-- HTML --&gt;
+&lt;textarea id="map"&gt;&lt;/textarea&gt;</pre>
+<pre class="js">
+// Script
+// *** Mapped keys ***
 $('#map').keyboard({
  layout: 'custom',
  customLayout: {
   'default' : [ 
-   <span class="comment">// "n(a):title_or_tooltip"; n = new key, (a) = actual key, ":label" = title_or_tooltip (use an underscore "_" in place of a space " ")</span>
-   '\u03b1(a):lower_case_alpha_(type_a) \u03b2(b):lower_case_beta_(type_b) \u03b3(c):lower_case_gamma_(type_c) \u03b4(d):lower_case_delta_(type_d) \u03b5(e):lower_case_epsilon_(type_e) \u03b6(f):lower_case_zeta_(type_f) \u03b7(g):lower_case_eta_(type_g)', <span class="comment">// lower case Greek</span>
+   // "n(a):title_or_tooltip"; n = new key, (a) = actual key, ":label" = title_or_tooltip (use an underscore "_" in place of a space " ")
+   '\u03b1(a):lower_case_alpha_(type_a) \u03b2(b):lower_case_beta_(type_b) \u03b3(c):lower_case_gamma_(type_c) \u03b4(d):lower_case_delta_(type_d) \u03b5(e):lower_case_epsilon_(type_e) \u03b6(f):lower_case_zeta_(type_f) \u03b7(g):lower_case_eta_(type_g)', // lower case Greek
    '{shift} {accept} {cancel}'
   ],
   'shift' : [
-   '\u0391(A) \u0392(B) \u0393(C) \u0394(D) \u0395(E) \u0396(F) \u0397(G)', <span class="comment">// upper case Greek</span>
+   '\u0391(A) \u0392(B) \u0393(C) \u0394(D) \u0395(E) \u0396(F) \u0397(G)', // upper case Greek
    '{shift} {accept} {cancel}'
   ]
  },
- usePreview: false <span class="comment">// no preveiw</span>
-});</code></pre>
+ usePreview: false // no preveiw
+});</pre>
 		</div>
 		<br>
 		<small>
@@ -444,22 +418,20 @@ $('#map').keyboard({
 		<!-- DON'T use type="hidden" because IE doesn't like hidden inputs -->
 		<input id="hidden" type="text" style="display:none;">
 		<div class="code ui-corner-all">
-			<pre><code><span class="ct">HTML
-=======</span>
+			<pre class="html">&lt;!-- HTML --&gt;
 &lt;a href="#" class="hiddenInput"&gt;Hidden input&lt;/a&gt;
-<span class="comment">&lt;!-- DON'T use type="hidden" because IE doesn't like hidden inputs --&gt;</span>
-&lt;input id="hidden" type="text" style="display:none;"&gt;
-
-<span class="ct">Script
-=======</span>
-<span class="comment">// *** Hidden input example ***
-// click on a link - add focus to hidden input</span>
+&lt;!-- DON'T use type="hidden" because IE doesn't like hidden inputs --&gt;
+&lt;input id="hidden" type="text" style="display:none;"&gt;</pre>
+<pre class="js">
+// Script
+// *** Hidden input example ***
+// click on a link - add focus to hidden input
 $('.hiddenInput').click(function(){
  $('#hidden').trigger('focus.keyboard');
  return false;
 });
-<span class="comment">// Initialize keyboard script on hidden input
-// set "position.of" to the same link as above</span>
+// Initialize keyboard script on hidden input
+// set "position.of" to the same link as above
 $('#hidden')
  .keyboard({ 
   layout   : 'qwerty',
@@ -469,7 +441,7 @@ $('#hidden')
    at : 'center top'
   }
  })
- .addTyping();</code></pre>
+ .addTyping();</pre>
 		</div>
 	</div>
 
@@ -477,18 +449,16 @@ $('#hidden')
 		<h2><span class="tooltip" title="Click to see code">Custom: iPad</span></h2>
 		<textarea id="ipad"></textarea>
 		<div class="code ui-corner-all">
-			<pre><code><span class="ct">HTML
-=======</span>
-&lt;textarea id="ipad"&gt;&lt;/textarea&gt;
-
-<span class="ct">Script
-=======</span>
+			<pre class="html">&lt;!-- HTML --&gt;
+&lt;textarea id="ipad"&gt;&lt;/textarea&gt;</pre>
+<pre class="js">
+// Script
 $('#ipad').keyboard({
 
 	display: {
 		'bksp'   :  "\u2190",
 		'accept' : 'return',
-		'default'  : 'ABC',
+		'default': 'ABC',
 		'meta1'  : '.?123',
 		'meta2'  : '#+='
 	},
@@ -524,9 +494,7 @@ $('#ipad').keyboard({
 
 	}
 
-});
-</code>
-</pre>
+});</pre>
 		</div>
 		<br>
 		<small>
@@ -538,21 +506,19 @@ $('#ipad').keyboard({
 		<h2><span class="tooltip" title="Click to see code">Custom: iPad email input</span></h2>
 		<textarea id="ipad-email"></textarea>
 		<div class="code ui-corner-all">
-			<pre><code><span class="ct">HTML
-=======</span>
-&lt;textarea id="ipad-email"&gt;&lt;/textarea&gt;
-
-<span class="ct">Script
-=======</span>
+			<pre class="html">&lt;!-- HTML --&gt;
+&lt;textarea id="ipad-email"&gt;&lt;/textarea&gt;</pre>
+<pre class="js">
+// Script
 $('#ipad-email').keyboard({
 
 	display: {
-		'bksp': '\u2190',
-		'enter': 'return',
+		'bksp'   : '\u2190',
+		'enter'  : 'return',
 		'default': 'ABC',
-		'meta1': '.?123',
-		'meta2': '#+=',
-		'accept': '\u21d3'
+		'meta1'  : '.?123',
+		'meta2'  : '#+=',
+		'accept' : '\u21d3'
 	},
 
 	layout: 'custom',
@@ -586,9 +552,7 @@ $('#ipad-email').keyboard({
 
 	}
 
-});
-</code>
-</pre>
+});</pre>
 		</div>
 		<br>
 		<small>

@@ -25,8 +25,9 @@
  *   .addAutoComplete();    // this keyboard extension
  * 
  */
-
+/*jshint browser:true, jquery:true, unused:false */
 (function($){
+"use strict";
 $.fn.addAutocomplete = function(){
 	return this.each(function(){
 		// make sure a keyboard is attached
@@ -134,7 +135,7 @@ $.fn.addAutocomplete = function(){
 				clearTimeout( base.$autocomplete.searching );
 				base.$autocomplete.searching = setTimeout(function() {
 					// only search if the value has changed
-					if ( base.$autocomplete.term != base.$autocomplete.element.val() ) {
+					if ( base.$autocomplete.term !== base.$autocomplete.element.val() ) {
 						base.$autocomplete.selectedItem = null;
 						base.$autocomplete.search( null, event );
 					}
