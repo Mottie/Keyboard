@@ -292,7 +292,7 @@ $.keyboard = function(el, options){
 		// opening keyboard flag; delay allows switching between keyboards without immediately closing the keyboard
 		setTimeout(function(){
 			base.opening = false;
-			base.$preview.focus(); // for IE
+			base.$preview.focus(); // for IE - doesn't seem to work =(
 		}, 500);
 
 		// return base to allow chaining in typing extension
@@ -494,6 +494,7 @@ $.keyboard = function(el, options){
 			// I need to trigger a "repeater.keyboard" to make it work
 			.bind('mouseup.keyboard mouseleave.kb touchend.kb touchmove.kb touchcancel.kb', function(){
 				if (base.isVisible() && base.isCurrent()) { base.$preview.focus(); }
+				$(this).removeClass(o.css.buttonHover); // needed for touch devices
 				base.mouseRepeat = [false,''];
 				clearTimeout(base.repeater); // make sure key repeat stops!
 				if (base.checkCaret) { base.$preview.caret( base.lastCaret.start, base.lastCaret.end ); }
