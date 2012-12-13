@@ -277,6 +277,14 @@ $.keyboard = function(el, options){
 		// add roughly 4px to get line height from font height, works well for font-sizes from 14-36px - needed for textareas
 		base.lineHeight = parseInt( base.$preview.css('lineHeight'), 10) || parseInt(base.$preview.css('font-size') ,10) + 4;
 
+		if (o.caretToEnd) {
+			s = base.originalContent.length;
+			base.lastCaret = {
+				start: s,
+				end  : s
+			};
+		}
+
 		// IE caret haxx0rs
 		if (base.allie){
 			// ensure caret is at the end of the text (needed for IE)
@@ -1391,6 +1399,9 @@ $.keyboard = function(el, options){
 
 		// Prevent pasting content into the area
 		preventPaste : false,
+
+		// caret places at the end of any text
+		caretToEnd   : false,
 
 		// Set the max number of characters allowed in the input, setting it to false disables this option
 		maxLength    : false,
