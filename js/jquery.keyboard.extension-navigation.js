@@ -128,6 +128,7 @@ $.fn.addNavigation = function(options){
 
 		// visible event is fired before this extension is initialized, so check!
 		if (base.options.alwaysOpen && base.isVisible) {
+			base.$keyboard.find('.ui-state-hover').removeClass('ui-state-hover');
 			base.navigation_init();
 		}
 		// capture and simulate typing
