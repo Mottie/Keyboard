@@ -40,7 +40,7 @@ $.fn.addAutocomplete = function(){
 		base.autocomplete_init = function(txt, delay, accept){
 
 			// visible event is fired before this extension is initialized, so check!
-			if (base.options.alwaysOpen && base.isVisible) {
+			if (base.options.alwaysOpen && base.isVisible()) {
 				base.autocomplete_setup();
 			}
 
@@ -48,8 +48,8 @@ $.fn.addAutocomplete = function(){
 				.bind('visible.keyboard',function(){
 					base.autocomplete_setup();
 				})
-				.bind('change.keyboard',function(e){
-					if (base.hasAutocomplete && base.isVisible) {
+				.bind('change.keyboard',function(){
+					if (base.hasAutocomplete && base.isVisible()) {
 						base.$el
 							.val(base.$preview.val())
 							.trigger('keydown.autocomplete');
@@ -88,9 +88,12 @@ $.fn.addAutocomplete = function(){
 			base.hasAutocomplete = (typeof(base.$autocomplete) === 'undefined') ? false : (base.$autocomplete.options.disabled) ? false : true;
 			// only bind to keydown once
 			if (base.hasAutocomplete && !base.autocomplete_bind) {
-				base.$preview.bind('keydown.keyboard',function(e){
+				base.$preview.bind('keydown',function(e){
 					// send keys to the autocomplete widget (arrow, pageup/down, etc)
 					return base.autocomplete_input(e);
+				});
+				base.$allKeys.bind('mouseup  mousedown mouseleave touchstart touchend touchcancel',function(e){
+					base.autocomplete_input(e);
 				});
 				base.autocomplete_bind = true;
 			}
