@@ -311,7 +311,7 @@ $.keyboard = function(el, options){
 		base.$preview
 			.bind('keypress.keyboard', function(e){
 				var k = base.lastKey = String.fromCharCode(e.charCode || e.which);
-				base.$lastKey = null; // not a virtual keyboard key
+				base.$lastKey = []; // not a virtual keyboard key
 				if (base.checkCaret) { base.lastCaret = base.$preview.caret(); }
 
 				// update caps lock - can only do this while typing =(
@@ -331,7 +331,8 @@ $.keyboard = function(el, options){
 				// example: \u0391 or \u0391(A) or \u0391:alpha or \u0391(A):alpha
 				if (base.hasMappedKeys) {
 					if (base.mappedKeys.hasOwnProperty(k)){
-						base.insertText( base.mappedKeys[k] );
+						base.lastKey = base.mappedKeys[k];
+						base.insertText( base.lastKey );
 						e.preventDefault();
 					}
 				}
