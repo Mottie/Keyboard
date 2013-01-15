@@ -15,7 +15,7 @@
 
 	<!-- keyboard widget css & script (required) -->
 	<link href="css/keyboard.css" rel="stylesheet">
-	<script src="js/jquery.keyboard.min.js"></script>
+	<script src="js/jquery.keyboard.js"></script>
 
 	<!-- keyboard extensions (optional) -->
 	<script src="js/jquery.mousewheel.js"></script>
@@ -75,16 +75,61 @@
 
 	$(function(){
 
-		// Theme switcher
-		// $('#switcher').themeswitcher();
+		var layouts = [
+			"albanian-qwerty:Albanian (qwerty)",
+			"albanian-qwertz:Albanian (qwertz)",
+			"arabic-azerty:Arabic (azerty)",
+			"arabic-qwerty-1:Arabic (qwerty-1)",
+			"arabic-qwerty-2:Arabic (qwerty-2)",
+			"arabic-qwerty-3:Arabic (qwerty-3)",
+			"arabic-qwerty-4:Arabic (qwerty-4)",
+			"belarusian-qwerty:Belarusian (Belarus)",
+			"bengali-qwerty-1:Bengali (qwerty-1)",
+			"bengali-qwerty-2:Bengali (qwerty-2)",
+			"bulgarian-qwerty:Bulgarian (qwerty)",
+			"catalan-qwerty:Catalan (qwerty)",
+			"danish-qwerty:Danish (qwerty)",
+			"french-azerty-1:French (azerty-1)",
+			"french-azerty-2:French (azerty-2)",
+			"german-qwertz-1:German (qwertz-1)",
+			"german-qwertz-2:German (qwertz-2)",
+			"hebrew-qwerty:Hebrew (qwerty)",
+			"hungarian-qwertz-1:Magyar (qwertz-1) utf8",
+			"hungarian-qwertz-2:Magyar (qwertz-2) utf8",
+			"hungarianansi-qwertz-1:Magyar (qwertz-1) ansi",
+			"hungarianansi-qwertz-2:Magyar (qwertz-2) ansi",
+			"japanese-kana:Japanese (kana)",
+			"japanese-qwerty:Japanese (qwerty)",
+			"latvian-qwerty:Latvian (qwerty)",
+			"polish-qwerty:Polish (qwerty)",
+			"portuguese-qwerty:Portuguese (qwerty)",
+			"russian-qwerty:Russian (qwerty)",
+			"spanish-qwerty:Spanish (qwerty)",
+			"spanish-qwerty-sp:Spanish (qwerty) special",
+			"swedish-qwerty:Swedish (qwerty)",
+			"swedish-dvorak:Swedish (dvorak)",
+			"thai-qwerty:Thai (qwerty)",
+			"turkish-q:Turkish (q)",
+			"turkish-f:Turkish (f)"
+		],
 
-		$('#lang').change(function(){
+		t, o = '';
+
+		$.each(layouts.sort(), function(i, l){
+			t = l.split(':');
+			o += '<option value="' + t[0] + '">' + t[1] + '</option>';
+		});
+
+		$('#lang')
+		.html(o)
+		.change(function(){
 			var kb = $('#multi'),
-				opt = $(this).find('option:selected'),
-				layout = opt.attr('class'),
-				file = $(this).val();
-			$('h2').text(opt.text());
+				layout = $(this).val(),
+				file = layout.split('-')[0];
+			$('h2').text(file);
+			// make language RTL, hebrew does it automatically
 			$('#multi')[file.match('arabic') ? 'addClass' : 'removeClass']('rtl');
+
 			if (kb.data('keyboard')) { kb.getkeyboard().destroy(); }
 			if (!language.hasOwnProperty(file)) {
 				$.getScript('layouts/' + file + '.js', function(){
@@ -135,47 +180,7 @@
 	<div id="switcher"></div>
 	<br>
 	<div class="block2">
-		<select id="lang">
-			<!-- value="file name", class="layout name", Title -->
-			<option value="albanian" class="albanian-qwerty">Albanian (qwerty)</option>
-			<option value="albanian" class="albanian-qwertz">Albanian (qwertz)</option>
-			<option value="arabic" class="arabic-azerty">Arabic (azerty)</option>
-			<option value="arabic" class="arabic-qwerty-1">Arabic (qwerty-1)</option>
-			<option value="arabic" class="arabic-qwerty-2">Arabic (qwerty-2)</option>
-			<option value="arabic" class="arabic-qwerty-3">Arabic (qwerty-3)</option>
-			<option value="arabic" class="arabic-qwerty-4">Arabic (qwerty-4)</option>
-			<option value="belarusian" class="belarusian-qwerty">Belarusian (Belarus)</option>
-			<option value="bengali" class="bengali-qwerty-1">Bengali (qwerty-1)</option>
-			<option value="bengali" class="bengali-qwerty-2">Bengali (qwerty-2)</option>
-			<option value="bulgarian" class="bulgarian-qwerty">Bulgarian (qwerty)</option>
-			<option value="catalan" class="catalan-qwerty">Catalan (qwerty)</option>
-			<option value="danish" class="danish-qwerty">Danish (qwerty)</option>
-			<option value="french" class="french-azerty-1">French (azerty-1)</option>
-			<option value="french" class="french-azerty-2">French (azerty-2)</option>
-			<option value="german" class="german-qwertz-1">German (qwertz-1)</option>
-			<option value="german" class="german-qwertz-2">German (qwertz-2)</option>
-			<option value="hebrew" class="hebrew-qwerty">Hebrew (qwerty)</option>
-			<option value="hungarian" class="hungarian-qwertz-1">Magyar (qwertz-1) utf8</option>
-			<option value="hungarian" class="hungarian-qwertz-2">Magyar (qwertz-2) utf8</option>
-			<option value="hungarianansi" class="hungarianansi-qwertz-1">Magyar (qwertz-1) ansi</option>
-			<option value="hungarianansi" class="hungarianansi-qwertz-2">Magyar (qwertz-2) ansi</option>
-			<option value="japanese" class="japanese-kana">Japanese (kana)</option>
-			<option value="japanese" class="japanese-qwerty">Japanese (qwerty)</option>
-			<option value="latvian" class="latvian-qwerty">Latvian (qwerty)</option>
-			<option value="polish" class="polish-qwerty">Polish (qwerty)</option>
-			<option value="russian" class="russian-qwerty">Russian (qwerty)</option>
-			<option value="spanish" class="spanish-qwerty">Spanish (qwerty)</option>
-			<option value="spanish" class="spanish-qwerty-sp">Spanish (qwerty) special</option>
-			<option value="swedish" class="swedish-qwerty">Swedish (qwerty)</option>
-			<option value="swedish" class="swedish-dvorak">Swedish (dvorak)</option>
-			<option value="thai" class="thai-qwerty">Thai (qwerty)</option>
-			<option value="turkish" class="turkish-q">Turkish (q)</option>
-			<option value="turkish" class="turkish-f">Turkish (f)</option>
-
-<!--
-			<option value="" class=""></option>
--->
-		</select>
+		<select id="lang"></select>
 		<div style="height: 50px;"></div>
 
 		<h2></h2>
