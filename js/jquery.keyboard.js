@@ -1,6 +1,6 @@
 /*!
 jQuery UI Virtual Keyboard
-Version 1.16
+Version 1.17
 
 Author: Jeremy Satterfield
 Modified: Rob Garrison (Mottie on github)
@@ -70,6 +70,7 @@ Options:
 				{dec}         - Decimal for numeric entry, only allows one decimal (optional use in num pad)
 				{default}     - Switch to the default keyset
 				{e}, {enter}  - Return/New Line
+				{empty}       - empty (blank) key
 				{lock}        - Caps lock key
 				{meta#}       - Meta keys that change the key set (# can be any integer)
 				{next}        - Switch to next keyboard input/textarea
@@ -466,7 +467,7 @@ $.keyboard = function(el, options){
 				var el = this, $this = $(this),
 					// 'key' = { action: doAction, original: n, curTxt : n, curNum: 0 }
 					key = $.data(el, 'key');
-				if (e.type === 'mouseenter' && base.el.type !== 'password' ){
+				if (e.type === 'mouseenter' && base.el.type !== 'password' && !$this.hasClass(o.css.buttonDisabled) ){
 					$this
 						.addClass(o.css.buttonHover)
 						.attr('title', function(i,t){
@@ -1049,6 +1050,13 @@ $.keyboard = function(el, options){
 										.addClass(o.css.buttonAction);
 									break;
 
+								case 'empty':
+									base
+										.addKey('', ' ')
+										.addClass(o.css.buttonDisabled)
+										.attr('aria-disabled', true);
+									break;
+
 								case 's':
 								case 'shift':
 									base.addKey('shift', action);
@@ -1335,6 +1343,7 @@ $.keyboard = function(el, options){
 			'combo'  : '\u00f6:Toggle Combo Keys',
 			'dec'    : '.:Decimal',           // decimal point for num pad (optional), change '.' to ',' for European format
 			'e'      : '\u23ce:Enter',        // down, then left arrow - enter symbol
+			'empty'  : '\u00a0',
 			'enter'  : 'Enter:Enter \u23ce',
 			'lock'   : 'Lock:\u21ea Caps Lock', // caps lock
 			'next'   : 'Next \u21e8',
