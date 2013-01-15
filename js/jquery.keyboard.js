@@ -460,6 +460,8 @@ $.keyboard = function(el, options){
 				base.checkMaxLength();
 				base.$el.trigger( 'change.keyboard', [ base, base.el ] );
 				base.$preview.focus();
+				// attempt to fix issue #131
+				if (base.checkCaret) { base.$preview.caret( base.lastCaret.start, base.lastCaret.end ); }
 				e.preventDefault();
 			})
 			// Change hover class and tooltip
