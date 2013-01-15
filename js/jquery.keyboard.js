@@ -1496,7 +1496,6 @@ $.fn.caret = function(options,opt2) {
 	if ( typeof this[0] === 'undefined' || this.is(':hidden') || this.css('visibility') === 'hidden' ) { return this; }
 	var n, s, start, e, end, selRange, range, stored_range, te, val,
 		selection = document.selection, t = this[0], sTop = t.scrollTop,
-		opera = window.opera && window.opera.toString() === '[object Opera]',
 		ss = typeof t.selectionStart !== 'undefined';
 	if (typeof options === 'number' && typeof opt2 === 'number') {
 		start = options;
@@ -1504,13 +1503,6 @@ $.fn.caret = function(options,opt2) {
 	}
 	if (typeof start !== 'undefined') {
 		if (ss){
-			// hack around Opera bug
-			if (t.tagName === 'TEXTAREA' && opera) {
-				val = this.val();
-				n = val.substring(0,start).split('\n')[len] - 1;
-				start += (n>0) ? n : 0;
-				end += (n>0) ? n : 0;
-			}
 			t.selectionStart=start;
 			t.selectionEnd=end;
 		} else {
@@ -1528,14 +1520,6 @@ $.fn.caret = function(options,opt2) {
 		if (ss) {
 			s = t.selectionStart;
 			e = t.selectionEnd;
-			// hack around Opera bug (reported)
-			// try this demo - http://jsfiddle.net/vwb3c/ - keep entering carriage returns
-			if (t.tagName === 'TEXTAREA' && opera) {
-				val = this.val();
-				n = val.substring(0,s).split('\n')[len] - 1;
-				s += (n>0) ? -n : 0;
-				e += (n>0) ? -n : 0;
-			}
 		} else {
 			if (t.tagName === 'TEXTAREA') {
 				val = this.val();
@@ -1544,10 +1528,10 @@ $.fn.caret = function(options,opt2) {
 				stored_range.moveToElementText(t);
 				stored_range.setEndPoint('EndToEnd', range);
 				// thanks to the awesome comments in the rangy plugin
-				s = stored_range.text.replace(/\r\n/g, '\r')[len];
-				e = s + range.text.replace(/\r\n/g, '\r')[len];
+				s = stored_range.text.replace(/\r/g, '\n')[len];
+				e = s + range.text.replace(/\r/g, '\n')[len];
 			} else {
-				val = this.val().replace(/\r\n/g, '\r');
+				val = this.val().replace(/\r/g, '\n');
 				range = selection[createRange]()[duplicate]();
 				range.moveEnd('character', val[len]);
 				s = (range.text === '' ? val[len] : val.lastIndexOf(range.text));
