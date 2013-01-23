@@ -354,7 +354,8 @@ $.keyboard = function(el, options){
 					case 9 :
 						// Added a flag to prevent from tabbing into an input, keyboard opening, then adding the tab to the keyboard preview
 						// area on keyup. Sadly it still happens if you don't release the tab key immediately because keydown event auto-repeats
-						if (base.tab && !o.lockInput) {
+						if (base.tab && o.tabNavigation && !o.lockInput) {
+							base.shiftActive = e.shiftKey;
 							$.keyboard.keyaction.tab(base);
 							base.tab = false;
 						} else {
@@ -386,7 +387,8 @@ $.keyboard = function(el, options){
 					case 9 :
 						if (o.tabNavigation) {
 							// allow tab to pass through - tab to next input/shift-tab for prev
-							return true;
+							base.tab = true;
+							return false;
 						} else {
 							base.tab = true; // see keyup comment above
 							return false;
@@ -782,9 +784,11 @@ $.keyboard = function(el, options){
 		if (typeof o.switchInput === "function") {
 			o.switchInput(base, goToNext, isAccepted);
 		} else {
+			base.$keyboard.hide();
 			var kb, stopped = false,
-				all = $('.ui-keyboard-input:visible'),
+				all = $('button, input, textarea, a').filter(':visible'),
 				indx = all.index(base.$el) + (goToNext ? 1 : -1);
+				base.$keyboard.show();
 			if (indx > all.length - 1) {
 				stopped = o.stopAtEnd;
 				indx = 0; // go to first input
@@ -798,6 +802,8 @@ $.keyboard = function(el, options){
 				kb = all.eq(indx).data('keyboard');
 				if (kb && kb.options.openOn.length) {
 					kb.focusOn();
+				} else {
+					all.eq(indx).focus();
 				}
 			}
 		}
@@ -1204,11 +1210,11 @@ $.keyboard = function(el, options){
 			base.insertText(' ');
 		},
 		tab : function(base) {
-			var tag = base.el.tagName, 
+			var tag = base.el.tagName,
 				o = base.options;
 			if (tag === 'INPUT') {
 				if (o.tabNavigation) {
-					return base.switchInput(!base.shiftActive, true);    
+					return base.switchInput(!base.shiftActive, true);
 				} else {
 					// ignore tab key in input
 					return false;
