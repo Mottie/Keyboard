@@ -449,7 +449,7 @@ $.keyboard = function(el, options){
 				if (action.match('meta')) { action = 'meta'; }
 				if ($.keyboard.keyaction.hasOwnProperty(action) && $(this).hasClass('ui-keyboard-actionkey')) {
 					// stop processing if action returns false (close & cancel)
-					if ($.keyboard.keyaction[action](base,this,e) === false) { return; }
+					if ($.keyboard.keyaction[action](base,this,e) === false) { return false; }
 				} else if (typeof key.action !== 'undefined') {
 					txt = base.lastKey = (base.wheel && !$(this).hasClass('ui-keyboard-actionkey')) ? key.curTxt : key.action;
 					base.insertText(txt);
