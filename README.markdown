@@ -73,6 +73,15 @@ Moved to the Wiki Pages: [Home](https://github.com/Mottie/Keyboard/wiki/Home) | 
 
 Only the latest changes will be shown below, see the wiki log to view older versions.
 
+### Version 1.17 (2/12/2013)
+
+* Added portuguese layout and modified the layout demo to build the layout selector instead of adding an option element each time.
+* Added an `{empty}` special key which inserts a blank unclickable key into the keyboard. Using `{sp:1}` will does not add a key, but a blank space between keys.
+* Added a method to restore the caret position in IE in attempts to fix [issue #131](https://github.com/Mottie/keyboard/issues/131).
+* Added a `return false` to prevent a click through on elements behind the keyboard when the `autoAccept` option is `true`.
+* Modified the `switchInput` function to now target non-keyboard enabled elements - try [this demo](http://jsfiddle.net/Mottie/MK947/715/).
+* Removed Opera textarea hack as it has been fixed in the latest versions. [This demo](http://jsfiddle.net/vwb3c/) should work properly now (keep hitting carriage returns).
+
 ### Version 1.16 (12/13/2012)
 
 * Added `beforeVisible` event
