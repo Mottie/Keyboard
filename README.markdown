@@ -73,6 +73,10 @@ Moved to the Wiki Pages: [Home](https://github.com/Mottie/Keyboard/wiki/Home) | 
 
 Only the latest changes will be shown below, see the wiki log to view older versions.
 
+### Version 1.17.1 (2/12/2013)
+
+* Version bump to add plugin to [jQuery plugin registry](http://plugins.jquery.com/keyboard/).
+
 ### Version 1.17 (2/12/2013)
 
 * Added portuguese layout and modified the layout demo to build the layout selector instead of adding an option element each time.
