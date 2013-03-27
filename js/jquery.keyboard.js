@@ -848,6 +848,8 @@ $.keyboard = function(el, options){
 					.addClass('ui-keyboard-placeholder')
 					.val(base.inPlaceholder);
 			}
+			// trigger default change event - see issue #146
+			base.$el.trigger('change');
 		}
 		return !!accepted;
 	};
