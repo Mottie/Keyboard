@@ -109,7 +109,7 @@ $.keyboard = function(el, options){
 		base.mappedKeys = {}; // for remapping manually typed in keys
 		$('<!--[if lte IE 8]><script>jQuery("body").addClass("oldie");</script><![endif]--><!--[if IE]><script>jQuery("body").addClass("ie");</script><![endif]-->').appendTo('body').remove();
 		base.msie = $('body').hasClass('oldie'); // Old IE flag, used for caret positioning
-		base.allie = $('body').hasClass('ie'); // $.browser.msie being removed soon
+		base.allie = $('body').hasClass('ie');
 		base.inPlaceholder = base.$el.attr('placeholder') || '';
 		base.watermark = (typeof(document.createElement('input').placeholder) !== 'undefined' && base.inPlaceholder !== ''); // html 5 placeholder/watermark
 		base.regex = $.keyboard.comboRegex; // save default regex (in case loading another layout changes it)
@@ -188,7 +188,9 @@ $.keyboard = function(el, options){
 		if (!base.isVisible() || o.alwaysOpen) {
 			clearTimeout(base.timer);
 			base.reveal();
-			setTimeout(function(){ base.$preview.focus(); }, 100);
+			if (o.initialFocus) {
+				setTimeout(function(){ base.$preview.focus(); }, 100);
+			}
 		}
 	};
 
@@ -270,7 +272,9 @@ $.keyboard = function(el, options){
 			base.$keyboard.position(base.position);
 		}
 
-		base.$preview.focus();
+		if (o.initialFocus) {
+			base.$preview.focus();
+		}
 
 		base.checkDecimal();
 
@@ -301,7 +305,9 @@ $.keyboard = function(el, options){
 		// opening keyboard flag; delay allows switching between keyboards without immediately closing the keyboard
 		setTimeout(function(){
 			base.opening = false;
-			base.$preview.focus(); // for IE - doesn't seem to work =(
+			if (o.initialFocus) {
+				base.$preview.focus(); // for IE - doesn't seem to work =(
+			}
 		}, 500);
 
 		// return base to allow chaining in typing extension
@@ -417,9 +423,9 @@ $.keyboard = function(el, options){
 			.bind('mouseup.keyboard touchend.keyboard', function(){
 				if (base.checkCaret) { base.lastCaret = base.$preview.caret(); }
 			})
-			.bind('mousemove.keyboard', function(){
-				base.$preview.focus();
-			});
+			//.bind('mousemove.keyboard', function(){
+			//	if (!o.alwaysOpen && $.keyboard.currentKeyboard === base.el && !base.opening) { base.$preview.focus(); }
+			//});
 			// prevent keyboard event bubbling
 			base.$keyboard.bind('mousedown.keyboard click.keyboard touchstart.keyboard', function(e){
 				e.stopPropagation();
@@ -468,6 +474,7 @@ $.keyboard = function(el, options){
 			})
 			// Change hover class and tooltip
 			.bind('mouseenter.keyboard mouseleave.keyboard', function(e){
+				if (!base.isCurrent()) { return; }
 				var el = this, $this = $(this),
 					// 'key' = { action: doAction, original: n, curTxt : n, curNum: 0 }
 					key = $.data(el, 'key');
@@ -506,12 +513,15 @@ $.keyboard = function(el, options){
 			})
 			// using "kb" namespace for mouse repeat functionality to keep it separate
 			// I need to trigger a "repeater.keyboard" to make it work
-			.bind('mouseup.keyboard mouseleave.kb touchend.kb touchmove.kb touchcancel.kb', function(){
-				if (base.isVisible() && base.isCurrent()) { base.$preview.focus(); }
-				$(this).removeClass(o.css.buttonHover); // needed for touch devices
+			.bind('mouseup.keyboard mouseleave.kb touchend.kb touchmove.kb touchcancel.kb', function(e){
+				if (e.type === 'mouseleave') {
+					$(this).removeClass(o.css.buttonHover); // needed for touch devices
+				} else {
+					if (base.isVisible() && base.isCurrent()) { base.$preview.focus(); }
+					if (base.checkCaret) { base.$preview.caret( base.lastCaret.start, base.lastCaret.end ); }
+				}
 				base.mouseRepeat = [false,''];
 				clearTimeout(base.repeater); // make sure key repeat stops!
-				if (base.checkCaret) { base.$preview.caret( base.lastCaret.start, base.lastCaret.end ); }
 				return false;
 			})
 			// prevent form submits when keyboard is bound locally - issue #64
@@ -1336,6 +1346,9 @@ $.keyboard = function(el, options){
 
 		// if true, the keyboard will always be visible
 		alwaysOpen   : false,
+
+		// give the input
+		initialFocus : true,
 
 		// if true, keyboard will remain open even if the input loses focus, but closes on escape or when another keyboard opens.
 		stayOpen     : false,
