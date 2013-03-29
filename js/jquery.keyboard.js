@@ -1,6 +1,6 @@
 /*!
 jQuery UI Virtual Keyboard
-Version 1.17.1
+Version 1.17.2
 
 Author: Jeremy Satterfield
 Modified: Rob Garrison (Mottie on github)
@@ -422,7 +422,7 @@ $.keyboard = function(el, options){
 			})
 			.bind('mouseup.keyboard touchend.keyboard', function(){
 				if (base.checkCaret) { base.lastCaret = base.$preview.caret(); }
-			})
+			});
 			//.bind('mousemove.keyboard', function(){
 			//	if (!o.alwaysOpen && $.keyboard.currentKeyboard === base.el && !base.opening) { base.$preview.focus(); }
 			//});
@@ -1347,7 +1347,7 @@ $.keyboard = function(el, options){
 		// if true, the keyboard will always be visible
 		alwaysOpen   : false,
 
-		// give the input
+		// give the preview initial focus when the keyboard becomes visible
 		initialFocus : true,
 
 		// if true, keyboard will remain open even if the input loses focus, but closes on escape or when another keyboard opens.

@@ -73,6 +73,16 @@ Moved to the Wiki Pages: [Home](https://github.com/Mottie/Keyboard/wiki/Home) | 
 
 Only the latest changes will be shown below, see the wiki log to view older versions.
 
+### Version 1.17.2 (3/29/2013)
+
+* After the content is accepted or canceled, a non-namespaced `change` event will now be triggered. This fixes [issue #146](https://github.com/Mottie/keyboard/issues/146).
+* Added French Bépo keyboard layout. Thanks to [utilisezlinux](https://github.com/utilisezlinux)! See [pull request #152](https://github.com/Mottie/Keyboard/pull/152).
+* Added Vietnamese layout with Telex combinations. Thanks to [tbvinh](https://github.com/tbvinh)! See [pull request #136](https://github.com/Mottie/Keyboard/pull/136).
+* Added `initialFocus` option:
+  * When `true` (default), the preview input will be focused when the keyboard becomes visible.
+  * If `false`, no focus will be set.
+  * Thanks to [anthonynoisestreet](https://github.com/anthonynoisestreet) for the feature request in [issue #150](https://github.com/Mottie/Keyboard/issues/150).
+
 ### Version 1.17.1 (2/12/2013)
 
 * Version bump to add plugin to [jQuery plugin registry](http://plugins.jquery.com/keyboard/).
