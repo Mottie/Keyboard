@@ -12,7 +12,7 @@ a:visited,a:active { color: #53a5ff; }
 #page-wrap { display: block; width: 90%; margin: 0 auto; text-align: center; height: 98%; min-height: 350px; }
 
 h1, h2, h3, h4 { color: #ddd; text-align: center; }
-h2 { margin: 5px; font-size: 130%; cursor: pointer; }
+h2 { margin: 5px; font-size: 130%; cursor: pointer; text-transform: capitalize; }
 
 #nav { display: block; width: auto; text-align: center; margin: 20px auto 0 auto; line-height: 45px; }
 #nav a { text-align: center; background: #000; color: #FFF; border-radius: 5px; -moz-border-radius: 5px; -webkit-border-radius: 5px; padding: 10px; white-space: nowrap; }
@@ -27,6 +27,11 @@ h2 { margin: 5px; font-size: 130%; cursor: pointer; }
 
 #console { width: 90%; list-style-type: none; margin: 0 auto; padding: 0; }
 #console li { text-align: center; }
+#console .keyboard { color: #ec7600; }
+#console .event { color: #facd22; }
+#console .accepted { color: #8AC763; }
+#console .ignored { color: #f00; }
+#console .content { color: RoyalBlue; }
 
 .block { width: 270px; display: inline-block; height: 170px;  padding-left: 30px; padding-bottom: 30px; text-align: center; vertical-align: top; position: relative; }
 .block2 { margin: 0 auto; text-align: center; }

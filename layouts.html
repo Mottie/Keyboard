@@ -76,48 +76,50 @@
 	$(function(){
 
 		var layouts = [
-			"albanian-qwerty:Albanian (qwerty)",
-			"albanian-qwertz:Albanian (qwertz)",
-			"arabic-azerty:Arabic (azerty)",
-			"arabic-qwerty-1:Arabic (qwerty-1)",
-			"arabic-qwerty-2:Arabic (qwerty-2)",
-			"arabic-qwerty-3:Arabic (qwerty-3)",
-			"arabic-qwerty-4:Arabic (qwerty-4)",
-			"belarusian-qwerty:Belarusian (Belarus)",
-			"bengali-qwerty-1:Bengali (qwerty-1)",
-			"bengali-qwerty-2:Bengali (qwerty-2)",
-			"bulgarian-qwerty:Bulgarian (qwerty)",
-			"catalan-qwerty:Catalan (qwerty)",
-			"danish-qwerty:Danish (qwerty)",
-			"french-azerty-1:French (azerty-1)",
-			"french-azerty-2:French (azerty-2)",
-			"german-qwertz-1:German (qwertz-1)",
-			"german-qwertz-2:German (qwertz-2)",
-			"hebrew-qwerty:Hebrew (qwerty)",
-			"hungarian-qwertz-1:Magyar (qwertz-1) utf8",
-			"hungarian-qwertz-2:Magyar (qwertz-2) utf8",
-			"hungarianansi-qwertz-1:Magyar (qwertz-1) ansi",
-			"hungarianansi-qwertz-2:Magyar (qwertz-2) ansi",
-			"japanese-kana:Japanese (kana)",
-			"japanese-qwerty:Japanese (qwerty)",
-			"latvian-qwerty:Latvian (qwerty)",
-			"polish-qwerty:Polish (qwerty)",
-			"portuguese-qwerty:Portuguese (qwerty)",
-			"russian-qwerty:Russian (qwerty)",
-			"spanish-qwerty:Spanish (qwerty)",
-			"spanish-qwerty-sp:Spanish (qwerty) special",
-			"swedish-qwerty:Swedish (qwerty)",
-			"swedish-dvorak:Swedish (dvorak)",
-			"thai-qwerty:Thai (qwerty)",
-			"turkish-q:Turkish (q)",
-			"turkish-f:Turkish (f)"
+			"Albanian (qwerty):albanian-qwerty",
+			"Albanian (qwertz):albanian-qwertz",
+			"Arabic (azerty):arabic-azerty",
+			"Arabic (qwerty-1):arabic-qwerty-1",
+			"Arabic (qwerty-2):arabic-qwerty-2",
+			"Arabic (qwerty-3):arabic-qwerty-3",
+			"Arabic (qwerty-4):arabic-qwerty-4",
+			"Belarusian (Belarus):belarusian-qwerty",
+			"Bengali (qwerty-1):bengali-qwerty-1",
+			"Bengali (qwerty-2):bengali-qwerty-2",
+			"Bulgarian (qwerty):bulgarian-qwerty",
+			"Catalan (qwerty):catalan-qwerty",
+			"Danish (qwerty):danish-qwerty",
+			"French (azerty-1):french-azerty-1",
+			"French (azerty-2):french-azerty-2",
+			"French (bepo v1.0rc2):french-bepo-V1.0rc2",
+			"German (qwertz-1):german-qwertz-1",
+			"German (qwertz-2):german-qwertz-2",
+			"Hebrew (qwerty):hebrew-qwerty",
+			"Magyar (qwertz-1) utf8:hungarian-qwertz-1",
+			"Magyar (qwertz-2) utf8:hungarian-qwertz-2",
+			"Magyar (qwertz-1) ansi:hungarianansi-qwertz-1",
+			"Magyar (qwertz-2) ansi:hungarianansi-qwertz-2",
+			"Japanese (kana):japanese-kana",
+			"Japanese (qwerty):japanese-qwerty",
+			"Latvian (qwerty):latvian-qwerty",
+			"Polish (qwerty):polish-qwerty",
+			"Portuguese (qwerty):portuguese-qwerty",
+			"Russian (qwerty):russian-qwerty",
+			"Spanish (qwerty):spanish-qwerty",
+			"Spanish (qwerty) special:spanish-qwerty-sp",
+			"Swedish (qwerty):swedish-qwerty",
+			"Swedish (dvorak):swedish-dvorak",
+			"Thai (qwerty):thai-qwerty",
+			"Turkish (q):turkish-q",
+			"Turkish (f):turkish-f",
+			"Vietnamese (qwerty):vietamese-qwerty"
 		],
 
 		t, o = '';
 
 		$.each(layouts.sort(), function(i, l){
 			t = l.split(':');
-			o += '<option value="' + t[0] + '">' + t[1] + '</option>';
+			o += '<option value="' + t[1] + '">' + t[0] + '</option>';
 		});
 
 		$('#lang')
@@ -144,12 +146,7 @@
 	});
 	</script>
 	<style>
-	/* making a few keys wider, to include the symbol - use .ui-keyboard-actionkey to affect all (including space) */
-	.ui-keyboard-accept, .ui-keyboard-cancel, .ui-keyboard-bksp, .ui-keyboard-enter, .ui-keyboard-shift {
-		font-size: .8em;
-		width: 5.2em;
-		height: 2em;
-	}
+
 	.rtl {
 		direction: rtl;
 		text-align: right;

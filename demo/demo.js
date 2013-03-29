@@ -329,13 +329,13 @@ jQuery(function($) {
 	// ********************
 	$('.ui-keyboard-input').bind('visible.keyboard hidden.keyboard beforeClose.keyboard accepted.keyboard canceled.keyboard', function(e, keyboard, el, status){
 		var c = $('#console'),
-			t = '<li>' + $(el).parent().find('h2').text();
+			t = '<li><span class="keyboard">' + $(el).parent().find('h2').text() + '</span>';
 			switch (e.type){
-				case 'visible'  : t += ' keyboard is visible'; break;
-				case 'hidden'   : t += ' keyboard is now hidden'; break;
-				case 'accepted' : t += ' content "' + el.value + '" was accepted' + ($(el).is('[type=password]') ? ', yeah... not so secure :(' : ''); break;
-				case 'canceled' : t += ' content was ignored'; break;
-				case 'beforeClose' : t += ' keyboard is about to close, contents were ' + (status ? 'accepted' : 'ignored'); break;
+				case 'visible'  : t += ' keyboard is <span class="event">visible</span>'; break;
+				case 'hidden'   : t += ' keyboard is now <span class="event">hidden</span>'; break;
+				case 'accepted' : t += ' content "<span class="content">' + el.value + '</span>" was <span class="event">accepted</span>' + ($(el).is('[type=password]') ? ', yeah... not so secure :(' : ''); break;
+				case 'canceled' : t += ' content was <span class="event ignored">ignored</span>'; break;
+				case 'beforeClose' : t += ' keyboard is about to <span class="event">close</span>, contents were <span class="event ' + (status ? 'accepted">accepted' : 'ignored">ignored') + '</span>'; break;
 			}
 		t += '</li>';
 		c.append(t);
