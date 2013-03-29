@@ -8,7 +8,7 @@
  * license for this file: WTFPL, unless the source layout site has a problem with me using them as a reference
  */
 
-/* based on http://ascii-table.com/keyboard.php/189 & thanks to Nathana�l SEMHOUN: http://nathanael.semhoun.net */
+/* based on http://ascii-table.com/keyboard.php/189 & thanks to Nathana�l SEMHOUN: http://nathanael.semhoun.net */
 $.keyboard.layouts['french-azerty-1'] = {
 	'default' : [
 		"\u00b2 & \u00e9 \" ' ( - \u00e8 _ \u00e7 \u00e0 ) = {bksp}",
@@ -67,6 +67,37 @@ $.keyboard.layouts['french-azerty-2'] = {
 		"{t} A Z \u20ac R T Y U I O P \u00a8 \u00a4",
 		"Q S D F G H J K L M % \u00b5 {e}",
 		"{s} > W X C V B N ? . / \u00a7 {s}",
+		"{a} {alt} {space} {alt} {c}"
+	],
+};
+
+$.keyboard.layouts['french-bepo-V1.0rc2'] = {
+	'default' : [
+		"$ \" \u00AB \u00BB ( ) @ + - / * = % {b}",
+		"{t} b \u00E9 p o \u00E8 ^ v d l j z w",
+		"a u i e , c t s r n m {e}",
+		"{s} \u00E0 y x . k \' q g h f \u00E7 {s}",
+		"{a} {alt} {space} {alt} {c}"
+	],
+	'shift' : [
+		"# 1 2 3 4 5 6 7 8 9 0 \u00B0 `{b}",
+		"{t} B \u00C9 P O \u00C8 ! V D L J Z W",
+		"A U I E ; C T S R N M {e}",
+		"{s} \u00C0 Y X : K ? Q G H F \u00C7 {s}",
+		"{accept} {alt} {space} {alt} {c}"
+	],
+	'alt' : [
+		"\u2014 < > [ ] ^ \u00B1 \u2212 \u00F7 \u00D7 \u2260 \u2030 {b}",
+		"{t} | \' & \u0153 ` \u00A1 \u02C7 \u00F0 / \u0133 \u0259 \u02D8",
+		"\u00E6 \u00F9 \" \u20AC \u2019 \u00A9 \u00FE \u00DF \u00AE ~ \u00AF {e}",
+		"{s} \\ { } \u2026 ~ \u00BF \u00B0 \u00B5 \u2020 \u02DB \u00B8 {s}",
+		"{a} {alt} {space} {alt} {c}"
+	],
+	'alt-shift' : [
+		"{sp:1} \u00B6 \u201E \u201C \u201D \u2264 \u2265 \u00AC \u00BC \u00BD \u00BE \u2032 \u2033 {b}",
+		"{t} \u00A6 \u02DD\u00A7 \u0152 `   \u00D0  \u0132 \u018F",
+		"Æ Ù ? ¤ ? ? Þ ? ™  º {e}",
+		"{s} \u2018 \u2019 \u00B7 \u2328 \u0309 \u0323  \u2021 \u00AA , {s}",
 		"{a} {alt} {space} {alt} {c}"
 	],
 };
