@@ -448,6 +448,8 @@ $.keyboard = function(el, options){
 
 		base.$allKeys
 			.bind(o.keyBinding.split(' ').join('.keyboard ') + '.keyboard repeater.keyboard', function(e){
+				// prevent errors when external triggers attempt to "type" - see issue #158
+				if (!base.$keyboard.is(":visible"){ return false; }
 				// 'key', { action: doAction, original: n, curTxt : n, curNum: 0 }
 				var txt, key = $.data(this, 'key'), action = key.action.split(':')[0];
 				base.$preview.focus();
