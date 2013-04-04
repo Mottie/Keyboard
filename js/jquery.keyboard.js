@@ -128,7 +128,7 @@ $.keyboard = function(el, options){
 		base.temp = [ '', 0, 0 ]; // used when building the keyboard - [keyset element, row, index]
 
 		// Bind events
-		$.each('initialized beforeVisible visible change hidden canceled accepted beforeClose'.split(' '), function(i,f){
+		$.each('initialized beforeVisible visible hidden canceled accepted beforeClose'.split(' '), function(i,f){
 			if ($.isFunction(o[f])){
 				base.$el.bind(f + '.keyboard', o[f]);
 			}
@@ -385,6 +385,9 @@ $.keyboard = function(el, options){
 				}, 100);
 
 				base.checkMaxLength();
+				// change callback is no longer bound to the input element as the callback could be
+				// called during an external change event with all the necessary parameters (issue #157)
+				if ($.isFunction(o.change)){ o.change( $.Event("change"), base, base.el ); }
 				base.$el.trigger( 'change.keyboard', [ base, base.el ] );
 			})
 			.bind('keydown.keyboard', function(e){
@@ -466,6 +469,7 @@ $.keyboard = function(el, options){
 				}
 				base.checkCombos();
 				base.checkMaxLength();
+				if ($.isFunction(o.change)){ o.change( $.Event("change"), base, base.el ); }
 				base.$el.trigger( 'change.keyboard', [ base, base.el ] );
 				base.$preview.focus();
 				// attempt to fix issue #131
