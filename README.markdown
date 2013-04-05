@@ -73,6 +73,17 @@ Moved to the Wiki Pages: [Home](https://github.com/Mottie/Keyboard/wiki/Home) | 
 
 Only the latest changes will be shown below, see the wiki log to view older versions.
 
+### Version 1.17.3 (4/4/2013)
+
+* The `change` callback function assigned in the options now contains proper keyboard parameters
+  * Previously, the change callback function was bound to the change event so that it would be called at the same time as any externally bound event listeners.
+  * Now the change callback is called slightly before the namespaced change event is triggered.
+  * The change callback is not called after the keyboard closes, when the non-namespaced change event is triggered.
+  * This fixes [issue #157](https://github.com/Mottie/Keyboard/issues/157).
+* Virtual keyboard keys should now ignore externally triggered events when the keyboard is hidden
+  * Previously, externally triggered events on the hidden keys would cause a javascript error.
+  * This fixes the problem brought up in [issue #158](https://github.com/Mottie/Keyboard/issues/158).
+
 ### Version 1.17.2 (3/29/2013)
 
 * After the content is accepted or canceled, a non-namespaced `change` event will now be triggered. This fixes [issue #146](https://github.com/Mottie/keyboard/issues/146).
