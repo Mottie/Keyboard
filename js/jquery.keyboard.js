@@ -1,6 +1,6 @@
 /*!
 jQuery UI Virtual Keyboard
-Version 1.17.3
+Version 1.17.4
 
 Author: Jeremy Satterfield
 Modified: Rob Garrison (Mottie on github)
@@ -188,9 +188,6 @@ $.keyboard = function(el, options){
 		if (!base.isVisible() || o.alwaysOpen) {
 			clearTimeout(base.timer);
 			base.reveal();
-			if (o.initialFocus) {
-				setTimeout(function(){ base.$preview.focus(); }, 100);
-			}
 		}
 	};
 
@@ -299,17 +296,15 @@ $.keyboard = function(el, options){
 			if (base.lastCaret.end === 0 && base.lastCaret.start > 0) { base.lastCaret.end = base.lastCaret.start; } // sometimes end = 0 while start is > 0
 			if (base.lastCaret.start < 0) { base.lastCaret = p; } // IE will have start -1, end of 0 when not focused (see demo: http://jsfiddle.net/Mottie/fgryQ/3/).
 		}
-		base.$preview.caret(base.lastCaret.start, base.lastCaret.end );
 
 		base.$el.trigger( 'visible.keyboard', [ base, base.el ] );
 		// opening keyboard flag; delay allows switching between keyboards without immediately closing the keyboard
 		setTimeout(function(){
 			base.opening = false;
 			if (o.initialFocus) {
-				base.$preview.focus(); // for IE - doesn't seem to work =(
+				base.$preview.caret( base.lastCaret.start, base.lastCaret.end );
 			}
-		}, 500);
-
+		}, 10);
 		// return base to allow chaining in typing extension
 		return base;
 	};

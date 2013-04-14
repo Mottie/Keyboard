@@ -40,7 +40,7 @@ Moved to the Wiki Pages: [Home](https://github.com/Mottie/Keyboard/wiki/Home) | 
 * Add more regional keyboard layouts.
 * Add an input mask extension. I think I'll try to make it compatible with [this plugin](https://github.com/RobinHerbots/jquery.inputmask).
 
-## Known Problems 
+## Known Problems
 
 * *IE* and *Opera*:
     * In a text area with multiple carriage returns, the caret positioning will be off when repositioning it with the mouse.
@@ -72,6 +72,12 @@ Moved to the Wiki Pages: [Home](https://github.com/Mottie/Keyboard/wiki/Home) | 
 ## Change Log
 
 Only the latest changes will be shown below, see the wiki log to view older versions.
+
+### Version 1.17.4 (4/14/2013)
+
+* Fixed an issue with IE not giving the preview window focus.
+  * Thanks to [@semmelbroesel](https://github.com/semmelbroesel) for the suggestion.
+  * Fixes [issue #160](https://github.com/Mottie/Keyboard/issues/160).
 
 ### Version 1.17.3 (4/4/2013)
 
@@ -106,94 +112,3 @@ Only the latest changes will be shown below, see the wiki log to view older vers
 * Added a `return false` to prevent a click through on elements behind the keyboard when the `autoAccept` option is `true`.
 * Modified the `switchInput` function to now target non-keyboard enabled elements - try [this demo](http://jsfiddle.net/Mottie/MK947/715/).
 * Removed Opera textarea hack as it has been fixed in the latest versions. [This demo](http://jsfiddle.net/vwb3c/) should work properly now (keep hitting carriage returns).
-
-### Version 1.16 (12/13/2012)
-
-* Added `beforeVisible` event
- * This event occurs after the keyboard object (`keyboard.$keyboard`) has been built.
- * This event occurs immediately before the keyboard is positioned by the position utility.
- * Use this event to position the keyboard if you decide *not* to include the position utility.
- * Discussed adding this event in [issue #124](https://github.com/Mottie/Keyboard/issues/124).
-* All hover states are now cleared:
- * When the keyboard becomes visible. Fixes [issue #124](https://github.com/Mottie/Keyboard/issues/124).
- * For touch devices. Fixes [issue #114](https://github.com/Mottie/Keyboard/issues/114).
- * For the navigation extension.
-* Fixed autocomplete for jQuery UI v1.9+
- * The extension is still backwards compatible with older versions of jQuery UI.
- * Fixes [issue #115](https://github.com/Mottie/Keyboard/issues/115) and [issue #128](https://github.com/Mottie/Keyboard/issues/128).
-* Added `caretToEnd` option
- * When `true` the caret will always be moved to the end of the content when the keyboard is revealed.
- * If `false` the caret position will be restored to the last position it was in; at the beginning upon initial opening.
- * Enhancement request for [issue #129](https://github.com/Mottie/Keyboard/issues/129).
-* Added `lastKey` and `$lastKey` to the api (access the api using `kb = $('#keyboard').data('keyboard')`):
- * `kb.lastKey` contains the last typed character determined using the typed character code (not the actual text), when pressing keys on your actual keyboard, not the virtual one.
- * `kb.lastKey` contains the value from the clicked virtual keyboard button.
- * If any keys are mapped, the `kb.lastKey` will contain the mapped key character.
- * `kb.$lastKey` will be a jQuery object of the clicked keyboard button. If the actual keyboard was used to enter a character, this value will contain an empty array `[]` (length = 0).
- * Enhancement added for [issue #127](https://github.com/Mottie/Keyboard/issues/127).
-* Added syntax highlighting to the demo code.
-* Added Thai layout. Thanks to Herve Buyle via email! 
-
-### Version 1.15 (10/16/2012)
-
-* Added iPad touch events.
- * Thanks to [mfayez](https://github.com/mfayez) for sharing the code!
- * Hopefully this fixes issues [#100](https://github.com/Mottie/Keyboard/issues/100) and [#117](https://github.com/Mottie/Keyboard/issues/117).
-* Added a `{default}` action key definition.
-  * Clicking it makes the keyboard show the default keyset.
-  * See gitaarik's updated [iPad demo](http://mottie.github.com/Keyboard/) code to see how it is used.
-* Fixed a problem which should prevent a combo replace error. See [issue #116](https://github.com/Mottie/Keyboard/issues/116#issuecomment-9479917).
-* Modified space bar css to not use a negative text indent. See [this article](http://nicolasgallagher.com/another-css-image-replacement-technique/).
-
-### Version 1.14.1 (10/8/2012)
-
-* Disabled jQuery UI Themeswitcher from the main and layouts demo pages, as the script is no longer available.
-* Updated demos to use jQuery 1.8 and jQuery UI 1.9.
-
-### Version 1.14 (10/2/2012)
-
-* Added iPad &amp; iPad email demos by [gitaarik](https://github.com/gitaarik).
-
-### Version 1.13 (9/9/2012)
-
-* Fixed error caused by closing a keyboard in OSX using ctrl-esc or alt-esc. Fixes [issue #102](https://github.com/Mottie/Keyboard/issues/102).
-* Added Japanese and Spanish layouts thanks to [pacoalcantara](https://github.com/pacoalcantara)!
-* Added Polish layout thanks to Piotr (via email)!
-* Wide keys now use a `min-width` instead of `width`. This allows the key to properly expand to fit the text within it.
-* Updated autocomplete extension to save the caret position in IE9. Thanks to [banku](https://github.com/banku) for the fix in [issue #95](https://github.com/Mottie/Keyboard/issues/95).
-* Updated navigation extension:
-  * Removed the `toggleKey` option.
-  * Custom key codes can be assigned to any of the navigation keys within the new `$.keyboard.navigationKeys` object. Extend it as follows:
-
-    ```javascript
-    // change default navigation keys
-    $.extend($.keyboard.navigationKeys, {
-      toggle     : 112, // toggle key; F1 = 112 (event.which value for function 1 key)
-      enter      : 13,  // Enter
-      pageup     : 33,  // PageUp key
-      pagedown   : 34,  // PageDown key
-      end        : 35,  // End key
-      home       : 36,  // Home key
-      left       : 37,  // Left arrow key
-      up         : 38,  // Up arrow key
-      right      : 39,  // Right arrow key
-      down       : 40   // Down arrow key
-    });
-    ```
-
-   Enhancement request from [issue #90](https://github.com/Mottie/Keyboard/issues/90). Thanks [faboudib](https://github.com/faboudib)!
-
-  * Movement of the highlighted navigation key can now be triggered using `navigate` for predefined movement; see the [updated demo](http://mottie.github.com/Keyboard/navigate.html)
-
-    ```javascript
-    // navkey contains the name of the key: e.g. "home", "right", "pageup", etc
-    var navkey = "pageup";
-    $('#keyboard').trigger('navigate', navkey);
-    ```
-
-    Or, highlight a specific navigation key using the `navigateTo` trigger:
-
-    ```javascript
-    // navigate to the third row and fourth key (zero-based indexes) - [ row, index ]
-    $('#keyboard').trigger('navigateTo', [2,3]);
-    ```
