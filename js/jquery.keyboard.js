@@ -1,6 +1,6 @@
 /*!
 jQuery UI Virtual Keyboard
-Version 1.17.5
+Version 1.17.6
 
 Author: Jeremy Satterfield
 Modified: Rob Garrison (Mottie on github)
@@ -667,6 +667,7 @@ $.keyboard = function(el, options){
 
 	// check for key combos (dead keys)
 	base.checkCombos = function(){
+		if (!base.isVisible()) { return; }
 		var i, r, t, t2,
 			// use base.$preview.val() instead of base.preview.value (val.length includes carriage returns in IE).
 			val = base.$preview.val(),
@@ -695,7 +696,7 @@ $.keyboard = function(el, options){
 				// target last two characters
 				base.$preview.caret(t, pos.end);
 				// do combo replace
-				t2 = base.$preview.caret().text.replace(base.regex, function(s, accent, letter){
+				t2 = (base.$preview.caret().text || '').replace(base.regex, function(s, accent, letter){
 					return (o.combos.hasOwnProperty(accent)) ? o.combos[accent][letter] || s : s;
 				});
 				// add combo back
@@ -1564,7 +1565,7 @@ $.fn.caret = function(options,opt2) {
 				e = range.text[len];
 			}
 		}
-		te = t.value.substring(s,e);
+		te = (t.value || '').substring(s,e);
 		return { start : s, end : e, text : te, replace : function(st){
 			return t.value.substring(0,s) + st + t.value.substring(e, t.value[len]);
 		}};

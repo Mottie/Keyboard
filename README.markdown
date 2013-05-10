@@ -73,6 +73,10 @@ Moved to the Wiki Pages: [Home](https://github.com/Mottie/Keyboard/wiki/Home) | 
 
 Only the latest changes will be shown below, see the wiki log to view older versions.
 
+### Version 1.17.6 (5/10/2013)
+
+* Fixed the check combo function to not cause an error when the keyboard is hidden. Fixes [issue #168](https://github.com/Mottie/Keyboard/issues/168).
+
 ### Version 1.17.5 (5/6/2013)
 
 * Keyboard visible callback now triggered after the preview gets focus. Fixes [issue #147](https://github.com/Mottie/Keyboard/issues/147).
