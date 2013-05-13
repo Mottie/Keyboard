@@ -149,7 +149,7 @@ $.fn.addAutocomplete = function(){
 		// replace original function with this one
 		base.escClose = function(e){
 			// prevent selecting an item in autocomplete from closing keyboard
-			if ( base.hasAutocomplete && (e.target.id === 'ui-active-menuitem' || $(e.target).hasClass('ui-state-focus')) ) { return; }
+			if ( base.hasAutocomplete && (e.target.id === 'ui-active-menuitem' || $(e.target).closest('ul').hasClass('ui-autocomplete')) ) { return; }
 			base.origEscClose(e);
 		};
 
