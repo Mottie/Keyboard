@@ -73,6 +73,11 @@ Moved to the Wiki Pages: [Home](https://github.com/Mottie/Keyboard/wiki/Home) | 
 
 Only the latest changes will be shown below, see the wiki log to view older versions.
 
+### Version 1.17.7 (5/13/2013)
+
+* Fixed the autocomplete extension to not close the keyboard when clicking within the autocomplete window, including the scroll bar. Fixes [issue #170](https://github.com/Mottie/Keyboard/issues/170).
+* Fixed an issue in IE8 where a javascript error would occur in textarea when `usePreview` is `false`. Fixes [issue #134](https://github.com/Mottie/Keyboard/issues/134).
+
 ### Version 1.17.6 (5/10/2013)
 
 * Fixed the check combo function to not cause an error when the keyboard is hidden. Fixes [issue #168](https://github.com/Mottie/Keyboard/issues/168).

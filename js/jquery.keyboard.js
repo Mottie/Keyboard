@@ -1,6 +1,6 @@
 /*!
 jQuery UI Virtual Keyboard
-Version 1.17.6
+Version 1.17.7
 
 Author: Jeremy Satterfield
 Modified: Rob Garrison (Mottie on github)
@@ -180,7 +180,7 @@ $.keyboard = function(el, options){
 	};
 
 	base.focusOn = function(){
-		if (base.$el.is(':visible')) {
+		if (o.usePreview && base.$el.is(':visible')) {
 			// caret position is always 0,0 in webkit; and nothing is focused at this point... odd
 			// save caret position in the input to transfer it to the preview
 			base.lastCaret = base.$el.caret();
