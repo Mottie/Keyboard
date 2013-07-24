@@ -1465,7 +1465,8 @@ $.keyboard = function(el, options){
 			"'" : { a:"\u00e1", A:"\u00c1", e:"\u00e9", E:"\u00c9", i:"\u00ed", I:"\u00cd", o:"\u00f3", O:"\u00d3", u:"\u00fa", U:"\u00da", y:"\u00fd", Y:"\u00dd" }, // acute & cedilla
 			'"' : { a:"\u00e4", A:"\u00c4", e:"\u00eb", E:"\u00cb", i:"\u00ef", I:"\u00cf", o:"\u00f6", O:"\u00d6", u:"\u00fc", U:"\u00dc", y:"\u00ff", Y:"\u0178" }, // umlaut/trema
 			'^' : { a:"\u00e2", A:"\u00c2", e:"\u00ea", E:"\u00ca", i:"\u00ee", I:"\u00ce", o:"\u00f4", O:"\u00d4", u:"\u00fb", U:"\u00db", y:"\u0177", Y:"\u0176" }, // circumflex
-			'~' : { a:"\u00e3", A:"\u00c3", e:"\u1ebd", E:"\u1ebc", i:"\u0129", I:"\u0128", o:"\u00f5", O:"\u00d5", u:"\u0169", U:"\u0168", y:"\u1ef9", Y:"\u1ef8", n:"\u00f1", N:"\u00d1" } // tilde
+			'~' : { a:"\u00e3", A:"\u00c3", e:"\u1ebd", E:"\u1ebc", i:"\u0129", I:"\u0128", o:"\u00f5", O:"\u00d5", u:"\u0169", U:"\u0168", y:"\u1ef9", Y:"\u1ef8", n:"\u00f1", N:"\u00d1" }, // tilde
+			'ˇ' : { a:"\u01ce", A:"\u01cd", c:"\u010d", C:"\u010c", d:"\u010f", D:"\u010e", e:"\u011b", E:"\u011a", g:"\u01e7", G:"\u01e6", h:"\u021f", H:"\u021e", i:"\u01d0", I:"\u01cf", l:"\u013e", L:"\u013d", n:"\u0148", N:"\u0147", o:"\u01d2", O:"\u01d1", r:"\u0159", R:"\u0158", s:"\u0161", S:"\u0160", t:"\u0165", T:"\u0164", u:"\u01d4", U:"\u01d3", z:"\u017e", Z:"\u017d", ʒ:"\u01ef", Ʒ:"\u01ee" } // caron
 		},
 
 /*
@@ -1491,7 +1492,7 @@ $.keyboard = function(el, options){
 	};
 
 	// for checking combos
-	$.keyboard.comboRegex = /([`\'~\^\"ao])([a-z])/mig;
+	$.keyboard.comboRegex = /([`\'~ˇ\^\"ao])([a-z\u0292])/mig;
 
 	// store current keyboard element; used by base.isCurrent()
 	$.keyboard.currentKeyboard = '';
