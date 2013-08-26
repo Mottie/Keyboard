@@ -81,7 +81,8 @@ $.fn.addNavigation = function(options){
 		base.checkKeys = function(key, disable){
                         if (key == undefined) {
                             return;
-                        }			var k = base.navigation_keys;
+                        }
+                        var k = base.navigation_keys;
 			if (key === k.toggle || disable) {
 				o.toggleMode = (disable) ? false : !o.toggleMode;
 				base.options.tabNavigation = (o.toggleMode) ? false : base.saveNav[0];
