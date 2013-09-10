@@ -79,7 +79,7 @@ $.fn.addNavigation = function(options){
 		};
 
 		base.checkKeys = function(key, disable){
-                        if (key == undefined) {
+                        if (typeof(key) === "undefined") {
                             return;
                         }
                         var k = base.navigation_keys;
