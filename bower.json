@@ -1,0 +1,12 @@
+{
+  "name": "jquery-virtual-keyboard",
+  "version": "1.17.7",
+  "main": ["./js/jquery.keyboard.js", "./css/keyboard.css"],
+  "ignore": [
+      "**/.*"
+  ],
+  "dependencies": {
+    "jquery": ">= 1.9.2",
+    "jquery-ui": ">=1.9.2"
+  }
+}
