@@ -34,8 +34,11 @@ $.fn.addAutocomplete = function(){
 		var base = $(this).data('keyboard');
 		if (!base) { return; }
 
-		// jQuery UI versions 1.9+ are different
-		base.autocomplete_new_version = parseFloat($.ui.version) >= 1.9;
+		// jQuery UI versions 1.9+ are different >= 1.9;
+		base.autocomplete_new_version = (function(version) {
+			version[0] = parseInt(version[0], 10);
+			return (version[0] > 1) || (version[0] === 1 && parseInt(version[1], 10) >= 9);
+		})($.ui.version.split("."));
 
 		// Setup
 		base.autocomplete_init = function(txt, delay, accept){
@@ -62,7 +65,7 @@ $.fn.addAutocomplete = function(){
 				.bind('autocompleteopen', function(e, ui) {
 					if (base.hasAutocomplete){
 						// reposition autocomplete window next to the keyboard
-						base.$el.data('autocomplete').menu.element.position({
+						base.$autocomplete.menu.element.position({
 							of : base.$keyboard,
 							my : 'right top',
 							at : 'left top',
@@ -85,7 +88,7 @@ $.fn.addAutocomplete = function(){
 		// set up after keyboard is visible
 		base.autocomplete_setup = function(){
 			// look for autocomplete
-			base.$autocomplete = base.$el.data('autocomplete');
+			base.$autocomplete = base.$el.data('autocomplete') || base.$el.data('uiAutocomplete');
 			base.hasAutocomplete = (typeof(base.$autocomplete) === 'undefined') ? false : (base.$autocomplete.options.disabled) ? false : true;
 			// only bind to keydown once
 			if (base.hasAutocomplete && !base.autocomplete_bind) {
