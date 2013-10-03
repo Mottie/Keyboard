@@ -945,7 +945,7 @@ $.keyboard = function(el, options){
 	};
 
 	base.buildKeyboard = function(){
-		var action, row, newSet, isAction,
+		var t, action, row, newSet, isAction,
 			currentSet, key, keys, margin,
 			sets = 0,
 
@@ -1120,8 +1120,9 @@ $.keyboard = function(el, options){
 						} else {
 
 							// regular button (not an action key)
-							base.acceptedKeys.push(keys[key].split(':')[0]);
-							base.addKey(keys[key], keys[key], true);
+							t = keys[key];
+							base.acceptedKeys.push( t === ':' ? t : t.split(':')[0] );
+							base.addKey(t, t, true);
 						}
 					}
 					newSet.find('.ui-keyboard-button:last').after('<br class="ui-keyboard-button-endrow">');
