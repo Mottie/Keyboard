@@ -478,13 +478,18 @@ $.keyboard = function(el, options){
 				if (!base.isCurrent()) { return; }
 				var el = this, $this = $(this),
 					// 'key' = { action: doAction, original: n, curTxt : n, curNum: 0 }
-					key = $.data(el, 'key');
+					key = $.data(el, 'key'),
+					txt = key.layers || base.getLayers( $this );
+				// remove duplicates
+				key.layers = txt = $.grep(txt, function(v, k){
+					return $.inArray(v, txt) === k;
+				});
 				if (e.type === 'mouseenter' && base.el.type !== 'password' && !$this.hasClass(o.css.buttonDisabled) ){
 					$this
 						.addClass(o.css.buttonHover)
 						.attr('title', function(i,t){
 							// show mouse wheel message
-							return (base.wheel && t === '' && base.sets) ? o.wheelMessage : t;
+							return (base.wheel && t === '' && base.sets && txt.length > 1) ? o.wheelMessage : t;
 						});
 				}
 				if (e.type === 'mouseleave'){
@@ -502,9 +507,13 @@ $.keyboard = function(el, options){
 				if (base.wheel) {
 					var txt, $this = $(this), key = $.data(this, 'key');
 					txt = key.layers || base.getLayers( $this );
-					key.curNum += (delta > 0) ? -1 : 1;
-					if (key.curNum > txt.length-1) { key.curNum = 0; }
-					if (key.curNum < 0) { key.curNum = txt.length-1; }
+					if (txt.length > 1) {
+						key.curNum += (delta > 0) ? -1 : 1;
+						if (key.curNum > txt.length-1) { key.curNum = 0; }
+						if (key.curNum < 0) { key.curNum = txt.length-1; }
+					} else {
+						key.curNum = 0;
+					}
 					key.layers = txt;
 					key.curTxt = txt[key.curNum];
 					$.data(this, 'key', key);
