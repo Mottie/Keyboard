@@ -1,7 +1,3 @@
-#### **I'll be on sabbitical starting June 5, 2013 for approximately 2-3 months. So, sadly, I won't be able to fix any problems or add enhancements until I return. And I will return :)**
-
----
-
 Originally posted by Jeremy Satterfield in his [blog](http://jsatt.blogspot.com/2010/01/on-screen-keyboard-widget-using-jquery.html), [jQuery plugins](http://plugins.jquery.com/project/virtual_keyboard) and on [Snipplr](http://snipplr.com/view/21577/virtual-keyboard-widget/). Currently maintained by [Mottie](https://github.com/Mottie/Keyboard).
 
 ## Features ([Demo](http://mottie.github.com/Keyboard/))
@@ -77,6 +73,17 @@ Moved to the Wiki Pages: [Home](https://github.com/Mottie/Keyboard/wiki/Home) | 
 
 Only the latest changes will be shown below, see the wiki log to view older versions.
 
+### Version 1.17.8 (10/7/2013)
+
+* Fixed mousewheel message to now only show up if a key has differing multiple keysets.
+* Fixed autocomplete extension to now properly work with both newer and older versions of jQuery UI. Fixes [issue #177](https://github.com/Mottie/Keyboard/issues/177).
+* Added the `buttonHover` class to a virtual keyboard key when the "touchstart" event is fired to provide visual feedback. Attempt to [fix #179](https://github.com/Mottie/Keyboard/issues/179).
+* Added script to prevent simultaneous "mousedown" &amp; "touchstart" events from producing double entries. Fixes [issue #184](https://github.com/Mottie/Keyboard/issues/184).
+* Added colon to the list of accepted keys. Fixes [issue #197](https://github.com/Mottie/Keyboard/issues/197).
+* Fixed issue with close not being triggered when clicking in another input with a keyboard attached. Fixes [issue #199](https://github.com/Mottie/Keyboard/issues/199).
+* Merged in fix for preventing an error when hiding the keyboard using the navigation extension. See [pull #200](https://github.com/Mottie/Keyboard/pull/200). Thanks @jmsanzg
+* Merged in `bower.json` file addition by @peters and registered, thanks! See [pull #202](https://github.com/Mottie/Keyboard/pull/202).
+
 ### Version 1.17.7 (5/13/2013)
 
 * Fixed the autocomplete extension to not close the keyboard when clicking within the autocomplete window, including the scroll bar. Fixes [issue #170](https://github.com/Mottie/Keyboard/issues/170).
@@ -95,37 +102,3 @@ Only the latest changes will be shown below, see the wiki log to view older vers
 * Fixed an issue with IE not giving the preview window focus.
   * Thanks to [@semmelbroesel](https://github.com/semmelbroesel) for the suggestion.
   * Fixes [issue #160](https://github.com/Mottie/Keyboard/issues/160).
-
-### Version 1.17.3 (4/4/2013)
-
-* The `change` callback function assigned in the options now contains proper keyboard parameters
-  * Previously, the change callback function was bound to the change event so that it would be called at the same time as any externally bound event listeners.
-  * Now the change callback is called slightly before the namespaced change event is triggered.
-  * The change callback is not called after the keyboard closes, when the non-namespaced change event is triggered.
-  * This fixes [issue #157](https://github.com/Mottie/Keyboard/issues/157).
-* Virtual keyboard keys should now ignore externally triggered events when the keyboard is hidden
-  * Previously, externally triggered events on the hidden keys would cause a javascript error.
-  * This fixes the problem brought up in [issue #158](https://github.com/Mottie/Keyboard/issues/158).
-
-### Version 1.17.2 (3/29/2013)
-
-* After the content is accepted or canceled, a non-namespaced `change` event will now be triggered. This fixes [issue #146](https://github.com/Mottie/keyboard/issues/146).
-* Added French Bépo keyboard layout. Thanks to [utilisezlinux](https://github.com/utilisezlinux)! See [pull request #152](https://github.com/Mottie/Keyboard/pull/152).
-* Added Vietnamese layout with Telex combinations. Thanks to [tbvinh](https://github.com/tbvinh)! See [pull request #136](https://github.com/Mottie/Keyboard/pull/136).
-* Added `initialFocus` option:
-  * When `true` (default), the preview input will be focused when the keyboard becomes visible.
-  * If `false`, no focus will be set.
-  * Thanks to [anthonynoisestreet](https://github.com/anthonynoisestreet) for the feature request in [issue #150](https://github.com/Mottie/Keyboard/issues/150).
-
-### Version 1.17.1 (2/12/2013)
-
-* Version bump to add plugin to [jQuery plugin registry](http://plugins.jquery.com/keyboard/).
-
-### Version 1.17 (2/12/2013)
-
-* Added portuguese layout and modified the layout demo to build the layout selector instead of adding an option element each time.
-* Added an `{empty}` special key which inserts a blank unclickable key into the keyboard. Using `{sp:1}` will does not add a key, but a blank space between keys.
-* Added a method to restore the caret position in IE in attempts to fix [issue #131](https://github.com/Mottie/keyboard/issues/131).
-* Added a `return false` to prevent a click through on elements behind the keyboard when the `autoAccept` option is `true`.
-* Modified the `switchInput` function to now target non-keyboard enabled elements - try [this demo](http://jsfiddle.net/Mottie/MK947/715/).
-* Removed Opera textarea hack as it has been fixed in the latest versions. [This demo](http://jsfiddle.net/vwb3c/) should work properly now (keep hitting carriage returns).

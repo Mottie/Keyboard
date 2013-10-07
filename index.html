@@ -64,7 +64,7 @@
 
 	<div class="block">
 		<h2><span class="tooltip" title="Click to see code">QWERTY Text</span></h2>
-		<input class="qwerty" type="text" placeholder="Enter something...">
+		<input id="text" class="qwerty" type="text" placeholder="Enter something...">
 		<br>
 		<small>
 			* Placeholder (watermark).<br>
@@ -92,7 +92,7 @@ $('.qwerty:eq(0)')
 
 	<div class="block">
 		<h2><span class="tooltip" title="Click to see code">QWERTY Password</span> <img id="passwd" class="tooltip" title="Click to open the virtual keyboard" src="demo/keyboard.png"></h2>
-		<input class="qwerty" type="password">
+		<input id="password" class="qwerty" type="password">
 		<div class="code ui-corner-all">
 			<pre class="html">&lt;!-- HTML --&gt;
 &lt;input class="qwerty" type="password"&gt;</pre>
@@ -119,7 +119,7 @@ $('#passwd').click(function(){
 
 	<div class="block">
 		<h2><span class="tooltip" title="Click to see code">QWERTY Text Area</span></h2>
-		<textarea class="qwerty"></textarea>
+		<textarea id="textarea" class="qwerty"></textarea>
 		<br>
 		<small>
 			* Locked input (no manual input).<br>
