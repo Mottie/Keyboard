@@ -319,7 +319,7 @@ $.keyboard = function(el, options){
 		base.wheel = $.isFunction( $.fn.mousewheel ); // is mousewheel plugin loaded?
 		// keyCode of keys always allowed to be typed - caps lock, page up & down, end, home, arrow, insert & delete keys
 		base.alwaysAllowed = [20,33,34,35,36,37,38,39,40,45,46];
-		if (o.enterNavigation) { base.alwaysAllowed.push(13); } // add enter to allowed keys
+		if (o.enterNavigation || base.el.tagName === "TEXTAREA") { base.alwaysAllowed.push(13); } // add enter to allowed keys; fixes #190
 		base.$preview
 			.bind('keypress.keyboard', function(e){
 				var k = base.lastKey = String.fromCharCode(e.charCode || e.which);
