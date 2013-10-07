@@ -474,7 +474,7 @@ $.keyboard = function(el, options){
 				e.preventDefault();
 			})
 			// Change hover class and tooltip
-			.bind('mouseenter.keyboard mouseleave.keyboard', function(e){
+			.bind('mouseenter.keyboard mouseleave.keyboard touchstart.keyboard', function(e){
 				if (!base.isCurrent()) { return; }
 				var el = this, $this = $(this),
 					// 'key' = { action: doAction, original: n, curTxt : n, curNum: 0 }
@@ -484,12 +484,12 @@ $.keyboard = function(el, options){
 				key.layers = txt = $.grep(txt, function(v, k){
 					return $.inArray(v, txt) === k;
 				});
-				if (e.type === 'mouseenter' && base.el.type !== 'password' && !$this.hasClass(o.css.buttonDisabled) ){
+				if ((e.type === 'mouseenter' || e.type === 'touchstart') && base.el.type !== 'password' && !$this.hasClass(o.css.buttonDisabled) ){
 					$this
 						.addClass(o.css.buttonHover)
 						.attr('title', function(i,t){
 							// show mouse wheel message
-							return (base.wheel && t === '' && base.sets && txt.length > 1) ? o.wheelMessage : t;
+							return (base.wheel && t === '' && base.sets && txt.length > 1 && e.type !== 'touchstart') ? o.wheelMessage : t;
 						});
 				}
 				if (e.type === 'mouseleave'){
@@ -524,7 +524,7 @@ $.keyboard = function(el, options){
 			// using "kb" namespace for mouse repeat functionality to keep it separate
 			// I need to trigger a "repeater.keyboard" to make it work
 			.bind('mouseup.keyboard mouseleave.kb touchend.kb touchmove.kb touchcancel.kb', function(e){
-				if (e.type === 'mouseleave') {
+				if (/(mouseleave|touchend|touchcancel)/.test(e.type)) {
 					$(this).removeClass(o.css.buttonHover); // needed for touch devices
 				} else {
 					if (base.isVisible() && base.isCurrent()) { base.$preview.focus(); }
