@@ -118,6 +118,8 @@ $.keyboard = function(el, options){
 		base.repeatTime = 1000/(o.repeatRate || 20);
 		// delay in ms to prevent mousedown & touchstart from both firing events at the same time
 		o.preventDoubleEventTime = o.preventDoubleEventTime || 100;
+		// flag indication that a keyboard is open
+		base.isOpen = false;
 
 		// Check if caret position is saved when input is hidden or loses focus
 		// (*cough* all versions of IE and I think Opera has/had an issue as well
@@ -138,7 +140,7 @@ $.keyboard = function(el, options){
 
 		// Close with esc key & clicking outside
 		if (o.alwaysOpen) { o.stayOpen = true; }
-		$(document).bind('mousedown.keyboard keyup.keyboard touchstart.keyboard', function(e){
+		$(document).bind('mousedown.keyboard keyup.keyboard touchstart.keyboard checkkeyboard.keyboard', function(e){
 			if (base.opening) { return; }
 			base.escClose(e);
 			// needed for IE to allow switching between keyboards smoothly
@@ -220,6 +222,7 @@ $.keyboard = function(el, options){
 
 		base.$el.addClass('ui-keyboard-input-current');
 		base.isCurrent(true);
+		base.isOpen = true;
 
 		// clear watermark
 		if (!base.watermark && base.el.value === base.inPlaceholder) {
@@ -429,6 +432,10 @@ $.keyboard = function(el, options){
 			// prevent keyboard event bubbling
 			base.$keyboard.bind('mousedown.keyboard click.keyboard touchstart.keyboard', function(e){
 				e.stopPropagation();
+				if (!base.isCurrent()) {
+					base.reveal();
+					$(document).trigger('checkkeyboard.keyboard');
+				}
 			});
 
 		// If preventing paste, block context menu (right click)
@@ -682,7 +689,7 @@ $.keyboard = function(el, options){
 
 	// check for key combos (dead keys)
 	base.checkCombos = function(){
-		if (!base.isVisible()) { return; }
+		if (!base.isVisible()) { return base.$preview.val(); }
 		var i, r, t, t2,
 			// use base.$preview.val() instead of base.preview.value (val.length includes carriage returns in IE).
 			val = base.$preview.val(),
@@ -839,7 +846,7 @@ $.keyboard = function(el, options){
 
 	// Close the keyboard, if visible. Pass a status of true, if the content was accepted (for the event trigger).
 	base.close = function(accepted){
-		if (base.isVisible()) {
+		if (base.isOpen) {
 			clearTimeout(base.throttled);
 			var val = (accepted) ?  base.checkCombos() : base.originalContent;
 			// validate input if accepted
@@ -849,9 +856,10 @@ $.keyboard = function(el, options){
 				if (o.cancelClose) { return; }
 			}
 			base.isCurrent(false);
+			base.isOpen = false;
 			base.$el
 				.removeClass('ui-keyboard-input-current ui-keyboard-autoaccepted')
-				// add "ui-keyboard-autoaccepted" to inputs
+				// add "ui-keyboard-autoaccepted" to inputs - see issue #66
 				.addClass( (accepted || false) ? accepted === true ? '' : 'ui-keyboard-autoaccepted' : '' )
 				.trigger( (o.alwaysOpen) ? '' : 'beforeClose.keyboard', [ base, base.el, (accepted || false) ] )
 				.val( val )
@@ -859,6 +867,8 @@ $.keyboard = function(el, options){
 				.trigger( ((accepted || false) ? 'accepted.keyboard' : 'canceled.keyboard'), [ base, base.el ] )
 				.trigger( (o.alwaysOpen) ? 'inactive.keyboard' : 'hidden.keyboard', [ base, base.el ] )
 				.blur();
+			// update value for always open keyboards
+			base.$preview.val(val);
 			if (o.openOn) {
 				// rebind input focus - delayed to fix IE issue #72
 				base.timer = setTimeout(function(){
@@ -886,19 +896,20 @@ $.keyboard = function(el, options){
 	};
 
 	base.escClose = function(e){
-		if ( e.type === 'keyup' ) {
+		if ( e && e.type === 'keyup' ) {
 			return ( e.which === 27 )  ? base.close() : '';
 		}
 		var cur = base.isCurrent();
 		// keep keyboard open if alwaysOpen or stayOpen is true - fixes mutliple always open keyboards or single stay open keyboard
-		if ( !base.isVisible() || (o.alwaysOpen && !cur) || (!o.alwaysOpen && o.stayOpen && cur && !base.isVisible()) ) { return; }
+		if ( !base.isOpen ) { return; }
 		// ignore autoaccept if using escape - good idea?
 
-		if ( e.target !== base.el && cur ) {
+		if ( !base.isCurrent() && base.isOpen || base.isOpen && e.target !== base.el) {
 			// stop propogation in IE - an input getting focus doesn't open a keyboard if one is already open
 			if ( base.allie ) {
 				e.preventDefault();
 			}
+			// send "true" instead of a true (boolean), the input won't get a "ui-keyboard-autoaccepted" class name - see issue #66
 			base.close( o.autoAccept ? 'true' : false );
 		}
 	};
