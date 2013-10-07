@@ -73,6 +73,11 @@ Moved to the Wiki Pages: [Home](https://github.com/Mottie/Keyboard/wiki/Home) | 
 
 Only the latest changes will be shown below, see the wiki log to view older versions.
 
+### Version 1.17.9 (10/7/2013)
+
+* Fixed download links in demos.
+* Bumped version number because of some weirdness.
+
 ### Version 1.17.8 (10/7/2013)
 
 * Fixed mousewheel message to now only show up if a key has differing multiple keysets.

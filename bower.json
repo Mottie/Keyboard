@@ -1,6 +1,6 @@
 {
   "name": "jquery-virtual-keyboard",
-  "version": "1.17.8",
+  "version": "1.17.9",
   "main": ["./js/jquery.keyboard.js", "./css/keyboard.css"],
   "ignore": [
       "**/.*"
