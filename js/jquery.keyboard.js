@@ -116,6 +116,8 @@ $.keyboard = function(el, options){
 		base.decimal = ( /^\./.test(o.display.dec) ) ? true : false; // determine if US "." or European "," system being used
 		// convert mouse repeater rate (characters per second) into a time in milliseconds.
 		base.repeatTime = 1000/(o.repeatRate || 20);
+		// delay in ms to prevent mousedown & touchstart from both firing events at the same time
+		o.preventDoubleEventTime = o.preventDoubleEventTime || 100;
 
 		// Check if caret position is saved when input is hidden or loses focus
 		// (*cough* all versions of IE and I think Opera has/had an issue as well
@@ -446,7 +448,11 @@ $.keyboard = function(el, options){
 				// prevent errors when external triggers attempt to "type" - see issue #158
 				if (!base.$keyboard.is(":visible")){ return false; }
 				// 'key', { action: doAction, original: n, curTxt : n, curNum: 0 }
-				var txt, key = $.data(this, 'key'), action = key.action.split(':')[0];
+				var txt, key = $.data(this, 'key'), action = key.action.split(':')[0],
+					// prevent mousedown & touchstart from both firing events at the same time - see #184
+					timer = new Date().getTime();
+				if (timer - (base.lastEventTime || 0) < o.preventDoubleEventTime) { return; }
+				base.lastEventTime = timer;
 				base.$preview.focus();
 				base.$lastKey = $(this);
 				base.lastKey = key.curTxt;
