@@ -1,6 +1,6 @@
 /*!
 jQuery UI Virtual Keyboard
-Version 1.17.8
+Version 1.17.10
 
 Author: Jeremy Satterfield
 Modified: Rob Garrison (Mottie on github)
@@ -477,13 +477,12 @@ $.keyboard = function(el, options){
 						base.showKeySet(this);
 					}
 				}
+				// set caret if caret moved by action function; also, attempt to fix issue #131
+				base.$preview.focus().caret( base.lastCaret.start, base.lastCaret.end );
 				base.checkCombos();
 				base.checkMaxLength();
 				if ($.isFunction(o.change)){ o.change( $.Event("change"), base, base.el ); }
 				base.$el.trigger( 'change.keyboard', [ base, base.el ] );
-				base.$preview.focus();
-				// attempt to fix issue #131
-				if (base.checkCaret) { base.$preview.caret( base.lastCaret.start, base.lastCaret.end ); }
 				e.preventDefault();
 			})
 			// Change hover class and tooltip
@@ -1226,6 +1225,13 @@ $.keyboard = function(el, options){
 			base.lastKeyset[0] = base.shiftActive = base.capsLock = !base.capsLock;
 			base.showKeySet(el);
 		},
+		left : function(base){
+			var p = base.$preview.caret();
+			if (p.start - 1 >= 0) {
+				// move both start and end of caret (prevents text selection) & save caret position
+				base.lastCaret = { start: p.start - 1, end: p.start - 1 };
+			}
+		},
 		meta : function(base,el){
 			base.metaActive = ($(el).hasClass(base.options.css.buttonAction)) ? false : true;
 			base.showKeySet(el);
@@ -1237,6 +1243,13 @@ $.keyboard = function(el, options){
 		prev : function(base) {
 			base.switchInput(false, base.options.autoAccept);
 			return false;
+		},
+		right : function(base){
+			var p = base.$preview.caret();
+			if (p.start + 1 <= base.$preview.val().length) {
+				// move both start and end of caret (prevents text selection) && save caret position
+				base.lastCaret = { start: p.start + 1, end: p.start + 1 };
+			}
 		},
 		shift : function(base,el){
 			base.lastKeyset[0] = base.shiftActive = !base.shiftActive;
@@ -1397,9 +1410,11 @@ $.keyboard = function(el, options){
 			'e'      : '\u23ce:Enter',        // down, then left arrow - enter symbol
 			'empty'  : '\u00a0',
 			'enter'  : 'Enter:Enter \u23ce',
+			'left'   : '\u2190',              // left arrow (move caret)
 			'lock'   : 'Lock:\u21ea Caps Lock', // caps lock
 			'next'   : 'Next \u21e8',
 			'prev'   : '\u21e6 Prev',
+			'right'  : '\u2192',              // right arrow (move caret)
 			's'      : '\u21e7:Shift',        // thick hollow up arrow
 			'shift'  : 'Shift:Shift',
 			'sign'   : '\u00b1:Change Sign',  // +/- sign for num pad

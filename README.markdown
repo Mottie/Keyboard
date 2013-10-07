@@ -73,6 +73,10 @@ Moved to the Wiki Pages: [Home](https://github.com/Mottie/Keyboard/wiki/Home) | 
 
 Only the latest changes will be shown below, see the wiki log to view older versions.
 
+### Version 1.17.10 (10/7/2013)
+
+* Added `{left}` and `{right}` action keys which move the caret within the input ([demo](http://jsfiddle.net/MK947/1351/)).
+
 ### Version 1.17.9 (10/7/2013)
 
 * Fixed download links in demos.
