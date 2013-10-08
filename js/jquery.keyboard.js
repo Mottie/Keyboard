@@ -1,6 +1,6 @@
 /*!
 jQuery UI Virtual Keyboard
-Version 1.17.10
+Version 1.17.11
 
 Author: Jeremy Satterfield
 Modified: Rob Garrison (Mottie on github)
@@ -614,7 +614,7 @@ $.keyboard = function(el, options){
 			.caret(t, t)
 			.scrollLeft(scrL);
 
-		if (base.checkCaret) { base.lastCaret = { start: t, end: t }; } // save caret in case of bksp
+		base.lastCaret = { start: t, end: t }; // save caret in case of bksp
 
 	};
 

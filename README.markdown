@@ -73,6 +73,10 @@ Moved to the Wiki Pages: [Home](https://github.com/Mottie/Keyboard/wiki/Home) | 
 
 Only the latest changes will be shown below, see the wiki log to view older versions.
 
+### Version 1.17.11 (10/8/2013)
+
+* Caret should no longer get stuck. Fixes [issue #207](https://github.com/Mottie/Keyboard/issues/207).
+
 ### Version 1.17.10 (10/7/2013)
 
 * Added `{left}` and `{right}` action keys which move the caret within the input ([demo](http://jsfiddle.net/MK947/1351/)).
