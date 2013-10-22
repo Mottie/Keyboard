@@ -73,6 +73,10 @@ Moved to the Wiki Pages: [Home](https://github.com/Mottie/Keyboard/wiki/Home) | 
 
 Only the latest changes will be shown below, see the wiki log to view older versions.
 
+### Version 1.17.12 (10/22/2013)
+
+* Fixed `stayOpen` to again work properly. Fixes [issue #211](https://github.com/Mottie/Keyboard/issues/211).
+
 ### Version 1.17.11 (10/8/2013)
 
 * Caret should no longer get stuck. Fixes [issue #207](https://github.com/Mottie/Keyboard/issues/207).

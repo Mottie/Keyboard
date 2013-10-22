@@ -1,6 +1,6 @@
 /*!
 jQuery UI Virtual Keyboard
-Version 1.17.11
+Version 1.17.12
 
 Author: Jeremy Satterfield
 Modified: Rob Garrison (Mottie on github)
@@ -903,7 +903,7 @@ $.keyboard = function(el, options){
 		if ( !base.isOpen ) { return; }
 		// ignore autoaccept if using escape - good idea?
 
-		if ( !base.isCurrent() && base.isOpen || base.isOpen && e.target !== base.el) {
+		if ( !base.isCurrent() && base.isOpen || base.isOpen && e.target !== base.el && !o.stayOpen) {
 			// stop propogation in IE - an input getting focus doesn't open a keyboard if one is already open
 			if ( base.allie ) {
 				e.preventDefault();
