@@ -189,16 +189,30 @@ $.keyboard = function(el, options){
 			// save caret position in the input to transfer it to the preview
 			base.lastCaret = base.$el.caret();
 		}
-		if (!base.isVisible() || o.alwaysOpen) {
+		if (!base.isVisible()) {
 			clearTimeout(base.timer);
 			base.reveal();
 		}
+		if (o.alwaysOpen) {
+			base.setCurrent();
+		}
+	};
+
+	base.setCurrent = function(){
+		// ui-keyboard-has-focus is applied in case multiple keyboards have alwaysOpen = true and are stacked
+		$('.ui-keyboard-has-focus').removeClass('ui-keyboard-has-focus');
+		$('.ui-keyboard-input-current').removeClass('ui-keyboard-input-current');
+
+		base.$el.addClass('ui-keyboard-input-current');
+		base.$keyboard.addClass('ui-keyboard-has-focus');
+		base.isCurrent(true);
+		base.isOpen = true;
 	};
 
 	base.reveal = function(){
 		base.opening = true;
 		// close all keyboards
-		$('.ui-keyboard:not(.ui-keyboard-always-open)').hide();
+		$('.ui-keyboard').not('.ui-keyboard-always-open').hide();
 
 		// Don't open if disabled
 		if (base.$el.is(':disabled') || (base.$el.attr('readonly') && !base.$el.hasClass('ui-keyboard-lockedinput'))) {
@@ -215,14 +229,6 @@ $.keyboard = function(el, options){
 
 		// build keyboard if it doesn't exist
 		if (typeof(base.$keyboard) === 'undefined') { base.startup(); }
-
-		// ui-keyboard-has-focus is applied in case multiple keyboards have alwaysOpen = true and are stacked
-		$('.ui-keyboard-has-focus').removeClass('ui-keyboard-has-focus');
-		$('.ui-keyboard-input-current').removeClass('ui-keyboard-input-current');
-
-		base.$el.addClass('ui-keyboard-input-current');
-		base.isCurrent(true);
-		base.isOpen = true;
 
 		// clear watermark
 		if (!base.watermark && base.el.value === base.inPlaceholder) {
@@ -254,10 +260,10 @@ $.keyboard = function(el, options){
 		// beforeVisible event
 		base.$el.trigger( 'beforeVisible.keyboard', [ base, base.el ] );
 
+		base.setCurrent();
+
 		// show keyboard
-		base.$keyboard
-			.addClass('ui-keyboard-has-focus')
-			.show();
+		base.$keyboard.show();
 
 		// adjust keyboard preview window width - save width so IE won't keep expanding (fix issue #6)
 		if (o.usePreview && base.msie) {
@@ -551,7 +557,7 @@ $.keyboard = function(el, options){
 				return false;
 			})
 			// no mouse repeat for action keys (shift, ctrl, alt, meta, etc)
-			.filter(':not(.ui-keyboard-actionkey)')
+			.not('.ui-keyboard-actionkey')
 			// mouse repeated action key exceptions
 			.add('.ui-keyboard-tab, .ui-keyboard-bksp, .ui-keyboard-space, .ui-keyboard-enter', base.$keyboard)
 			.bind('mousedown.kb touchstart.kb', function(){
@@ -1521,7 +1527,8 @@ $.keyboard = function(el, options){
 		accepted    : function(e, keyboard, el) {},
 		canceled    : function(e, keyboard, el) {},
 		hidden      : function(e, keyboard, el) {},
-		switchInput : null, // called instead of base.switchInput
+		// called instead of base.switchInput
+		switchInput : function(keyboard, goToNext, isAccepted) {},
 */
 
 		// this callback is called just before the "beforeClose" to check the value
