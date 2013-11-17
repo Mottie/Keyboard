@@ -120,7 +120,7 @@
 
 			// Store typing text
 			base.typeIn = function(txt, delay, callback, e){
-				if (!base.isVisible) {
+				if (!base.isVisible()) {
 					// keyboard was closed
 					base.typing_options.init = false;
 					clearTimeout(base.typing_timer);
@@ -198,7 +198,7 @@
 				}
 
 				if (o.current < o.len){
-					if (!base.isVisible) { return; } // keyboard was closed, abort!!
+					if (!base.isVisible()) { return; } // keyboard was closed, abort!!
 					setTimeout(function(){ base.typeIn(); }, o.delay);
 				} else {
 					o.init = false;
@@ -218,7 +218,7 @@
 				if (e) { el.filter(':visible').trigger('mouseenter.keyboard'); }
 				base.typing_timer = setTimeout(function(){
 					if (e) { setTimeout(function(){ el.trigger('mouseleave.keyboard'); }, base.typing_options.delay/3); }
-					if (!base.isVisible) { return; }
+					if (!base.isVisible()) { return; }
 					if (!base.typing_event) {
 						base.insertText(txt);
 						base.checkCombos();
@@ -228,7 +228,7 @@
 
 			if (base.typing_options.showTyping) {
 				// visible event is fired before this extension is initialized, so check!
-				if (base.options.alwaysOpen && base.isVisible) {
+				if (base.options.alwaysOpen && base.isVisible()) {
 					base.typing_setup();
 				}
 				// capture and simulate typing
