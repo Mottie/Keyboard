@@ -1,6 +1,6 @@
 /*!
 jQuery UI Virtual Keyboard
-Version 1.17.12
+Version 1.17.13
 
 Author: Jeremy Satterfield
 Modified: Rob Garrison (Mottie on github)

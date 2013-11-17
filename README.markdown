@@ -73,6 +73,10 @@ Moved to the Wiki Pages: [Home](https://github.com/Mottie/Keyboard/wiki/Home) | 
 
 Only the latest changes will be shown below, see the wiki log to view older versions.
 
+### Version 1.17.13 (11/16/2013)
+
+* Add Tamil keyboard layout. Thanks to the [Ezhil-Language-Foundation](https://github.com/Ezhil-Language-Foundation).
+
 ### Version 1.17.12 (10/22/2013)
 
 * Fixed `stayOpen` to again work properly. Fixes [issue #211](https://github.com/Mottie/Keyboard/issues/211).
