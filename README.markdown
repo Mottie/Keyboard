@@ -73,6 +73,10 @@ Moved to the Wiki Pages: [Home](https://github.com/Mottie/Keyboard/wiki/Home) | 
 
 Only the latest changes will be shown below, see the wiki log to view older versions.
 
+### Version 1.17.15 (11/17/2013)
+
+* Add missing text/link in scramble demo.
+
 ### Version 1.17.14 (11/17/2013)
 
 * Caret positions correctly when keyboard is `alwaysOpen`. Fixes [issue #214](https://github.com/Mottie/Keyboard/issues/214).
