@@ -281,7 +281,12 @@ $.keyboard = function(el, options){
 	};
 
 	base.startup = function(){
-		base.$keyboard = base.buildKeyboard();
+		if ( $.isFunction(o.create) ) {
+			base.$keyboard = o.create(base);
+		}
+		if ( typeof base.$keyboard === 'undefined' ) {
+			base.$keyboard = base.buildKeyboard();
+		}
 		base.preview = base.$preview[0];
 		base.$decBtn = base.$keyboard.find('.ui-keyboard-dec');
 		base.wheel = $.isFunction( $.fn.mousewheel ); // is mousewheel plugin loaded?
@@ -898,7 +903,6 @@ $.keyboard = function(el, options){
 		if ( e && e.type === 'keyup' ) {
 			return ( e.which === 27 )  ? base.close() : '';
 		}
-		var cur = base.isCurrent();
 		// keep keyboard open if alwaysOpen or stayOpen is true - fixes mutliple always open keyboards or 
 		// single stay open keyboard
 		if ( !base.isOpen ) { return; }
@@ -1577,6 +1581,8 @@ $.keyboard = function(el, options){
 		hidden      : function(e, keyboard, el) {},
 		// called instead of base.switchInput
 		switchInput : function(keyboard, goToNext, isAccepted) {},
+		// used if you want to create a custom layout or modify the built-in keyboard
+		create      : function(keyboard) { return keyboard.buildKeyboard(); }
 */
 
 		// this callback is called just before the "beforeClose" to check the value
@@ -1620,7 +1626,7 @@ $.fn.caret = function(options,opt2) {
 	if ( typeof this[0] === 'undefined' || this.is(':hidden') || this.css('visibility') === 'hidden' ) {
 		return this;
 	}
-	var n, s, start, e, end, selRange, range, stored_range, te, val,
+	var s, start, e, end, selRange, range, stored_range, te, val,
 		selection = document.selection, t = this[0], sTop = t.scrollTop,
 		ss = typeof t.selectionStart !== 'undefined';
 	if (typeof options === 'number' && typeof opt2 === 'number') {

@@ -73,6 +73,17 @@ Moved to the Wiki Pages: [Home](https://github.com/Mottie/Keyboard/wiki/Home) | 
 
 Only the latest changes will be shown below, see the wiki log to view older versions.
 
+### Version 1.17.14 (11/17/2013)
+
+* Caret positions correctly when keyboard is `alwaysOpen`. Fixes [issue #214](https://github.com/Mottie/Keyboard/issues/214).
+* Typing extension correctly detects visible keyboards.
+* Added scramble extension
+  * This extension scrambles targeted keys (`targetKeys` option) within each keyset
+  * The `byRow` option (default is `true`) will scramble the targeted keys by row; if `false`, the targeted keys within the entire keyset will scramble.
+  * The `randomizeOnce` option (default is `true`) will only randomize the keys once; if `false`, the targeted key will scramble every time the keyboard is opened.
+  * See the [documentation](https://github.com/Mottie/Keyboard/wiki/Setup#scramble) for initialization code.
+* Restructuring &amp; general code cleanup to allow the scramble extension to work.
+
 ### Version 1.17.13 (11/16/2013)
 
 * Add Tamil keyboard layout. Thanks to the [Ezhil-Language-Foundation](https://github.com/Ezhil-Language-Foundation).
@@ -88,38 +99,3 @@ Only the latest changes will be shown below, see the wiki log to view older vers
 ### Version 1.17.10 (10/7/2013)
 
 * Added `{left}` and `{right}` action keys which move the caret within the input ([demo](http://jsfiddle.net/MK947/1351/)).
-
-### Version 1.17.9 (10/7/2013)
-
-* Fixed download links in demos.
-* Bumped version number because of some weirdness.
-
-### Version 1.17.8 (10/7/2013)
-
-* Fixed mousewheel message to now only show up if a key has differing multiple keysets.
-* Fixed autocomplete extension to now properly work with both newer and older versions of jQuery UI. Fixes [issue #177](https://github.com/Mottie/Keyboard/issues/177).
-* Added the `buttonHover` class to a virtual keyboard key when the "touchstart" event is fired to provide visual feedback. Attempt to [fix #179](https://github.com/Mottie/Keyboard/issues/179).
-* Added script to prevent simultaneous "mousedown" &amp; "touchstart" events from producing double entries. Fixes [issue #184](https://github.com/Mottie/Keyboard/issues/184).
-* Added colon to the list of accepted keys. Fixes [issue #197](https://github.com/Mottie/Keyboard/issues/197).
-* Fixed issue with close not being triggered when clicking in another input with a keyboard attached. Fixes [issue #199](https://github.com/Mottie/Keyboard/issues/199).
-* Merged in fix for preventing an error when hiding the keyboard using the navigation extension. See [pull #200](https://github.com/Mottie/Keyboard/pull/200). Thanks @jmsanzg
-* Merged in `bower.json` file addition by @peters and registered, thanks! See [pull #202](https://github.com/Mottie/Keyboard/pull/202).
-
-### Version 1.17.7 (5/13/2013)
-
-* Fixed the autocomplete extension to not close the keyboard when clicking within the autocomplete window, including the scroll bar. Fixes [issue #170](https://github.com/Mottie/Keyboard/issues/170).
-* Fixed an issue in IE8 where a javascript error would occur in textarea when `usePreview` is `false`. Fixes [issue #134](https://github.com/Mottie/Keyboard/issues/134).
-
-### Version 1.17.6 (5/10/2013)
-
-* Fixed the check combo function to not cause an error when the keyboard is hidden. Fixes [issue #168](https://github.com/Mottie/Keyboard/issues/168).
-
-### Version 1.17.5 (5/6/2013)
-
-* Keyboard visible callback now triggered after the preview gets focus. Fixes [issue #147](https://github.com/Mottie/Keyboard/issues/147).
-
-### Version 1.17.4 (4/14/2013)
-
-* Fixed an issue with IE not giving the preview window focus.
-  * Thanks to [@semmelbroesel](https://github.com/semmelbroesel) for the suggestion.
-  * Fixes [issue #160](https://github.com/Mottie/Keyboard/issues/160).

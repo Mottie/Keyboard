@@ -3,7 +3,10 @@
 <head>
 	<meta charset="utf-8">
 
-	<title>Virtual Keyboard Basic Scientific Calculator Demo</title>
+	<title>Virtual Keyboard Basic Demo</title>
+
+	<!-- demo -->
+	<link href="demo/demo.css" rel="stylesheet">
 
 	<!-- jQuery & jQuery UI + theme (required) -->
 	<link href="http://code.jquery.com/ui/1.9.0/themes/ui-darkness/jquery-ui.css" rel="stylesheet">
@@ -16,17 +19,29 @@
 
 	<!-- keyboard extensions (optional) -->
 	<script src="js/jquery.mousewheel.js"></script>
-	<script src="js/jquery.keyboard.extension-typing.js"></script>
+	<script src="js/jquery.keyboard.extension-scramble.js"></script>
 
-	<!-- calculator demo -->
-	<link href="demo/demo.css" rel="stylesheet" />
-	<link href="demo/calculator.css" rel="stylesheet" />
-	<script src="demo/calculator.js"></script>
+	<!--
+	<script src="js/jquery.keyboard.extension-typing.js"></script>
+	<script src="js/jquery.keyboard.extension-autocomplete.js"></script>
+	-->
+
+	<!-- initialize keyboard (required) -->
+	<script>
+	$(function(){
+
+		$('#keyboard').keyboard().addScramble({
+			targetKeys    : /[a-z\d]/i, // keys to randomize
+			byRow         : true,       // randomize by row, otherwise randomize all keys
+			randomizeOnce : false       // if false, randomize every time the keyboard opens
+		});
+
+	});
+	</script>
 
 </head>
-<body>
 
-<div id="page-wrap">
+<body>
 
 	<!-- Links to other demo pages & docs -->
 	<div id="nav">
@@ -34,9 +49,9 @@
 		<a href="basic.html">Basic</a>
 		<a href="mobile.html">Mobile</a>
 		<a href="layouts.html">Layouts</a>
-		<a href="scramble.html">Scramble</a>
+		<a class="current" href="scramble.html">Scramble</a>
 		<a href="navigate.html">Navigate</a>
-		<a class="current" href="calculator.html">Calculator</a>
+		<a href="calculator.html">Calculator</a>
 		<a class="play" href="http://jsfiddle.net/Mottie/MK947/">Playground</a>
 		<a class="git" href="https://github.com/Mottie/Keyboard/wiki">Documentation</a>
 		<a class="git" href="https://github.com/Mottie/Keyboard/archive/master.zip">Download</a>
@@ -44,24 +59,16 @@
 	</div>
 	<!-- End Links -->
 
-	<h1><a href="https://github.com/Mottie/Keyboard">Virtual Keyboard Scientific Calculator</a></h1>
-	<h4>This is a very basic demo of a scientific calculator.*</h4>
-	<div class="block2">
-		<input id="calc" type="text" />
-	</div>
-	<br class="clear" />
+	<h1><a href="https://github.com/Mottie/Keyboard">Virtual Keyboard Scramble Demo</a></h1>
+	<h4>.</h4>
 
-	<div id="footer2">
-		<div>
-			* I am not a math expert, nor was I trying to make a comprehensive scientific calculator.
-			This demo was simply made to show the versitility of this plugin. 
-			If you would like to correct and/or update this demo, please feel free to fork <a href="https://github.com/Mottie/Keyboard">this repository</a>
-			then send me a pull request, or submit an <a href="https://github.com/Mottie/Keyboard/issues">issue</a>.
-			I don't plan on doing much more with this demo otherwise.
-		</div>
-	</div>
+	<div id="wrap"> <!-- wrapper only needed to center the input -->
 
-</div>
+		<!-- keyboard input -->
+		<input id="keyboard" type="text">
+
+	</div> <!-- End wrapper -->
 
 </body>
+
 </html>
