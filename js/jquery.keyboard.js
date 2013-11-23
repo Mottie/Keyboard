@@ -134,6 +134,34 @@ $.keyboard = function(el, options){
 
 	};
 
+	base.setCurrent = function(){
+		// ui-keyboard-has-focus is applied in case multiple keyboards have alwaysOpen = true and are stacked
+		$('.ui-keyboard-has-focus').removeClass('ui-keyboard-has-focus');
+		$('.ui-keyboard-input-current').removeClass('ui-keyboard-input-current');
+
+		base.$el.addClass('ui-keyboard-input-current');
+		base.$keyboard.addClass('ui-keyboard-has-focus');
+		base.isCurrent(true);
+		base.isOpen = true;
+	};
+
+	base.isCurrent = function(set){
+		var cur = $.keyboard.currentKeyboard || false;
+		if (set) {
+			cur = $.keyboard.currentKeyboard = base.el;
+		} else if (set === false && cur === base.el) {
+			cur = $.keyboard.currentKeyboard = '';
+		}
+		return cur === base.el;
+	};
+
+	base.isVisible = function() {
+		if (typeof(base.$keyboard) === 'undefined') {
+			return false;
+		}
+		return base.$keyboard.is(":visible");
+	};
+
 	base.focusOn = function(){
 		if (o.usePreview && base.$el.is(':visible')) {
 			// caret position is always 0,0 in webkit; and nothing is focused at this point... odd
@@ -147,17 +175,6 @@ $.keyboard = function(el, options){
 		if (o.alwaysOpen) {
 			base.setCurrent();
 		}
-	};
-
-	base.setCurrent = function(){
-		// ui-keyboard-has-focus is applied in case multiple keyboards have alwaysOpen = true and are stacked
-		$('.ui-keyboard-has-focus').removeClass('ui-keyboard-has-focus');
-		$('.ui-keyboard-input-current').removeClass('ui-keyboard-input-current');
-
-		base.$el.addClass('ui-keyboard-input-current');
-		base.$keyboard.addClass('ui-keyboard-has-focus');
-		base.isCurrent(true);
-		base.isOpen = true;
 	};
 
 	base.reveal = function(){
@@ -361,8 +378,10 @@ $.keyboard = function(el, options){
 						// area on keyup. Sadly it still happens if you don't release the tab key immediately because keydown event auto-repeats
 						if (base.tab && o.tabNavigation && !o.lockInput) {
 							base.shiftActive = e.shiftKey;
-							$.keyboard.keyaction.tab(base);
+							// when switching inputs, the tab keyaction returns false
+							var notSwitching = $.keyboard.keyaction.tab(base);
 							base.tab = false;
+							if (!notSwitching) { return false; }
 						} else {
 							e.preventDefault();
 						}
@@ -566,14 +585,6 @@ $.keyboard = function(el, options){
 				}
 				return false;
 			});
-	};
-
-
-	base.isVisible = function() {
-		if (typeof(base.$keyboard) === 'undefined') {
-			return false;
-		}
-		return base.$keyboard.is(":visible");
 	};
 
 	// Insert text at caret/selection - thanks to Derek Wickwire for fixing this up!
@@ -802,16 +813,6 @@ $.keyboard = function(el, options){
 			return $(this).find('> span').text();
 		}).get();
 		return keys;
-	};
-
-	base.isCurrent = function(set){
-		var cur = $.keyboard.currentKeyboard || false;
-		if (set) {
-			cur = $.keyboard.currentKeyboard = base.el;
-		} else if (set === false && cur === base.el) {
-			cur = $.keyboard.currentKeyboard = '';
-		}
-		return cur === base.el;
 	};
 
 	// Go to next or prev inputs

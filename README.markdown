@@ -73,6 +73,10 @@ Moved to the Wiki Pages: [Home](https://github.com/Mottie/Keyboard/wiki/Home) | 
 
 Only the latest changes will be shown below, see the wiki log to view older versions.
 
+### Version 1.17.17 (11/23/2013)
+
+* Tab navigation now works properly when `usePreview` is `false`. Fixes [issue #221](https://github.com/Mottie/Keyboard/issues/221).
+
 ### Version 1.17.16 (11/23/2013)
 
 * Position collison options are no longer overridden, if already set
