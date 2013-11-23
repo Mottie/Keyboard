@@ -1,6 +1,6 @@
 /*!
 jQuery UI Virtual Keyboard
-Version 1.17.15
+Version 1.17.16
 
 Author: Jeremy Satterfield
 Modified: Rob Garrison (Mottie on github)
@@ -1572,17 +1572,18 @@ $.keyboard = function(el, options){
 		// *** Methods ***
 		// commenting these out to reduce the size of the minified version
 		// Callbacks - attach a function to any of these callbacks as desired
-		initialized : function(e, keyboard, el) {},
-		visible     : function(e, keyboard, el) {},
-		change      : function(e, keyboard, el) {},
-		beforeClose : function(e, keyboard, el, accepted) {},
-		accepted    : function(e, keyboard, el) {},
-		canceled    : function(e, keyboard, el) {},
-		hidden      : function(e, keyboard, el) {},
+		initialized   : function(e, keyboard, el) {},
+		beforeVisible : function(e, keyboard, el) {},
+		visible       : function(e, keyboard, el) {},
+		change        : function(e, keyboard, el) {},
+		beforeClose   : function(e, keyboard, el, accepted) {},
+		accepted      : function(e, keyboard, el) {},
+		canceled      : function(e, keyboard, el) {},
+		hidden        : function(e, keyboard, el) {},
 		// called instead of base.switchInput
-		switchInput : function(keyboard, goToNext, isAccepted) {},
+		switchInput   : function(keyboard, goToNext, isAccepted) {},
 		// used if you want to create a custom layout or modify the built-in keyboard
-		create      : function(keyboard) { return keyboard.buildKeyboard(); }
+		create        : function(keyboard) { return keyboard.buildKeyboard(); }
 */
 
 		// this callback is called just before the "beforeClose" to check the value

@@ -73,6 +73,10 @@ Moved to the Wiki Pages: [Home](https://github.com/Mottie/Keyboard/wiki/Home) | 
 
 Only the latest changes will be shown below, see the wiki log to view older versions.
 
+### Version 1.17.16 (11/23/2013)
+
+* Position collison options are no longer overridden, if already set
+
 ### Version 1.17.15 (11/17/2013)
 
 * Add missing text/link in scramble demo.
