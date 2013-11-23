@@ -199,7 +199,7 @@ $.keyboard = function(el, options){
 		base.position = o.position;
 		// get single target position || target stored in element data (multiple targets) || default @ element
 		base.position.of = base.position.of || base.$el.data('keyboardPosition') || base.$el;
-		base.position.collision = (o.usePreview) ? base.position.collision || 'fit fit' : 'flip flip';
+		base.position.collision = base.position.collision || (o.usePreview ? 'fit fit' : 'flip flip');
 
 		if (o.resetDefault) {
 			base.shiftActive = base.altActive = base.metaActive = false;
