@@ -3,7 +3,7 @@
  *
  * To use:
  *  Point to this js file into your page header: <script src="layouts/tamil.js" type="text/javascript"></script>
- *  Initialize the keyboard using: $('input').keyboard({ layout: 'tamil-qwerty' });
+ *  Initialize the keyboard using: $('input').keyboard({ layout: 'tamil-tamil99-mod' });
  *
  * Copyright 2013, Muthiah Annamalai
  *
