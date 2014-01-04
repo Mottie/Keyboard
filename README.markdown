@@ -73,6 +73,13 @@ Moved to the Wiki Pages: [Home](https://github.com/Mottie/Keyboard/wiki/Home) | 
 
 Only the latest changes will be shown below, see the wiki log to view older versions.
 
+### Version 1.17.18 (1/4/2014)
+
+* Merge fixes to Tamil layout
+* Add minified extensions:
+  * Includes a file with all extensions with mousewheel plugin both minified &amp; unminified.
+  * Fixes [issue #223](https://github.com/Mottie/Keyboard/issues/223).
+
 ### Version 1.17.17 (11/23/2013)
 
 * Tab navigation now works properly when `usePreview` is `false`. Fixes [issue #221](https://github.com/Mottie/Keyboard/issues/221).
@@ -95,19 +102,3 @@ Only the latest changes will be shown below, see the wiki log to view older vers
   * The `randomizeOnce` option (default is `true`) will only randomize the keys once; if `false`, the targeted key will scramble every time the keyboard is opened.
   * See the [documentation](https://github.com/Mottie/Keyboard/wiki/Setup#scramble) for initialization code.
 * Restructuring &amp; general code cleanup to allow the scramble extension to work.
-
-### Version 1.17.13 (11/16/2013)
-
-* Add Tamil keyboard layout. Thanks to the [Ezhil-Language-Foundation](https://github.com/Ezhil-Language-Foundation).
-
-### Version 1.17.12 (10/22/2013)
-
-* Fixed `stayOpen` to again work properly. Fixes [issue #211](https://github.com/Mottie/Keyboard/issues/211).
-
-### Version 1.17.11 (10/8/2013)
-
-* Caret should no longer get stuck. Fixes [issue #207](https://github.com/Mottie/Keyboard/issues/207).
-
-### Version 1.17.10 (10/7/2013)
-
-* Added `{left}` and `{right}` action keys which move the caret within the input ([demo](http://jsfiddle.net/MK947/1351/)).
