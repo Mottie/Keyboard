@@ -30,6 +30,10 @@ Originally posted by Jeremy Satterfield in his [blog](http://jsatt.blogspot.com/
 * Autocomplete extension will integrate this keyboard plugin with jQuery UI's autocomplete widget.
 * Multiple region specific keyboard layouts included in a separate directory. This is a work in progress and slowly growing.
 
+## Bower
+
+Install using [bower](https://github.com/bower/bower) via `bower install keyboard`.
+
 ## Documentation
 
 Moved to the Wiki Pages: [Home](https://github.com/Mottie/Keyboard/wiki/Home) | [FAQ](https://github.com/Mottie/Keyboard/wiki/FAQ) | [Setup](https://github.com/Mottie/Keyboard/wiki/Setup) | [Usage](https://github.com/Mottie/Keyboard/wiki/Usage) | [Options](https://github.com/Mottie/Keyboard/wiki/Options) ( [Layout](https://github.com/Mottie/Keyboard/wiki/Layout), [Language](https://github.com/Mottie/Keyboard/wiki/Language), [Useability](https://github.com/Mottie/Keyboard/wiki/Useability), [Actions](https://github.com/Mottie/Keyboard/wiki/Actions) ) | [Methods](https://github.com/Mottie/Keyboard/wiki/Methods) | [Theme](https://github.com/Mottie/Keyboard/wiki/Theme) | [Log](https://github.com/Mottie/Keyboard/wiki/Log)
