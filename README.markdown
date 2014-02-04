@@ -36,7 +36,7 @@ Install using [bower](https://github.com/bower/bower) via `bower install keyboar
 
 ## Documentation
 
-Moved to the Wiki Pages: [Home](https://github.com/Mottie/Keyboard/wiki/Home) | [FAQ](https://github.com/Mottie/Keyboard/wiki/FAQ) | [Setup](https://github.com/Mottie/Keyboard/wiki/Setup) | [Usage](https://github.com/Mottie/Keyboard/wiki/Usage) | [Options](https://github.com/Mottie/Keyboard/wiki/Options) ( [Layout](https://github.com/Mottie/Keyboard/wiki/Layout), [Language](https://github.com/Mottie/Keyboard/wiki/Language), [Useability](https://github.com/Mottie/Keyboard/wiki/Useability), [Actions](https://github.com/Mottie/Keyboard/wiki/Actions) ) | [Methods](https://github.com/Mottie/Keyboard/wiki/Methods) | [Theme](https://github.com/Mottie/Keyboard/wiki/Theme) | [Log](https://github.com/Mottie/Keyboard/wiki/Log)
+Wiki: [Home](https://github.com/Mottie/Keyboard/wiki/Home) | [FAQ](https://github.com/Mottie/Keyboard/wiki/FAQ) | [Setup](https://github.com/Mottie/Keyboard/wiki/Setup) | [Usage](https://github.com/Mottie/Keyboard/wiki/Usage) | [Options](https://github.com/Mottie/Keyboard/wiki/Options) ( [Layout](https://github.com/Mottie/Keyboard/wiki/Layout), [Language](https://github.com/Mottie/Keyboard/wiki/Language), [Useability](https://github.com/Mottie/Keyboard/wiki/Useability), [Actions](https://github.com/Mottie/Keyboard/wiki/Actions) ) | [Methods](https://github.com/Mottie/Keyboard/wiki/Methods) | [Theme](https://github.com/Mottie/Keyboard/wiki/Theme) | [Log](https://github.com/Mottie/Keyboard/wiki/Log)
 
 ## To Do
 
@@ -77,6 +77,14 @@ Moved to the Wiki Pages: [Home](https://github.com/Mottie/Keyboard/wiki/Home) | 
 
 Only the latest changes will be shown below, see the wiki log to view older versions.
 
+### Version 1.17.19 (2/4/2014)
+
+* Bower correction
+  * Merge update to bower registered name
+  * Add instructions to install using bower in the readme
+  * Thanks to [lorenzo-stoakes](https://github.com/lorenzo-stoakes)!
+* Add support for jQuery Mobile 1.4 button styles. Thanks [BrandonLWhite](https://github.com/BrandonLWhite)!
+
 ### Version 1.17.18 (1/4/2014)
 
 * Merge fixes to Tamil layout
@@ -95,14 +103,3 @@ Only the latest changes will be shown below, see the wiki log to view older vers
 ### Version 1.17.15 (11/17/2013)
 
 * Add missing text/link in scramble demo.
-
-### Version 1.17.14 (11/17/2013)
-
-* Caret positions correctly when keyboard is `alwaysOpen`. Fixes [issue #214](https://github.com/Mottie/Keyboard/issues/214).
-* Typing extension correctly detects visible keyboards.
-* Added scramble extension
-  * This extension scrambles targeted keys (`targetKeys` option) within each keyset
-  * The `byRow` option (default is `true`) will scramble the targeted keys by row; if `false`, the targeted keys within the entire keyset will scramble.
-  * The `randomizeOnce` option (default is `true`) will only randomize the keys once; if `false`, the targeted key will scramble every time the keyboard is opened.
-  * See the [documentation](https://github.com/Mottie/Keyboard/wiki/Setup#scramble) for initialization code.
-* Restructuring &amp; general code cleanup to allow the scramble extension to work.
