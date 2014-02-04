@@ -117,7 +117,7 @@ $.fn.addMobile = function(options){
 		base.modButton = function(t){
 			// Using this instead of the jQuery Mobile buttonMarkup because it is expecting <a>'s instead of <button>
 			// theme:'a', shadow:'true', inline:'true', corners:'false'
-			return 'ui-btn ui-btn-up-' + t.theme + (t.shadow == 'true' ? ' ui-shadow' : '') + (t.corners == 'true' ? ' ui-btn-corner-all' : '');
+		    return 'ui-btn ui-btn-up-' + t.theme + ' ui-btn-' + t.theme + (t.shadow == 'true' ? ' ui-shadow' : '') + (t.corners == 'true' ? ' ui-btn-corner-all' : '');
 		};
 
 		base.mobile_init();
