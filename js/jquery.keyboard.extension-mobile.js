@@ -63,10 +63,21 @@ $.fn.addMobile = function(options){
 				base.mobile_setup();
 			}
 
-			// Setup mobile theme on keyboard once it is visible
-			base.$el.bind('visible.keyboard', function() {
+			// Setup mobile theme on keyboard once it is visible.
+			// Note: There is a 10ms delay after the keyboard is displayed before it actually fires 'visible.keyboard'. 
+			// Since we are restyling here, the user will experience FlashOfUnstyledContent (FOUC).
+			// This is avoided by first setting the visibility to hidden, then after the mobile styles are applied we 
+			// set it visible.
+			//
+			base.$el.on('beforeVisible.keyboard', function () {
+				if (base.mobile_initialized !== true) {
+					base.$keyboard.css("visibility", "hidden");
+				}
+			})
+			.on('visible.keyboard', function () {
 				if (base.mobile_initialized !== true) {
 					base.mobile_setup();
+					base.$keyboard.css("visibility", "visible");
 				}
 			});
 
