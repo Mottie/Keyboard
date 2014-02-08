@@ -1,6 +1,6 @@
 /*!
 jQuery UI Virtual Keyboard
-Version 1.17.19
+Version 1.18.0-beta
 
 Author: Jeremy Satterfield
 Modified: Rob Garrison (Mottie on github)
@@ -48,8 +48,6 @@ $.keyboard = function(el, options){
 		base.lastKeyset = [false, false, false]; // [shift, alt, meta]
 		// Class names of the basic key set - meta keysets are handled by the keyname
 		base.rows = [ '', '-shift', '-alt', '-alt-shift' ];
-		base.acceptedKeys = [];
-		base.mappedKeys = {}; // for remapping manually typed in keys
 		$('<!--[if lte IE 8]><script>jQuery("body").addClass("oldie");</script><![endif]--><!--[if IE]>' +
 			'<script>jQuery("body").addClass("ie");</script><![endif]-->').appendTo('body').remove();
 		base.msie = $('body').hasClass('oldie'); // Old IE flag, used for caret positioning
@@ -302,8 +300,33 @@ $.keyboard = function(el, options){
 			base.$keyboard = o.create(base);
 		}
 		if ( typeof base.$keyboard === 'undefined' ) {
-			base.$keyboard = base.buildKeyboard();
+			if (typeof $.keyboard.builtLayouts[o.layout] === 'undefined') {
+				base.buildKeyboard();
+			}
+			base.layout = $.keyboard.builtLayouts[o.layout];
+			base.$keyboard = base.layout.$keyboard.clone();
+
+			// build preview display
+			if (o.usePreview) {
+				base.$preview = base.$el.clone(false)
+					.removeAttr('id')
+					.removeClass('ui-keyboard-placeholder ui-keyboard-input')
+					.addClass('ui-keyboard-preview ' + o.css.input)
+					.attr('tabindex', '-1')
+					.show(); // for hidden inputs
+				// build preview container and append preview display
+				$('<div />')
+					.addClass('ui-keyboard-preview-wrapper')
+					.append(base.$preview)
+					.prependTo(base.$keyboard);
+			} else {
+				// No preview display, use element and reposition the keyboard under it.
+				base.$preview = base.$el;
+				o.position.at = o.position.at2;
+			}
+
 		}
+
 		base.preview = base.$preview[0];
 		base.$decBtn = base.$keyboard.find('.ui-keyboard-dec');
 		base.wheel = $.isFunction( $.fn.mousewheel ); // is mousewheel plugin loaded?
@@ -312,6 +335,9 @@ $.keyboard = function(el, options){
 		base.alwaysAllowed = [20,33,34,35,36,37,38,39,40,45,46];
 		// add enter to allowed keys; fixes #190
 		if (o.enterNavigation || base.el.tagName === "TEXTAREA") { base.alwaysAllowed.push(13); }
+		if (o.lockInput) {
+			base.$preview.addClass('ui-keyboard-lockedinput').attr({ 'readonly': 'readonly'});
+		}
 
 		base.bindKeyboard();
 
@@ -349,7 +375,7 @@ $.keyboard = function(el, options){
 				if (o.restrictInput) {
 					// allow navigation keys to work - Chrome doesn't fire a keypress event (8 = bksp)
 					if ( (e.which === 8 || e.which === 0) && $.inArray( e.keyCode, base.alwaysAllowed ) ) { return; }
-					if ($.inArray(k, base.acceptedKeys) === -1) { e.preventDefault(); } // quick key check
+					if ($.inArray(k, base.layout.acceptedKeys) === -1) { e.preventDefault(); } // quick key check
 				} else if ( (e.ctrlKey || e.metaKey) && (e.which === 97 || e.which === 99 || e.which === 118 ||
 						(e.which >= 120 && e.which <=122)) ) {
 					// Allow select all (ctrl-a:97), copy (ctrl-c:99), paste (ctrl-v:118) & cut (ctrl-x:120) &
@@ -360,9 +386,9 @@ $.keyboard = function(el, options){
 				// Set up a key in the layout as follows: "m(a):label"; m = key to map, (a) = actual keyboard key
 				// to map to (optional), ":label" = title/tooltip (optional)
 				// example: \u0391 or \u0391(A) or \u0391:alpha or \u0391(A):alpha
-				if (base.hasMappedKeys) {
-					if (base.mappedKeys.hasOwnProperty(k)){
-						base.lastKey = base.mappedKeys[k];
+				if (base.layout.hasMappedKeys) {
+					if (base.layout.mappedKeys.hasOwnProperty(k)){
+						base.lastKey = base.layout.mappedKeys[k];
 						base.insertText( base.lastKey );
 						e.preventDefault();
 					}
@@ -471,24 +497,26 @@ $.keyboard = function(el, options){
 			.bind(o.keyBinding.split(' ').join('.keyboard ') + '.keyboard repeater.keyboard', function(e){
 				// prevent errors when external triggers attempt to "type" - see issue #158
 				if (!base.$keyboard.is(":visible")){ return false; }
-				// 'key', { action: doAction, original: n, curTxt : n, curNum: 0 }
-				var txt, key = $.data(this, 'key'), action = key.action.split(':')[0],
+				// 'key', { action: doAction, original: n, curtxt : n, curnum: 0 }
+				var txt,
+					$this = $(this),
+					action = $this.data('action').split(':')[0],
 					// prevent mousedown & touchstart from both firing events at the same time - see #184
 					timer = new Date().getTime();
 				if (timer - (base.lastEventTime || 0) < o.preventDoubleEventTime) { return; }
 				base.lastEventTime = timer;
 				base.$preview.focus();
-				base.$lastKey = $(this);
-				base.lastKey = key.curTxt;
+				base.$lastKey = $this;
+				base.lastKey = $this.data('curtxt');
 				// Start caret in IE when not focused (happens with each virtual keyboard button click
 				if (base.checkCaret) { base.$preview.caret( base.lastCaret.start, base.lastCaret.end ); }
 				if (action.match('meta')) { action = 'meta'; }
 				if ($.keyboard.keyaction.hasOwnProperty(action) && $(this).hasClass('ui-keyboard-actionkey')) {
 					// stop processing if action returns false (close & cancel)
 					if ($.keyboard.keyaction[action](base,this,e) === false) { return false; }
-				} else if (typeof key.action !== 'undefined') {
+				} else if (action !== 'undefined') {
 					txt = base.lastKey = (base.wheel && !$(this).hasClass('ui-keyboard-actionkey')) ?
-						key.curTxt : key.action;
+						base.lastKey : action;
 					base.insertText(txt);
 					if (!base.capsLock && !o.stickyShift && !e.shiftKey) {
 						base.shiftActive = false;
@@ -506,14 +534,10 @@ $.keyboard = function(el, options){
 			// Change hover class and tooltip
 			.bind('mouseenter.keyboard mouseleave.keyboard touchstart.keyboard', function(e){
 				if (!base.isCurrent()) { return; }
-				var el = this, $this = $(this),
-					// 'key' = { action: doAction, original: n, curTxt : n, curNum: 0 }
-					key = $.data(el, 'key'),
-					txt = key.layers || base.getLayers( $this );
+				var $this = $(this),
+					txt = $this.data('layers') || base.getLayers( $this );
 				// remove duplicates
-				key.layers = txt = $.grep(txt, function(v, k){
-					return $.inArray(v, txt) === k;
-				});
+				$this.data('layers', txt = $.grep(txt, function(v, k){ return $.inArray(v, txt) === k; }) );
 				if ((e.type === 'mouseenter' || e.type === 'touchstart') && base.el.type !== 'password' &&
 					!$this.hasClass(o.css.buttonDisabled) ){
 					$this
@@ -525,32 +549,35 @@ $.keyboard = function(el, options){
 						});
 				}
 				if (e.type === 'mouseleave'){
-					key.curTxt = key.original;
-					key.curNum = 0;
-					$.data(el, 'key', key);
+					$this.data({
+						'curtxt' : $this.data('original'),
+						'curnum' : 0
+					});
 					$this
 						// needed or IE flickers really bad
 						.removeClass( (base.el.type === 'password') ? '' : o.css.buttonHover)
 						.attr('title', function(i,t){ return (t === o.wheelMessage) ? '' : t; })
-						.find('span').text( key.original ); // restore original button text
+						.find('span').text( $this.data('original') ); // restore original button text
 				}
 			})
 			// Allow mousewheel to scroll through other key sets of the same key
 			.bind('mousewheel.keyboard', function(e, delta){
 				if (base.wheel) {
-					var txt, $this = $(this), key = $.data(this, 'key');
-					txt = key.layers || base.getLayers( $this );
+					var n, txt, $this = $(this);
+					txt = $this.data('layers') || base.getLayers( $this );
 					if (txt.length > 1) {
-						key.curNum += (delta > 0) ? -1 : 1;
-						if (key.curNum > txt.length-1) { key.curNum = 0; }
-						if (key.curNum < 0) { key.curNum = txt.length-1; }
+						n = $this.data('curnum') + (delta > 0) ? -1 : 1;
+						if (n > txt.length-1) { n = 0; }
+						if (n < 0) { n = txt.length-1; }
 					} else {
-						key.curNum = 0;
+						n = 0;
 					}
-					key.layers = txt;
-					key.curTxt = txt[key.curNum];
-					$.data(this, 'key', key);
-					$this.find('span').text( txt[key.curNum] );
+					$this.data({
+						'curnum' : n,
+						'layers' : txt,
+						'curtxt' : txt[n]
+					});
+					$this.find('span').text( txt[n] );
 					return false;
 				}
 			})
@@ -742,10 +769,10 @@ $.keyboard = function(el, options){
 		// check input restrictions - in case content was pasted
 		if (o.restrictInput && val !== '') {
 			t = val;
-			r = base.acceptedKeys.length;
+			r = base.layout.acceptedKeys.length;
 			for (i=0; i < r; i++){
 				if (t === '') { continue; }
-				t2 = base.acceptedKeys[i];
+				t2 = base.layout.acceptedKeys[i];
 				if (val.indexOf(t2) >= 0) {
 					// escape out all special characters
 					if (/[\[|\]|\\|\^|\$|\.|\||\?|\*|\+|\(|\)|\{|\}]/g.test(t2)) { t2 = '\\' + t2; }
@@ -944,7 +971,7 @@ $.keyboard = function(el, options){
 			n = map;
 			nm = map.split(':');
 			map = (nm[0] !== '' && nm.length > 1) ? nm[0] : map; // get "\u0391" from "\u0391:alpha"
-			base.mappedKeys[m] = map;
+			base.layout.mappedKeys[m] = map;
 		}
 
 		// find key label
@@ -962,8 +989,16 @@ $.keyboard = function(el, options){
 		keyType += (regKey) ? '' : ' ui-keyboard-actionkey';
 		return base.keyBtn
 			.clone()
-			.attr({ 'data-value' : n, 'name': kn, 'data-pos': base.temp[1] + ',' + base.temp[2], 'title' : t })
-			.data('key', { action: keyName, original: n, curTxt : n, curNum: 0 })
+			.attr({
+				'data-value' : n,
+				'name': kn,
+				'data-pos': base.temp[1] + ',' + base.temp[2],
+				'title' : t,
+				'data-action' : keyName,
+				'data-original' : n,
+				'data-curtxt' : n,
+				'data-curnum' : 0
+			})
 			// add "ui-keyboard-" + keyName, if this is an action key
 			//  (e.g. "Bksp" will have 'ui-keyboard-bskp' class)
 			// add "ui-keyboard-" + unicode of 1st character
@@ -978,33 +1013,15 @@ $.keyboard = function(el, options){
 		var t, action, row, newSet, isAction,
 			currentSet, key, keys, margin,
 			sets = 0,
+			layout = base.layout = $.keyboard.builtLayouts[o.layout] = {},
+			acceptedKeys = layout.acceptedKeys = [],
 
 		container = $('<div />')
 			.addClass('ui-keyboard ' + o.css.container + (o.alwaysOpen ? ' ui-keyboard-always-open' : '') )
 			.attr({ 'role': 'textbox' })
 			.hide();
 
-		// build preview display
-		if (o.usePreview) {
-			base.$preview = base.$el.clone(false)
-				.removeAttr('id')
-				.removeClass('ui-keyboard-placeholder ui-keyboard-input')
-				.addClass('ui-keyboard-preview ' + o.css.input)
-				.attr('tabindex', '-1')
-				.show(); // for hidden inputs
-			// build preview container and append preview display
-			$('<div />')
-				.addClass('ui-keyboard-preview-wrapper')
-				.append(base.$preview)
-				.appendTo(container);
-		} else {
-			// No preview display, use element and reposition the keyboard under it.
-			base.$preview = base.$el;
-			o.position.at = o.position.at2;
-		}
-		if (o.lockInput) {
-			base.$preview.addClass('ui-keyboard-lockedinput').attr({ 'readonly': 'readonly'});
-		}
+		layout.mappedKeys = {};
 
 		// verify layout or setup custom keyboard
 		if (o.layout === 'custom' || !$.keyboard.layouts.hasOwnProperty(o.layout)) {
@@ -1103,7 +1120,7 @@ $.keyboard = function(el, options){
 
 								// Decimal - unique decimal point (num pad layout)
 								case 'dec':
-									base.acceptedKeys.push((base.decimal) ? '.' : ',');
+									acceptedKeys.push((base.decimal) ? '.' : ',');
 									base.addKey('dec', 'dec');
 									break;
 
@@ -1128,12 +1145,12 @@ $.keyboard = function(el, options){
 
 								// Change sign (for num pad layout)
 								case 'sign':
-									base.acceptedKeys.push('-');
+									acceptedKeys.push('-');
 									base.addKey('sign', 'sign');
 									break;
 
 								case 'space':
-									base.acceptedKeys.push(' ');
+									acceptedKeys.push(' ');
 									base.addKey('space', 'space');
 									break;
 
@@ -1144,7 +1161,7 @@ $.keyboard = function(el, options){
 
 								default:
 									if ($.keyboard.keyaction.hasOwnProperty(action)){
-										// base.acceptedKeys.push(action);
+										// acceptedKeys.push(action);
 										base.addKey(action, action)[isAction ? 'addClass' : 'removeClass'](o.css.buttonAction);
 									}
 
@@ -1154,7 +1171,7 @@ $.keyboard = function(el, options){
 
 							// regular button (not an action key)
 							t = keys[key];
-							base.acceptedKeys.push( t === ':' ? t : t.split(':')[0] );
+							acceptedKeys.push( t === ':' ? t : t.split(':')[0] );
 							base.addKey(t, t, true);
 						}
 					}
@@ -1164,8 +1181,8 @@ $.keyboard = function(el, options){
 		});
 	
 		if (sets > 1) { base.sets = true; }
-		base.hasMappedKeys = !( $.isEmptyObject(base.mappedKeys) ); // $.isEmptyObject() requires jQuery 1.4+
-		return container;
+		layout.hasMappedKeys = !( $.isEmptyObject(layout.mappedKeys) ); // $.isEmptyObject() requires jQuery 1.4+
+		layout.$keyboard = container;
 	};
 
 	base.destroy = function() {
@@ -1299,6 +1316,7 @@ $.keyboard = function(el, options){
 	};
 
 	// Default keyboard layouts
+	$.keyboard.builtLayouts = {};
 	$.keyboard.layouts = {
 		'alpha' : {
 			'default': [
