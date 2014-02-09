@@ -78,6 +78,7 @@ $.fn.addMobile = function(options){
 				if (base.mobile_initialized !== true) {
 					base.mobile_setup();
 					base.$keyboard.css("visibility", "visible");
+					base.$preview.focus();
 				}
 			});
 

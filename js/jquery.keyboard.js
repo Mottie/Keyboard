@@ -296,12 +296,14 @@ $.keyboard = function(el, options){
 	};
 
 	base.startup = function(){
-		if ( $.isFunction(o.create) ) {
-			base.$keyboard = o.create(base);
-		}
 		if ( typeof base.$keyboard === 'undefined' ) {
-			if (typeof $.keyboard.builtLayouts[o.layout] === 'undefined') {
-				base.buildKeyboard();
+		    if (typeof $.keyboard.builtLayouts[o.layout] === 'undefined') {
+		        if ($.isFunction(o.create)) {
+		            base.$keyboard = o.create(base);
+		        }
+		        if (typeof base.$keyboard === 'undefined') {
+		            base.buildKeyboard();
+		        }
 			}
 			base.layout = $.keyboard.builtLayouts[o.layout];
 			base.$keyboard = base.layout.$keyboard.clone();
@@ -910,7 +912,7 @@ $.keyboard = function(el, options){
 				}, 500);
 			}
 			if (!o.alwaysOpen) {
-				base.$keyboard.hide();
+			    base.$keyboard && base.$keyboard.hide();
 			}
 			if (!base.watermark && base.el.value === '' && base.inPlaceholder !== '') {
 				base.$el
@@ -1183,6 +1185,8 @@ $.keyboard = function(el, options){
 		if (sets > 1) { base.sets = true; }
 		layout.hasMappedKeys = !( $.isEmptyObject(layout.mappedKeys) ); // $.isEmptyObject() requires jQuery 1.4+
 		layout.$keyboard = container;
+
+		return container;
 	};
 
 	base.destroy = function() {
