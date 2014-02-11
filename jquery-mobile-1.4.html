@@ -61,6 +61,8 @@ $.widget("bw.virtualNumericKeyboard", {
                 "default": ["7 8 9 {b}", "4 5 6 {clear}", "1 2 3 {sign}", "0 {dec} {accept}"]
             },
 
+            usePreview: false,
+
             beforeVisible: $.proxy(self._onKeyboardBeforeVisible, self),
 
             create: $.proxy(self._onCreateKeyboard, self),

@@ -502,7 +502,7 @@ $.keyboard = function(el, options){
 				// 'key', { action: doAction, original: n, curtxt : n, curnum: 0 }
 				var txt,
 					$this = $(this),
-					action = $this.data('action').split(':')[0],
+					action = $this.data('action').toString().split(':')[0],
 					// prevent mousedown & touchstart from both firing events at the same time - see #184
 					timer = new Date().getTime();
 				if (timer - (base.lastEventTime || 0) < o.preventDoubleEventTime) { return; }
