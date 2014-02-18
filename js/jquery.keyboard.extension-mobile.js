@@ -1,5 +1,5 @@
-﻿/*
- * jQuery UI Virtual Keyboard for jQuery Mobile Themes v1.0.2 (updated 2/4/2014)
+/*
+ * jQuery UI Virtual Keyboard for jQuery Mobile Themes v1.0.2 (updated 2/18/2014)
  *
  * By Rob Garrison (aka Mottie & Fudgey)
  * Licensed under the MIT License
@@ -24,7 +24,7 @@
  *   .addMobile(mobile-options);    // this keyboard extension
  *
  */
-
+/*jshint browser:true, jquery:true, unused:false */
 (function($){
 $.fn.addMobile = function(options){
 
@@ -82,7 +82,7 @@ $.fn.addMobile = function(options){
 				}
 			});
 
-		}
+		};
 
 		base.mobile_setup = function(){
 			var p, actn = $.extend({}, o.buttonMarkup, o.buttonAction);

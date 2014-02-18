@@ -5,6 +5,9 @@
 
 	<title>Virtual Keyboard jQuery Mobile 1.4 Demo</title>
 
+	<!-- demo -->
+	<link href="demo/demo.css" rel="stylesheet">
+
 	<!-- jQuery & jQuery UI -->
 	<script src="http://code.jquery.com/jquery-2.1.0.min.js"></script>
 	<script src="http://code.jquery.com/ui/1.10.4/jquery-ui.min.js"></script>
@@ -17,157 +20,187 @@
 	<script src="js/jquery.keyboard.js"></script>
 	<script src="js/jquery.keyboard.extension-mobile.js"></script>
 
-    <style>
-        .ui-page {
-            padding: 1em;
-        }
+	<style>
+	.ui-page {
+		padding: 1em;
+	}
 
-        .ui-keyboard-numpad {
-            width: 156px;
-        }
-    
-        .ui-keyboard-button {
-            height: 3em;
-        }
+	.ui-keyboard-numpad {
+		width: 156px;
+	}
 
-        .ui-bar .ui-keyboard-widekey {
-            width: 6em;
-        }
+	.ui-keyboard-button {
+		height: 3em;
+	}
 
-        .formcol {
-            width: 175px;
-            float: left;
-            margin-right: 1em;
-        }
-    </style>
+	.ui-bar .ui-keyboard-widekey {
+		width: 6em;
+	}
+
+	/* demo stuff */
+	h4 {
+		color: #777;
+	}
+	.block .ui-input-text {
+		width: 165px;
+		margin: 10px auto;
+	}
+	input {
+		background: #fff;
+		color: #000;
+		border: inherit;
+	}
+	</style>
 
 	<script>
-$(function () {
-});
+	$(function () {
+	});
 
-/**
-This widget will automatically add a virtual numeric keypad to all numeric <input> elements.
-*/
-$.widget("bw.virtualNumericKeyboard", {
-    initSelector: "input[type='number']",
+	/**
+	This widget will automatically add a virtual numeric keypad to all numeric <input> elements.
+	by Brandon White (https://github.com/BrandonLWhite)
+	*/
+	$.widget("bw.virtualNumericKeyboard", {
+		initSelector: "input[type='number']",
 
-    _create: function () {
-        var self = this;
+		_create: function () {
+			var self = this;
 
-        $(self.element).keyboard({
-            layout: "custom",
+			$(self.element).keyboard({
+				layout: "custom",
 
-            customLayout: {
-                "default": ["7 8 9 {b}", "4 5 6 {clear}", "1 2 3 {sign}", "0 {dec} {accept}"]
-            },
+				customLayout: {
+					"default": ["7 8 9 {b}", "4 5 6 {clear}", "1 2 3 {sign}", "0 {dec} {accept}"]
+				},
 
-            usePreview: false,
+				usePreview: false,
 
-            beforeVisible: $.proxy(self._onKeyboardBeforeVisible, self),
+				beforeVisible: $.proxy(self._onKeyboardBeforeVisible, self),
 
-            create: $.proxy(self._onCreateKeyboard, self),
+				create: $.proxy(self._onCreateKeyboard, self),
 
-            /**
-            When we're done with the keyboard, clean up it's DOM elements and prepare it for the next showing.
-            Otherwise, keyboard prefers to keep the DOM elements intact (one for each input the user touches!) 
-            which isn't ideal for mobile environment.            
-            
-            TODO : Kick this over to the core Keyboard.  Thinking an option like 'destroyWhenHidden'
-            */
-            hidden: function (eventInfo, keyboard) {
-                keyboard.$keyboard.remove();
-                delete keyboard.$keyboard;
-                keyboard.mobile_initialized = false;
-            }
-        })
-        .addMobile();
+				/**
+				When we're done with the keyboard, clean up it's DOM elements and prepare it for the next showing.
+				Otherwise, keyboard prefers to keep the DOM elements intact (one for each input the user touches!)
+				which isn't ideal for mobile environment.
 
-        self.keyboard = $(self.element).keyboard().getkeyboard();
-    },
+				TODO : Kick this over to the core Keyboard.  Thinking an option like 'destroyWhenHidden'
+				*/
+				hidden: function (eventInfo, keyboard) {
+					keyboard.$keyboard.remove();
+					delete keyboard.$keyboard;
+					keyboard.mobile_initialized = false;
+				}
+			})
+			.addMobile();
 
-    _destroy: function () {
-        self.keyboard && self.keyboard.destroy();
-    },
+			self.keyboard = $(self.element).keyboard().getkeyboard();
+		},
 
-    /**
-    Handle the keyboard create event so we can attach our own custom style.
-    */
-    _onCreateKeyboard: function (keyboard) {
-        return keyboard.buildKeyboard().addClass("ui-keyboard-numpad");
-    },
+		_destroy: function () {
+			self.keyboard && self.keyboard.destroy();
+		},
 
-    /**
-    Event handler for when the keyboard is shown to the user.  This is used to setup key enable states for things
-    like the sign key.
-    */
-    _onKeyboardBeforeVisible: function (eventInfo, keyboard) {
-        // Allow the sign key if the "min" attribute isn't explicitly defined as 0 or positive.
-        //
-        var bAllowNegative = !($(this.element).attr("min") >= 0);
-        this.setKeyEnable(keyboard, "ui-keyboard-sign", bAllowNegative);
+		/**
+		Handle the keyboard create event so we can attach our own custom style.
+		*/
+		_onCreateKeyboard: function (keyboard) {
+			return keyboard.buildKeyboard().addClass("ui-keyboard-numpad");
+		},
 
-        this.permitOrDenyDecimal();
-    },
+		/**
+		Event handler for when the keyboard is shown to the user.  This is used to setup key enable states for things
+		like the sign key.
+		*/
+		_onKeyboardBeforeVisible: function (eventInfo, keyboard) {
+			// Allow the sign key if the "min" attribute isn't explicitly defined as 0 or positive.
+			//
+			var bAllowNegative = !($(this.element).attr("min") >= 0);
+			this.setKeyEnable(keyboard, "ui-keyboard-sign", bAllowNegative);
 
-    /**
-    Allow the decimal key if the step is less than zero or "any".
-    */
-    permitOrDenyDecimal: function () {
-        var step = $(this.element).attr("step");
-        var bAllowDecimal = step === "any" || step < 1 || step === undefined;
+			this.permitOrDenyDecimal();
+		},
 
-        // If decimal is allowed, then do nothing and let the keyboard manage it.
-        //
-        if (bAllowDecimal) return;
+		/**
+		Allow the decimal key if the step is less than zero or "any".
+		*/
+		permitOrDenyDecimal: function () {
+			var step = $(this.element).attr("step");
+			var bAllowDecimal = step === "any" || step < 1 || step === undefined;
 
-        // This input doesn't support fractional values, so disable the decimal key and then
-        // take it way from the keyboard so that it doesn't try and enable it.
-        //
-        this.setKeyEnable(this.keyboard, "ui-keyboard-dec", bAllowDecimal);
-        this.keyboard.$decBtn = $();
-    },
+			// If decimal is allowed, then do nothing and let the keyboard manage it.
+			//
+			if (bAllowDecimal) return;
 
-    /**
-    Retrieve a key object from the keyboard given it's class name.
-    */
-    getKey: function (keyboard, sKeyClass) {
-        return keyboard.$keyboard.find("button.ui-keyboard-button." + sKeyClass);
-    },
+			// This input doesn't support fractional values, so disable the decimal key and then
+			// take it way from the keyboard so that it doesn't try and enable it.
+			//
+			this.setKeyEnable(this.keyboard, "ui-keyboard-dec", bAllowDecimal);
+			this.keyboard.$decBtn = $();
+		},
 
-    /**
-    Set the enable state for a key object in the keyboard given it's class name.
-    */
-    setKeyEnable: function (keyboard, sKeyClass, bEnable) {
-        this.getKey(keyboard, sKeyClass)
-            .toggleClass("ui-state-disabled", !bEnable)
-            .attr("aria-disabled", !bEnable)
-            .prop("disabled", !bEnable);
-    }
-});
-    </script>
+		/**
+		Retrieve a key object from the keyboard given it's class name.
+		*/
+		getKey: function (keyboard, sKeyClass) {
+			return keyboard.$keyboard.find("button.ui-keyboard-button." + sKeyClass);
+		},
+
+		/**
+		Set the enable state for a key object in the keyboard given it's class name.
+		*/
+		setKeyEnable: function (keyboard, sKeyClass, bEnable) {
+			this.getKey(keyboard, sKeyClass)
+			.toggleClass("ui-state-disabled", !bEnable)
+			.attr("aria-disabled", !bEnable)
+			.prop("disabled", !bEnable);
+		}
+	});
+	</script>
 
 </head>
 <body>
-    <div class="formcol">
-        <label>
-            Numeric:
-            <input type="number" />
-        </label>
-    </div>
+<div id="page-wrap">
+	<!-- Links to other demo pages & docs -->
+	<div id="nav">
+		<a data-ajax="false" href="index.html">Main Demo</a>
+		<a data-ajax="false" href="basic.html">Basic</a>
+		<a data-ajax="false" href="mobile.html">Mobile</a>
+		<a data-ajax="false" href="layouts.html">Layouts</a>
+		<a data-ajax="false" href="scramble.html">Scramble</a>
+		<a data-ajax="false" href="navigate.html">Navigate</a>
+		<a data-ajax="false" href="calculator.html">Calculator</a>
+		<a data-ajax="false" class="play" href="http://jsfiddle.net/Mottie/MK947/">Playground</a>
+		<a data-ajax="false" class="git" href="https://github.com/Mottie/Keyboard/wiki">Documentation</a>
+		<a data-ajax="false" class="git" href="https://github.com/Mottie/Keyboard/archive/master.zip">Download</a>
+		<a data-ajax="false" class="issue" href="https://github.com/Mottie/Keyboard/issues">Issues</a><br><br>
+	</div>
+	<!-- End Links -->
 
-    <div class="formcol">
-        <label>
-            Numeric Integer:
-            <input type="number" step="1"/>
-        </label>
-    </div>
+	<h1><a href="https://github.com/Mottie/Keyboard">Virtual Keyboard jQuery Mobile v1.4 Demo</a></h1>
+	<h4>by Brandon White</h4>
 
-    <div class="formcol">
-        <label>
-            Numeric Positive Integer:
-            <input type="number" min="0" step="1"/>
-        </label>
-    </div>
+	<div class="block">
+		<label>
+			Numeric:
+			<input type="number" />
+		</label>
+	</div>
 
+	<div class="block">
+		<label>
+			Numeric Integer:
+			<input type="number" step="1"/>
+		</label>
+	</div>
+
+	<div class="block">
+		<label>
+			Numeric Positive Integer:
+			<input type="number" min="0" step="1"/>
+		</label>
+	</div>
+
+</div>
 </body>
 </html>
