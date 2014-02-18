@@ -1,6 +1,6 @@
 /*!
 jQuery UI Virtual Keyboard
-Version 1.18.0-beta
+Version 1.18.0
 
 Author: Jeremy Satterfield
 Modified: Rob Garrison (Mottie on github)
@@ -66,6 +66,12 @@ $.keyboard = function(el, options){
 		o.preventDoubleEventTime = o.preventDoubleEventTime || 100;
 		// flag indication that a keyboard is open
 		base.isOpen = false;
+		// is mousewheel plugin loaded?
+		base.wheel = $.isFunction( $.fn.mousewheel );
+		// keyCode of keys always allowed to be typed - caps lock, page up & down, end, home, arrow, insert &
+		// delete keys
+		base.alwaysAllowed = [20,33,34,35,36,37,38,39,40,45,46];
+		base.$keyboard = [];
 
 		// Check if caret position is saved when input is hidden or loses focus
 		// (*cough* all versions of IE and I think Opera has/had an issue as well
@@ -154,7 +160,7 @@ $.keyboard = function(el, options){
 	};
 
 	base.isVisible = function() {
-		if (typeof(base.$keyboard) === 'undefined') {
+		if (!base.$keyboard.length) {
 			return false;
 		}
 		return base.$keyboard.is(":visible");
@@ -177,8 +183,8 @@ $.keyboard = function(el, options){
 
 	base.reveal = function(){
 		base.opening = true;
-		// close all keyboards
-		$('.ui-keyboard').not('.ui-keyboard-always-open').hide();
+		// remove all "extra" keyboards
+		$('.ui-keyboard').not('.ui-keyboard-always-open').remove();
 
 		// Don't open if disabled
 		if (base.$el.is(':disabled') || (base.$el.attr('readonly') &&
@@ -194,8 +200,8 @@ $.keyboard = function(el, options){
 			base.$el.unbind( o.openOn + '.keyboard' );
 		}
 
-		// build keyboard if it doesn't exist
-		if (typeof(base.$keyboard) === 'undefined') { base.startup(); }
+		// build keyboard if it doesn't exist; or attach keyboard if it was removed, but not cleared
+		if (!base.$keyboard.length || $.contains(document.body, base.$keyboard[0])) { base.startup(); }
 
 		// clear watermark
 		if (!base.watermark && base.el.value === base.inPlaceholder) {
@@ -296,14 +302,14 @@ $.keyboard = function(el, options){
 	};
 
 	base.startup = function(){
-		if ( typeof base.$keyboard === 'undefined' ) {
-		    if (typeof $.keyboard.builtLayouts[o.layout] === 'undefined') {
-		        if ($.isFunction(o.create)) {
-		            base.$keyboard = o.create(base);
-		        }
-		        if (typeof base.$keyboard === 'undefined') {
-		            base.buildKeyboard();
-		        }
+		if ( !base.$keyboard.length ) {
+			if (typeof $.keyboard.builtLayouts[o.layout] === 'undefined') {
+				if ($.isFunction(o.create)) {
+					base.$keyboard = o.create(base);
+				}
+				if (!base.$keyboard.length) {
+					base.buildKeyboard();
+				}
 			}
 			base.layout = $.keyboard.builtLayouts[o.layout];
 			base.$keyboard = base.layout.$keyboard.clone();
@@ -331,10 +337,6 @@ $.keyboard = function(el, options){
 
 		base.preview = base.$preview[0];
 		base.$decBtn = base.$keyboard.find('.ui-keyboard-dec');
-		base.wheel = $.isFunction( $.fn.mousewheel ); // is mousewheel plugin loaded?
-		// keyCode of keys always allowed to be typed - caps lock, page up & down, end, home, arrow, insert &
-		// delete keys
-		base.alwaysAllowed = [20,33,34,35,36,37,38,39,40,45,46];
 		// add enter to allowed keys; fixes #190
 		if (o.enterNavigation || base.el.tagName === "TEXTAREA") { base.alwaysAllowed.push(13); }
 		if (o.lockInput) {
@@ -502,21 +504,21 @@ $.keyboard = function(el, options){
 				// 'key', { action: doAction, original: n, curtxt : n, curnum: 0 }
 				var txt,
 					$this = $(this),
-					action = $this.data('action').toString().split(':')[0],
+					action = $this.attr('data-action').split(':')[0],
 					// prevent mousedown & touchstart from both firing events at the same time - see #184
 					timer = new Date().getTime();
 				if (timer - (base.lastEventTime || 0) < o.preventDoubleEventTime) { return; }
 				base.lastEventTime = timer;
 				base.$preview.focus();
 				base.$lastKey = $this;
-				base.lastKey = $this.data('curtxt');
+				base.lastKey = $this.attr('data-curtxt');
 				// Start caret in IE when not focused (happens with each virtual keyboard button click
 				if (base.checkCaret) { base.$preview.caret( base.lastCaret.start, base.lastCaret.end ); }
 				if (action.match('meta')) { action = 'meta'; }
 				if ($.keyboard.keyaction.hasOwnProperty(action) && $(this).hasClass('ui-keyboard-actionkey')) {
 					// stop processing if action returns false (close & cancel)
 					if ($.keyboard.keyaction[action](base,this,e) === false) { return false; }
-				} else if (action !== 'undefined') {
+				} else if (typeof action !== 'undefined') {
 					txt = base.lastKey = (base.wheel && !$(this).hasClass('ui-keyboard-actionkey')) ?
 						base.lastKey : action;
 					base.insertText(txt);
@@ -911,8 +913,10 @@ $.keyboard = function(el, options){
 					if ($(':focus')[0] === base.el) { base.$el.blur(); }
 				}, 500);
 			}
-			if (!o.alwaysOpen) {
-			    base.$keyboard && base.$keyboard.hide();
+			if (!o.alwaysOpen && base.$keyboard) {
+				// free up memory
+				base.$keyboard.remove();
+				base.$keyboard = [];
 			}
 			if (!base.watermark && base.el.value === '' && base.inPlaceholder !== '') {
 				base.$el
