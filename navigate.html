@@ -50,7 +50,9 @@
 			left       : 37,  // Left arrow key
 			up         : 38,  // Up arrow key
 			right      : 39,  // Right arrow key
-			down       : 40   // Down arrow key
+			down       : 40,  // Down arrow key
+			caretRt    : 45,  // Insert key
+			caretLt    : 46   // delete key
 		});
 
 		// External trigger using any of the $.keyboard.navigationKeys keys (key:value)
@@ -62,7 +64,7 @@
 
 		// mini navigation block
 		$('#info button').click(function(){
-			$('textarea').trigger('navigate', $(this).text()); 
+			$('textarea').trigger('navigate', this.className); 
 		});
 
 		$('#keyboard')
@@ -74,8 +76,6 @@
 				toggleMode : false,     // true = navigate the virtual keyboard, false = navigate in input/textarea
 				focusClass : 'hasFocus' // css class added when toggle mode is on
 			});
-
-
 
 	});
 	</script>
@@ -122,13 +122,15 @@
 			<li>Page Up - Move to the first row.</li>
 			<li>Page Down - Move to the last row.</li>
 			<li>Enter - Add the highlighted key.</li>
+			<li>Insert - Move caret right.</li>
+			<li>Delete - Move caret left.</li>
 		</ul>
 
 		<div class="nav">
 			<button class="home">Home</button><button class="up">Up</button><button class="pageUp">PageUp</button><br>
 			<button class="left">Left</button><button class="toggle">Toggle</button><button class="right">Right</button><br>
 			<button class="end">End</button><button class="down">Down</button><button class="pageDown">PageDown</button><br>
-			<button class="enter">Enter</button>
+			<button class="caretLt">Caret Left</button><button class="enter">Enter</button><button class="caretRt">Caret Right</button>
 		</div>
 
 	</div>
