@@ -248,7 +248,7 @@ $.fn.addAutocomplete = function(){
 })(jQuery);
 
 /*
- * jQuery UI Virtual Keyboard for jQuery Mobile Themes v1.0.2 (updated 2/4/2014)
+ * jQuery UI Virtual Keyboard for jQuery Mobile Themes v1.0.2 (updated 2/18/2014)
  *
  * By Rob Garrison (aka Mottie & Fudgey)
  * Licensed under the MIT License
@@ -273,7 +273,7 @@ $.fn.addAutocomplete = function(){
  *   .addMobile(mobile-options);    // this keyboard extension
  *
  */
-
+/*jshint browser:true, jquery:true, unused:false */
 (function($){
 $.fn.addMobile = function(options){
 
@@ -312,14 +312,26 @@ $.fn.addMobile = function(options){
 				base.mobile_setup();
 			}
 
-			// Setup mobile theme on keyboard once it is visible
-			base.$el.bind('visible.keyboard', function() {
+			// Setup mobile theme on keyboard once it is visible.
+			// Note: There is a 10ms delay after the keyboard is displayed before it actually fires 'visible.keyboard'. 
+			// Since we are restyling here, the user will experience FlashOfUnstyledContent (FOUC).
+			// This is avoided by first setting the visibility to hidden, then after the mobile styles are applied we 
+			// set it visible.
+			//
+			base.$el.on('beforeVisible.keyboard', function () {
+				if (base.mobile_initialized !== true) {
+					base.$keyboard.css("visibility", "hidden");
+				}
+			})
+			.on('visible.keyboard', function () {
 				if (base.mobile_initialized !== true) {
 					base.mobile_setup();
+					base.$keyboard.css("visibility", "visible");
+					base.$preview.focus();
 				}
 			});
 
-		}
+		};
 
 		base.mobile_setup = function(){
 			var p, actn = $.extend({}, o.buttonMarkup, o.buttonAction);
@@ -376,7 +388,7 @@ $.fn.addMobile = function(options){
 })(jQuery);
 
 /*
- * jQuery UI Virtual Keyboard Navigation v1.2 for Keyboard v1.8.14+ only
+ * jQuery UI Virtual Keyboard Navigation v1.3 for Keyboard v1.8.14+ only
  *
  * By Rob Garrison (aka Mottie & Fudgey)
  * Licensed under the MIT License
@@ -417,7 +429,9 @@ $.keyboard.navigationKeys = {
 	left       : 37,
 	up         : 38,
 	right      : 39,
-	down       : 40
+	down       : 40,
+	caretrt    : 45, // Insert key
+	caretlt    : 46  // delete key
 };
 
 $.fn.addNavigation = function(options){
@@ -442,7 +456,7 @@ $.fn.addNavigation = function(options){
 		// Setup
 		base.navigation_init = function(){
 
-			base.$keyboard[(o.toggleMode) ? 'addClass' : 'removeClass'](o.focusClass)
+			base.$keyboard.toggleClass(o.focusClass, o.toggleMode)
 				.find('.ui-keyboard-keyset:visible')
 				.find('.ui-keyboard-button[data-pos="' + o.position[0] + ',' + o.position[1] + '"]')
 				.addClass('ui-state-hover');
@@ -456,16 +470,16 @@ $.fn.addNavigation = function(options){
 		};
 
 		base.checkKeys = function(key, disable){
-                        if (typeof(key) === "undefined") {
-                            return;
-                        }
-                        var k = base.navigation_keys;
+			if (typeof(key) === "undefined") {
+				return;
+			}
+			var k = base.navigation_keys;
 			if (key === k.toggle || disable) {
 				o.toggleMode = (disable) ? false : !o.toggleMode;
 				base.options.tabNavigation = (o.toggleMode) ? false : base.saveNav[0];
 				base.options.enterNavigation = (o.toggleMode) ? false : base.saveNav[1];
 			}
-			base.$keyboard[(o.toggleMode) ? 'addClass' : 'removeClass'](o.focusClass);
+			base.$keyboard.toggleClass(o.focusClass, o.toggleMode);
 			if ( o.toggleMode && key === k.enter ) {
 				base.$keyboard
 					.find('.ui-keyboard-keyset:visible')
@@ -485,6 +499,8 @@ $.fn.addNavigation = function(options){
 			var vis = base.$keyboard.find('.ui-keyboard-keyset:visible'),
 				maxRow = vis.find('.ui-keyboard-button-endrow').length - 1,
 				maxIndx = vis.find('.ui-keyboard-button[data-pos^="' + row + ',"]').length - 1,
+				p = base.lastCaret,
+				l = base.$preview.val().length,
 				k = base.navigation_keys;
 
 			switch(key){
@@ -496,6 +512,16 @@ $.fn.addNavigation = function(options){
 				case k.up       : row += (row > 0) ? -1 : 0; break; // Up
 				case k.right    : indx += 1; break; // Right
 				case k.down     : row += (row + 1 > maxRow) ? 0 : 1; break; // Down
+				case k.caretRt  : p.start++; break; // caret right
+				case k.caretLt  : p.start--; break; // caret right
+			}
+
+			// move caret
+			if (key === k.caretRt || key === k.caretLt) {
+				p.start = p.start < 0 ? 0 : p.start > l ? l : p.start;
+				p.end = p.start;
+				base.lastCaret = p;
+				base.$preview.focus().caret( p.start, p.start );
 			}
 
 			// get max index of new row

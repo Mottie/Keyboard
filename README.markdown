@@ -77,6 +77,22 @@ Wiki: [Home](https://github.com/Mottie/Keyboard/wiki/Home) | [FAQ](https://githu
 
 Only the latest changes will be shown below, see the wiki log to view older versions.
 
+### Version 1.18.0 (2/18/2014)
+
+* Modified script so only one keyboard is built per layout
+  * Only the initial keyboard for a specific layout will show any lag time while the layout is built.
+  * All subsequent keyboards with the same layout will merely make a copy of the already built layout.
+  * Each input will get its own copy (clone) of the keyboard in case the keyboard is set to always be open or stay open.
+  * When the keyboard closes, it is destroyed. This was done to reduce the amount of memory utilized when many inputs have keyboards assigned.
+  * Fixes issues [#217](https://github.com/Mottie/Keyboard/issues/217), [#238](https://github.com/Mottie/Keyboard/issues/238) and possibly [issue #92](https://github.com/Mottie/Keyboard/issues/92).
+* Mobile extension (all thanks to [BrandonLWhite](https://github.com/BrandonLWhite)):
+  * Resolved issue with Flash of unstyled content (FUOC) when using jQuery Mobile. Fixes [#233](https://github.com/Mottie/Keyboard/pull/233).
+  * Add demo page for [jQuery Mobile v1.4](http://mottie.github.com/Keyboard/jquery-mobile-1.4.html).
+  * Fix an error with numeric keys causing javascript errors
+* Navigation extension:
+  * Added caret navigation - it utilities the <kbd>Insert</kbd> and <kbd>Delete</kbd> keys to move the caret right and left, respectively.
+  * Update demo styling
+
 ### Version 1.17.19 (2/4/2014)
 
 * Bower correction
@@ -99,7 +115,3 @@ Only the latest changes will be shown below, see the wiki log to view older vers
 ### Version 1.17.16 (11/23/2013)
 
 * Position collison options are no longer overridden, if already set
-
-### Version 1.17.15 (11/17/2013)
-
-* Add missing text/link in scramble demo.
