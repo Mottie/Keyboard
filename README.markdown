@@ -77,6 +77,11 @@ Wiki: [Home](https://github.com/Mottie/Keyboard/wiki/Home) | [FAQ](https://githu
 
 Only the latest changes will be shown below, see the wiki log to view older versions.
 
+### Version 1.18.1 (2/19/2014)
+
+* Custom layouts are now stored using a unique hash; this fixes the broken main demo page with lots of custom layouts.
+* Attempt to fix external links on the mobile demo pages... grrrr.
+
 ### Version 1.18.0 (2/18/2014)
 
 * Modified script so only one keyboard is built per layout
