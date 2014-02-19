@@ -562,7 +562,7 @@ $.fn.addNavigation = function(options){
 })(jQuery);
 
 /*
- * jQuery UI Virtual Keyboard Scramble Extension v1.0 for Keyboard
+ * jQuery UI Virtual Keyboard Scramble Extension v1.0.1 for Keyboard
  *
  * By Rob Garrison (aka Mottie & Fudgey)
  * Licensed under the MIT License
@@ -619,7 +619,7 @@ $.keyboard = $.keyboard || {};
 						map = [];
 						keyboardmap = [];
 						keyboard = [];
-						$keys.find('button, br').each(function() {
+						$keys.children('button, span, br').each(function() {
 							if (this.tagName === 'BR') {
 								if (o.byRow) {
 									row.push(this);
