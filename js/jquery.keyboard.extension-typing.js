@@ -1,5 +1,5 @@
 /*
- * jQuery UI Virtual Keyboard Typing Simulator v1.3 for Keyboard v1.8.14+ only
+ * jQuery UI Virtual Keyboard Typing Simulator v1.3.1 for Keyboard v1.8.14+ only
  *
  * By Rob Garrison (aka Mottie & Fudgey)
  * Licensed under the MIT License
@@ -38,7 +38,7 @@
 // EXAMPLES:
 // $('#inter').getkeyboard().reveal().typeIn('\tHello \b\n\tWorld', 500);
 // $('#meta').getkeyboard().reveal().typeIn('abCDd11123\u2648\u2649\u264A\u264B', 700, function(){ alert('all done!'); });
-
+/*jshint browser:true, jquery:true, unused:false */
 (function($){
 	$.fn.addTyping = function(options){
 		//Set the default values, use comma to separate the settings, example:
@@ -116,7 +116,7 @@
 						}, e); // pass event object
 					}
 				});
-			}
+			};
 
 			// Store typing text
 			base.typeIn = function(txt, delay, callback, e){
@@ -126,7 +126,8 @@
 					clearTimeout(base.typing_timer);
 					return;
 				}
-				var o = base.typing_options, tar, m, n, k, key, ks, meta, set;
+				var o = base.typing_options, tar, m, n, k, key, ks, meta, set,
+					mappedKeys = $.keyboard.builtLayouts[base.layout].mappedKeys;
 				if (base.typing_options.init !== true) {
 					o.init = true;
 					o.text = txt;
@@ -150,7 +151,7 @@
 						tar = '.ui-keyboard-' + base.typing_xref[e.keyCode || e.which];
 					} else {
 						m = String.fromCharCode(e.charCode || e.which);
-						tar = (base.mappedKeys.hasOwnProperty(m)) ? '.ui-keyboard-button[data-value="' + base.mappedKeys[m]  + '"]' : '.ui-keyboard-' + (e.charCode || e.which);
+						tar = (mappedKeys.hasOwnProperty(m)) ? '.ui-keyboard-button[data-value="' + mappedKeys[m]  + '"]' : '.ui-keyboard-' + (e.charCode || e.which);
 					}
 				}
 				// find key

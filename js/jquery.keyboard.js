@@ -1,6 +1,6 @@
 /*!
 jQuery UI Virtual Keyboard
-Version 1.18.0
+Version 1.18.1
 
 Author: Jeremy Satterfield
 Modified: Rob Garrison (Mottie on github)
@@ -302,8 +302,12 @@ $.keyboard = function(el, options){
 	};
 
 	base.startup = function(){
+		
 		if ( !base.$keyboard.length ) {
-			if (typeof $.keyboard.builtLayouts[o.layout] === 'undefined') {
+			// custom layout - create a unique layout name based on the hash
+			if (o.layout === "custom") { o.layoutHash = 'custom' + base.customHash(); }
+			base.layout = o.layout === "custom" ? o.layoutHash : o.layout;
+			if (typeof $.keyboard.builtLayouts[base.layout] === 'undefined') {
 				if ($.isFunction(o.create)) {
 					base.$keyboard = o.create(base);
 				}
@@ -311,8 +315,7 @@ $.keyboard = function(el, options){
 					base.buildKeyboard();
 				}
 			}
-			base.layout = $.keyboard.builtLayouts[o.layout];
-			base.$keyboard = base.layout.$keyboard.clone();
+			base.$keyboard = $.keyboard.builtLayouts[base.layout].$keyboard.clone();
 
 			// build preview display
 			if (o.usePreview) {
@@ -363,6 +366,7 @@ $.keyboard = function(el, options){
 	};
 
 	base.bindKeyboard = function(){
+		var layout = $.keyboard.builtLayouts[base.layout];
 		base.$preview
 			.unbind('keypress keyup keydown mouseup touchend '.split(' ').join('.keyboard '))
 			.bind('keypress.keyboard', function(e){
@@ -379,7 +383,7 @@ $.keyboard = function(el, options){
 				if (o.restrictInput) {
 					// allow navigation keys to work - Chrome doesn't fire a keypress event (8 = bksp)
 					if ( (e.which === 8 || e.which === 0) && $.inArray( e.keyCode, base.alwaysAllowed ) ) { return; }
-					if ($.inArray(k, base.layout.acceptedKeys) === -1) { e.preventDefault(); } // quick key check
+					if ($.inArray(k, layout.acceptedKeys) === -1) { e.preventDefault(); } // quick key check
 				} else if ( (e.ctrlKey || e.metaKey) && (e.which === 97 || e.which === 99 || e.which === 118 ||
 						(e.which >= 120 && e.which <=122)) ) {
 					// Allow select all (ctrl-a:97), copy (ctrl-c:99), paste (ctrl-v:118) & cut (ctrl-x:120) &
@@ -390,9 +394,9 @@ $.keyboard = function(el, options){
 				// Set up a key in the layout as follows: "m(a):label"; m = key to map, (a) = actual keyboard key
 				// to map to (optional), ":label" = title/tooltip (optional)
 				// example: \u0391 or \u0391(A) or \u0391:alpha or \u0391(A):alpha
-				if (base.layout.hasMappedKeys) {
-					if (base.layout.mappedKeys.hasOwnProperty(k)){
-						base.lastKey = base.layout.mappedKeys[k];
+				if (layout.hasMappedKeys) {
+					if (layout.mappedKeys.hasOwnProperty(k)){
+						base.lastKey = layout.mappedKeys[k];
 						base.insertText( base.lastKey );
 						e.preventDefault();
 					}
@@ -735,6 +739,7 @@ $.keyboard = function(el, options){
 			// use base.$preview.val() instead of base.preview.value (val.length includes carriage returns in IE).
 			val = base.$preview.val(),
 			pos = base.$preview.caret(),
+			layout = $.keyboard.builtLayouts[base.layout],
 			len = val.length; // save original content length
 
 		// silly IE caret hacks... it should work correctly, but navigating using arrow keys in a textarea
@@ -773,10 +778,10 @@ $.keyboard = function(el, options){
 		// check input restrictions - in case content was pasted
 		if (o.restrictInput && val !== '') {
 			t = val;
-			r = base.layout.acceptedKeys.length;
+			r = layout.acceptedKeys.length;
 			for (i=0; i < r; i++){
 				if (t === '') { continue; }
-				t2 = base.layout.acceptedKeys[i];
+				t2 = layout.acceptedKeys[i];
 				if (val.indexOf(t2) >= 0) {
 					// escape out all special characters
 					if (/[\[|\]|\\|\^|\$|\.|\||\?|\*|\+|\(|\)|\{|\}]/g.test(t2)) { t2 = '\\' + t2; }
@@ -977,7 +982,7 @@ $.keyboard = function(el, options){
 			n = map;
 			nm = map.split(':');
 			map = (nm[0] !== '' && nm.length > 1) ? nm[0] : map; // get "\u0391" from "\u0391:alpha"
-			base.layout.mappedKeys[m] = map;
+			$.keyboard.builtLayouts[base.layout].mappedKeys[m] = map;
 		}
 
 		// find key label
@@ -1015,19 +1020,50 @@ $.keyboard = function(el, options){
 			.appendTo(base.temp[0]);
 	};
 
+	base.customHash = function(){
+		/*jshint bitwise:false */
+		var i, array, hash, character,
+			layout = o.customLayout,
+			arrays = [], merged = [];
+		// get all layout arrays
+		for (array in layout) {
+			if (layout.hasOwnProperty(array)) {
+				arrays.push(layout[array]);
+			}
+		}
+		// flatten array
+		merged = merged.concat.apply(merged, arrays).join(' ');
+		// produce hash name - http://stackoverflow.com/a/20156012/145346
+		if (Array.prototype.reduce){
+			return merged.split("").reduce(function(a,b){
+				a = ( (a << 5) - a ) + b.charCodeAt(0);
+				return a & a;
+			}, 0);
+		}
+		hash = 0;
+		if (merged.length === 0) { return hash; }
+		for (i = 0; i < merged.length; i++) {
+			character = merged.charCodeAt(i);
+			hash = ( (hash<<5) - hash) + character;
+			hash = hash & hash; // Convert to 32bit integer
+		}
+		return hash;
+	};
+
 	base.buildKeyboard = function(){
 		var t, action, row, newSet, isAction,
 			currentSet, key, keys, margin,
 			sets = 0,
-			layout = base.layout = $.keyboard.builtLayouts[o.layout] = {},
+			layout = $.keyboard.builtLayouts[base.layout] = {
+				mappedKeys   : {},
+				acceptedKeys : []
+			},
 			acceptedKeys = layout.acceptedKeys = [],
 
 		container = $('<div />')
 			.addClass('ui-keyboard ' + o.css.container + (o.alwaysOpen ? ' ui-keyboard-always-open' : '') )
 			.attr({ 'role': 'textbox' })
 			.hide();
-
-		layout.mappedKeys = {};
 
 		// verify layout or setup custom keyboard
 		if (o.layout === 'custom' || !$.keyboard.layouts.hasOwnProperty(o.layout)) {
