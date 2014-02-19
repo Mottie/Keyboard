@@ -960,7 +960,7 @@ $.keyboard = function(el, options){
 
 	// Build default button
 	base.keyBtn = $('<button />')
-		.attr({ 'role': 'button', 'aria-disabled': 'false', 'tabindex' : '-1' })
+		.attr({ 'role': 'button', 'type': 'button', 'aria-disabled': 'false', 'tabindex' : '-1' })
 		.addClass('ui-keyboard-button');
 
 	// Add key function
