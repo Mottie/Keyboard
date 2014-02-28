@@ -99,7 +99,8 @@ $.keyboard = function(el, options){
 			// needed for IE to allow switching between keyboards smoothly
 			if ( e.target && $(e.target).hasClass('ui-keyboard-input') ) {
 				var kb = $(e.target).data('keyboard');
-				if (kb && kb.options.openOn) {
+				// only trigger on self
+				if (kb === base && kb.options.openOn) {
 					kb.focusOn();
 				}
 			}
@@ -167,10 +168,13 @@ $.keyboard = function(el, options){
 	};
 
 	base.focusOn = function(){
-		if (o.usePreview && base.$el.is(':visible')) {
+		if (base.$el.is(':visible')) {
 			// caret position is always 0,0 in webkit; and nothing is focused at this point... odd
 			// save caret position in the input to transfer it to the preview
-			base.lastCaret = base.$el.caret();
+			// add delay to get correct caret position
+			setTimeout(function(){
+				base.lastCaret = base.$el.caret();
+			}, 10);
 		}
 		if (!base.isVisible()) {
 			clearTimeout(base.timer);
