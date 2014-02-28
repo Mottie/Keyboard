@@ -253,10 +253,6 @@ $.keyboard = function(el, options){
 			base.$keyboard.position(base.position);
 		}
 
-		if (o.initialFocus) {
-			base.$preview.focus();
-		}
-
 		base.checkDecimal();
 
 		// get preview area line height
@@ -293,7 +289,7 @@ $.keyboard = function(el, options){
 		setTimeout(function(){
 			base.opening = false;
 			if (o.initialFocus) {
-				base.$preview.caret( base.lastCaret.start, base.lastCaret.end );
+				base.$preview.focus().caret( base.lastCaret.start, base.lastCaret.end );
 			}
 			base.$el.trigger( 'visible.keyboard', [ base, base.el ] );
 		}, 10);
