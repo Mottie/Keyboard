@@ -174,7 +174,7 @@ $.keyboard = function(el, options){
 			// add delay to get correct caret position
 			setTimeout(function(){
 				base.lastCaret = base.$el.caret();
-			}, 10);
+			}, 20);
 		}
 		if (!base.isVisible()) {
 			clearTimeout(base.timer);
@@ -205,7 +205,9 @@ $.keyboard = function(el, options){
 		}
 
 		// build keyboard if it doesn't exist; or attach keyboard if it was removed, but not cleared
-		if (!base.$keyboard.length || $.contains(document.body, base.$keyboard[0])) { base.startup(); }
+		if (!base.$keyboard.length || $.contains(document.body, base.$keyboard[0])) {
+			base.startup();
+		}
 
 		// clear watermark
 		if (!base.watermark && base.el.value === base.inPlaceholder) {
@@ -293,7 +295,7 @@ $.keyboard = function(el, options){
 		setTimeout(function(){
 			base.opening = false;
 			if (o.initialFocus) {
-				base.$preview.focus().caret( base.lastCaret.start, base.lastCaret.end );
+				base.$preview.focus().caret( base.lastCaret );
 			}
 			base.$el.trigger( 'visible.keyboard', [ base, base.el ] );
 		}, 10);
@@ -302,14 +304,13 @@ $.keyboard = function(el, options){
 	};
 
 	base.startup = function(){
-		
 		if ( !base.$keyboard.length ) {
 			// custom layout - create a unique layout name based on the hash
 			if (o.layout === "custom") { o.layoutHash = 'custom' + base.customHash(); }
 			base.layout = o.layout === "custom" ? o.layoutHash : o.layout;
 			if (typeof $.keyboard.builtLayouts[base.layout] === 'undefined') {
 				if ($.isFunction(o.create)) {
-					base.$keyboard = o.create(base);
+					o.create(base);
 				}
 				if (!base.$keyboard.length) {
 					base.buildKeyboard();
@@ -517,7 +518,7 @@ $.keyboard = function(el, options){
 				base.$lastKey = $this;
 				base.lastKey = $this.attr('data-curtxt');
 				// Start caret in IE when not focused (happens with each virtual keyboard button click
-				if (base.checkCaret) { base.$preview.caret( base.lastCaret.start, base.lastCaret.end ); }
+				if (base.checkCaret) { base.$preview.caret( base.lastCaret ); }
 				if (action.match('meta')) { action = 'meta'; }
 				if ($.keyboard.keyaction.hasOwnProperty(action) && $(this).hasClass('ui-keyboard-actionkey')) {
 					// stop processing if action returns false (close & cancel)
@@ -532,7 +533,7 @@ $.keyboard = function(el, options){
 					}
 				}
 				// set caret if caret moved by action function; also, attempt to fix issue #131
-				base.$preview.focus().caret( base.lastCaret.start, base.lastCaret.end );
+				base.$preview.focus().caret( base.lastCaret );
 				base.checkCombos();
 				base.checkMaxLength();
 				if ($.isFunction(o.change)){ o.change( $.Event("change"), base, base.el ); }
@@ -596,7 +597,7 @@ $.keyboard = function(el, options){
 					$(this).removeClass(o.css.buttonHover); // needed for touch devices
 				} else {
 					if (base.isVisible() && base.isCurrent()) { base.$preview.focus(); }
-					if (base.checkCaret) { base.$preview.caret( base.lastCaret.start, base.lastCaret.end ); }
+					if (base.checkCaret) { base.$preview.caret( base.lastCaret ); }
 				}
 				base.mouseRepeat = [false,''];
 				clearTimeout(base.repeater); // make sure key repeat stops!
@@ -1693,7 +1694,10 @@ $.fn.caret = function(options,opt2) {
 	var s, start, e, end, selRange, range, stored_range, te, val,
 		selection = document.selection, t = this[0], sTop = t.scrollTop,
 		ss = typeof t.selectionStart !== 'undefined';
-	if (typeof options === 'number' && typeof opt2 === 'number') {
+	if (typeof options === 'object' && options.start && options.end) {
+		start = options.start;
+		end = options.end;
+	} else if (typeof options === 'number' && typeof opt2 === 'number') {
 		start = options;
 		end = opt2;
 	}
