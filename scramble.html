@@ -7,6 +7,9 @@
 
 	<!-- demo -->
 	<link href="demo/demo.css" rel="stylesheet">
+	<style>
+	.spacer { height: 100px; }
+	</style>
 
 	<!-- jQuery & jQuery UI + theme (required) -->
 	<link href="http://code.jquery.com/ui/1.9.0/themes/ui-darkness/jquery-ui.css" rel="stylesheet">
@@ -33,8 +36,22 @@
 		$('#keyboard').keyboard().addScramble({
 			targetKeys    : /[a-z\d]/i, // keys to randomize
 			byRow         : true,       // randomize by row, otherwise randomize all keys
-			randomizeOnce : false       // if false, randomize every time the keyboard opens
+			randomizeOnce : true        // if false, randomize every time the keyboard opens
 		});
+
+		$('#keyboard2')
+			.keyboard()
+			.addScramble({
+				byRow         : true,       // randomize by row, otherwise randomize all keys
+				randomizeOnce : false       // if false, randomize every time the keyboard opens
+			});
+
+		$('#keyboard3')
+			.keyboard()
+			.addScramble({
+				byRow         : false,      // randomize by row, otherwise randomize all keys
+				randomizeOnce : false       // if false, randomize every time the keyboard opens
+			});
 
 	});
 	</script>
@@ -65,7 +82,11 @@
 	<div id="wrap"> <!-- wrapper only needed to center the input -->
 
 		<!-- keyboard input -->
-		<input id="keyboard" type="text">
+		<input id="keyboard" type="text" placeholder=" scramble once (by row)">
+		<div class="spacer"></div>
+		<input id="keyboard2" type="text" placeholder=" scramble every time (by row)">
+		<div class="spacer"></div>
+		<input id="keyboard3" type="text" placeholder=" scramble every time (by keyset)">
 
 	</div> <!-- End wrapper -->
 

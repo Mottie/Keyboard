@@ -1,5 +1,5 @@
 /*
- * jQuery UI Virtual Keyboard for jQuery Mobile Themes v1.0.2 (updated 2/18/2014)
+ * jQuery UI Virtual Keyboard for jQuery Mobile Themes v1.1 for Keyboard v1.18+ (updated 3/1/2014)
  *
  * By Rob Garrison (aka Mottie & Fudgey)
  * Licensed under the MIT License
@@ -50,7 +50,6 @@ $.fn.addMobile = function(options){
 		if (!base || typeof($.fn.textinput) === 'undefined') { return; }
 
 		base.mobile_options = o = $.extend({}, defaults, options);
-		base.mobile_initialized = false;
 
 		// Setup
 		base.mobile_init = function(){
@@ -70,16 +69,12 @@ $.fn.addMobile = function(options){
 			// set it visible.
 			//
 			base.$el.on('beforeVisible.keyboard', function () {
-				if (base.mobile_initialized !== true) {
-					base.$keyboard.css("visibility", "hidden");
-				}
+				base.$keyboard.css("visibility", "hidden");
 			})
 			.on('visible.keyboard', function () {
-				if (base.mobile_initialized !== true) {
-					base.mobile_setup();
-					base.$keyboard.css("visibility", "visible");
-					base.$preview.focus();
-				}
+				base.mobile_setup();
+				base.$keyboard.css("visibility", "visible");
+				base.$preview.focus();
 			});
 
 		};
@@ -123,7 +118,6 @@ $.fn.addMobile = function(options){
 			p.collision = (base.options.usePreview) ? p.collision || 'fit fit' : 'flip flip';
 			base.$keyboard.position(p);
 
-			base.mobile_initialized = true;
 		};
 
 		base.modButton = function(t){

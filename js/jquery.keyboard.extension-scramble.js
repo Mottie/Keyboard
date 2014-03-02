@@ -1,5 +1,5 @@
 /*
- * jQuery UI Virtual Keyboard Scramble Extension v1.0.1 for Keyboard
+ * jQuery UI Virtual Keyboard Scramble Extension v1.1 for Keyboard v1.18+ (updated 3/1/2014)
  *
  * By Rob Garrison (aka Mottie & Fudgey)
  * Licensed under the MIT License
@@ -26,7 +26,6 @@
 (function($) {
 "use strict";
 $.keyboard = $.keyboard || {};
-
 	$.fn.addScramble = function(options) {
 		//Set the default values, use comma to separate the settings, example:
 		var defaults = {
@@ -43,9 +42,6 @@ $.keyboard = $.keyboard || {};
 			base.scramble_setup = function($keyboard) {
 				var $sets, set, $keys, key, index, tmp,
 					rowIndex, keyboardmap, map, keyboard, row;
-				if (base.randomizeOnce && base.randomizeComplete) {
-					return;
-				}
 				$sets = $keyboard.find('.ui-keyboard-keyset');
 				if ($keyboard.length) {
 					for (set = 0; set < $sets.length; set++) {
@@ -101,17 +97,6 @@ $.keyboard = $.keyboard || {};
 							}
 						}
 					}
-
-					if ( !base.randomizeOnce && !base.randomizeComplete ) {
-						base.$el.bind('beforeVisible.keyboard', function() {
-							if (base.rescramble) {
-								base.$keyboard = base.scramble_setup(base.$keyboard);
-							}
-							// make sure rescramble isn't run twice during initialization
-							base.rescramble = true;
-						});
-					}
-					base.randomizeComplete = true;
 					return $keyboard;
 				}
 			};
@@ -140,13 +125,36 @@ $.keyboard = $.keyboard || {};
 				return array;
 			};
 
-			// capture and simulate typing
+			// create scrambled keyboard layout
 			base.options.create = function() {
-				var $keyboard = base.buildKeyboard();
-				return base.scramble_setup($keyboard);
+				var layout = base.options.layout;
+				$.keyboard.builtLayouts[layout] = {
+					mappedKeys   : {},
+					acceptedKeys : [],
+					$keyboard: null
+				};
+				if (typeof $.keyboard.builtLayouts[base.orig_layout] === 'undefined') {
+					base.layout = base.options.layout = base.orig_layout;
+					// build original layout, if not already built, e.g. "qwerty"
+					base.buildKeyboard();
+					base.layout = base.options.layout = layout;
+				}
+				// clone, scramble then save layout
+				$.keyboard.builtLayouts[layout] = $.extend({}, $.keyboard.builtLayouts[base.orig_layout]);
+				if (o.randomizeOnce) {
+					$.keyboard.builtLayouts[layout].$keyboard = base.scramble_setup( $.keyboard.builtLayouts[base.orig_layout].$keyboard.clone() );
+				}
+				base.$keyboard = $.keyboard.builtLayouts[layout].$keyboard;
+					if ( !o.randomizeOnce ) {
+						base.$el.bind('beforeVisible.keyboard', function(e, kb) {
+							kb.$keyboard = kb.scramble_setup(kb.$keyboard);
+						});
+					}
 			};
+
+			base.orig_layout = base.options.layout;
+			base.options.layout = "scrambled" + Math.round(Math.random() * 10000);
 
 		});
 	};
-
 })(jQuery);

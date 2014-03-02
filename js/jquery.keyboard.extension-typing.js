@@ -1,5 +1,5 @@
 /*
- * jQuery UI Virtual Keyboard Typing Simulator v1.3.1 for Keyboard v1.8.14+ only
+ * jQuery UI Virtual Keyboard Typing Simulator v1.4 for Keyboard v1.18+ only (3/1/2014)
  *
  * By Rob Garrison (aka Mottie & Fudgey)
  * Licensed under the MIT License
@@ -69,13 +69,11 @@
 				13 : 'enter',
 				32 : 'space'
 			};
-			base.typing_event = base.typing_flag = false;
+			base.typing_event = false;
 			// no manual typing simulation if lockInput is true; but the typeIn() function still works
 //			if (base.options.lockInput) { base.typing_options.showTyping = false; }
 
 			base.typing_setup = function(){
-				if (base.typing_flag) { return; }
-				base.typing_flag = true;
 				var el = (base.$preview) ? base.$preview : base.$el;
 
 				el
@@ -233,7 +231,7 @@
 					base.typing_setup();
 				}
 				// capture and simulate typing
-				base.$el.bind('visible.keyboard', function(e){
+				base.$el.bind('visible.keyboard', function(){
 					base.typing_setup();
 				});
 			}

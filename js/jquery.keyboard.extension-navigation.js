@@ -1,5 +1,5 @@
 ﻿/*
- * jQuery UI Virtual Keyboard Navigation v1.3 for Keyboard v1.8.14+ only
+ * jQuery UI Virtual Keyboard Navigation v1.4 for Keyboard v1.18+ only (updated 3/1/2014)
  *
  * By Rob Garrison (aka Mottie & Fudgey)
  * Licensed under the MIT License
@@ -46,7 +46,6 @@ $.keyboard.navigationKeys = {
 };
 
 $.fn.addNavigation = function(options){
-
 	return this.each(function(){
 		// make sure a keyboard is attached
 		var o, k, base = $(this).data('keyboard'),

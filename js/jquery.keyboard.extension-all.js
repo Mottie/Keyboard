@@ -84,7 +84,7 @@ function handler(event) {
 })(jQuery);
 
 /*
- * jQuery UI Virtual Keyboard Autocomplete v1.4 for Keyboard v1.8+ only
+ * jQuery UI Virtual Keyboard Autocomplete v1.5 for Keyboard v1.18+ only (3/1/2014)
  *
  * By Rob Garrison (aka Mottie & Fudgey)
  * Licensed under the MIT License
@@ -176,15 +176,14 @@ $.fn.addAutocomplete = function(){
 			base.$autocomplete = base.$el.data('autocomplete') || base.$el.data('uiAutocomplete');
 			base.hasAutocomplete = (typeof(base.$autocomplete) === 'undefined') ? false : (base.$autocomplete.options.disabled) ? false : true;
 			// only bind to keydown once
-			if (base.hasAutocomplete && !base.autocomplete_bind) {
+			if (base.hasAutocomplete) {
 				base.$preview.bind('keydown',function(e){
 					// send keys to the autocomplete widget (arrow, pageup/down, etc)
 					return base.autocomplete_input(e);
 				});
-				base.$allKeys.bind('mouseup  mousedown mouseleave touchstart touchend touchcancel',function(e){
+				base.$allKeys.bind('mouseup mousedown mouseleave touchstart touchend touchcancel',function(e){
 					base.autocomplete_input(e);
 				});
-				base.autocomplete_bind = true;
 			}
 		};
 
@@ -248,7 +247,7 @@ $.fn.addAutocomplete = function(){
 })(jQuery);
 
 /*
- * jQuery UI Virtual Keyboard for jQuery Mobile Themes v1.0.2 (updated 2/18/2014)
+ * jQuery UI Virtual Keyboard for jQuery Mobile Themes v1.1 for Keyboard v1.18+ (updated 3/1/2014)
  *
  * By Rob Garrison (aka Mottie & Fudgey)
  * Licensed under the MIT License
@@ -299,7 +298,6 @@ $.fn.addMobile = function(options){
 		if (!base || typeof($.fn.textinput) === 'undefined') { return; }
 
 		base.mobile_options = o = $.extend({}, defaults, options);
-		base.mobile_initialized = false;
 
 		// Setup
 		base.mobile_init = function(){
@@ -319,16 +317,12 @@ $.fn.addMobile = function(options){
 			// set it visible.
 			//
 			base.$el.on('beforeVisible.keyboard', function () {
-				if (base.mobile_initialized !== true) {
-					base.$keyboard.css("visibility", "hidden");
-				}
+				base.$keyboard.css("visibility", "hidden");
 			})
 			.on('visible.keyboard', function () {
-				if (base.mobile_initialized !== true) {
-					base.mobile_setup();
-					base.$keyboard.css("visibility", "visible");
-					base.$preview.focus();
-				}
+				base.mobile_setup();
+				base.$keyboard.css("visibility", "visible");
+				base.$preview.focus();
 			});
 
 		};
@@ -372,7 +366,6 @@ $.fn.addMobile = function(options){
 			p.collision = (base.options.usePreview) ? p.collision || 'fit fit' : 'flip flip';
 			base.$keyboard.position(p);
 
-			base.mobile_initialized = true;
 		};
 
 		base.modButton = function(t){
@@ -388,7 +381,7 @@ $.fn.addMobile = function(options){
 })(jQuery);
 
 /*
- * jQuery UI Virtual Keyboard Navigation v1.3 for Keyboard v1.8.14+ only
+ * jQuery UI Virtual Keyboard Navigation v1.4 for Keyboard v1.18+ only (updated 3/1/2014)
  *
  * By Rob Garrison (aka Mottie & Fudgey)
  * Licensed under the MIT License
@@ -435,7 +428,6 @@ $.keyboard.navigationKeys = {
 };
 
 $.fn.addNavigation = function(options){
-
 	return this.each(function(){
 		// make sure a keyboard is attached
 		var o, k, base = $(this).data('keyboard'),
@@ -562,7 +554,7 @@ $.fn.addNavigation = function(options){
 })(jQuery);
 
 /*
- * jQuery UI Virtual Keyboard Scramble Extension v1.0.1 for Keyboard
+ * jQuery UI Virtual Keyboard Scramble Extension v1.1 for Keyboard v1.18+ (updated 3/1/2014)
  *
  * By Rob Garrison (aka Mottie & Fudgey)
  * Licensed under the MIT License
@@ -589,7 +581,6 @@ $.fn.addNavigation = function(options){
 (function($) {
 "use strict";
 $.keyboard = $.keyboard || {};
-
 	$.fn.addScramble = function(options) {
 		//Set the default values, use comma to separate the settings, example:
 		var defaults = {
@@ -606,9 +597,6 @@ $.keyboard = $.keyboard || {};
 			base.scramble_setup = function($keyboard) {
 				var $sets, set, $keys, key, index, tmp,
 					rowIndex, keyboardmap, map, keyboard, row;
-				if (base.randomizeOnce && base.randomizeComplete) {
-					return;
-				}
 				$sets = $keyboard.find('.ui-keyboard-keyset');
 				if ($keyboard.length) {
 					for (set = 0; set < $sets.length; set++) {
@@ -664,17 +652,6 @@ $.keyboard = $.keyboard || {};
 							}
 						}
 					}
-
-					if ( !base.randomizeOnce && !base.randomizeComplete ) {
-						base.$el.bind('beforeVisible.keyboard', function() {
-							if (base.rescramble) {
-								base.$keyboard = base.scramble_setup(base.$keyboard);
-							}
-							// make sure rescramble isn't run twice during initialization
-							base.rescramble = true;
-						});
-					}
-					base.randomizeComplete = true;
 					return $keyboard;
 				}
 			};
@@ -703,19 +680,42 @@ $.keyboard = $.keyboard || {};
 				return array;
 			};
 
-			// capture and simulate typing
+			// create scrambled keyboard layout
 			base.options.create = function() {
-				var $keyboard = base.buildKeyboard();
-				return base.scramble_setup($keyboard);
+				var layout = base.options.layout;
+				$.keyboard.builtLayouts[layout] = {
+					mappedKeys   : {},
+					acceptedKeys : [],
+					$keyboard: null
+				};
+				if (typeof $.keyboard.builtLayouts[base.orig_layout] === 'undefined') {
+					base.layout = base.options.layout = base.orig_layout;
+					// build original layout, if not already built, e.g. "qwerty"
+					base.buildKeyboard();
+					base.layout = base.options.layout = layout;
+				}
+				// clone, scramble then save layout
+				$.keyboard.builtLayouts[layout] = $.extend({}, $.keyboard.builtLayouts[base.orig_layout]);
+				if (o.randomizeOnce) {
+					$.keyboard.builtLayouts[layout].$keyboard = base.scramble_setup( $.keyboard.builtLayouts[base.orig_layout].$keyboard.clone() );
+				}
+				base.$keyboard = $.keyboard.builtLayouts[layout].$keyboard;
+					if ( !o.randomizeOnce ) {
+						base.$el.bind('beforeVisible.keyboard', function(e, kb) {
+							kb.$keyboard = kb.scramble_setup(kb.$keyboard);
+						});
+					}
 			};
+
+			base.orig_layout = base.options.layout;
+			base.options.layout = "scrambled" + Math.round(Math.random() * 10000);
 
 		});
 	};
-
 })(jQuery);
 
 /*
- * jQuery UI Virtual Keyboard Typing Simulator v1.3.1 for Keyboard v1.8.14+ only
+ * jQuery UI Virtual Keyboard Typing Simulator v1.4 for Keyboard v1.18+ only (3/1/2014)
  *
  * By Rob Garrison (aka Mottie & Fudgey)
  * Licensed under the MIT License
@@ -785,13 +785,11 @@ $.keyboard = $.keyboard || {};
 				13 : 'enter',
 				32 : 'space'
 			};
-			base.typing_event = base.typing_flag = false;
+			base.typing_event = false;
 			// no manual typing simulation if lockInput is true; but the typeIn() function still works
 //			if (base.options.lockInput) { base.typing_options.showTyping = false; }
 
 			base.typing_setup = function(){
-				if (base.typing_flag) { return; }
-				base.typing_flag = true;
 				var el = (base.$preview) ? base.$preview : base.$el;
 
 				el
@@ -949,7 +947,7 @@ $.keyboard = $.keyboard || {};
 					base.typing_setup();
 				}
 				// capture and simulate typing
-				base.$el.bind('visible.keyboard', function(e){
+				base.$el.bind('visible.keyboard', function(){
 					base.typing_setup();
 				});
 			}
@@ -957,4 +955,3 @@ $.keyboard = $.keyboard || {};
 		});
 	};
 })(jQuery);
-
