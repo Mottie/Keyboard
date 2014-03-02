@@ -77,6 +77,17 @@ Wiki: [Home](https://github.com/Mottie/Keyboard/wiki/Home) | [FAQ](https://githu
 
 Only the latest changes will be shown below, see the wiki log to view older versions.
 
+### Version 1.18.2 (3/1/2014)
+
+* Add `type` attribute to virtual keyboard buttons
+* Scramble extension no longer ignores spacers. Fixes [issue #240](https://github.com/Mottie/Keyboard/issues/240)
+* Fix initial focus - when a preview input is used, the focus is again transferred to it upon keyboard opening.
+* Fix remember caret position in preview input after reveal (except in IE; not sure why)
+* Caret plugin now accepts an object
+* Updated all extensions to work with v1.18+
+  * Previously, extensions assumed that a built keyboard would always exist in memory
+  * Extensions are now reapplied when a "new" keyboard is revealed.
+
 ### Version 1.18.1 (2/19/2014)
 
 * Custom layouts are now stored using a unique hash; this fixes the broken main demo page with lots of custom layouts.
@@ -97,26 +108,3 @@ Only the latest changes will be shown below, see the wiki log to view older vers
 * Navigation extension:
   * Added caret navigation - it utilities the <kbd>Insert</kbd> and <kbd>Delete</kbd> keys to move the caret right and left, respectively.
   * Update demo styling
-
-### Version 1.17.19 (2/4/2014)
-
-* Bower correction
-  * Merge update to bower registered name
-  * Add instructions to install using bower in the readme
-  * Thanks to [lorenzo-stoakes](https://github.com/lorenzo-stoakes)!
-* Add support for jQuery Mobile 1.4 button styles. Thanks [BrandonLWhite](https://github.com/BrandonLWhite)!
-
-### Version 1.17.18 (1/4/2014)
-
-* Merge fixes to Tamil layout
-* Add minified extensions:
-  * Includes a file with all extensions with mousewheel plugin both minified &amp; unminified.
-  * Fixes [issue #223](https://github.com/Mottie/Keyboard/issues/223).
-
-### Version 1.17.17 (11/23/2013)
-
-* Tab navigation now works properly when `usePreview` is `false`. Fixes [issue #221](https://github.com/Mottie/Keyboard/issues/221).
-
-### Version 1.17.16 (11/23/2013)
-
-* Position collison options are no longer overridden, if already set
