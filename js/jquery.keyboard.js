@@ -1016,7 +1016,7 @@ $.keyboard = function(el, options){
 			// add "ui-keyboard-" + unicode of 1st character
 			//  (e.g. "~" is a regular key, class = 'ui-keyboard-126'
 			//  (126 is the unicode value - same as typing &#126;)
-			.addClass('ui-keyboard-' + kn + keyType + ' ' + o.css.buttonDefault)
+			.addClass( (kn === '' ? '' : 'ui-keyboard-' + kn + keyType + ' ') + o.css.buttonDefault)
 			.html('<span>' + n + '</span>')
 			.appendTo(base.temp[0]);
 	};
@@ -1120,6 +1120,19 @@ $.keyboard = function(el, options){
 									.appendTo(newSet);
 							}
 
+							// add empty button
+							if (/^empty(:((\d+)?([\.|,]\d+)?)(em|px)?)?$/.test(action)) {
+								margin = (/:/.test(action)) ? parseFloat( action
+									.replace(/,/,'.')
+									.match(/^empty:((\d+)?([\.|,]\d+)?)(em|px)?$/)[1] || 0
+								) : '';
+								base
+									.addKey('', ' ')
+									.addClass(o.css.buttonDisabled + ' ' + o.css.buttonEmpty)
+									.attr('aria-disabled', true)
+									.width( margin ? (action.match('px') ? margin + 'px' : (margin * 2) + 'em') : '' );
+							}
+
 							// meta keys
 							if (/^meta\d+\:?(\w+)?/.test(action)){
 								base.addKey(action, action);
@@ -1172,13 +1185,6 @@ $.keyboard = function(el, options){
 									base
 										.addKey('enter', action)
 										.addClass(o.css.buttonAction);
-									break;
-
-								case 'empty':
-									base
-										.addKey('', ' ')
-										.addClass(o.css.buttonDisabled)
-										.attr('aria-disabled', true);
 									break;
 
 								case 's':
@@ -1538,7 +1544,8 @@ $.keyboard = function(el, options){
 			// Action keys (e.g. Accept, Cancel, Tab, etc); this replaces "actionClass" option
 			buttonAction   : 'ui-state-active',
 			// used when disabling the decimal button {dec} when a decimal exists in the input area
-			buttonDisabled : 'ui-state-disabled'
+			buttonDisabled : 'ui-state-disabled',
+			buttonEmpty    : 'ui-keyboard-empty'
 		},
 
 		// *** Useability ***
