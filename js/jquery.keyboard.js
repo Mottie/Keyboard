@@ -1238,7 +1238,7 @@ $.keyboard = function(el, options){
 
 	base.destroy = function() {
 		$(document).unbind('mousedown.keyboard keyup.keyboard touchstart.keyboard');
-		if (base.$keyboard) { base.$keyboard.remove(); }
+		if (base.$keyboard.length) { base.$keyboard.remove(); }
 		var unb = $.trim(o.openOn + ' accepted beforeClose canceled change contextmenu hidden ' +
 			'initialized keydown keypress keyup visible').split(' ').join('.keyboard ');
 		base.$el
