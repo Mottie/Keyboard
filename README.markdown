@@ -77,6 +77,10 @@ Wiki: [Home](https://github.com/Mottie/Keyboard/wiki/Home) | [FAQ](https://githu
 
 Only the latest changes will be shown below, see the wiki log to view older versions.
 
+### Version 1.18.4 (3/6/2014)
+
+* Include minified version update...
+
 ### Version 1.18.3 (3/6/2014)
 
 * Empty buttons class names are once again set as `ui-keyboard-empty`, instead of `ui-keyboard-`. Fixes [issue #244](https://github.com/Mottie/Keyboard/issues/244)
