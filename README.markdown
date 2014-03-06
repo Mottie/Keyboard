@@ -77,6 +77,14 @@ Wiki: [Home](https://github.com/Mottie/Keyboard/wiki/Home) | [FAQ](https://githu
 
 Only the latest changes will be shown below, see the wiki log to view older versions.
 
+### Version 1.18.3 (3/6/2014)
+
+* Empty buttons class names are once again set as `ui-keyboard-empty`, instead of `ui-keyboard-`. Fixes [issue #244](https://github.com/Mottie/Keyboard/issues/244)
+* Empty buttons can now include a width setting
+  * The width is set using the same method as the space setting (`{empty:1.0em}` or `{empty:20px}`
+  * Note that the `em` width values actually get doubled to be consistent with the spacer (see [spacers](https://github.com/Mottie/Keyboard/wiki/Layout#wiki-spacers) for more details)
+* Destroy method works before keyboard is revealed. Fixes [issue #247](https://github.com/Mottie/Keyboard/issues/247).
+
 ### Version 1.18.2 (3/1/2014)
 
 * Add `type` attribute to virtual keyboard buttons
