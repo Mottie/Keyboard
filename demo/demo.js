@@ -36,6 +36,10 @@ jQuery(function($) {
 	// ********************
 	$('#alpha').keyboard({ layout: 'alpha' });
 
+	// Colemak Input
+	// ********************
+	$('#colemak').keyboard({ layout: 'colemak' });
+
 	// Dvorak Text Area
 	// ********************
 	$('#dvorak').keyboard({ layout: 'dvorak' });

@@ -308,6 +308,7 @@ $.keyboard = function(el, options){
 			// custom layout - create a unique layout name based on the hash
 			if (o.layout === "custom") { o.layoutHash = 'custom' + base.customHash(); }
 			base.layout = o.layout === "custom" ? o.layoutHash : o.layout;
+
 			if (typeof $.keyboard.builtLayouts[base.layout] === 'undefined') {
 				if ($.isFunction(o.create)) {
 					o.create(base);
@@ -1065,7 +1066,6 @@ $.keyboard = function(el, options){
 			.addClass('ui-keyboard ' + o.css.container + (o.alwaysOpen ? ' ui-keyboard-always-open' : '') )
 			.attr({ 'role': 'textbox' })
 			.hide();
-
 		// verify layout or setup custom keyboard
 		if (o.layout === 'custom' || !$.keyboard.layouts.hasOwnProperty(o.layout)) {
 			o.layout = 'custom';
@@ -1429,6 +1429,22 @@ $.keyboard = function(el, options){
 				'\u00c4 \u00a7 \u00d0 F G H J K \u00d8 \u00b0 \u00a8 {enter}',
 				'{shift} \u00c6 X \u00a2 V B \u00d1 \u00b5 \u00c7 . \u00bf {shift}',
 				'{accept} {alt} {space} {alt} {cancel}'
+			]
+		},
+		'colemak' : {
+			'default': [
+				'` 1 2 3 4 5 6 7 8 9 0 - = {bksp}',
+				'{tab} q w f p g j l u y ; [ ] \\',
+				'{bksp} a r s t d h n e i o \' {enter}',
+				'{shift} z x c v b k m , . / {shift}',
+				'{accept} {space} {cancel}'
+			],
+			'shift' : [
+				'~ ! @ # $ % ^ & * ( ) _ + {bksp}',
+				'{tab} Q W F P G J L U Y : { } |', 
+				'{bksp} A R S T D H N E I O " {enter}',
+				'{shift} Z X C V B K M < > ? {shift}',
+				'{accept} {space} {cancel}'
 			]
 		},
 		'dvorak' : {

@@ -173,6 +173,20 @@ $('#alpha')
 	</div>
 
 	<div class="block">
+		<h2><span class="tooltip" title="Click to see code">Colemak</span></h2>
+		<div id="colemak" contenteditable="true"></div>
+		<div class="code ui-corner-all">
+			<pre class="html">&lt;!-- HTML --&gt;
+&lt;textarea id="colemak"&gt;&lt;/textarea&gt;</pre>
+<pre class="js">
+// Script
+$('#colemak')
+ .keyboard({ layout: 'colemak' })
+ .addTyping();</pre>
+		</div>
+	</div>
+
+	<div class="block">
 		<h2><span class="tooltip" title="Click to see code">Dvorak</span></h2>
 		<textarea id="dvorak"></textarea>
 		<div class="code ui-corner-all">
@@ -185,6 +199,7 @@ $('#dvorak')
  .addTyping();</pre>
 		</div>
 	</div>
+
 
 	<div class="block">
 		<h2><span class="tooltip" title="Click to see code">Num Pad</span></h2>
