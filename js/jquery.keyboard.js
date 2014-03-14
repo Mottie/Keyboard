@@ -350,11 +350,7 @@ $.keyboard = function(el, options){
 
 		base.bindKeyboard();
 
-		if (o.appendLocally) {
-			base.$el.after( base.$keyboard );
-		} else {
-			base.$keyboard.appendTo('body');
-		}
+		base.$keyboard.appendTo( o.appendLocally ? base.$el.parent() : o.appendTo || 'body' );
 
 		base.bindKeys();
 
@@ -1597,10 +1593,12 @@ $.keyboard = function(el, options){
 		// if false, the next button will wrap to target the first input/textarea; prev will go to the last
 		stopAtEnd : true,
 
-		// Set this to append the keyboard immediately after the input/textarea it is attached to. This option
-		// works best when the input container doesn't have a set width and when the "tabNavigation" option
-		// is true
+		// Set this to append the keyboard after the input/textarea (appended to the input/textarea parent).
+		// This option works best when the input container doesn't have a set width & when the "tabNavigation"
+		// option is true.
 		appendLocally: false,
+		// When appendLocally is false, the keyboard will be appended to this object
+		appendTo     : 'body',
 
 		// If false, the shift key will remain active until the next key is (mouse) clicked on; if true it will
 		// stay active until pressed again
