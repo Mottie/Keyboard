@@ -77,6 +77,12 @@ Wiki: [Home](https://github.com/Mottie/Keyboard/wiki/Home) | [FAQ](https://githu
 
 Only the latest changes will be shown below, see the wiki log to view older versions.
 
+### Version 1.18.5 (3/20/2014)
+
+* Add [Colemak](http://en.wikipedia.org/wiki/Colemak#Colemak) keyboard to the build-in layouts.
+* Add `appendTo` option. Fixes [issue #253](https://github.com/Mottie/Keyboard/issues/253).
+* Backspace action key function `$.keyboard.keyaction.bksp` is now correctly called. Fixes [issue #261](https://github.com/Mottie/Keyboard/issues/261).
+
 ### Version 1.18.4 (3/6/2014)
 
 * Include minified version update...
