@@ -82,6 +82,7 @@ Only the latest changes will be shown below, see the wiki log to view older vers
 * Add [Colemak](http://en.wikipedia.org/wiki/Colemak#Colemak) keyboard to the build-in layouts.
 * Add `appendTo` option. Fixes [issue #253](https://github.com/Mottie/Keyboard/issues/253).
 * Backspace action key function `$.keyboard.keyaction.bksp` is now correctly called. Fixes [issue #261](https://github.com/Mottie/Keyboard/issues/261).
+* Add Chinese, Mongolian & Hindi layouts. Thanks to [Sh1n](https://github.com/Sh1n)!
 
 ### Version 1.18.4 (3/6/2014)
 
