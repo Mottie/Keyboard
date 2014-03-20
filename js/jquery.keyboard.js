@@ -1,6 +1,6 @@
 /*!
 jQuery UI Virtual Keyboard
-Version 1.18.3
+Version 1.18.5
 
 Author: Jeremy Satterfield
 Modified: Rob Garrison (Mottie on github)
@@ -442,6 +442,12 @@ $.keyboard = function(el, options){
 			})
 			.bind('keydown.keyboard', function(e){
 				switch (e.which) {
+
+					case 8 :
+						$.keyboard.keyaction.bksp(base, null, e);
+						e.preventDefault();
+						break;
+
 					// prevent tab key from leaving the preview window
 					case 9 :
 						if (o.tabNavigation) {
