@@ -255,7 +255,7 @@ $.keyboard = function(el, options){
 		}
 
 		// position after keyboard is visible (required for UI position utility) and appropriately sized
-		if ($.ui.position) {
+		if ($.ui && $.ui.position) {
 			base.$keyboard.position(base.position);
 		}
 
@@ -355,11 +355,13 @@ $.keyboard = function(el, options){
 		base.bindKeys();
 
 		// adjust with window resize
-		$(window).bind('resize.keyboard', function(){
-			if (base.isVisible()) {
-				base.$keyboard.position(base.position);
-			}
-		});
+		if ($.ui && $.ui.position) {
+			$(window).bind('resize.keyboard', function(){
+				if (base.isVisible()) {
+					base.$keyboard.position(base.position);
+				}
+			});
+		}
 
 	};
 
