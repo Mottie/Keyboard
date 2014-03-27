@@ -514,9 +514,11 @@ $.keyboard = function(el, options){
 				// 'key', { action: doAction, original: n, curtxt : n, curnum: 0 }
 				var txt,
 					$this = $(this),
-					action = $this.attr('data-action').split(':')[0],
+					action = $this.attr('data-action'),
 					// prevent mousedown & touchstart from both firing events at the same time - see #184
 					timer = new Date().getTime();
+				// don't split colon key. Fixes #264
+				action = action === ':' ? ':' : action.split(':')[0];
 				if (timer - (base.lastEventTime || 0) < o.preventDoubleEventTime) { return; }
 				base.lastEventTime = timer;
 				base.$preview.focus();
