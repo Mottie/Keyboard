@@ -77,6 +77,12 @@ Wiki: [Home](https://github.com/Mottie/Keyboard/wiki/Home) | [FAQ](https://githu
 
 Only the latest changes will be shown below, see the wiki log to view older versions.
 
+### Version 1.18.6 (3/27/2014)
+
+* Fix Colemak demo; contenteditable not yet supported.
+* Check for jQuery UI before checking for position utility. Fixes [issue #263](https://github.com/Mottie/Keyboard/issues/263).
+* Colon key now works without mousewheel script. Fixes [issue #264](https://github.com/Mottie/Keyboard/issues/264).
+
 ### Version 1.18.5 (3/20/2014)
 
 * Add [Colemak](http://en.wikipedia.org/wiki/Colemak#Colemak) keyboard to the build-in layouts.
