@@ -880,7 +880,8 @@ $.keyboard = function(el, options){
 				indx = all.length - 1; // stop or go to last
 			}
 			if (!stopped) {
-				base.close(isAccepted);
+				isAccepted = base.close(isAccepted);
+				if(!isAccepted) return;
 				kb = all.eq(indx).data('keyboard');
 				if (kb && kb.options.openOn.length) {
 					kb.focusOn();
