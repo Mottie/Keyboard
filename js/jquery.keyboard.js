@@ -93,7 +93,7 @@ $.keyboard = function(el, options){
 
 		// Close with esc key & clicking outside
 		if (o.alwaysOpen) { o.stayOpen = true; }
-		$(document).bind('mousedown keyup touchstart checkkeyboard'.split(' ').join('.keyboard '), function(e){
+		$(document).bind('mousedown keyup touchstart checkkeyboard '.split(' ').join('.keyboard '), function(e){
 			if (base.opening) { return; }
 			base.escClose(e);
 			// needed for IE to allow switching between keyboards smoothly
@@ -881,7 +881,7 @@ $.keyboard = function(el, options){
 			}
 			if (!stopped) {
 				isAccepted = base.close(isAccepted);
-				if(!isAccepted) return;
+				if (!isAccepted) { return; }
 				kb = all.eq(indx).data('keyboard');
 				if (kb && kb.options.openOn.length) {
 					kb.focusOn();
@@ -1001,7 +1001,6 @@ $.keyboard = function(el, options){
 		n = (nm[0] !== '' && nm.length > 1) ? $.trim(nm[0]) : n;
 		// added to title
 		t = (nm.length > 1) ? $.trim(nm[1]).replace(/_/g, " ") || '' : '';
-
 		// Action keys will have the 'ui-keyboard-actionkey' class
 		// '\u2190'.length = 1 because the unicode is converted, so if more than one character,
 		// add the wide class
@@ -1247,7 +1246,7 @@ $.keyboard = function(el, options){
 		$(document).unbind('mousedown.keyboard keyup.keyboard touchstart.keyboard');
 		if (base.$keyboard.length) { base.$keyboard.remove(); }
 		var unb = $.trim(o.openOn + ' accepted beforeClose canceled change contextmenu hidden ' +
-			'initialized keydown keypress keyup visible').split(' ').join('.keyboard ');
+			'initialized keydown keypress keyup visible ').split(' ').join('.keyboard ');
 		base.$el
 			.removeClass('ui-keyboard-input ui-keyboard-lockedinput ui-keyboard-placeholder ' +
 				'ui-keyboard-notallowed ui-keyboard-always-open ' + o.css.input)
