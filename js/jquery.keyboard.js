@@ -573,7 +573,7 @@ $.keyboard = function(el, options){
 						// needed or IE flickers really bad
 						.removeClass( (base.el.type === 'password') ? '' : o.css.buttonHover)
 						.attr('title', function(i,t){ return (t === o.wheelMessage) ? '' : t; })
-						.find('span').text( $this.data('original') ); // restore original button text
+						.find('span').html( $this.data('original') ); // restore original button text
 				}
 			})
 			// Allow mousewheel to scroll through other key sets of the same key
@@ -593,7 +593,7 @@ $.keyboard = function(el, options){
 						'layers' : txt,
 						'curtxt' : txt[n]
 					});
-					$this.find('span').text( txt[n] );
+					$this.find('span').html( txt[n] );
 					return false;
 				}
 			})
@@ -854,7 +854,7 @@ $.keyboard = function(el, options){
 		key = el.attr('data-pos');
 		keys = el.closest('.ui-keyboard').find('button[data-pos="' + key + '"]').map(function(){
 			// added '> span' because jQuery mobile adds multiple spans inside the button
-			return $(this).find('> span').text();
+			return $(this).find('> span').html();
 		}).get();
 		return keys;
 	};
@@ -1001,6 +1001,7 @@ $.keyboard = function(el, options){
 		n = (nm[0] !== '' && nm.length > 1) ? $.trim(nm[0]) : n;
 		// added to title
 		t = (nm.length > 1) ? $.trim(nm[1]).replace(/_/g, " ") || '' : '';
+
 		// Action keys will have the 'ui-keyboard-actionkey' class
 		// '\u2190'.length = 1 because the unicode is converted, so if more than one character,
 		// add the wide class
