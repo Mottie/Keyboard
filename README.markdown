@@ -77,6 +77,24 @@ Wiki: [Home](https://github.com/Mottie/Keyboard/wiki/Home) | [FAQ](https://githu
 
 Only the latest changes will be shown below, see the wiki log to view older versions.
 
+### Version 1.18.7 (5/10/2014)
+
+* Fixed switchInput to ignore validation.
+  * Thanks [ags131](https://github.com/ags131)!
+  * Fixes [issue #265](https://github.com/Mottie/Keyboard/issues/265).
+* Keyboard event namespacing fixes
+* Action key display option can now include HTML. Fixes [issue #266](https://github.com/Mottie/Keyboard/issues/266).
+* The changes to the default `appendLocally` &amp; `appendTo` options now assumes that the developer desires a static keyboard position.
+  * Restore the original behavior by adding back the following css:
+
+     ```css
+     .ui-keyboard {
+       position: absolute;
+       left: 0;
+       top: 0;
+     }
+     ```
+
 ### Version 1.18.6 (3/27/2014)
 
 * Fix Colemak demo; contenteditable not yet supported.
@@ -101,35 +119,3 @@ Only the latest changes will be shown below, see the wiki log to view older vers
   * The width is set using the same method as the space setting (`{empty:1.0em}` or `{empty:20px}`
   * Note that the `em` width values actually get doubled to be consistent with the spacer (see [spacers](https://github.com/Mottie/Keyboard/wiki/Layout#wiki-spacers) for more details)
 * Destroy method works before keyboard is revealed. Fixes [issue #247](https://github.com/Mottie/Keyboard/issues/247).
-
-### Version 1.18.2 (3/1/2014)
-
-* Add `type` attribute to virtual keyboard buttons
-* Scramble extension no longer ignores spacers. Fixes [issue #240](https://github.com/Mottie/Keyboard/issues/240)
-* Fix initial focus - when a preview input is used, the focus is again transferred to it upon keyboard opening.
-* Fix remember caret position in preview input after reveal (except in IE; not sure why)
-* Caret plugin now accepts an object
-* Updated all extensions to work with v1.18+
-  * Previously, extensions assumed that a built keyboard would always exist in memory
-  * Extensions are now reapplied when a "new" keyboard is revealed.
-
-### Version 1.18.1 (2/19/2014)
-
-* Custom layouts are now stored using a unique hash; this fixes the broken main demo page with lots of custom layouts.
-* Attempt to fix external links on the mobile demo pages... grrrr.
-
-### Version 1.18.0 (2/18/2014)
-
-* Modified script so only one keyboard is built per layout
-  * Only the initial keyboard for a specific layout will show any lag time while the layout is built.
-  * All subsequent keyboards with the same layout will merely make a copy of the already built layout.
-  * Each input will get its own copy (clone) of the keyboard in case the keyboard is set to always be open or stay open.
-  * When the keyboard closes, it is destroyed. This was done to reduce the amount of memory utilized when many inputs have keyboards assigned.
-  * Fixes issues [#217](https://github.com/Mottie/Keyboard/issues/217), [#238](https://github.com/Mottie/Keyboard/issues/238) and possibly [issue #92](https://github.com/Mottie/Keyboard/issues/92).
-* Mobile extension (all thanks to [BrandonLWhite](https://github.com/BrandonLWhite)):
-  * Resolved issue with Flash of unstyled content (FUOC) when using jQuery Mobile. Fixes [#233](https://github.com/Mottie/Keyboard/pull/233).
-  * Add demo page for [jQuery Mobile v1.4](http://mottie.github.com/Keyboard/jquery-mobile-1.4.html).
-  * Fix an error with numeric keys causing javascript errors
-* Navigation extension:
-  * Added caret navigation - it utilities the <kbd>Insert</kbd> and <kbd>Delete</kbd> keys to move the caret right and left, respectively.
-  * Update demo styling
