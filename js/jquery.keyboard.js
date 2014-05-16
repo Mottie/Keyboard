@@ -1,6 +1,6 @@
 /*!
 jQuery UI Virtual Keyboard
-Version 1.18.7
+Version 1.18.8
 
 Author: Jeremy Satterfield
 Modified: Rob Garrison (Mottie on github)
@@ -226,8 +226,7 @@ $.keyboard = function(el, options){
 		base.position = o.position;
 		// get single target position || target stored in element data (multiple targets) || default @ element
 		base.position.of = base.position.of || base.$el.data('keyboardPosition') || base.$el;
-		base.position.collision = base.position.collision || (o.usePreview ? 'fit fit' : 'flip flip');
-
+		base.position.collision = base.position.collision || 'fit fit';
 		if (o.resetDefault) {
 			base.shiftActive = base.altActive = base.metaActive = false;
 			base.showKeySet();

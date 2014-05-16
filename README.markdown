@@ -77,6 +77,14 @@ Wiki: [Home](https://github.com/Mottie/Keyboard/wiki/Home) | [FAQ](https://githu
 
 Only the latest changes will be shown below, see the wiki log to view older versions.
 
+### Version 1.18.8 (5/16/2014)
+
+* Fix position option
+  * When setting the `usePreview` option to `false`, the collision setting would changed to `"flip flip"` internally and was not behaving as intended.
+  * This option now always defaults to `"fit fit"` unless set to a different setting in the options.
+  * Updated documentation &amp; lined out the `position.offset` note as it is no longer supported in jQuery UI's position utility.
+  * Thanks to Alex W. for reporting this issue via email.
+
 ### Version 1.18.7 (5/10/2014)
 
 * Fixed switchInput to ignore validation.
@@ -111,11 +119,3 @@ Only the latest changes will be shown below, see the wiki log to view older vers
 ### Version 1.18.4 (3/6/2014)
 
 * Include minified version update...
-
-### Version 1.18.3 (3/6/2014)
-
-* Empty buttons class names are once again set as `ui-keyboard-empty`, instead of `ui-keyboard-`. Fixes [issue #244](https://github.com/Mottie/Keyboard/issues/244)
-* Empty buttons can now include a width setting
-  * The width is set using the same method as the space setting (`{empty:1.0em}` or `{empty:20px}`
-  * Note that the `em` width values actually get doubled to be consistent with the spacer (see [spacers](https://github.com/Mottie/Keyboard/wiki/Layout#wiki-spacers) for more details)
-* Destroy method works before keyboard is revealed. Fixes [issue #247](https://github.com/Mottie/Keyboard/issues/247).
