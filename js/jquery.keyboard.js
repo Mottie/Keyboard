@@ -226,7 +226,7 @@ $.keyboard = function(el, options){
 		base.position = o.position;
 		// get single target position || target stored in element data (multiple targets) || default @ element
 		base.position.of = base.position.of || base.$el.data('keyboardPosition') || base.$el;
-		base.position.collision = base.position.collision || 'fit fit';
+		base.position.collision = base.position.collision || 'flipfit flipfit';
 		if (o.resetDefault) {
 			base.shiftActive = base.altActive = base.metaActive = false;
 			base.showKeySet();
