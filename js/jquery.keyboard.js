@@ -161,10 +161,7 @@ $.keyboard = function(el, options){
 	};
 
 	base.isVisible = function() {
-		if (!base.$keyboard.length) {
-			return false;
-		}
-		return base.$keyboard.is(":visible");
+		return base.$keyboard && base.$keyboard.length ? base.$keyboard.is(":visible") : false;
 	};
 
 	base.focusOn = function(){
@@ -205,7 +202,7 @@ $.keyboard = function(el, options){
 		}
 
 		// build keyboard if it doesn't exist; or attach keyboard if it was removed, but not cleared
-		if (!base.$keyboard.length || $.contains(document.body, base.$keyboard[0])) {
+		if ( !base.$keyboard || base.$keyboard && ( !base.$keyboard.length || $.contains(document.body, base.$keyboard[0]) ) ) {
 			base.startup();
 		}
 
@@ -308,7 +305,7 @@ $.keyboard = function(el, options){
 	};
 
 	base.startup = function(){
-		if ( !base.$keyboard.length ) {
+		if ( !(base.$keyboard && base.$keyboard.length) ) {
 			// custom layout - create a unique layout name based on the hash
 			if (o.layout === "custom") { o.layoutHash = 'custom' + base.customHash(); }
 			base.layout = o.layout === "custom" ? o.layoutHash : o.layout;
