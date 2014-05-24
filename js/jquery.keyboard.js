@@ -667,8 +667,8 @@ $.keyboard = function(el, options){
 		base.$preview
 			.val( base.$preview.val().substr(0, pos.start - (bksp ? 1 : 0)) + txt +
 				base.$preview.val().substr(pos.end) )
-			.caret(t, t)
-			.scrollLeft(scrL);
+			.scrollLeft(scrL)
+			.caret(t, t);
 
 		base.lastCaret = { start: t, end: t }; // save caret in case of bksp
 
@@ -1729,7 +1729,12 @@ $.fn.caret = function(options,opt2) {
 	}
 	var s, start, e, end, selRange, range, stored_range, te, val,
 		selection = document.selection, t = this[0], sTop = t.scrollTop,
+		ss = false, supportCaret = true;
+	try {
 		ss = typeof t.selectionStart !== 'undefined';
+	} catch(e){
+		supportCaret = false;
+	}
 	if (typeof options === 'object' && options.start && options.end) {
 		start = options.start;
 		end = options.end;
@@ -1737,7 +1742,7 @@ $.fn.caret = function(options,opt2) {
 		start = options;
 		end = opt2;
 	}
-	if (typeof start !== 'undefined') {
+	if (supportCaret && typeof start !== 'undefined') {
 		if (ss){
 			t.selectionStart=start;
 			t.selectionEnd=end;
@@ -1756,7 +1761,7 @@ $.fn.caret = function(options,opt2) {
 		if (ss) {
 			s = t.selectionStart;
 			e = t.selectionEnd;
-		} else {
+		} else if (selection) {
 			if (t.tagName === 'TEXTAREA') {
 				val = this.val();
 				range = selection[createRange]();
@@ -1775,6 +1780,10 @@ $.fn.caret = function(options,opt2) {
 				range.moveStart('character', -val[len]);
 				e = range.text[len];
 			}
+		} else {
+			// caret positioning not supported
+			s = 0;
+			e = (t.value || '').length;
 		}
 		te = (t.value || '').substring(s,e);
 		return { start : s, end : e, text : te, replace : function(st){
