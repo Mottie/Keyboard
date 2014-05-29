@@ -911,6 +911,9 @@ $.keyboard = function(el, options){
 			}
 			base.isCurrent(false);
 			base.isOpen = false;
+			// update value for always open keyboards
+			base.$preview.val(val);
+
 			base.$el
 				.removeClass('ui-keyboard-input-current ui-keyboard-autoaccepted')
 				// add "ui-keyboard-autoaccepted" to inputs - see issue #66
@@ -921,8 +924,6 @@ $.keyboard = function(el, options){
 				.trigger( ((accepted || false) ? 'accepted.keyboard' : 'canceled.keyboard'), [ base, base.el ] )
 				.trigger( (o.alwaysOpen) ? 'inactive.keyboard' : 'hidden.keyboard', [ base, base.el ] )
 				.blur();
-			// update value for always open keyboards
-			base.$preview.val(val);
 			if (o.openOn) {
 				// rebind input focus - delayed to fix IE issue #72
 				base.timer = setTimeout(function(){
