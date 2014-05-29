@@ -35,7 +35,10 @@ $.keyboard = $.keyboard || {};
 		};
 		return this.each(function() {
 			// make sure a keyboard is attached
-			var o, base = $(this).data('keyboard');
+			var o,
+				base = $(this).data('keyboard'),
+				opts = base.options;
+
 			if (!base) { return; }
 			o = base.scramble_options = $.extend({}, defaults, options);
 
@@ -126,34 +129,41 @@ $.keyboard = $.keyboard || {};
 			};
 
 			// create scrambled keyboard layout
-			base.options.create = function() {
-				var layout = base.options.layout;
+			opts.create = function() { console.log('create run');
+				var layout = opts.layout;
 				$.keyboard.builtLayouts[layout] = {
 					mappedKeys   : {},
 					acceptedKeys : [],
 					$keyboard: null
 				};
-				if (typeof $.keyboard.builtLayouts[base.orig_layout] === 'undefined') {
-					base.layout = base.options.layout = base.orig_layout;
+				if ( typeof $.keyboard.builtLayouts[base.orig_layout] === 'undefined' ) {
+					base.layout = opts.layout = base.orig_layout;
 					// build original layout, if not already built, e.g. "qwerty"
 					base.buildKeyboard();
-					base.layout = base.options.layout = layout;
+					base.layout = opts.layout = layout;
 				}
 				// clone, scramble then save layout
-				$.keyboard.builtLayouts[layout] = $.extend({}, $.keyboard.builtLayouts[base.orig_layout]);
+				$.keyboard.builtLayouts[layout] = $.extend(true, {}, $.keyboard.builtLayouts[base.orig_layout]);
 				if (o.randomizeOnce) {
 					$.keyboard.builtLayouts[layout].$keyboard = base.scramble_setup( $.keyboard.builtLayouts[base.orig_layout].$keyboard.clone() );
 				}
 				base.$keyboard = $.keyboard.builtLayouts[layout].$keyboard;
-					if ( !o.randomizeOnce ) {
-						base.$el.bind('beforeVisible.keyboard', function(e, kb) {
-							kb.$keyboard = kb.scramble_setup(kb.$keyboard);
-						});
-					}
+				if ( !o.randomizeOnce ) {
+					base.$el.bind('beforeVisible.keyboard', function(e, kb) {
+						kb.$keyboard = kb.scramble_setup(kb.$keyboard);
+					});
+				}
 			};
 
-			base.orig_layout = base.options.layout;
-			base.options.layout = "scrambled" + Math.round(Math.random() * 10000);
+			base.orig_layout = opts.layout;
+			opts.layout = "scrambled" + Math.round(Math.random() * 10000);
+
+			// special case when keyboard is set to always be open
+			if (opts.alwaysOpen && base.$keyboard.length) {
+				setTimeout(function(){
+					base.$keyboard = base.scramble_setup(base.$keyboard);
+				}, 0);
+			}
 
 		});
 	};
