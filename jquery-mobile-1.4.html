@@ -61,7 +61,7 @@
 	by Brandon White (https://github.com/BrandonLWhite)
 	*/
 	$.widget("bw.virtualNumericKeyboard", {
-		initSelector: "input[type='number']",
+		initSelector: "input.numeric",
 
 		_create: function () {
 			var self = this;
@@ -180,24 +180,29 @@
 	<h1><a data-ajax="false" href="https://github.com/Mottie/Keyboard">Virtual Keyboard jQuery Mobile v1.4 Demo</a></h1>
 	<h4>by Brandon White</h4>
 
+	<!--
+		Modified inputs to be type="text" as caret positioning is no longer supported in type="number".
+		See https://github.com/Mottie/Keyboard/issues/241
+	-->
+
 	<div class="block">
 		<label>
 			Numeric:
-			<input type="number" />
+			<input class="numeric" type="text" />
 		</label>
 	</div>
 
 	<div class="block">
 		<label>
 			Numeric Integer:
-			<input type="number" step="1"/>
+			<input class="numeric" type="text" step="1"/>
 		</label>
 	</div>
 
 	<div class="block">
 		<label>
 			Numeric Positive Integer:
-			<input type="number" min="0" step="1"/>
+			<input class="numeric" type="text" min="0" step="1"/>
 		</label>
 	</div>
 

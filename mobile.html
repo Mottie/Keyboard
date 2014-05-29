@@ -8,14 +8,13 @@
 	<!-- demo -->
 	<link href="demo/demo.css" rel="stylesheet">
 
-	<!-- jQuery & jQuery UI + theme (required) -->
-	<link href="http://code.jquery.com/ui/1.9.0/themes/ui-darkness/jquery-ui.css" rel="stylesheet">
-	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.8/jquery.js"></script>
-	<script src="http://code.jquery.com/ui/1.9.0/jquery-ui.min.js"></script>
+	<!-- jQuery & jQuery UI + theme (required)
+	<link href="http://code.jquery.com/ui/1.10.2/themes/ui-darkness/jquery-ui.css" rel="stylesheet"> -->
+	<script src="http://code.jquery.com/jquery-2.1.0.min.js"></script>
+	<script src="http://code.jquery.com/ui/1.10.4/jquery-ui.min.js"></script>
 
-	<link rel="stylesheet" href="http://code.jquery.com/mobile/1.1.0-rc.1/jquery.mobile-1.1.0-rc.1.min.css" />
-	<script src="http://code.jquery.com/mobile/1.1.0-rc.1/jquery.mobile-1.1.0-rc.1.min.js"></script>
-	<!-- <script src="http://jquerymobile.com/demos/1.0rc1/experiments/themeswitcher/jquery.mobile.themeswitcher.js"></script> -->
+	<link rel="stylesheet" href="http://code.jquery.com/mobile/1.4.2/jquery.mobile-1.4.2.min.css" />
+	<script src="http://code.jquery.com/mobile/1.4.2/jquery.mobile-1.4.2.min.js"></script>
 
 	<!-- keyboard widget css & script (required) -->
 	<link href="css/keyboard.css" rel="stylesheet">
@@ -30,58 +29,59 @@
 	-->
 	<script src="js/jquery.keyboard.extension-mobile.js"></script>
 
+	<style>
+	html head + body .ui-btn.ui-btn-c:hover,
+	html head + body .ui-btn.ui-btn-c.ui-btn-hover,
+	html head + body .ui-btn.ui-btn-c:active,
+	html head + body .ui-btn.ui-btn-c.ui-btn-active {
+		background-color: #f7931e;
+		border-color: #a37a00;
+		color: #fff;
+		text-shadow: 0 1px 0 #ffcc33;
+	}
+	</style>
+
 	<!-- initialize keyboard (required) -->
 	<script>
-	$(function(){
+	$(document).on('pagecreate', function(){
 
 		var k = $('#keyboard'),
-		s = $('#switcher').find('input'),
-		set = $('#switcher').find('.ui-controlgroup-controls'),
-		kbOptions = {
-			keyBinding : 'mousedown touchstart',
-			alwaysOpen : true,
-			// make sure jQuery UI styles aren't applied even if the stylesheet has loaded
-			// the Mobile UI theme will still over-ride the jQuery UI theme
-			css : {
-				input          : '',
-				container      : '',
-				buttonDefault  : '',
-				buttonHover    : '',
-				buttonActive   : '',
-				buttonDisabled : ''
-			}
-		};
+			s = $('#switcher').find('input'),
+			set = $('#switcher').find('.ui-controlgroup-controls'),
+			kbOptions = {
+				keyBinding : 'mousedown touchstart',
+				stayOpen : true
+			};
 
 		k
 			.keyboard(kbOptions)
 			/* initial setup for mobile extension */
 			.addMobile({
 				// keyboard wrapper theme
-				container    : { theme:'a' },
+				container    : { theme:'b' },
 				// theme added to all regular buttons
-				buttonMarkup : { theme:'a', shadow:'true', corners:'true' },
+				buttonMarkup : { theme:'b', shadow:'true', corners:'true' },
 				// theme added to all buttons when they are being hovered
-				buttonHover  : { theme:'c' },
+				buttonHover  : { theme:'b' },
 				// theme added to action buttons (e.g. tab, shift, accept, cancel);
 				// parameters here will override the settings in the buttonMarkup
-				buttonAction : { theme:'b' },
+				buttonAction : { theme:'c' },
 				// theme added to button when it is active (e.g. shift is down)
 				// All extra parameters will be ignored
-				buttonActive : { theme:'e' }
+				buttonActive : { theme:'c' }
 			});
 
 		/* Theme switcher - temporary until jQuery Mobile Theme Switcher is available */
 		s.bind('change', function(){
-			k.getkeyboard().destroy(); // destroy keyboard
-			k
-			.keyboard(kbOptions) // build a new one, ready for a new theme
-			.addMobile({
-				container    : { theme : set.eq(0).find(':checked').attr('data-theme') },
-				buttonMarkup : { theme : set.eq(1).find(':checked').attr('data-theme'), shadow:'true', corners:'true' },
-				buttonHover  : { theme : set.eq(2).find(':checked').attr('data-theme') },
-				buttonAction : { theme : set.eq(3).find(':checked').attr('data-theme') },
-				buttonActive : { theme : set.eq(4).find(':checked').attr('data-theme') }
+			k.data('keyboard').close();
+			k.addMobile({
+				container    : { theme : set.eq(0).find(':checked')[0].id.slice(-1) },
+				buttonMarkup : { theme : set.eq(1).find(':checked')[0].id.slice(-1), shadow:'true', corners:'true' },
+				buttonHover  : { theme : set.eq(2).find(':checked')[0].id.slice(-1) },
+				buttonAction : { theme : set.eq(3).find(':checked')[0].id.slice(-1) },
+				buttonActive : { theme : set.eq(4).find(':checked')[0].id.slice(-1) }
 			});
+			k.data('keyboard').reveal();
 		});
 
 	});
@@ -90,7 +90,7 @@
 </head>
 <body id="mobile">
 
-	<div id="pagewrap" data-role="page" data-theme="a">
+	<div id="pagewrap" data-role="page" data-theme="b">
 
 		<!-- Links to other demo pages & docs -->
 		<div id="nav">
@@ -109,7 +109,54 @@
 		<!-- End Links -->
 
 		<h1><a data-ajax="false" href="https://github.com/Mottie/Keyboard">Virtual Keyboard jQuery Mobile Themes</a></h1>
-		<h4>Until the jQurey Mobile Theme Roller is complete, use the color selections below to change the keyboard</h4>
+
+		<div id="switcher">
+
+			<div class="swatch" data-role="fieldcontain">
+				<fieldset data-role="controlgroup" data-type="horizontal">
+					<legend>Container<br>(background)</legend>
+					<input type="radio" id="radio-ca" name="radio-c" class="custom"><label for="radio-ca">A</label>
+					<input type="radio" id="radio-cb" name="radio-c" class="custom" checked><label for="radio-cb">B</label>
+				</fieldset>
+			</div>
+
+			<div class="swatch" data-role="fieldcontain">
+				<fieldset data-role="controlgroup" data-type="horizontal">
+					<legend>Regular Buttons<br>(non-action)</legend>
+					<input type="radio" id="radio-ra" name="radio-r" class="custom"><label for="radio-ra">A</label>
+					<input type="radio" id="radio-rb" name="radio-r" class="custom" checked><label for="radio-rb">B</label>
+				</fieldset>
+			</div>
+
+			<div class="swatch" data-role="fieldcontain">
+				<fieldset data-role="controlgroup" data-type="horizontal">
+					<legend>Hovered Buttons<br>(all)</legend>
+					<input type="radio" id="radio-ha" name="radio-h" class="custom"><label for="radio-ha">A</label>
+					<input type="radio" id="radio-hb" name="radio-h" class="custom" checked><label for="radio-hb">B</label>
+					<input type="radio" id="radio-hc" name="radio-h" class="custom"><label for="radio-hc">C</label>
+				</fieldset>
+			</div>
+
+			<div class="swatch" data-role="fieldcontain">
+				<fieldset data-role="controlgroup" data-type="horizontal">
+					<legend>Action Buttons<br>(Enter)</legend>
+					<input type="radio" id="radio-aa" name="radio-a" class="custom"><label for="radio-aa">A</label>
+					<input type="radio" id="radio-ab" name="radio-a" class="custom"><label for="radio-ab">B</label>
+					<input type="radio" id="radio-ac" name="radio-a" class="custom" checked><label for="radio-ac">C</label>
+				</fieldset>
+			</div>
+
+			<div class="swatch" data-role="fieldcontain">
+				<fieldset data-role="controlgroup" data-type="horizontal">
+					<legend>Active Buttons<br>(Shift down)</legend>
+					<input type="radio" id="radio-va" name="radio-v" class="custom"><label for="radio-va">A</label>
+					<input type="radio" id="radio-vb" name="radio-v" class="custom"><label for="radio-vb">B</label>
+					<input type="radio" id="radio-vc" name="radio-v" class="custom" checked><label for="radio-vc">C</label>
+				</fieldset>
+			</div>
+
+		</div>
+
 		<h4>Check out the <a data-ajax="false" href="jquery-mobile-1.4.html">jQuery Mobile v1.4 demo</a> that automatically adds a virtual numeric keypad to all numeric <code>&lt;input&gt; elements</h4>
 
 		<div id="wrap"> <!-- wrapper only needed to center the input -->
@@ -119,72 +166,6 @@
 			<input id="keyboard" name="keyboard" type="text">
 
 		</div> <!-- End wrapper -->
-
-		<!-- Once jQuery Mobile Theme Roller is complete, add it here -->
-		<div id="switcher">
-
-			<div class="swatch" data-role="fieldcontain">
-				<fieldset data-role="controlgroup" data-type="horizontal">
-					<legend>Container<br>(background)</legend>
-					<input type="radio" id="radio-ca" name="radio-c" class="custom" data-theme="a" checked><label for="radio-ca">A</label>
-					<input type="radio" id="radio-cb" name="radio-c" class="custom" data-theme="b"><label for="radio-cb">B</label>
-					<input type="radio" id="radio-cc" name="radio-c" class="custom" data-theme="c"><label for="radio-cc">C</label>
-					<input type="radio" id="radio-cd" name="radio-c" class="custom" data-theme="d"><label for="radio-cd">D</label>
-					<input type="radio" id="radio-ce" name="radio-c" class="custom" data-theme="e"><label for="radio-ce">E</label>
-				</fieldset>
-			</div>
-
-			<div class="swatch" data-role="fieldcontain">
-				<fieldset data-role="controlgroup" data-type="horizontal">
-					<legend>Regular Buttons<br>(non-action)</legend>
-					<input type="radio" id="radio-ra" name="radio-r" class="custom" data-theme="a" checked><label for="radio-ra">A</label>
-					<input type="radio" id="radio-rb" name="radio-r" class="custom" data-theme="b"><label for="radio-rb">B</label>
-					<input type="radio" id="radio-rc" name="radio-r" class="custom" data-theme="c"><label for="radio-rc">C</label>
-					<input type="radio" id="radio-rd" name="radio-r" class="custom" data-theme="d"><label for="radio-rd">D</label>
-					<input type="radio" id="radio-re" name="radio-r" class="custom" data-theme="e"><label for="radio-re">E</label>
-				</fieldset>
-			</div>
-
-			<div class="swatch" data-role="fieldcontain">
-				<fieldset data-role="controlgroup" data-type="horizontal">
-					<legend>Hovered Buttons<br>(all)</legend>
-					<input type="radio" id="radio-ha" name="radio-h" class="custom" data-theme="a"><label for="radio-ha">A</label>
-					<input type="radio" id="radio-hb" name="radio-h" class="custom" data-theme="b"><label for="radio-hb">B</label>
-					<input type="radio" id="radio-hc" name="radio-h" class="custom" data-theme="c" checked><label for="radio-hc">C</label>
-					<input type="radio" id="radio-hd" name="radio-h" class="custom" data-theme="d"><label for="radio-hd">D</label>
-					<input type="radio" id="radio-he" name="radio-h" class="custom" data-theme="e"><label for="radio-he">E</label>
-				</fieldset>
-			</div>
-
-			<div class="swatch" data-role="fieldcontain">
-				<fieldset data-role="controlgroup" data-type="horizontal">
-					<legend>Action Buttons<br>(Enter)</legend>
-					<input type="radio" id="radio-aa" name="radio-a" class="custom" data-theme="a"><label for="radio-aa">A</label>
-					<input type="radio" id="radio-ab" name="radio-a" class="custom" data-theme="b" checked><label for="radio-ab">B</label>
-					<input type="radio" id="radio-ac" name="radio-a" class="custom" data-theme="c"><label for="radio-ac">C</label>
-					<input type="radio" id="radio-ad" name="radio-a" class="custom" data-theme="d"><label for="radio-ad">D</label>
-					<input type="radio" id="radio-ae" name="radio-a" class="custom" data-theme="e"><label for="radio-ae">E</label>
-				</fieldset>
-			</div>
-
-			<div class="swatch" data-role="fieldcontain">
-				<fieldset data-role="controlgroup" data-type="horizontal">
-					<legend>Active Buttons<br>(Shift down)</legend>
-					<input type="radio" id="radio-va" name="radio-v" class="custom" data-theme="a"><label for="radio-va">A</label>
-					<input type="radio" id="radio-vb" name="radio-v" class="custom" data-theme="b"><label for="radio-vb">B</label>
-					<input type="radio" id="radio-vc" name="radio-v" class="custom" data-theme="c"><label for="radio-vc">C</label>
-					<input type="radio" id="radio-vd" name="radio-v" class="custom" data-theme="d"><label for="radio-vd">D</label>
-					<input type="radio" id="radio-ve" name="radio-v" class="custom" data-theme="e" checked><label for="radio-ve">E</label>
-				</fieldset>
-			</div>
-
-		</div>
-
-	<div id="footer2">
-		<div>
-		<span class="attn">* Note *</span> The "Active Buttons" setting is limited in that if the swatch letter of the Regular buttons is greater than the swatch letter of the Active Buttons, the theme doesn't apply properly. For example, Regular button swatch B with Active Button swatch A won't work because of the way the css is set up.
-		</div>
-	</div>
 
 	</div>
 
