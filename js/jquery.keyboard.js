@@ -20,7 +20,7 @@ As a plugin to jQuery UI styling and theme will automatically
 match that used by jQuery UI with the exception of the required CSS.
 
 Requires:
-	jQuery
+	jQuery v1.4.3+
 	jQuery UI (position utility only) & CSS theme
 
 Setup/Usage:
@@ -183,6 +183,7 @@ $.keyboard = function(el, options){
 	};
 
 	base.reveal = function(){
+		var p, s;
 		base.opening = true;
 		// remove all "extra" keyboards
 		$('.ui-keyboard').not('.ui-keyboard-always-open').remove();
@@ -219,11 +220,6 @@ $.keyboard = function(el, options){
 		// disable/enable accept button
 		if (o.acceptValid) { base.checkValid(); }
 
-		var p, s;
-		base.position = o.position;
-		// get single target position || target stored in element data (multiple targets) || default @ element
-		base.position.of = base.position.of || base.$el.data('keyboardPosition') || base.$el;
-		base.position.collision = base.position.collision || 'flipfit flipfit';
 		if (o.resetDefault) {
 			base.shiftActive = base.altActive = base.metaActive = false;
 			base.showKeySet();
@@ -255,8 +251,13 @@ $.keyboard = function(el, options){
 			base.$preview.width(base.width);
 		}
 
+		base.position = o.position;
+
 		// position after keyboard is visible (required for UI position utility) and appropriately sized
-		if ($.ui && $.ui.position) {
+		if ($.ui && $.ui.position && !$.isEmptyObject(base.position)) {
+			// get single target position || target stored in element data (multiple targets) || default @ element
+			base.position.of = base.position.of || base.$el.data('keyboardPosition') || base.$el;
+			base.position.collision = base.position.collision || 'flipfit flipfit';
 			base.$keyboard.position(base.position);
 		}
 
@@ -336,7 +337,9 @@ $.keyboard = function(el, options){
 			} else {
 				// No preview display, use element and reposition the keyboard under it.
 				base.$preview = base.$el;
-				o.position.at = o.position.at2;
+				if (!$.isEmptyObject(base.position)) {
+					o.position.at = o.position.at2;
+				}
 			}
 
 		}
@@ -356,7 +359,7 @@ $.keyboard = function(el, options){
 		base.bindKeys();
 
 		// adjust with window resize
-		if ($.ui && $.ui.position) {
+		if ($.ui && $.ui.position && !$.isEmptyObject(base.position)) {
 			$(window).bind('resize.keyboard', function(){
 				if (base.isVisible()) {
 					base.$keyboard.position(base.position);
