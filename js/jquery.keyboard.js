@@ -1,6 +1,6 @@
 /*!
 jQuery UI Virtual Keyboard
-Version 1.18.8
+Version 1.18.9
 
 Author: Jeremy Satterfield
 Modified: Rob Garrison (Mottie on github)
@@ -1733,7 +1733,7 @@ $.fn.caret = function(options,opt2) {
 		ss = false, supportCaret = true;
 	try {
 		ss = typeof t.selectionStart !== 'undefined';
-	} catch(e){
+	} catch(err){
 		supportCaret = false;
 	}
 	if (typeof options === 'object' && options.start && options.end) {

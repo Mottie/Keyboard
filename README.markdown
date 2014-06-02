@@ -77,6 +77,16 @@ Wiki: [Home](https://github.com/Mottie/Keyboard/wiki/Home) | [FAQ](https://githu
 
 Only the latest changes will be shown below, see the wiki log to view older versions.
 
+### Version 1.18.9 (6/1/2014)
+
+* Change keyboard collison fallback to "flipfit flipfit".
+* Caret: prevent errors when input doesn't support caret positioning.
+* Fix js error when base.$keyboard is removed.
+* Scramble: now applied when keyboard is alwaysOpen. Fixes [issue #276](https://github.com/Mottie/Keyboard/issues/276).
+* Ignore position utility if position option is empty.
+* Set preview value before triggering accept event.
+* Update Mobile extension &amp; demos.
+
 ### Version 1.18.8 (5/16/2014)
 
 * Fix position option
@@ -102,20 +112,3 @@ Only the latest changes will be shown below, see the wiki log to view older vers
        top: 0;
      }
      ```
-
-### Version 1.18.6 (3/27/2014)
-
-* Fix Colemak demo; contenteditable not yet supported.
-* Check for jQuery UI before checking for position utility. Fixes [issue #263](https://github.com/Mottie/Keyboard/issues/263).
-* Colon key now works without mousewheel script. Fixes [issue #264](https://github.com/Mottie/Keyboard/issues/264).
-
-### Version 1.18.5 (3/20/2014)
-
-* Add [Colemak](http://en.wikipedia.org/wiki/Colemak#Colemak) keyboard to the build-in layouts.
-* Add `appendTo` option. Fixes [issue #253](https://github.com/Mottie/Keyboard/issues/253).
-* Backspace action key function `$.keyboard.keyaction.bksp` is now correctly called. Fixes [issue #261](https://github.com/Mottie/Keyboard/issues/261).
-* Add Chinese, Mongolian & Hindi layouts. Thanks to [Sh1n](https://github.com/Sh1n)!
-
-### Version 1.18.4 (3/6/2014)
-
-* Include minified version update...
