@@ -1036,7 +1036,7 @@ $.keyboard = function(el, options){
 
 	base.customHash = function(){
 		/*jshint bitwise:false */
-		var i, array, hash, character,
+		var i, array, hash, character, len,
 			layout = o.customLayout,
 			arrays = [], merged = [];
 		// get all layout arrays
@@ -1047,16 +1047,11 @@ $.keyboard = function(el, options){
 		}
 		// flatten array
 		merged = merged.concat.apply(merged, arrays).join(' ');
-		// produce hash name - http://stackoverflow.com/a/20156012/145346
-		if (Array.prototype.reduce){
-			return merged.split("").reduce(function(a,b){
-				a = ( (a << 5) - a ) + b.charCodeAt(0);
-				return a & a;
-			}, 0);
-		}
+		// produce hash name - http://stackoverflow.com/a/7616484/145346
 		hash = 0;
-		if (merged.length === 0) { return hash; }
-		for (i = 0; i < merged.length; i++) {
+		len = merged.length;
+		if (len === 0) { return hash; }
+		for (i = 0; i < len; i++) {
 			character = merged.charCodeAt(i);
 			hash = ( (hash<<5) - hash) + character;
 			hash = hash & hash; // Convert to 32bit integer
