@@ -330,10 +330,11 @@ $.keyboard = function(el, options){
 					.removeAttr('id')
 					.removeClass('ui-keyboard-placeholder ui-keyboard-input')
 					.addClass('ui-keyboard-preview ' + o.css.input)
+					.removeAttr('aria-haspopup')
 					.attr('tabindex', '-1')
 					.show(); // for hidden inputs
-                // Switch the number input fields to text so the caret positioning will work again
-                if (base.$preview.attr('type') == 'number') {
+				// Switch the number input fields to text so the caret positioning will work again
+				if (base.$preview.attr('type') == 'number') {
 					base.$preview.attr('type', 'text');
 				}
 				// build preview container and append preview display
