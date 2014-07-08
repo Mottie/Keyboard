@@ -170,7 +170,10 @@ $.keyboard = function(el, options){
 			// save caret position in the input to transfer it to the preview
 			// add delay to get correct caret position
 			setTimeout(function(){
-				base.lastCaret = base.$el.caret();
+                // Number inputs don't support selectionStart and selectionEnd
+				if (base.$el.attr('type') != 'number') {
+					base.lastCaret = base.$el.caret();
+				}
 			}, 20);
 		}
 		if (!base.isVisible()) {
@@ -329,6 +332,10 @@ $.keyboard = function(el, options){
 					.addClass('ui-keyboard-preview ' + o.css.input)
 					.attr('tabindex', '-1')
 					.show(); // for hidden inputs
+                // Switch the number input fields to text so the caret positioning will work again
+                if (base.$preview.attr('type') == 'number') {
+					base.$preview.attr('type', 'text');
+				}
 				// build preview container and append preview display
 				$('<div />')
 					.addClass('ui-keyboard-preview-wrapper')
