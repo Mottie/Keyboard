@@ -51,8 +51,8 @@ $.keyboard.layouts['romanian'] = {
 if (typeof(language) === 'undefined') { var language = {}; };
 language.romanian = {
 	display : {
-		'a'      : '\u2714:Acept (Shift-Enter)', // check mark - same action as accept
-		'accept' : 'Accept:Acept (Shift-Enter)',
+		'a'      : '\u2714:Accept (Shift-Enter)', // check mark - same action as accept
+		'accept' : 'Accept:Accept (Shift-Enter)',
 		'alt'    : 'AltGr:Alternate Graphemes',
 		'b'      : '\u2190:Backspace',    // Left arrow (same as &larr;)
 		'bksp'   : 'Bksp:Backspace',
