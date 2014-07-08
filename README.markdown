@@ -77,6 +77,13 @@ Wiki: [Home](https://github.com/Mottie/Keyboard/wiki/Home) | [FAQ](https://githu
 
 Only the latest changes will be shown below, see the wiki log to view older versions.
 
+### Version 1.18.10 (7/8/2014)
+
+* Add Romanian keyboard layout. Thanks to [aflorea](https://github.com/aflorea) for all the work! See [pull request #285](https://github.com/Mottie/Keyboard/issues/285).
+* Number type inputs do not support caret positioning, so the preview input (only) will now switch to a text type input. Fixes [issue #241](https://github.com/Mottie/Keyboard/issues/241).
+* Removed "aria-haspopup" from the preview clone.
+* Update hash code; removed slower reduce method.
+
 ### Version 1.18.9 (6/1/2014)
 
 * Change keyboard collison fallback to "flipfit flipfit".
