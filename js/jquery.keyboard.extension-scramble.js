@@ -1,5 +1,5 @@
 /*
- * jQuery UI Virtual Keyboard Scramble Extension v1.2 for Keyboard v1.18+ (updated 6/1/2014)
+ * jQuery UI Virtual Keyboard Scramble Extension v1.2.1 for Keyboard v1.18+ (updated 7/16/2014)
  *
  * By Rob Garrison (aka Mottie & Fudgey)
  * Licensed under the MIT License
@@ -39,7 +39,7 @@ $.keyboard = $.keyboard || {};
 				base = $(this).data('keyboard'),
 				opts = base.options;
 
-			if (!base) { return; }
+			if (!base || base.scramble_options) { return; }
 			o = base.scramble_options = $.extend({}, defaults, options);
 
 			base.scramble_setup = function($keyboard) {
@@ -129,7 +129,7 @@ $.keyboard = $.keyboard || {};
 			};
 
 			// create scrambled keyboard layout
-			opts.create = function() { console.log('create run');
+			opts.create = function() {
 				var layout = opts.layout;
 				$.keyboard.builtLayouts[layout] = {
 					mappedKeys   : {},

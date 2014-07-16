@@ -77,6 +77,10 @@ Wiki: [Home](https://github.com/Mottie/Keyboard/wiki/Home) | [FAQ](https://githu
 
 Only the latest changes will be shown below, see the wiki log to view older versions.
 
+### Version 1.18.11 (7/16/2014)
+
+* Scramble extension no longer breaks layout when initialized twice. Fixes [issue #283](https://github.com/Mottie/Keyboard/issues/283).
+
 ### Version 1.18.10 (7/8/2014)
 
 * Add Romanian keyboard layout. Thanks to [aflorea](https://github.com/aflorea) for all the work! See [pull request #285](https://github.com/Mottie/Keyboard/issues/285).
