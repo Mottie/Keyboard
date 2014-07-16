@@ -25,7 +25,7 @@ $.keyboard.layouts['romanian'] = {
 		"\u201d \u0021 \u0040 \u0023 \u0024 \u0025 \u005e \u0026 \u002a \u0028 \u0029 \u005f \u002b {bksp}",
 		"{tab} Q W E R T Y U I O P \u0102 \u00ce \u00c2",
 		"A S D F G H J K L \u0218 \u021a {enter}",
-		"{shift} \u007c Z X C V B N M \u003b \u003a \u002f {shift}",
+		"{shift} \u007c Z X C V B N M \u003b \u003a ? {shift}",
 		"{accept} {alt} {space} {alt} {cancel}"
 	],
 	'alt' : [
@@ -72,7 +72,7 @@ language.romanian = {
 		'tab'    : '\u21e5 Tab:Tab'       // \u21b9 is the true tab symbol (left & right arrows)
 	},
 	// Message added to the key title while hovering, if the mousewheel plugin exists
-	wheelMessage : 'Foloseste rotita mouse-ului pentru a vedea si celelalte semne',
+	wheelMessage : 'Foloseste rotita mouse-ului pentru a vedea si celelalte caractere',
 };
 
 // This will replace all default language options with these language options.
