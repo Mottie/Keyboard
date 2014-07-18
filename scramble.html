@@ -42,16 +42,27 @@
 		$('#keyboard2')
 			.keyboard()
 			.addScramble({
-				byRow         : true,       // randomize by row, otherwise randomize all keys
-				randomizeOnce : false       // if false, randomize every time the keyboard opens
+				byRow         : true,     // randomize by row, otherwise randomize all keys
+				randomizeOnce : false     // if false, randomize every time the keyboard opens
 			});
 
 		$('#keyboard3')
 			.keyboard()
 			.addScramble({
-				byRow         : false,      // randomize by row, otherwise randomize all keys
-				randomizeOnce : false       // if false, randomize every time the keyboard opens
+				byRow         : false,    // randomize by row, otherwise randomize all keys
+				randomizeOnce : false     // if false, randomize every time the keyboard opens
 			});
+
+		$('#keyboard4')
+			.keyboard({
+				layout: 'international'
+			})
+			.addScramble({
+				byRow         : true,     // randomize by row, otherwise randomize all keys
+				byKeySet      : true,     // if true, randomize one keyset & duplicate
+				randomizeOnce : true      // if false, randomize every time the keyboard opens
+			});
+
 
 	});
 	</script>
@@ -86,7 +97,9 @@
 		<div class="spacer"></div>
 		<input id="keyboard2" type="text" placeholder=" scramble every time (by row)">
 		<div class="spacer"></div>
-		<input id="keyboard3" type="text" placeholder=" scramble every time (by keyset)">
+		<input id="keyboard3" type="text" placeholder=" scramble every time (all keysets)">
+		<div class="spacer"></div>
+		<input id="keyboard4" type="text" placeholder=" scramble once (1 keyset; by row)">
 
 	</div> <!-- End wrapper -->
 
