@@ -591,10 +591,12 @@ $.keyboard = function(el, options){
 			// Allow mousewheel to scroll through other key sets of the same key
 			.bind('mousewheel.keyboard', function(e, delta){
 				if (base.wheel) {
+					// deltaY used by newer versions of mousewheel plugin
+					delta = delta || e.deltaY;
 					var n, txt, $this = $(this);
 					txt = $this.data('layers') || base.getLayers( $this );
 					if (txt.length > 1) {
-						n = $this.data('curnum') + (delta > 0) ? -1 : 1;
+						n = $this.data('curnum') + (delta > 0 ? -1 : 1);
 						if (n > txt.length-1) { n = 0; }
 						if (n < 0) { n = txt.length-1; }
 					} else {
