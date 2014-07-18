@@ -571,7 +571,7 @@ $.fn.addNavigation = function(options){
 })(jQuery);
 
 /*
- * jQuery UI Virtual Keyboard Scramble Extension v1.2.1 for Keyboard v1.18+ (updated 7/16/2014)
+ * jQuery UI Virtual Keyboard Scramble Extension v1.3 for Keyboard v1.18+ (updated 7/18/2014)
  *
  * By Rob Garrison (aka Mottie & Fudgey)
  * Licensed under the MIT License
@@ -603,6 +603,7 @@ $.keyboard = $.keyboard || {};
 		var defaults = {
 			targetKeys    : /[a-z\d]/i, // keys to randomize
 			byRow         : true, // randomize by row, otherwise randomize all keys
+			byKeySet      : false,// if true, randomize one keyset & duplicate
 			randomizeOnce : true  // if true, randomize only once on keyboard visible
 		};
 		return this.each(function() {
@@ -619,6 +620,9 @@ $.keyboard = $.keyboard || {};
 					rowIndex, keyboardmap, map, keyboard, row;
 				$sets = $keyboard.find('.ui-keyboard-keyset');
 				if ($keyboard.length) {
+					if (o.byKeySet) {
+						$sets = $sets.eq(0);
+					}
 					for (set = 0; set < $sets.length; set++) {
 						/*jshint loopfunc:true */
 						$keys = $sets.eq(set);
@@ -672,6 +676,9 @@ $.keyboard = $.keyboard || {};
 							}
 						}
 					}
+					if (o.byKeySet) {
+						$keyboard = base.realign($keyboard);
+					}
 					return $keyboard;
 				}
 			};
@@ -698,6 +705,24 @@ $.keyboard = $.keyboard || {};
 					}
 				}
 				return array;
+			};
+
+			// make other keysets "line-up" with scrambled keyset
+			base.realign = function($keyboard) {
+				var selector, typ, pos,
+					$sets = $keyboard.find('.ui-keyboard-keyset'),
+					$orig = $sets.eq(0);
+				$sets = $sets.filter(':gt(0)');
+				$orig.children().each(function(i, cell){
+					typ = cell.tagName === 'BR';
+					pos = $(cell).attr('data-pos');
+					/*jshint loopfunc:true */
+					$sets.each(function(j, k){
+						selector = typ ? 'br:first' : 'button[data-pos="' + pos + '"]';
+						$(k).find(selector).appendTo( k );
+					});
+				});
+				return $keyboard;
 			};
 
 			// create scrambled keyboard layout

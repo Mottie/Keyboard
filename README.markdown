@@ -77,6 +77,12 @@ Wiki: [Home](https://github.com/Mottie/Keyboard/wiki/Home) | [FAQ](https://githu
 
 Only the latest changes will be shown below, see the wiki log to view older versions.
 
+### Version 1.18.12 (7/18/2014)
+
+* Added an internal version number. Access it as follows: `$('#keyboard').data('keyboard').version`
+* Updated mousewheel plugin &amp; made code backwards compatible.
+* Added `byKeySet` to scramble extension to allow scrambling of just one keyset, then making all other keysets match it. Fixes [issue #288](https://github.com/Mottie/Keyboard/issues/288).
+
 ### Version 1.18.11 (7/16/2014)
 
 * Scramble extension no longer breaks layout when initialized twice. Fixes [issue #283](https://github.com/Mottie/Keyboard/issues/283).
@@ -105,21 +111,3 @@ Only the latest changes will be shown below, see the wiki log to view older vers
   * This option now always defaults to `"fit fit"` unless set to a different setting in the options.
   * Updated documentation &amp; lined out the `position.offset` note as it is no longer supported in jQuery UI's position utility.
   * Thanks to Alex W. for reporting this issue via email.
-
-### Version 1.18.7 (5/10/2014)
-
-* Fixed switchInput to ignore validation.
-  * Thanks [ags131](https://github.com/ags131)!
-  * Fixes [issue #265](https://github.com/Mottie/Keyboard/issues/265).
-* Keyboard event namespacing fixes
-* Action key display option can now include HTML. Fixes [issue #266](https://github.com/Mottie/Keyboard/issues/266).
-* The changes to the default `appendLocally` &amp; `appendTo` options now assumes that the developer desires a static keyboard position.
-  * Restore the original behavior by adding back the following css:
-
-     ```css
-     .ui-keyboard {
-       position: absolute;
-       left: 0;
-       top: 0;
-     }
-     ```
