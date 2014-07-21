@@ -14,7 +14,7 @@ More details http://www.microsoft.com/resources/msdn/goglobal/keyboards/kbdrost.
 /* Submitted July 2014 - Alex Florea <alecz.fia@gmail.com>*/
 
 $.keyboard.layouts['romanian'] = {
-	'default' : [
+	'normal' : [
 		"\u201e 1 2 3 4 5 6 7 8 9 0 \u002d \u003d {bksp}",
 		"{tab} q w e r t y u i o p \u0103 \u00ee \u00e2",
 		"a s d f g h j k l \u0219 \u021b {enter}",

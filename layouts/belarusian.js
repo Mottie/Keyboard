@@ -10,7 +10,7 @@
 
 /* based on http://ascii-table.com/keyboard.php/463 & http://www.google.com/webelements/ */
 $.keyboard.layouts['belarusian-qwerty'] = {
-	'default' : [
+	'normal' : [
 		"` 1 2 3 4 5 6 7 8 9 0 - = {bksp}",
 		"{tab} q w e r t y u i o p [ ] \\",
 		"a s d f g h j k l ; ' {enter}",

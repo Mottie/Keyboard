@@ -18,7 +18,7 @@
 
 /* based on Tamil99 keyboard layout - modified Tamil  99 keyboard */
 $.keyboard.layouts['tamil-tamil99-mod'] = {
-	'default' : [
+	'normal' : [
         /* ா	ி	ீ	ு	ூ	ெ	ே	ை	ொ	ோ	ௌ	ஃ  */
 		"\u0BBE \u0BBF \u0BC0 \u0BC1 \u0BC2 \u0BC6 \u0BC7 \u0BC8 \u0BCA \u0BCB \u0BCC \u0B83 {bksp}",
         /*      ஆ     ஈ      ஊ     ஐ    ஏ      ள      ற     ன     ட      ண   ச      ஞ   \   */

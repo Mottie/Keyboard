@@ -10,7 +10,7 @@
 
 /* based on http://ascii-table.com/keyboard.php/189 & thanks to Nathana�l SEMHOUN: http://nathanael.semhoun.net */
 $.keyboard.layouts['french-azerty-1'] = {
-	'default' : [
+	'normal' : [
 		"\u00b2 & \u00e9 \" ' ( - \u00e8 _ \u00e7 \u00e0 ) = {bksp}",
 		"{tab} a z e r t y u i o p ^ $",
 		"q s d f g h j k l m  \u00f9 * {enter}",
@@ -41,7 +41,7 @@ $.keyboard.layouts['french-azerty-1'] = {
 };
 
 $.keyboard.layouts['french-azerty-2'] = {
-	'default' : [
+	'normal' : [
 		"\u00b2 & \u00e9 \" ' ( - \u00e8 _ \u00e7 \u00e0 ) = {b}",
 		"{t} a z e r t y u i o p ^ $",
 		"q s d f g h j k l m  \u00f9 * {e}",
@@ -72,7 +72,7 @@ $.keyboard.layouts['french-azerty-2'] = {
 };
 
 $.keyboard.layouts['french-bepo-V1.0rc2'] = {
-	'default' : [
+	'normal' : [
 		"$ \" \u00AB \u00BB ( ) @ + - / * = % {b}",
 		"{t} b \u00e9 p o \u00e8 \u02c6 v d l j z w",
 		"a u i e , c t s r n m \u00E7 {enter}",

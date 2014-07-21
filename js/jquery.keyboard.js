@@ -736,7 +736,7 @@ $.keyboard = function(el, options){
 			base.shiftActive = base.altActive = false;
 		}
 		toShow = (base.shiftActive ? 1 : 0) + (base.altActive ? 2 : 0);
-		key = (toShow === 0 && !base.metaActive) ? '-default' : (key === '') ? '' : '-' + key;
+		key = (toShow === 0 && !base.metaActive) ? '-normal' : (key === '') ? '' : '-' + key;
 		if (!base.$keyboard.find('.ui-keyboard-keyset' + key + base.rows[toShow]).length) {
 			// keyset doesn't exist, so restore last keyset settings
 			base.shiftActive = base.lastKeyset[0];
@@ -1088,17 +1088,19 @@ $.keyboard = function(el, options){
 		// verify layout or setup custom keyboard
 		if (o.layout === 'custom' || !$.keyboard.layouts.hasOwnProperty(o.layout)) {
 			o.layout = 'custom';
-			$.keyboard.layouts.custom = o.customLayout || { 'default' : ['{cancel}'] };
+			$.keyboard.layouts.custom = o.customLayout || { 'normal' : ['{cancel}'] };
 		}
 
 		// Main keyboard building loop
 		$.each($.keyboard.layouts[o.layout], function(set, keySet){
 			if (set !== "") {
+				// keep backwards compatibility for change from default to normal naming
+				if (set === 'default') { set = 'normal'; }
 				sets++;
 				newSet = $('<div />')
 					.attr('name', set) // added for typing extension
 					.addClass('ui-keyboard-keyset ui-keyboard-keyset-' + set)
-					.appendTo(container)[(set === 'default') ? 'show' : 'hide']();
+					.appendTo(container)[(set === 'normal') ? 'show' : 'hide']();
 
 				for ( row = 0; row < keySet.length; row++ ){
 
@@ -1389,7 +1391,7 @@ $.keyboard = function(el, options){
 	$.keyboard.builtLayouts = {};
 	$.keyboard.layouts = {
 		'alpha' : {
-			'default': [
+			'normal': [
 				'` 1 2 3 4 5 6 7 8 9 0 - = {bksp}',
 				'{tab} a b c d e f g h i j [ ] \\',
 				'k l m n o p q r s ; \' {enter}',
@@ -1405,7 +1407,7 @@ $.keyboard = function(el, options){
 			]
 		},
 		'qwerty' : {
-			'default': [
+			'normal': [
 				'` 1 2 3 4 5 6 7 8 9 0 - = {bksp}',
 				'{tab} q w e r t y u i o p [ ] \\',
 				'a s d f g h j k l ; \' {enter}',
@@ -1421,7 +1423,7 @@ $.keyboard = function(el, options){
 			]
 		},
 		'international' : {
-			'default': [
+			'normal': [
 				'` 1 2 3 4 5 6 7 8 9 0 - = {bksp}',
 				'{tab} q w e r t y u i o p [ ] \\',
 				'a s d f g h j k l ; \' {enter}',
@@ -1451,7 +1453,7 @@ $.keyboard = function(el, options){
 			]
 		},
 		'colemak' : {
-			'default': [
+			'normal': [
 				'` 1 2 3 4 5 6 7 8 9 0 - = {bksp}',
 				'{tab} q w f p g j l u y ; [ ] \\',
 				'{bksp} a r s t d h n e i o \' {enter}',
@@ -1467,7 +1469,7 @@ $.keyboard = function(el, options){
 			]
 		},
 		'dvorak' : {
-			'default': [
+			'normal': [
 				'` 1 2 3 4 5 6 7 8 9 0 [ ] {bksp}',
 				'{tab} \' , . p y f g c r l / = \\',
 				'a o e u i d h t n s - {enter}',
@@ -1483,7 +1485,7 @@ $.keyboard = function(el, options){
 			]
 		},
 		'num' : {
-			'default' : [
+			'normal' : [
 				'= ( ) {b}',
 				'{clear} / * -',
 				'7 8 9 +',

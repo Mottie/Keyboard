@@ -10,7 +10,7 @@
 
 /* qwerty by Mika Perreri Korhonen (https://github.com/jouk0) -  */
 $.keyboard.layouts['swedish-qwerty'] = {
-	'default' : [
+	'normal' : [
 		"\u00a7 1 2 3 4 5 6 7 8 9 0 + \u0301 {bksp}",
 		"{tab} q w e r t y u i o p \u00e5 \u0308",
 		"a s d f g h j k l \u00f6 \u00e4 ' {enter}",
@@ -35,7 +35,7 @@ $.keyboard.layouts['swedish-qwerty'] = {
 
 /* dvorak - from http://www.ludd.luth.se/~torger/se_dvorak.html */
 $.keyboard.layouts['swedish-dvorak'] = {
-	'default' : [
+	'normal' : [
 		"\u00a7 1 2 3 4 5 6 7 8 9 0 + \u0301 {bksp}",
 		"{tab} \u00f6 \u00e5 \u00e4 p y f g c r l q \u00a8",
 		"a o e u i d h t n s - < {enter}",

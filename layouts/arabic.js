@@ -10,7 +10,7 @@
 
 /* based on http://ascii-table.com/keyboard.php/462 */
 $.keyboard.layouts['arabic-azerty'] = {
-	'default' : [
+	'normal' : [
 		'\u00b2 & \u00e9 " \' ( - \u00e8 _ \u00e7 \u00e0 ) = {bksp}',
 		"{tab} a z e r t y u i o p ` $",
 		"q s d f g h j k l m \u00f9 \u066d {enter}",
@@ -42,7 +42,7 @@ $.keyboard.layouts['arabic-azerty'] = {
 
 /* based on http://ascii-table.com/keyboard.php/470 */
 $.keyboard.layouts['arabic-qwerty-1'] = {
-	'default' : [
+	'normal' : [
 		'` 1 2 3 4 5 6 7 8 9 0 - = {bksp}',
 		"{tab} q w e r t y u i o p [ ] \\",
 		"a s d f g h j k l ; ' {enter}",
@@ -74,7 +74,7 @@ $.keyboard.layouts['arabic-qwerty-1'] = {
 
 /* based on keyboard layout from http://ascii-table.com/keyboard.php/238 */
 $.keyboard.layouts['arabic-qwerty-2'] = {
-	'default' : [
+	'normal' : [
 		'< 1 2 3 4 5 6 7 8 9 0 - = {bksp}',
 		"{tab} q w e r t y u i o p [ ]",
 		"a s d f g h j k l ; ' ` {enter}",
@@ -106,7 +106,7 @@ $.keyboard.layouts['arabic-qwerty-2'] = {
 
 /* based on keyboard layout from http://ascii-table.com/keyboard.php/239 */
 $.keyboard.layouts['arabic-qwerty-3'] = {
-	'default' : [
+	'normal' : [
 		'< 1 2 3 4 5 6 7 8 9 0 - = {bksp}',
 		"{tab} q w e r t y u i o p \u00a2 |",
 		"a s d f g h j k l ; ' ` {enter}",
@@ -138,7 +138,7 @@ $.keyboard.layouts['arabic-qwerty-3'] = {
 
 /* based on keyboard layout from http://ascii-table.com/keyboard.php/253 */
 $.keyboard.layouts['arabic-qwerty-4'] = {
-	'default' : [
+	'normal' : [
 		'< 1 2 3 4 5 6 7 8 9 0 - = {bksp}',
 		"{tab} q w e r t y u i o p [ ]",
 		"a s d f g h j k l ; ' ` {enter}",

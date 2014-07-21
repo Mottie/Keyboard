@@ -16,7 +16,7 @@
  http://ascii-table.com/keyboard.php/448 & http://www.google.com/webelements/ */
 
 $.keyboard.layouts['albanian-qwertz'] = {
-	'default' : [
+	'normal' : [
 		"\\ 1 2 3 4 5 6 7 8 9 0 - = {bksp}",
 		"{tab} q w e r t z u i o p \u00e7 '",
 		"a s d f g h j k l \u00eb [ ] {enter}",
@@ -41,7 +41,7 @@ $.keyboard.layouts['albanian-qwertz'] = {
 
 /* based on http://ascii-table.com/keyboard.php/452 */
 $.keyboard.layouts['albanian-qwerty'] = {
-	'default' : [
+	'normal' : [
 		"` 1 2 3 4 5 6 7 8 9 0 - = {bksp}",
 		"{tab} q w e r t y u i o p \u00eb '",
 		"a s d f g h j k l ; \u00e7 # {enter}",

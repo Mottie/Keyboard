@@ -5,7 +5,7 @@
 .ui-keyboard-button { min-height: 2em; width: 2em; min-width: 1em; margin: .1em; cursor: pointer; overflow: hidden; line-height: 2em; -moz-user-focus: ignore; }
 .ui-keyboard-button span { padding: 0; margin: 0; white-space:nowrap; display: inline-block; }
 .ui-keyboard-button-endrow { clear: left; }
-.ui-keyboard-widekey { min-width: 4em; width: auto; }
+.ui-keyboard-widekey { min-width: 1em; width: auto; }
 .ui-keyboard-space { width: 15em; }
 .ui-keyboard-space span, .ui-keyboard-empty span { font: 0/0 a; text-shadow: none; color: transparent; } /* see http://nicolasgallagher.com/another-css-image-replacement-technique/ */
 .ui-keyboard-preview-wrapper { text-align: center; }

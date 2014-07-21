@@ -10,7 +10,7 @@
 
 /* from http://ascii-table.com/keyboard.php/129 */
 $.keyboard.layouts['german-qwertz-1'] = {
-	'default' : [
+	'normal' : [
 		"\u0302 1 2 3 4 5 6 7 8 9 0 \u00df \u0301 {bksp}",
 		"{tab} q w e r t z u i o p \u00fc +",
 		"a s d f g h j k l \u00f6 \u00e4 # {enter}",
@@ -35,7 +35,7 @@ $.keyboard.layouts['german-qwertz-1'] = {
 
 /* from http://ascii-table.com/keyboard.php/150G-1 */
 $.keyboard.layouts['german-qwertz-2'] = {
-	'default' : [
+	'normal' : [
 		"\u00a7 1 2 3 4 5 6 7 8 9 0 ' \u0302 {bksp}",
 		"{tab} q w e r t z u i o p \u00fc \u0308",
 		"a s d f g h j k l \u00f6 \u00e4 $ {enter}",

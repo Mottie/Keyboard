@@ -15,7 +15,7 @@
 
 // portuguese-pt
 $.keyboard.layouts['portuguese-qwerty'] = {
-	'default' : [
+	'normal' : [
 		"\u005C 1 2 3 4 5 6 7 8 9 0 \u0027 \u00ab {bksp}",
 		"{tab} q w e r t y u i o p \u002b \u00b4",
 		"a s d f g h j k l \u00e7 \u00ba \u007e {enter}",

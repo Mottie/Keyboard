@@ -14,7 +14,7 @@
  * Preferably use 'japanese-kana' unless roma-ji characters are needed on input.
  */
 $.keyboard.layouts['japanese-kana'] = {
-	'default' : [
+	'normal' : [
 		'0 1 2 3 4 5 6 7 8 9',
 		'\u3042 \u3044 \u3046 \u3048 \u304a \u306f \u3072 \u3075 \u3078 \u307b',
         '\u304b \u304d \u304f \u3051 \u3053 \u307e \u307f \u3080 \u3081 \u3082',
@@ -46,7 +46,7 @@ $.keyboard.layouts['japanese-kana'] = {
 };
 
 $.keyboard.layouts['japanese-qwerty'] = {
-	'default' : [
+	'normal' : [
 		"1 2 3 4 5 6 7 8 9 0 - ^ \u00a5 {bksp}",
 		"{tab} q w e r t y u i o p \u0040 [",
 		"a s d f g h j k l ; : ] {enter}",

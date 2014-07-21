@@ -11,7 +11,7 @@
 
 /* qwertz by Tóth Gergely (https://github.com/tgely) -  helped :http://www.fileformat.info/info/unicode/char/search.htm */
 $.keyboard.layouts['hungarianansi-qwertz-1'] = {
-	'default' : [
+	'normal' : [
 		"0 1 2 3 4 5 6 7 8 9 \u00f6 \u00fc \u00f3 \u0171 {bksp}",
 		"{tab} q w e r t z u i o p \u0151 \u00fa",
 		"a s d f g h j k l \u00e9 \u00e1 {enter}",
@@ -35,7 +35,7 @@ $.keyboard.layouts['hungarianansi-qwertz-1'] = {
 };
 
 $.keyboard.layouts['hungarianansi-qwertz-2'] = {
-	'default' : [
+	'normal' : [
 		"0 1 2 3 4 5 6 7 8 9 \u00f6 \u00fc \u00f3 {bksp}",
 		"{tab} q w e r t z u i o p \u0151 \u00fa",
 		"a s d f g h j k l \u00e9 \u00e1 \u0171 {enter}",

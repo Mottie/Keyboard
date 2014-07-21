@@ -11,7 +11,7 @@
  * Based on: http://ascii-table.com/keyboard.php/171 and http://ascii-table.com/keyboard.php/071-2
  */
 $.keyboard.layouts['spanish-qwerty'] = {
-	'default' : [
+	'normal' : [
 		"\u007c 1 2 3 4 5 6 7 8 9 0 \' \u00bf {bksp}",
 		"{tab} q w e r t y u i o p \u0301 +",
 		"a s d f g h j k l \u00f1 \u007b \u007d {enter}",
@@ -42,7 +42,7 @@ $.keyboard.layouts['spanish-qwerty'] = {
 };
 
 $.keyboard.layouts['spanish-qwerty-sp'] = {
-	'default' : [
+	'normal' : [
 		"\u00ba 1 2 3 4 5 6 7 8 9 0 \' \u00a1 {bksp}",
 		"{tab} q w e r t y u i o p \u0300 +",
 		"a s d f g h j k l \u00f1 \u0301 \u00e7 {enter}",
