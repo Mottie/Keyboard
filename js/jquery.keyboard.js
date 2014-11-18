@@ -369,7 +369,7 @@ $.keyboard = function(el, options){
 		base.bindKeys();
 
 		// adjust with window resize
-		if ($.ui && $.ui.position && !$.isEmptyObject(base.position)) {
+		if ($.ui && $.ui.position && !$.isEmptyObject(base.position) && o.appendTo == 'body') {
 			$(window).bind('resize.keyboard', function(){
 				if (base.isVisible()) {
 					base.$keyboard.position(base.position);
