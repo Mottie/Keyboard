@@ -416,6 +416,7 @@ $.keyboard = function(el, options){
 		base.$preview
 			.unbind('keypress keyup keydown mouseup touchend '.split(' ').join('.keyboard '))
 			.bind('keypress.keyboard', function(e){
+				if (o.lockInput) { return false; }
 				var c, k = base.last.key = String.fromCharCode(e.charCode || e.which);
 				base.$lastKey = []; // not a virtual keyboard key
 				if (base.checkCaret) {

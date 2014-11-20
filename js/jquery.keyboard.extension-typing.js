@@ -44,15 +44,16 @@
 		//Set the default values, use comma to separate the settings, example:
 		var defaults = {
 			showTyping : true,
+			lockTypeIn : false,
 			delay      : 250
 		};
 		return this.each(function(){
 			// make sure a keyboard is attached
-			var base = $(this).data('keyboard');
+			var o, base = $(this).data('keyboard');
 			if (!base) { return; }
 
 			// variables
-			base.typing_options = $.extend({}, defaults, options);
+			o = base.typing_options = $.extend({}, defaults, options);
 			base.typing_keymap = {
 				' '  : 'space',
 				'"'  : '34',
@@ -70,14 +71,15 @@
 				32 : 'space'
 			};
 			base.typing_event = false;
-			// no manual typing simulation if lockInput is true; but the typeIn() function still works
-//			if (base.options.lockInput) { base.typing_options.showTyping = false; }
+			// save lockInput setting
+			o.savedLockInput = base.options.lockInput;
 
 			base.typing_setup = function(){
 				var el = (base.$preview) ? base.$preview : base.$el;
 
 				el
 				.bind('keyup.keyboard', function(e){
+					if (o.init && o.lockTypeIn) { return false; }
 					if (e.which >= 37 && e.which <=40) { return; } // ignore arrow keys
 					if (e.which === 16) { base.shiftActive = false; }
 					if (e.which === 18) { base.altActive = false; }
@@ -89,10 +91,11 @@
 				})
 				// change keyset when either shift or alt is held down
 				.bind('keydown.keyboard', function(e){
+					if (o.init && o.lockTypeIn) { return false; }
 					e.temp = false; // prevent repetitive calls while keydown repeats.
-					if (e.which === 16) { e.temp = (base.shiftActive) ? false : true; base.shiftActive = true; }
+					if (e.which === 16) { e.temp = !base.shiftActive; base.shiftActive = true; }
 					// it should be ok to reset e.temp, since both alt and shift will call this function separately
-					if (e.which === 18) { e.temp = (base.altActive) ? false : true; base.altActive = true; }
+					if (e.which === 18) { e.temp = !base.altActive; base.altActive = true; }
 					if (e.temp) {
 						base.showKeySet();
 						base.$preview.focus(); // Alt shift focus to the menu
@@ -100,18 +103,15 @@
 					base.typing_event = true;
 					// Simulate key press for tab and backspace since they don't fire the keypress event
 					if (e.which === 8 || e.which === 9) {
-						base.typeIn( '', base.typing_options.delay || 250, function(){
-							base.typing_event = false;
-						}, e); // pass event object
+						base.typing_findKey( '', e ); // pass event object
 					}
 
 				})
 				.bind('keypress.keyboard', function(e){
+					if (o.init && o.lockTypeIn) { return false; }
 					// Simulate key press on virtual keyboard
 					if (base.typing_event && !base.options.lockInput) {
-						base.typeIn( '', base.typing_options.delay || 250, function(){
-							base.typing_event = false;
-						}, e); // pass event object
+						base.typing_findKey( '', e ); // pass event object
 					}
 				});
 			};
@@ -120,23 +120,40 @@
 			base.typeIn = function(txt, delay, callback, e){
 				if (!base.isVisible()) {
 					// keyboard was closed
-					base.typing_options.init = false;
+					base.typing_event = o.init = false;
+					base.options.lockInput = o.savedLockInput;
 					clearTimeout(base.typing_timer);
 					return;
 				}
-				var o = base.typing_options, tar, m, n, k, key, ks, meta, set,
-					mappedKeys = $.keyboard.builtLayouts[base.layout].mappedKeys;
-				if (base.typing_options.init !== true) {
-					o.init = true;
-					o.text = txt;
-					o.len = txt.length;
-					o.delay = delay || 300;
-					o.current = 0; // position in text string
-					o.callback = callback;
+
+				if (!base.typing_event){
+
+					if (o.init !== true) {
+						o.init = true;
+						base.options.lockInput = o.lockTypeIn;
+						txt = o.text = txt || '';
+						o.len = txt.length;
+						o.delay = delay || 300;
+						o.current = 0; // position in text string
+						if (callback) {
+							o.callback = callback;
+						}
+					}
+					// function that loops through and types each character
+					txt = o.text.substring( o.current, ++o.current );
+					base.typing_findKey( txt, e );
+				} else if (typeof txt === 'undefined') {
+					// typeIn called by user input
+					base.typing_event = false;
+					base.options.lockInput = o.savedLockInput;
+					return;
 				}
 
-				// function that loops through and types each character
-				txt = o.text.substring( o.current, ++o.current );
+			};
+
+			base.typing_findKey = function(txt, e){
+				var tar, m, n, k, key, ks, meta, set,
+					mappedKeys = $.keyboard.builtLayouts[base.layout].mappedKeys;
 				ks = base.$keyboard.find('.ui-keyboard-keyset');
 				k = (base.typing_keymap.hasOwnProperty(txt)) ? base.typing_keymap[txt] : txt;
 
@@ -199,15 +216,26 @@
 				if (o.current < o.len){
 					if (!base.isVisible()) { return; } // keyboard was closed, abort!!
 					setTimeout(function(){ base.typeIn(); }, o.delay);
-				} else {
-					o.init = false;
+				} else if (o.len !== 0){
+					// o.len is zero when the user typed on the actual keyboard during simulation
+					base.typing_event = o.init = false;
+					base.options.lockInput = o.savedLockInput;
 					if ($.isFunction(o.callback)) {
 						// ensure all typing animation is done before the callback
 						setTimeout(function(){
-							o.callback(base);
+							// if the user typed during the key simulation, the "o" variable may sometimes be undefined
+							if ($.isFunction(o.callback)) {
+								o.callback(base);
+							}
 						}, o.delay);
 					}
 					return;
+				} else {
+					o.len = o.current = 0;
+					o.text = '';
+					base.typing_event = o.init = false;
+					base.options.lockInput = o.savedLockInput;
+					// clearTimeout(base.typing_timer);
 				}
 			};
 
@@ -216,16 +244,17 @@
 				var e = el.length;
 				if (e) { el.filter(':visible').trigger('mouseenter.keyboard'); }
 				base.typing_timer = setTimeout(function(){
-					if (e) { setTimeout(function(){ el.trigger('mouseleave.keyboard'); }, base.typing_options.delay/3); }
+					var e = el.length;
+					if (e) { setTimeout(function(){ el.trigger('mouseleave.keyboard'); }, o.delay/3); }
 					if (!base.isVisible()) { return; }
 					if (!base.typing_event) {
 						base.insertText(txt);
 						base.checkCombos();
 					}
-				}, base.typing_options.delay/3);
+				}, o.delay/3);
 			};
 
-			if (base.typing_options.showTyping) {
+			if (o.showTyping) {
 				// visible event is fired before this extension is initialized, so check!
 				if (base.options.alwaysOpen && base.isVisible()) {
 					base.typing_setup();
