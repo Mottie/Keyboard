@@ -625,7 +625,26 @@ $.keyboard = function(el, options){
 						.find('span').html( $this.data('original') ); // restore original button text
 				}
 			})
-			// Allow mousewheel to scroll through other key sets of the same key
+			// using "kb" namespace for mouse repeat functionality to keep it separate
+			// I need to trigger a "repeater.keyboard" to make it work
+			.bind('mouseup.keyboard mouseleave.kb touchend.kb touchmove.kb touchcancel.kb', function(e){
+				if (/(mouseleave|touchend|touchcancel)/.test(e.type)) {
+					$(this).removeClass(o.css.buttonHover); // needed for touch devices
+				} else {
+					if (base.isVisible() && base.isCurrent()) { base.$preview.focus(); }
+					if (base.checkCaret) { base.$preview.caret( base.last ); }
+				}
+				base.mouseRepeat = [false,''];
+				clearTimeout(base.repeater); // make sure key repeat stops!
+				return false;
+			})
+			// prevent form submits when keyboard is bound locally - issue #64
+			.bind('click.keyboard', function(){
+				return false;
+			})
+			// no mouse repeat for action keys (shift, ctrl, alt, meta, etc)
+			.not('.ui-keyboard-actionkey')
+			// Allow mousewheel to scroll through other keysets of the same (non-action) key
 			.bind('mousewheel.keyboard', function(e, delta){
 				if (base.wheel) {
 					// deltaY used by newer versions of mousewheel plugin
@@ -648,25 +667,6 @@ $.keyboard = function(el, options){
 					return false;
 				}
 			})
-			// using "kb" namespace for mouse repeat functionality to keep it separate
-			// I need to trigger a "repeater.keyboard" to make it work
-			.bind('mouseup.keyboard mouseleave.kb touchend.kb touchmove.kb touchcancel.kb', function(e){
-				if (/(mouseleave|touchend|touchcancel)/.test(e.type)) {
-					$(this).removeClass(o.css.buttonHover); // needed for touch devices
-				} else {
-					if (base.isVisible() && base.isCurrent()) { base.$preview.focus(); }
-					if (base.checkCaret) { base.$preview.caret( base.last ); }
-				}
-				base.mouseRepeat = [false,''];
-				clearTimeout(base.repeater); // make sure key repeat stops!
-				return false;
-			})
-			// prevent form submits when keyboard is bound locally - issue #64
-			.bind('click.keyboard', function(){
-				return false;
-			})
-			// no mouse repeat for action keys (shift, ctrl, alt, meta, etc)
-			.not('.ui-keyboard-actionkey')
 			// mouse repeated action key exceptions
 			.add('.ui-keyboard-tab, .ui-keyboard-bksp, .ui-keyboard-space, .ui-keyboard-enter', base.$keyboard)
 			.bind('mousedown.kb touchstart.kb', function(){
