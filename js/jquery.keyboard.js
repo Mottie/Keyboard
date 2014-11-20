@@ -958,7 +958,7 @@ $.keyboard = function(el, options){
 				base.$keyboard.hide();
 			}
 			var kb, stopped = false,
-				all = $('button, input, textarea, a').filter(':visible'),
+				all = $('button, input, textarea, a').filter(':visible').not(':disabled'),
 				indx = all.index(base.$el) + (goToNext ? 1 : -1);
 			if (base.$keyboard.length) {
 				base.$keyboard.show();
