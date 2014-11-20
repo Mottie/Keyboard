@@ -7,11 +7,13 @@
  *
  * license for this file: WTFPL, unless the source layout site has a problem with me using them as a reference
  *
- * Spanish layouts by Paco Alcantara (https://github.com/pacoalcantara)  
+ * Spanish layouts by Paco Alcantara (https://github.com/pacoalcantara)
  * Based on: http://ascii-table.com/keyboard.php/171 and http://ascii-table.com/keyboard.php/071-2
  */
-$.keyboard.layouts['spanish-qwerty'] = {
-	'normal' : [
+jQuery.keyboard.layouts['spanish-qwerty'] = {
+	'name' : 'spanish-qwerty',
+	'lang' : ['es'],
+	'default' : [
 		"\u007c 1 2 3 4 5 6 7 8 9 0 \' \u00bf {bksp}",
 		"{tab} q w e r t y u i o p \u0301 +",
 		"a s d f g h j k l \u00f1 \u007b \u007d {enter}",
@@ -41,8 +43,10 @@ $.keyboard.layouts['spanish-qwerty'] = {
 	]
 };
 
-$.keyboard.layouts['spanish-qwerty-sp'] = {
-	'normal' : [
+jQuery.keyboard.layouts['spanish-qwerty-sp'] = {
+	'name' : 'spanish-qwerty-sp',
+	'lang' : ['es'],
+	'default' : [
 		"\u00ba 1 2 3 4 5 6 7 8 9 0 \' \u00a1 {bksp}",
 		"{tab} q w e r t y u i o p \u0300 +",
 		"a s d f g h j k l \u00f1 \u0301 \u00e7 {enter}",
@@ -74,9 +78,9 @@ $.keyboard.layouts['spanish-qwerty-sp'] = {
 
 // Keyboard Language
 // please update this section to match this language and email me with corrections!
+// es = ISO 639-1 code for Spanish
 // ***********************
-if (typeof(language) === 'undefined') { var language = {}; };
-language.spanish = {
+jQuery.keyboard.language.es = {
 	display : {
 		'a'      : '\u2714:Accept (Shift-Enter)', // check mark - same action as accept
 		'accept' : 'Accept:Accept (Shift-Enter)',
@@ -98,9 +102,5 @@ language.spanish = {
 		't'      : '\u21e5:Tab',          // right arrow to bar (used since this virtual keyboard works with one directional tabs)
 		'tab'    : '\u21e5 Tab:Tab'       // \u21b9 is the true tab symbol (left & right arrows)
 	},
-	wheelMessage : 'Utilice la rueda del mouse para ver otras teclas', 
+	wheelMessage : 'Utilice la rueda del mouse para ver otras teclas',
 };
-
-// This will replace all default language options with these language options.
-// it is separated out here so the layout demo will work properly.
-$.extend(true, $.keyboard.defaultOptions, language.spanish);

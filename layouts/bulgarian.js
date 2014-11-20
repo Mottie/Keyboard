@@ -9,8 +9,10 @@
  */
 
 /* from http://ascii-table.com/keyboard.php/442 */
-$.keyboard.layouts['bulgarian-qwerty'] = {
-	'normal' : [
+jQuery.keyboard.layouts['bulgarian-qwerty'] = {
+	'name' : 'bulgarian-qwerty',
+	'lang' : ['bg'],
+	'default' : [
 		"` 1 2 3 4 5 6 7 8 9 0 - = {bksp}",
 		"{tab} q w e r t y u i o p [ ] \\",
 		"a s d f g h j k l ; ' {enter}",
@@ -42,9 +44,9 @@ $.keyboard.layouts['bulgarian-qwerty'] = {
 
 // Keyboard Language
 // please update this section to match this language and email me with corrections!
+// bg = ISO 639-1 code for Bulgarian
 // ***********************
-if (typeof(language) === 'undefined') { var language = {}; };
-language.bulgarian = {
+jQuery.keyboard.language.bg = {
 	display : {
 		'a'      : '\u2714:Accept (Shift-Enter)', // check mark - same action as accept
 		'accept' : 'Accept:Accept (Shift-Enter)',
@@ -69,7 +71,3 @@ language.bulgarian = {
 	// Message added to the key title while hovering, if the mousewheel plugin exists
 	wheelMessage : 'Use mousewheel to see other keys',
 };
-
-// This will replace all default language options with these language options.
-// it is separated out here so the layout demo will work properly.
-$.extend(true, $.keyboard.defaultOptions, language.bulgarian);

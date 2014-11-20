@@ -9,7 +9,9 @@
 */
 
 $.keyboard.layouts['hindi'] = {
-	'normal' : [
+	'name' : 'hindi',
+	'lang' : ['hi'],
+	'default' : [
 		'` \u090D \u0945 \u094D\u0930 \u0930\u094D \u091C\u094D\u091E \u0924\u094D\u0930 \u0915\u094D\u0937 \u0936\u094D\u0930 \u096F \u0966 - \u0943 {bksp}',
 		'{tab} \u094C \u0948 \u093E \u0940 \u0942 \u092C \u0939 \u0917 \u0926 \u091C \u0921 \u093C \u0949 \\',
 		'\u094B \u0947 \u094D \u093F \u0941 \u092A \u0930 \u0915 \u0924 \u091A \u091F {enter}',
@@ -41,9 +43,9 @@ $.keyboard.layouts['hindi'] = {
 
 // Keyboard Language
 // please update this section to match this language and email me with corrections!
+// hi = ISO 639-1 code for Hindi
 // ***********************
-if (typeof(language) === 'undefined') { var language = {}; };
-language.hindi = {
+jQuery.keyboard.language.hi = {
 	display : {
 		'a'      : '\u2714:Accept (Shift-Enter)', // check mark - same action as accept
 		'accept' : 'Accept:Accept (Shift-Enter)',
@@ -68,7 +70,3 @@ language.hindi = {
 	// Message added to the key title while hovering, if the mousewheel plugin exists
 	wheelMessage : 'Use mousewheel to see other keys',
 };
-
-// This will replace all default language options with these language options.
-// it is separated out here so the layout demo will work properly.
-$.extend(true, $.keyboard.defaultOptions, language.hindi);

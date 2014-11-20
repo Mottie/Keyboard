@@ -58,10 +58,6 @@ $.keyboard = function(el, options){
 		// html 5 placeholder/watermark
 		base.watermark = (typeof(document.createElement('input').placeholder) !== 'undefined' &&
 			base.inPlaceholder !== '');
-		// save default regex (in case loading another layout changes it)
-		base.regex = $.keyboard.comboRegex;
-		// determine if US "." or European "," system being used
-		base.decimal = ( /^\./.test(o.display.dec) ) ? true : false;
 		// convert mouse repeater rate (characters per second) into a time in milliseconds.
 		base.repeatTime = 1000/(o.repeatRate || 20);
 		// delay in ms to prevent mousedown & touchstart from both firing events at the same time
@@ -187,11 +183,20 @@ $.keyboard = function(el, options){
 		}
 	};
 
-	base.reveal = function(){
+	base.reveal = function(refresh){
 		var p, s;
 		base.opening = true;
 		// remove all "extra" keyboards
 		$('.ui-keyboard').not('.ui-keyboard-always-open').remove();
+
+		// update keyboard after a layout change
+		if (refresh) {
+			base.isOpen = false;
+			if (base.$keyboard.length) {
+				base.$keyboard.remove();
+				base.$keyboard = [];
+			}
+		}
 
 		// Don't open if disabled
 		if (base.$el.is(':disabled') || (base.$el.attr('readonly') &&
@@ -316,6 +321,30 @@ $.keyboard = function(el, options){
 			if (o.layout === "custom") { o.layoutHash = 'custom' + base.customHash(); }
 			base.layout = o.layout === "custom" ? o.layoutHash : o.layout;
 
+			// change language if layout is named something like "french-azerty-1"
+			var layouts =  $.keyboard.layouts,
+				lang = o.language || layouts[ o.layout ] && layouts[ o.layout ].lang && layouts[ o.layout ].lang || [ o.language || 'en' ] ,
+				kblang = $.keyboard.language;
+
+			// some languages include a dash, e.g. 'en-gb' or 'fr-ca'
+			lang = lang[0].split('-')[0];
+
+			// set keyboard language
+			o.display = $.extend( true, {}, kblang.en.display, kblang[ lang ].display, options.display );
+			o.combos = $.extend( true, {}, kblang.en.combos, kblang[ lang ].combos, options.combos );
+			o.wheelMessage = kblang[ lang ] && kblang[ lang ].wheelMessage || kblang.en.wheelMessage;
+			// rtl can be in the layout or in the language definition; defaults to false
+			o.rtl = layouts[ o.layout ] && layouts[ o.layout ].rtl || kblang[ lang ] && kblang[ lang ].rtl  || false;
+
+			// save default regex (in case loading another layout changes it)
+			base.regex = kblang[ lang ].comboRegex || $.keyboard.comboRegex;
+			// determine if US "." or European "," system being used
+			base.decimal = ( /^\./.test(o.display.dec) ) ? true : false;
+			base.$el
+				.toggleClass('rtl', o.rtl)
+				.css('direction', o.rtl ? 'rtl' : '');
+
+
 			if (typeof $.keyboard.builtLayouts[base.layout] === 'undefined') {
 				if ($.isFunction(o.create)) {
 					o.create(base);
@@ -392,7 +421,7 @@ $.keyboard = function(el, options){
 				base.capsLock = (((k >= 65 && k <= 90) && !e.shiftKey) ||
 					((k >= 97 && k <= 122) && e.shiftKey)) ? true : false;
 
-				// restrict input - keyCode in keypress special keys: 
+				// restrict input - keyCode in keypress special keys:
 				// see http://www.asquare.net/javascript/tests/KeyCode.html
 				if (o.restrictInput) {
 					// allow navigation keys to work - Chrome doesn't fire a keypress event (8 = bksp)
@@ -690,7 +719,7 @@ $.keyboard = function(el, options){
 	base.checkMaxLength = function(){
 		var t, p = base.$preview.val();
 		if (o.maxLength !== false && p.length > o.maxLength) {
-			t = Math.min(base.$preview.caret().start, o.maxLength); 
+			t = Math.min(base.$preview.caret().start, o.maxLength);
 			base.$preview.val( p.substring(0, o.maxLength) );
 			// restore caret on change, otherwise it ends up at the end.
 			base.$preview.caret( t, t );
@@ -968,7 +997,7 @@ $.keyboard = function(el, options){
 		if ( e && e.type === 'keyup' ) {
 			return ( e.which === 27 )  ? base.close() : '';
 		}
-		// keep keyboard open if alwaysOpen or stayOpen is true - fixes mutliple always open keyboards or 
+		// keep keyboard open if alwaysOpen or stayOpen is true - fixes mutliple always open keyboards or
 		// single stay open keyboard
 		if ( !base.isOpen ) { return; }
 		// ignore autoaccept if using escape - good idea?
@@ -1022,7 +1051,7 @@ $.keyboard = function(el, options){
 		// Action keys will have the 'ui-keyboard-actionkey' class
 		// '\u2190'.length = 1 because the unicode is converted, so if more than one character,
 		// add the wide class
-		keyType = (n.length > 1) ? ' ui-keyboard-widekey' : '';
+		keyType = (n.length > 2) ? ' ui-keyboard-widekey' : '';
 		keyType += (regKey) ? '' : ' ui-keyboard-actionkey';
 		return base.keyBtn
 			.clone()
@@ -1134,7 +1163,7 @@ $.keyboard = function(el, options){
 								);
 								$('<span>&nbsp;</span>')
 									// previously {sp:1} would add 1em margin to each side of a 0 width span
-									// now Firefox doesn't seem to render 0px dimensions, so now we set the 
+									// now Firefox doesn't seem to render 0px dimensions, so now we set the
 									// 1em margin x 2 for the width
 									.width( (action.match('px') ? margin + 'px' : (margin * 2) + 'em') )
 									.addClass('ui-keyboard-button ui-keyboard-spacer')
@@ -1249,7 +1278,7 @@ $.keyboard = function(el, options){
 				}
 			}
 		});
-	
+
 		if (sets > 1) { base.sets = true; }
 		layout.hasMappedKeys = !( $.isEmptyObject(layout.mappedKeys) ); // $.isEmptyObject() requires jQuery 1.4+
 		layout.$keyboard = container;
@@ -1462,7 +1491,7 @@ $.keyboard = function(el, options){
 			],
 			'shift' : [
 				'~ ! @ # $ % ^ & * ( ) _ + {bksp}',
-				'{tab} Q W F P G J L U Y : { } |', 
+				'{tab} Q W F P G J L U Y : { } |',
 				'{bksp} A R S T D H N E I O " {enter}',
 				'{shift} Z X C V B K M < > ? {shift}',
 				'{accept} {space} {cancel}'
@@ -1478,7 +1507,7 @@ $.keyboard = function(el, options){
 			],
 			'shift' : [
 				'~ ! @ # $ % ^ & * ( ) { } {bksp}',
-				'{tab} " < > P Y F G C R L ? + |', 
+				'{tab} " < > P Y F G C R L ? + |',
 				'A O E U I D H T N S _ {enter}',
 				'{shift} : Q J K X B M W V Z {shift}',
 				'{accept} {space} {cancel}'
@@ -1496,7 +1525,80 @@ $.keyboard = function(el, options){
 		}
 	};
 
+	$.keyboard.language = $.extend({}, $.keyboard.language, {
+		en : {
+			display : {
+				// check mark - same action as accept
+				'a'      : '\u2714:Accept (Shift-Enter)',
+				'accept' : 'Accept:Accept (Shift-Enter)',
+				// other alternatives \u2311
+				'alt'    : 'Alt:\u2325 AltGr',
+				// Left arrow (same as &larr;)
+				'b'      : '\u232b:Backspace',
+				'bksp'   : 'Bksp:Backspace',
+				// big X, close - same action as cancel
+				'c'      : '\u2716:Cancel (Esc)',
+				'cancel' : 'Cancel:Cancel (Esc)',
+				// clear num pad
+				'clear'  : 'C:Clear',
+				'combo'  : '\u00f6:Toggle Combo Keys',
+				// decimal point for num pad (optional), change '.' to ',' for European format
+				'dec'    : '.:Decimal',
+				// down, then left arrow - enter symbol
+				'e'      : '\u23ce:Enter',
+				'empty'  : '\u00a0',
+				'enter'  : 'Enter:Enter \u23ce',
+				// left arrow (move caret)
+				'left'   : '\u2190',
+				// caps lock
+				'lock'   : 'Lock:\u21ea Caps Lock',
+				'next'   : 'Next \u21e8',
+				'prev'   : '\u21e6 Prev',
+				// right arrow (move caret)
+				'right'  : '\u2192',
+				// thick hollow up arrow
+				's'      : '\u21e7:Shift',
+				'shift'  : 'Shift:Shift',
+				// +/- sign for num pad
+				'sign'   : '\u00b1:Change Sign',
+				'space'  : '&nbsp;:Space',
+				// right arrow to bar (used since this virtual keyboard works with one directional tabs)
+				't'      : '\u21e5:Tab',
+				// \u21b9 is the true tab symbol (left & right arrows)
+				'tab'    : '\u21e5 Tab:Tab'
+			},
+
+			// Message added to the key title while hovering, if the mousewheel plugin exists
+			wheelMessage : 'Use mousewheel to see other keys',
+
+			comboRegex : /([`\'~\^\"ao])([a-z])/mig,
+			combos    : {
+				// grave
+				'`' : { a:"\u00e0", A:"\u00c0", e:"\u00e8", E:"\u00c8", i:"\u00ec", I:"\u00cc", o:"\u00f2", O:"\u00d2",
+						u:"\u00f9", U:"\u00d9", y:"\u1ef3", Y:"\u1ef2" },
+				// acute & cedilla
+				"'" : { a:"\u00e1", A:"\u00c1", e:"\u00e9", E:"\u00c9", i:"\u00ed", I:"\u00cd", o:"\u00f3", O:"\u00d3",
+						u:"\u00fa", U:"\u00da", y:"\u00fd", Y:"\u00dd" },
+				// umlaut/trema
+				'"' : { a:"\u00e4", A:"\u00c4", e:"\u00eb", E:"\u00cb", i:"\u00ef", I:"\u00cf", o:"\u00f6", O:"\u00d6",
+						u:"\u00fc", U:"\u00dc", y:"\u00ff", Y:"\u0178" },
+				// circumflex
+				'^' : { a:"\u00e2", A:"\u00c2", e:"\u00ea", E:"\u00ca", i:"\u00ee", I:"\u00ce", o:"\u00f4", O:"\u00d4",
+						u:"\u00fb", U:"\u00db", y:"\u0177", Y:"\u0176" },
+				// tilde
+				'~' : { a:"\u00e3", A:"\u00c3", e:"\u1ebd", E:"\u1ebc", i:"\u0129", I:"\u0128", o:"\u00f5", O:"\u00d5",
+						u:"\u0169", U:"\u0168", y:"\u1ef9", Y:"\u1ef8", n:"\u00f1", N:"\u00d1" }
+			}
+		}
+	});
+
 	$.keyboard.defaultOptions = {
+
+		// set this to ISO 639-1 language code to override language set by the layout
+		// http://en.wikipedia.org/wiki/List_of_ISO_639-1_codes
+		// language defaults to "en" if not found
+		language     : null,
+		rtl          : false,
 
 		// *** choose layout & positioning ***
 		layout       : 'qwerty',
@@ -1523,51 +1625,6 @@ $.keyboard = function(el, options){
 		// if true, keyboard will remain open even if the input loses focus, but closes on escape
 		// or when another keyboard opens.
 		stayOpen     : false,
-
-		// *** change keyboard language & look ***
-		display : {
-			// check mark - same action as accept
-			'a'      : '\u2714:Accept (Shift-Enter)',
-			'accept' : 'Accept:Accept (Shift-Enter)',
-			// other alternatives \u2311
-			'alt'    : 'Alt:\u2325 AltGr',
-			// Left arrow (same as &larr;)
-			'b'      : '\u232b:Backspace',
-			'bksp'   : 'Bksp:Backspace',
-			// big X, close - same action as cancel
-			'c'      : '\u2716:Cancel (Esc)',
-			'cancel' : 'Cancel:Cancel (Esc)',
-			// clear num pad
-			'clear'  : 'C:Clear',
-			'combo'  : '\u00f6:Toggle Combo Keys',
-			// decimal point for num pad (optional), change '.' to ',' for European format
-			'dec'    : '.:Decimal',
-			// down, then left arrow - enter symbol
-			'e'      : '\u23ce:Enter',
-			'empty'  : '\u00a0',
-			'enter'  : 'Enter:Enter \u23ce',
-			// left arrow (move caret)
-			'left'   : '\u2190',
-			// caps lock
-			'lock'   : 'Lock:\u21ea Caps Lock',
-			'next'   : 'Next \u21e8',
-			'prev'   : '\u21e6 Prev',
-			// right arrow (move caret)
-			'right'  : '\u2192',
-			// thick hollow up arrow
-			's'      : '\u21e7:Shift',
-			'shift'  : 'Shift:Shift',
-			// +/- sign for num pad
-			'sign'   : '\u00b1:Change Sign',
-			'space'  : '&nbsp;:Space',
-			// right arrow to bar (used since this virtual keyboard works with one directional tabs)
-			't'      : '\u21e5:Tab',
-			// \u21b9 is the true tab symbol (left & right arrows)
-			'tab'    : '\u21e5 Tab:Tab'
-		},
-
-		// Message added to the key title while hovering, if the mousewheel plugin exists
-		wheelMessage : 'Use mousewheel to see other keys',
 
 		css : {
 			// input & preview
@@ -1660,23 +1717,6 @@ $.keyboard = function(el, options){
 		// combos (emulate dead keys : http://en.wikipedia.org/wiki/Keyboard_layout#US-International)
 		// if user inputs `a the script converts it to à, ^o becomes ô, etc.
 		useCombos : true,
-		combos    : {
-			// grave
-			'`' : { a:"\u00e0", A:"\u00c0", e:"\u00e8", E:"\u00c8", i:"\u00ec", I:"\u00cc", o:"\u00f2", O:"\u00d2",
-					u:"\u00f9", U:"\u00d9", y:"\u1ef3", Y:"\u1ef2" },
-			// acute & cedilla
-			"'" : { a:"\u00e1", A:"\u00c1", e:"\u00e9", E:"\u00c9", i:"\u00ed", I:"\u00cd", o:"\u00f3", O:"\u00d3",
-					u:"\u00fa", U:"\u00da", y:"\u00fd", Y:"\u00dd" },
-			// umlaut/trema
-			'"' : { a:"\u00e4", A:"\u00c4", e:"\u00eb", E:"\u00cb", i:"\u00ef", I:"\u00cf", o:"\u00f6", O:"\u00d6",
-					u:"\u00fc", U:"\u00dc", y:"\u00ff", Y:"\u0178" },
-			// circumflex
-			'^' : { a:"\u00e2", A:"\u00c2", e:"\u00ea", E:"\u00ca", i:"\u00ee", I:"\u00ce", o:"\u00f4", O:"\u00d4",
-					u:"\u00fb", U:"\u00db", y:"\u0177", Y:"\u0176" },
-			// tilde
-			'~' : { a:"\u00e3", A:"\u00c3", e:"\u1ebd", E:"\u1ebc", i:"\u0129", I:"\u0128", o:"\u00f5", O:"\u00d5",
-					u:"\u0169", U:"\u0168", y:"\u1ef9", Y:"\u1ef8", n:"\u00f1", N:"\u00d1" }
-		},
 
 /*
 		// *** Methods ***

@@ -9,8 +9,10 @@
  */
 
 /* based on http://ascii-table.com/keyboard.php/189 & thanks to Nathana�l SEMHOUN: http://nathanael.semhoun.net */
-$.keyboard.layouts['french-azerty-1'] = {
-	'normal' : [
+jQuery.keyboard.layouts['french-azerty-1'] = {
+	'name' : 'french-azerty-1',
+	'lang' : ['fr'],
+	'default' : [
 		"\u00b2 & \u00e9 \" ' ( - \u00e8 _ \u00e7 \u00e0 ) = {bksp}",
 		"{tab} a z e r t y u i o p ^ $",
 		"q s d f g h j k l m  \u00f9 * {enter}",
@@ -40,8 +42,10 @@ $.keyboard.layouts['french-azerty-1'] = {
 	],
 };
 
-$.keyboard.layouts['french-azerty-2'] = {
-	'normal' : [
+jQuery.keyboard.layouts['french-azerty-2'] = {
+	'name' : 'french-azerty-2',
+	'lang' : ['fr'],
+	'default' : [
 		"\u00b2 & \u00e9 \" ' ( - \u00e8 _ \u00e7 \u00e0 ) = {b}",
 		"{t} a z e r t y u i o p ^ $",
 		"q s d f g h j k l m  \u00f9 * {e}",
@@ -53,7 +57,7 @@ $.keyboard.layouts['french-azerty-2'] = {
 		"{t} A Z E R T Y U I O P \u00a8 \u00a3",
 		"Q S D F G H J K L M % \u00b5 {e}",
 		"{s} > W X C V B N ? . / \u00a7 {s}",
-		"{accept} {alt} {space} {alt} {c}"
+		"{a} {alt} {space} {alt} {c}"
 	],
 	'alt' : [
 		"\u00b2 & ~ # { [ | ` \\ ^ @ ] } {b}",
@@ -71,8 +75,10 @@ $.keyboard.layouts['french-azerty-2'] = {
 	],
 };
 
-$.keyboard.layouts['french-bepo-V1.0rc2'] = {
-	'normal' : [
+jQuery.keyboard.layouts['french-bepo-V1.0rc2'] = {
+	'name' : 'french-bepo-V1.0rc2',
+	'lang' : ['fr'],
+	'default' : [
 		"$ \" \u00AB \u00BB ( ) @ + - / * = % {b}",
 		"{t} b \u00e9 p o \u00e8 \u02c6 v d l j z w",
 		"a u i e , c t s r n m \u00E7 {enter}",
@@ -104,9 +110,9 @@ $.keyboard.layouts['french-bepo-V1.0rc2'] = {
 
 // Keyboard Language
 // please update this section to match this language and email me with corrections!
+// fr = ISO 639-1 code for French
 // ***********************
-if (typeof(language) === 'undefined') { var language = {}; };
-language.french = {
+jQuery.keyboard.language.fr = {
 	display : {
 		'a'      : '\u2714:Valider (Shift-Enter)', // check mark - same action as accept
 		'accept' : 'Valider:Valider (Shift-Enter)',
@@ -131,7 +137,3 @@ language.french = {
 	// Message added to the key title while hovering, if the mousewheel plugin exists
 	wheelMessage : 'Utiliser la molette de la souris pour voir les autres lettres',
 };
-
-// This will replace all default language options with these language options.
-// it is separated out here so the layout demo will work properly.
-$.extend(true, $.keyboard.defaultOptions, language.french);

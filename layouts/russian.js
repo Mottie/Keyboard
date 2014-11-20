@@ -10,10 +10,9 @@
 
 /* Thanks to Yury Kotlyarov (https://github.com/yura) */
 $.keyboard.layouts['russian-qwerty'] = {
-	name: 'Russian-qwerty',
-	lang: ['ru'],
-
-	'normal' : [
+	'name' : 'Russian-qwerty',
+	'lang' : ['ru'],
+	'default' : [
 		"` 1 2 3 4 5 6 7 8 9 0 - = {bksp}",
 		"{tab} q w e r t y u i o p [ ] \\",
 		"a s d f g h j k l ; ' {enter}",
@@ -44,10 +43,9 @@ $.keyboard.layouts['russian-qwerty'] = {
 };
 
 $.keyboard.layouts["russian-mac"] = {
-	name: 'Russian-mac',
-	lang: ['ru'],
-
-	"normal": [
+	'name' : 'Russian-mac',
+	'lang' : ['ru'],
+	"default": [
 		"] 1 2 3 4 5 6 7 8 9 0 - = {bksp}",
 		"{tab} \u0439 \u0446 \u0443 \u043a \u0435 \u043d \u0433 \u0448 \u0449 \u0437 \u0445 \u044a \u0451",
 		"\u0444 \u044b \u0432 \u0430 \u043f \u0440 \u043e \u043b \u0434 \u0436 \u044d {enter}",
@@ -69,7 +67,7 @@ $.keyboard.layouts["russian-mac"] = {
 		"{accept} {alt} {space} {alt} {cancel}"
 	],
 	"alt-shift": [
-		"[ | \" \u00a3 \u20ac \u221e \u00ac \u00b6 \u221a ' ` \u2014 \u00ab{bksp}",
+		"[ | \" \u00a3 \u20ac \u221e \u00ac \u00b6 \u221a ' ` \u2014 \u00ab {bksp}",
 		"{tab} \u0408 \u040f \u040c \u00ae \u2020 \u040a \u0403 \u0405 \u040e \u2019 \u201d \u042a \u0401 ",
 		"\u0192 \u042b \u040b \u00f7 \u00a9 { \u2022 \u0409 \u2206 \u2026 \u042d {enter}",
 		"{shift} \u0402 \u2248 \u2260 \u00b5 \u0418 \u2122 ~ < > \u201e {shift}",
@@ -79,9 +77,9 @@ $.keyboard.layouts["russian-mac"] = {
 
 // Keyboard Language
 // please update this section to match this language and email me with corrections!
+// ru = ISO 639-1 code for Russian
 // ***********************
-if (typeof(language) === 'undefined') { var language = {}; };
-language.russian = {
+jQuery.keyboard.language.ru = {
 	display : {
 		'a'      : '\u2714:Accept (Shift-Enter)', // check mark - same action as accept
 		'accept' : 'Accept:Accept (Shift-Enter)',
@@ -106,7 +104,3 @@ language.russian = {
 	// Message added to the key title while hovering, if the mousewheel plugin exists
 	wheelMessage : 'Use mousewheel to see other keys',
 };
-
-// This will replace all default language options with these language options.
-// it is separated out here so the layout demo will work properly.
-$.extend(true, $.keyboard.defaultOptions, language.russian);

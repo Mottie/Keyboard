@@ -9,68 +9,72 @@
  * license for this file: WTFPL, unless the source layout site has a problem with me using them as a reference
  */
 
-/* qwertz by Tóth Gergely (https://github.com/tgely) -  */
-$.keyboard.layouts['hungarian-qwertz-1'] = {
-	'normal' : [
-		"0 1 2 3 4 5 6 7 8 9 ö ü ó ű {bksp}",
-		"{tab} q w e r t z u i o p ő ú",
-		"a s d f g h j k l é á {enter}",
-		"{shift} í y x c v b n m , . - {shift}",
+/* qwertz by Tóth Gergely (https://github.com/tgely) - */
+jQuery.keyboard.layouts['hungarian-qwertz-1'] = {
+	'name' : 'hungarian-qwertz-1',
+	'lang' : ['hu'],
+	"default" : [
+		"0 1 2 3 4 5 6 7 8 9 \u00f6 \u00fc \u00f3 \u0171 {bksp}",
+		"{tab} q w e r t z u i o p \u0151 \u00fa",
+		"a s d f g h j k l \u00e9 \u00e1 {enter}",
+		"{shift} \u00ed y x c v b n m , . - {shift}",
 		"{accept} {alt} {space} {alt} {cancel}"
 	],
-	'shift' : [
-		'§ \u0027 " + ! % / = ( ) Ö Ü Ó Ű {bksp}',
-		"{tab} Q W E R T Z U I O P Ő Ú",
-		"A S D F G H J K L É Á {enter}",
-		"{shift} Í Y X C V B N M ; : _ {shift}",
+	"shift" : [
+		"\u00a7 ' \" + ! % / = ( ) \u00d6 \u00dc \u00d3 \u0170 {bksp}",
+		"{tab} Q W E R T Z U I O P \u0150 \u00da",
+		"A S D F G H J K L \u00c9 \u00c1 {enter}",
+		"{shift} \u00cd Y X C V B N M ; : _ {shift}",
 		"{accept} {alt} {space} {alt} {cancel}"
 	],
-	'alt' : [
-    '{sp:1} ~ ˇ ^ ˘ ° ˛ ` ˙ ´ ˝ ¨ ¸ ¤ {bksp}',  // most of non used
-    '{tab} \\ | Ä {sp:1} {sp:1} {sp:1} € Í {sp:1} {sp:1} ÷ ×',
-    'ä đ Đ [ ] {sp:1} í ł Ł $ ß {enter}',
-    '{shift} < > # & @ { } < ; > * {shift}',
-		'{accept} {alt} {space} {alt} {cancel}'
+	"alt" : [
+		"{sp:1} ~ \u02c7 ^ \u02d8 \u00b0 \u02db ` \u02d9 \u00b4 \u02dd \u00a8 \u00b8 \u00a4 {bksp}",
+		"{tab} \\ | \u00c4 {sp:1} {sp:1} {sp:1} \u20ac \u00cd {sp:1} {sp:1} \u00f7 \u00d7",
+		"\u00e4 \u0111 \u0110 [ ] {sp:1} \u00ed \u0142 \u0141 $ \u00df {enter}",
+		"{shift} < > # & @ { } < ; > * {shift}",
+		"{accept} {alt} {space} {alt} {cancel}"
 	]
 };
 
-$.keyboard.layouts['hungarian-qwertz-2'] = {
-	'normal' : [
-		"0 1 2 3 4 5 6 7 8 9 ö ü ó {bksp}",
-		"{tab} q w e r t z u i o p ő ú",
-		"a s d f g h j k l é á ű {enter}",
-		"{shift} í y x c v b n m , . - {shift}",
+jQuery.keyboard.layouts['hungarian-qwertz-2'] = {
+	'name' : 'hungarian-qwertz-2',
+	'lang' : ['hu'],
+	"default" : [
+		"0 1 2 3 4 5 6 7 8 9 \u00f6 \u00fc \u00f3 {bksp}",
+		"{tab} q w e r t z u i o p \u0151 \u00fa",
+		"a s d f g h j k l \u00e9 \u00e1 \u0171 {enter}",
+		"{shift} \u00ed y x c v b n m , . - {shift}",
 		"{accept} {alt} {space} {alt} {cancel}"
 	],
-	'shift' : [
-		'§ \u0027 " + ! % / = ( ) Ö Ü Ó {bksp}',
-		"{tab} Q W E R T Z U I O P Ő Ú",
-		"A S D F G H J K L É Á Ű {enter}",
-		"{shift} Í Y X C V B N M ; : _ {shift}",
+	"shift" : [
+		"\u00a7 ' \" + ! % / = ( ) \u00d6 \u00dc \u00d3 {bksp}",
+		"{tab} Q W E R T Z U I O P \u0150 \u00da",
+		"A S D F G H J K L \u00c9 \u00c1 \u0170 {enter}",
+		"{shift} \u00cd Y X C V B N M ; : _ {shift}",
 		"{accept} {alt} {space} {alt} {cancel}"
 	],
-	'alt' : [
-    '{sp:1} ~ ˇ ^ ˘ ° ˛ ` ˙ ´ ˝ ¨ ¸ {bksp}',  // most of non used
-    '{tab} \\ | Ä {sp:1} {sp:1} {sp:1} € Í {sp:1} {sp:1} ÷ ×',
-    'ä đ Đ [ ] {sp:1} í ł Ł $ ß ¤ {enter}',
-    '{shift} < > # & @ { } < ; > * {shift}',
-		'{accept} {alt} {space} {alt} {cancel}'
+	"alt" : [
+		"{sp:1} ~ \u02c7 ^ \u02d8 \u00b0 \u02db ` \u02d9 \u00b4 \u02dd \u00a8 \u00b8 {bksp}",
+		"{tab} \\ | \u00c4 {sp:1} {sp:1} {sp:1} \u20ac \u00cd {sp:1} {sp:1} \u00f7 \u00d7",
+		"\u00e4 \u0111 \u0110 [ ] {sp:1} \u00ed \u0142 \u0141 $ \u00df \u00a4 {enter}",
+		"{shift} < > # & @ { } < ; > * {shift}",
+		"{accept} {alt} {space} {alt} {cancel}"
 	]
 };
 
 // Keyboard Language
 // please update this section to match this language and email me with corrections!
+// hu = ISO 639-1 code for Hungarian
 // ***********************
-if (typeof(language) === 'undefined') { var language = {}; };
-language.hungarian = {
+jQuery.keyboard.language.hu = {
 	display : {
 		'a'      : '\u2714:Accept (Shift-Enter)', // check mark - same action as accept
 		'accept' : 'Rendben:Accept (Shift-Enter)',
 		'alt'    : 'AltGr:Alternate Graphemes',
 		'b'      : '\u2190:Backspace',    // Left arrow (same as &larr;)
-		'bksp'   : 'Töröl:Backspace',
+		'bksp'   : 'T\u00f6r\u00f6l:Backspace',
 		'c'      : '\u2716:Cancel (Esc)', // big X, close - same action as cancel
-		'cancel' : 'Mégsem:Cancel (Esc)',
+		'cancel' : 'M\u00e9gsem:Cancel (Esc)',
 		'clear'  : 'C:Clear',             // clear num pad
 		'combo'  : '\u00f6:Toggle Combo Keys',
 		'dec'    : '.:Decimal',           // decimal point for num pad (optional), change '.' to ',' for European format
@@ -85,9 +89,5 @@ language.hungarian = {
 		'tab'    : '\u21e5 Tab:Tab'       // \u21b9 is the true tab symbol (left & right arrows)
 	},
 	// Message added to the key title while hovering, if the mousewheel plugin exists
-	wheelMessage : 'Használd az egér görgetőt a többi billentyű átváltáshoz',
+	wheelMessage : 'Haszn\u00e1ld az eg\u00e9r g\u00f6rget\u0151t a t\u00f6bbi billenty\u0171 \u00e1tv\u00e1lt\u00e1shoz',
 };
-
-// This will replace all default language options with these language options.
-// it is separated out here so the layout demo will work properly.
-$.extend(true, $.keyboard.defaultOptions, language.hungarian);

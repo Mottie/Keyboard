@@ -30,7 +30,25 @@ jQuery(function($) {
 
 	// International Text Area
 	// ********************
-	$('#inter').keyboard({ layout: 'international' });
+	$('#inter').keyboard({
+		layout: 'international',
+		css: {
+			// input & preview
+			input: 'form-control input-sm',
+			// keyboard container
+			container: 'center-block dropdown-menu', // jumbotron
+			// default state
+			buttonDefault: 'btn btn-default',
+			// hovered button
+			buttonHover: 'btn-primary',
+			// Action keys (e.g. Accept, Cancel, Tab, etc);
+			// this replaces "actionClass" option
+			buttonAction: 'active',
+			// used when disabling the decimal button {dec}
+			// when a decimal exists in the input area
+			buttonDisabled: 'disabled'
+		}
+	});
 
 	// Alphabetical Text Area
 	// ********************
@@ -83,7 +101,7 @@ jQuery(function($) {
 			'meta99' : '\u2660:numbers'          // Spade
 		},
 		customLayout: {
-			'normal' : [
+			'default' : [
 				// Add labels using a ":" after the key's name and replace spaces with "_"
 				// without the labels this line is just 'a b c d e f g'
 				'a:a_letter,_that_sounds_like_"ey" b:a_bug_that_makes_honey c:is_when_I_look_around d:a_grade,_I_never_got e:is_what_girls_say_when_they_run_away_from_me f:u,_is_what_I_say_to_those_screaming_girls! g:gee,_is_that_the_end_of_my_wittiness?',
@@ -156,7 +174,7 @@ jQuery(function($) {
 			'meta2'  : '\u2665'  // Heart
 		},
 		customLayout: {
-			'normal' : [
+			'default' : [
 				'd e f a u l t',
 				'{meta1} {meta2} {accept} {cancel}'
 			],
@@ -177,7 +195,7 @@ jQuery(function($) {
 	$('#junk').keyboard({
 		layout: 'custom',
 		customLayout: {
-			'normal' : [
+			'default' : [
 				'a e i o u y c',
 				'` \' " ~ ^ {dec} {combo}',
 				'{tab} {enter} {bksp}',
@@ -206,7 +224,7 @@ jQuery(function($) {
 	$('#map').keyboard({
 		layout : 'custom',
 		customLayout: {
-			'normal' : [ 
+			'default' : [ 
 				// "n(a):title/tooltip"; n = new key, (a) = actual key, ":label" = title/tooltip (use an underscore "_" in place of a space " ")
 				'\u03b1(a):lower_case_alpha_(type_a) \u03b2(b):lower_case_beta_(type_b) \u03be(c):lower_case_xi_(type_c) \u03b4(d):lower_case_delta_(type_d) \u03b5(e):lower_case_epsilon_(type_e) \u03b6(f):lower_case_zeta_(type_f) \u03b3(g):lower_case_gamma_(type_g)', // lower case Greek
 				'{shift} {accept} {cancel}'
@@ -254,7 +272,7 @@ jQuery(function($) {
 
 		customLayout: {
 
-			'normal': [
+			'default': [
 				'q w e r t y u i o p {bksp}',
 				'a s d f g h j k l {enter}',
 				'{s} z x c v b n m , . {s}',
@@ -331,14 +349,15 @@ jQuery(function($) {
 
 	// Console showing callback messages
 	// ********************
-	$('.ui-keyboard-input').bind('visible.keyboard hidden.keyboard beforeClose.keyboard accepted.keyboard canceled.keyboard', function(e, keyboard, el, status){
+	$('.ui-keyboard-input').bind('visible.keyboard hidden.keyboard beforeClose.keyboard accepted.keyboard canceled.keyboard restricted.keyboard', function(e, keyboard, el, status){
 		var c = $('#console'),
-			t = '<li><span class="keyboard">' + $(el).parent().find('h2').text() + '</span>';
+			t = '<li><span class="keyboard">' + $(el).parent().find('h2 .tooltip-jatt').text() + '</span>';
 			switch (e.type){
 				case 'visible'  : t += ' keyboard is <span class="event">visible</span>'; break;
 				case 'hidden'   : t += ' keyboard is now <span class="event">hidden</span>'; break;
 				case 'accepted' : t += ' content "<span class="content">' + el.value + '</span>" was <span class="event">accepted</span>' + ($(el).is('[type=password]') ? ', yeah... not so secure :(' : ''); break;
 				case 'canceled' : t += ' content was <span class="event ignored">ignored</span>'; break;
+				case 'restricted'  : t += ' The "' + String.fromCharCode(e.keyCode) + '" key is <span class="event ignored">restricted</span>!'; break;
 				case 'beforeClose' : t += ' keyboard is about to <span class="event">close</span>, contents were <span class="event ' + (status ? 'accepted">accepted' : 'ignored">ignored') + '</span>'; break;
 			}
 		t += '</li>';
@@ -351,13 +370,11 @@ jQuery(function($) {
 	$('h2 span').click(function(){
 		var t = '<h2>' + $(this).parent().text() + ' Code</h2>' + $(this).closest('.block').find('.code').html();
 		$('#showcode').html(t).show();
-		$("#showcode .js").chili();
-		$("#showcode .html").chili();
 	});
 
 	// add tooltips
 	// ********************
-	$.jatt();
+	$.jatt({ tooltip : '.tooltip-jatt' });
 
 // ********************
 // Extension demos
@@ -407,4 +424,7 @@ jQuery(function($) {
 			source: availableTags
 		})
 		.addAutocomplete();
+
+	prettyPrint();
+
 });

@@ -9,8 +9,10 @@
  */
 
 /* based on http://ascii-table.com/keyboard.php/190 */
-$.keyboard.layouts['thai-qwerty'] = {
-	'normal' : [
+jQuery.keyboard.layouts['thai-qwerty'] = {
+	'name' : 'thai-qwerty',
+	'lang' : ['th'],
+	'default' : [
 		"\u005F \u0E45 \u002F \u002D \u0E20 \u0E16 \u0E38 \u0E36 \u0E04 \u0E05 \u0E08 \u0E02 \u0E0A {bksp}",
 		"{tab} \u0E46 \u0E44 \u0E33 \u0E1E \u0E30 \u0E31 \u0E35 \u0E23 \u0E19 \u0E22 \u0E1A \u0E25 \u0E03 ",
 		"\u0E1F \u0E2B \u0E01 \u0E14 \u0E40 \u0E49 \u0E48 \u0E32 \u0E2A \u0E27 \u0E07 {enter}",
@@ -42,9 +44,9 @@ $.keyboard.layouts['thai-qwerty'] = {
 
 // Keyboard Language
 // please update this section to match this language and email me with corrections!
+// th = ISO 639-1 code for Thai
 // ***********************
-if (typeof(language) === 'undefined') { var language = {}; };
-language.thai = {
+jQuery.keyboard.language.th = {
 	display : {
 		'a'      : '\u2714:Validate (Shift-Enter)', // check mark - same action as accept
 		'accept' : 'accept (Shift-Enter)',
@@ -69,7 +71,3 @@ language.thai = {
 	// Message added to the key title while hovering, if the mousewheel plugin exists
 	wheelMessage : 'You can use the mouse wheel to see additional keys',
 };
-
-// This will replace all default language options with these language options.
-// it is separated out here so the layout demo will work properly.
-$.extend(true, $.keyboard.defaultOptions, language.thai);

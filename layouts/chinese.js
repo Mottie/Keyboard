@@ -8,7 +8,9 @@
 * license for this file: WTFPL, unless the source layout site has a problem with me using them as a reference
 */
 $.keyboard.layouts['chinese'] = {
-	'normal' : [
+	'name' : 'chinese',
+	'lang' : ['zh'],
+	'default' : [
 		'\u20AC 1 2 3 4 5 6 7 8 9 0 - = {bksp}',
 		'{tab} \u624B \u7530 \u6C34 \u53E3 \u5EFF \u535C \u5C71 \u6208 \u4EBA \u5FC3 [ ] \\',
 		'\u65E5 \u5C38 \u6728 \u706B \u571F \u7AF9 \u5341 \u5927 \u4E2D ; \' {enter}',
@@ -39,9 +41,9 @@ $.keyboard.layouts['chinese'] = {
 };
 
 // Keyboard Language
+// zh = ISO 639-1 code for Chinese
 // ***********************
-if (typeof(language) === 'undefined') { var language = {}; };
-language.chinese = {
+jQuery.keyboard.language.zh = {
 	display : {
 		'a'      : '\u2714:Accept (Shift-Enter)', // check mark - same action as accept
 		'accept' : 'Accept:Accept (Shift-Enter)',
@@ -66,7 +68,3 @@ language.chinese = {
 	// Message added to the key title while hovering, if the mousewheel plugin exists
 	wheelMessage : 'Use mousewheel to see other keys',
 };
-
-// This will replace all default language options with these language options.
-// it is separated out here so the layout demo will work properly.
-$.extend(true, $.keyboard.defaultOptions, language.chinese);

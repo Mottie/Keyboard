@@ -11,14 +11,16 @@
  *
  * This file derives from general keyboard jQuery plugin.
  * You may reuse this file under MIT License
- * 
+ *
  * Acknowledgements : Thamiza project contributors Mugunth, Sethu have reference implementations of
  *                    of the keyboard
  */
 
 /* based on Tamil99 keyboard layout - modified Tamil  99 keyboard */
-$.keyboard.layouts['tamil-tamil99-mod'] = {
-	'normal' : [
+jQuery.keyboard.layouts['tamil-tamil99-mod'] = {
+	'name' : 'tamil-tamil99-mod',
+	'lang' : ['ta'],
+	'default' : [
         /* ா	ி	ீ	ு	ூ	ெ	ே	ை	ொ	ோ	ௌ	ஃ  */
 		"\u0BBE \u0BBF \u0BC0 \u0BC1 \u0BC2 \u0BC6 \u0BC7 \u0BC8 \u0BCA \u0BCB \u0BCC \u0B83 {bksp}",
         /*      ஆ     ஈ      ஊ     ஐ    ஏ      ள      ற     ன     ட      ண   ச      ஞ   \   */
@@ -59,9 +61,9 @@ $.keyboard.layouts['tamil-tamil99-mod'] = {
 
 // Keyboard Language
 // please update this section to match this language and email me with corrections!
+// ta = ISO 639-1 code for Tamil
 // ***********************
-if (typeof(language) === 'undefined') { var language = {}; };
-language.tamil = {
+jQuery.keyboard.language.ta = {
 	display : {
 		'a'      : '\u2714:Validate (Shift-Enter)', // check mark - same action as accept
 		'accept' : 'accept (Shift-Enter)',
@@ -86,7 +88,3 @@ language.tamil = {
 	// Message added to the key title while hovering, if the mousewheel plugin exists
 	wheelMessage : 'You can use the mouse wheel to see additional keys',
 };
-
-// This will replace all default language options with these language options.
-// it is separated out here so the layout demo will work properly.
-$.extend(true, $.keyboard.defaultOptions, language.tamil);
