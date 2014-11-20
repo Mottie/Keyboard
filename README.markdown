@@ -77,6 +77,46 @@ Wiki: [Home](https://github.com/Mottie/Keyboard/wiki/Home) | [FAQ](https://githu
 
 Only the latest changes will be shown below, see the wiki log to view older versions.
 
+### Version 1.19.0 (11/19/2014)
+
+* Core
+  * Check for jQuery UI before checking for the position utility. Fixes [issue #263](https://github.com/Mottie/Keyboard/issues/263).
+  * Add `maxInsert` option; when `true` it allows inserting characters at the caret when the max length is set. Fixes [issue #289](https://github.com/Mottie/Keyboard/issues/289).
+  * Fix tab navigation when `openOn` option is empty. Fixes [issue #275](https://github.com/Mottie/Keyboard/issues/275).
+  * Allow inline renaming of action keys; it works the same as the other non-action keys
+  * Remove mousewheel scrolling through keyset text for action keys
+  * Build will now ignore layout keys `name`, `lang` and `rtl`.
+  * Add `restricted` callback function. Fixes [issue #305](https://github.com/Mottie/Keyboard/issues/305).
+  * Add `reposition` option to automatically reposition the keyboard on window resize.
+  * Modified `reposition` option to ignore repositioning when the keyboard is not attached to the page 'body'. See [pull request #317](https://github.com/Mottie/Keyboard/pull/317). Thanks [eugenius](https://github.com/eugenius)!
+  * The `change` callback no longer keeps the last keyboard open. Fixes [issue #311](https://github.com/Mottie/Keyboard/issues/311) and [issue #308](https://github.com/Mottie/Keyboard/issues/308).
+  * Ensure preview variable is updated & keyboard is positioned properly when `usePreview` is `false`.
+  * Switching inputs (tab/enter navigation) now ignores disabled elements.
+  * Page no longer scrolls in Firefox upon initialization. Fixes [issue #213](https://github.com/Mottie/Keyboard/issues/213).
+  * Fix initial positioning when `usePreview` is `false`.
+
+* Caret
+  * Fix js error when using email/number inputs. Fixes [issue #309](https://github.com/Mottie/Keyboard/issues/309).
+  * Caret detect `selectionStart` in Firefox using alternate method. Fixes [issue #311](https://github.com/Mottie/Keyboard/issues/311).
+  * Caret position can again be set to zero. Fixes [issue #315](https://github.com/Mottie/Keyboard/issues/315).
+
+* Demo
+  * Fix Colemak demo; contenteditable not yet supported.
+  * Changed International demo to use a Bootstrap theme.
+  * Changed syntax highlighting script to prettify.
+
+* Layouts
+  * Updated all layouts to include an internal language definition.
+  * The language used in virtual keyboard keys now automatically switches to the layout set language; this can be overridden by the core `language` setting.
+  * Updated Russian layout. Thanks to James Newton via email.
+  * Add Serbian layout. Thanks to James Newton via email.
+  * Add an example template file (`_template.js`) for use as a starting template to add more language layouts.
+
+* Extensions
+  * Autocomplete extension: now works with jQuery v2.1+. Fixes [issue #291](https://github.com/Mottie/Keyboard/issues/291).
+  * Typing extension: add `lockTypeIn` option & fix javascript error while user types.
+  * Scramble extension: Keyboard no longer disappears when scramble initializes more than once. Fixes [issue #283](https://github.com/Mottie/Keyboard/issues/283).
+
 ### Version 1.18.12 (7/18/2014)
 
 * Added an internal version number. Access it as follows: `$('#keyboard').data('keyboard').version`
@@ -86,28 +126,3 @@ Only the latest changes will be shown below, see the wiki log to view older vers
 ### Version 1.18.11 (7/16/2014)
 
 * Scramble extension no longer breaks layout when initialized twice. Fixes [issue #283](https://github.com/Mottie/Keyboard/issues/283).
-
-### Version 1.18.10 (7/8/2014)
-
-* Add Romanian keyboard layout. Thanks to [aflorea](https://github.com/aflorea) for all the work! See [pull request #285](https://github.com/Mottie/Keyboard/issues/285).
-* Number type inputs do not support caret positioning, so the preview input (only) will now switch to a text type input. Fixes [issue #241](https://github.com/Mottie/Keyboard/issues/241).
-* Removed "aria-haspopup" from the preview clone.
-* Update hash code; removed slower reduce method.
-
-### Version 1.18.9 (6/1/2014)
-
-* Change keyboard collison fallback to "flipfit flipfit".
-* Caret: prevent errors when input doesn't support caret positioning.
-* Fix js error when base.$keyboard is removed.
-* Scramble: now applied when keyboard is alwaysOpen. Fixes [issue #276](https://github.com/Mottie/Keyboard/issues/276).
-* Ignore position utility if position option is empty.
-* Set preview value before triggering accept event.
-* Update Mobile extension &amp; demos.
-
-### Version 1.18.8 (5/16/2014)
-
-* Fix position option
-  * When setting the `usePreview` option to `false`, the collision setting would changed to `"flip flip"` internally and was not behaving as intended.
-  * This option now always defaults to `"fit fit"` unless set to a different setting in the options.
-  * Updated documentation &amp; lined out the `position.offset` note as it is no longer supported in jQuery UI's position utility.
-  * Thanks to Alex W. for reporting this issue via email.
