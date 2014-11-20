@@ -20,7 +20,7 @@
  *  $('#keyboard1')
  *   .keyboard(options) // keyboard plugin
  *   .addScramble();    // this keyboard extension
- * 
+ *
  */
 /*jshint browser:true, jquery:true, unused:false */
 (function($) {
@@ -180,8 +180,11 @@ $.keyboard = $.keyboard || {};
 				}
 			};
 
-			base.orig_layout = opts.layout;
-			opts.layout = "scrambled" + Math.round(Math.random() * 10000);
+			// scrambled layout already initialized
+			if (!/^scrambled/.test(base.options.layout)) {
+				base.orig_layout = base.options.layout;
+				base.options.layout = "scrambled" + Math.round(Math.random() * 10000);
+			}
 
 			// special case when keyboard is set to always be open
 			if (opts.alwaysOpen && base.$keyboard.length) {
