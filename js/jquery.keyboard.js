@@ -74,10 +74,11 @@ $.keyboard = function(el, options){
 
 		// Check if caret position is saved when input is hidden or loses focus
 		// (*cough* all versions of IE and I think Opera has/had an issue as well
-		base.temp = $('<input style="position:absolute;left:-9999em;top:-9999em;" type="text" value="testing">')
-			.appendTo('body').caret(3,3);
+		base.temp = $('<div style="height:0px;width:0px;overflow:hidden;"><input type="text" value="testing"></div>')
+			.insertAfter( base.el ); // stop page scrolling, fixes #213
+		base.temp.find('input').caret(3,3);
 		// Also save caret position of the input if it is locked
-		base.checkCaret = (o.lockInput || base.temp.hide().show().caret().start !== 3 ) ? true : false;
+		base.checkCaret = ( o.lockInput || base.temp.find('input').hide().show().caret().start !== 3 );
 		base.temp.remove();
 		// [shift, alt, meta]
 		base.last = { start:0, end:0, key:'', val:'', keyset: [false, false, false] };
