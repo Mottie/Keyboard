@@ -77,6 +77,11 @@ Wiki: [Home](https://github.com/Mottie/Keyboard/wiki/Home) | [FAQ](https://githu
 
 Only the latest changes will be shown below, see the wiki log to view older versions.
 
+### Version 1.19.1 (11/20/2014)
+
+* Num layout now uses `{dec}` instead of a decimal point. Fixes [issue #318](https://github.com/Mottie/Keyboard/issues/318).
+* Save original settings, so scramble extension works properly. Fixes [issue #276](https://github.com/Mottie/Keyboard/issues/276).
+
 ### Version 1.19.0 (11/19/2014)
 
 * Core
