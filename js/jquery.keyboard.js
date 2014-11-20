@@ -405,7 +405,7 @@ $.keyboard = function(el, options){
 	};
 
 	base.bindKeyboard = function(){
-		var layout = $.keyboard.builtLayouts[base.layout];
+		var evt, layout = $.keyboard.builtLayouts[base.layout];
 		base.$preview
 			.unbind('keypress keyup keydown mouseup touchend '.split(' ').join('.keyboard '))
 			.bind('keypress.keyboard', function(e){
@@ -426,7 +426,17 @@ $.keyboard = function(el, options){
 				if (o.restrictInput) {
 					// allow navigation keys to work - Chrome doesn't fire a keypress event (8 = bksp)
 					if ( (e.which === 8 || e.which === 0) && $.inArray( e.keyCode, base.alwaysAllowed ) ) { return; }
-					if ($.inArray(k, layout.acceptedKeys) === -1) { e.preventDefault(); } // quick key check
+					// quick key check
+					if ($.inArray(k, layout.acceptedKeys) === -1) {
+						e.preventDefault();
+						// copy event object in case e.preventDefault() breaks when changing the type
+						evt = $.extend({}, e);
+						evt.type = 'restricted';
+						base.$el.trigger( evt, [ base, base.el ] );
+						if ( $.isFunction(o.restricted) ) {
+							o.restricted( evt, base, base.el );
+						}
+					}
 				} else if ( (e.ctrlKey || e.metaKey) && (e.which === 97 || e.which === 99 || e.which === 118 ||
 						(e.which >= 120 && e.which <=122)) ) {
 					// Allow select all (ctrl-a:97), copy (ctrl-c:99), paste (ctrl-v:118) & cut (ctrl-x:120) &
@@ -1759,6 +1769,7 @@ $.keyboard = function(el, options){
 		beforeClose   : function(e, keyboard, el, accepted) {},
 		accepted      : function(e, keyboard, el) {},
 		canceled      : function(e, keyboard, el) {},
+		restricted    : function(e, keyboard, el) {},
 		hidden        : function(e, keyboard, el) {},
 		// called instead of base.switchInput
 		switchInput   : function(keyboard, goToNext, isAccepted) {},
