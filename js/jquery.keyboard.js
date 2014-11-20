@@ -1149,7 +1149,7 @@ $.keyboard = function(el, options){
 		$.each($.keyboard.layouts[o.layout], function(set, keySet){
 			var txt;
 			// skip layout name & lang settings
-			if (set !== "" && !/^(name|lang)$/.test(set)) {
+			if (set !== "" && !/^(name|lang|rtl)$/.test(set)) {
 				// keep backwards compatibility for change from default to normal naming
 				if (set === 'default') { set = 'normal'; }
 				sets++;
