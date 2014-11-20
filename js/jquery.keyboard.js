@@ -342,7 +342,7 @@ $.keyboard = function(el, options){
 			// save default regex (in case loading another layout changes it)
 			base.regex = kblang[ lang ].comboRegex || $.keyboard.comboRegex;
 			// determine if US "." or European "," system being used
-			base.decimal = ( /^\./.test(o.display.dec) ) ? true : false;
+			base.decimal = /^\./.test(o.display.dec);
 			base.$el
 				.toggleClass('rtl', o.rtl)
 				.css('direction', o.rtl ? 'rtl' : '');
@@ -1577,7 +1577,7 @@ $.keyboard = function(el, options){
 				'7 8 9 +',
 				'4 5 6 {sign}',
 				'1 2 3 %',
-				'0 . {a} {c}'
+				'0 {dec} {a} {c}'
 			]
 		}
 	};
