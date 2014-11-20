@@ -1046,6 +1046,7 @@ $.keyboard = function(el, options){
 	// regKey = true when it is not an action key
 	base.addKey = function(keyName, name, regKey){
 		var t, keyType, m, map, nm,
+			txt = name.split(':'),
 			n = (regKey === true) ? keyName : o.display[name] || keyName,
 			kn = (regKey === true) ? keyName.charCodeAt(0) : keyName;
 		// map defined keys - format "key(A):Label_for_key"
@@ -1065,7 +1066,9 @@ $.keyboard = function(el, options){
 		nm = n.split(':');
 		// corner case of ":(:):;" reduced to "::;", split as ["", "", ";"]
 		if (nm[0] === '' && nm[1] === '') { n = ':'; }
-		n = (nm[0] !== '' && nm.length > 1) ? $.trim(nm[0]) : n;
+		n = (nm[0] !== '' && nm.length > 1) ? nm[0] : n;
+		// allow alt naming of action keys
+		n = $.trim( regKey ? n : txt[1] || n );
 		// added to title
 		t = (nm.length > 1) ? $.trim(nm[1]).replace(/_/g, " ") || '' : '';
 
@@ -1212,7 +1215,7 @@ $.keyboard = function(el, options){
 
 							// switch needed for action keys with multiple names/shortcuts or
 							// default will catch all others
-							switch(action){
+							switch(action.split(':')[0]){
 
 								case 'a':
 								case 'accept':
