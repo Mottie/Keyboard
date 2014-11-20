@@ -47,7 +47,6 @@ $.keyboard = function(el, options){
 		// Shift and Alt key toggles, sets is true if a layout has more than one keyset
 		// used for mousewheel message
 		base.shiftActive = base.altActive = base.metaActive = base.sets = base.capsLock = false;
-		base.lastKeyset = [false, false, false]; // [shift, alt, meta]
 		// Class names of the basic key set - meta keysets are handled by the keyname
 		base.rows = [ '', '-shift', '-alt', '-alt-shift' ];
 		$('<!--[if lte IE 8]><script>jQuery("body").addClass("oldie");</script><![endif]--><!--[if IE]>' +
@@ -78,7 +77,8 @@ $.keyboard = function(el, options){
 		// Also save caret position of the input if it is locked
 		base.checkCaret = (o.lockInput || base.temp.hide().show().caret().start !== 3 ) ? true : false;
 		base.temp.remove();
-		base.lastCaret = { start:0, end:0 };
+		// [shift, alt, meta]
+		base.last = { start:0, end:0, key:'', val:'', keyset: [false, false, false] };
 
 		base.temp = [ '', 0, 0 ]; // used when building the keyboard - [keyset element, row, index]
 
@@ -168,9 +168,12 @@ $.keyboard = function(el, options){
 			// save caret position in the input to transfer it to the preview
 			// add delay to get correct caret position
 			setTimeout(function(){
-                // Number inputs don't support selectionStart and selectionEnd
-				if (base.$el.attr('type') != 'number') {
-					base.lastCaret = base.$el.caret();
+				// Number inputs don't support selectionStart and selectionEnd
+				// Number/email inputs don't support selectionStart and selectionEnd
+				if ( !/(number|email)/.test(base.el.type) ) {
+					var c = base.$el.caret();
+					base.last.start = c.start;
+					base.last.end = c.end;
 				}
 			}, 20);
 		}
@@ -184,7 +187,6 @@ $.keyboard = function(el, options){
 	};
 
 	base.reveal = function(refresh){
-		var p, s;
 		base.opening = true;
 		// remove all "extra" keyboards
 		$('.ui-keyboard').not('.ui-keyboard-always-open').remove();
@@ -280,26 +282,20 @@ $.keyboard = function(el, options){
 			parseInt(base.$preview.css('font-size') ,10) + 4;
 
 		if (o.caretToEnd) {
-			s = base.originalContent.length;
-			base.lastCaret = {
-				start: s,
-				end  : s
-			};
+			base.last.start = base.last.end = base.originalContent.length;
 		}
 
 		// IE caret haxx0rs
 		if (base.allie){
-			// ensure caret is at the end of the text (needed for IE)
-			s = base.lastCaret.start || base.originalContent.length;
-			p = { start: s, end: s };
-			// set caret at end of content, if undefined
-			if (!base.lastCaret) { base.lastCaret = p; }
 			// sometimes end = 0 while start is > 0
-			if (base.lastCaret.end === 0 && base.lastCaret.start > 0) {
-				base.lastCaret.end = base.lastCaret.start;
+			if (base.last.end === 0 && base.last.start > 0) {
+				base.last.end = base.last.start;
 			}
 			// IE will have start -1, end of 0 when not focused (see demo: http://jsfiddle.net/Mottie/fgryQ/3/)
-			if (base.lastCaret.start < 0) { base.lastCaret = p; }
+			if (base.last.start < 0) {
+				// ensure caret is at the end of the text (needed for IE)
+				base.last.start = base.last.end = base.originalContent.length;
+			}
 		}
 
 		// opening keyboard flag; delay allows switching between keyboards without immediately closing
@@ -307,7 +303,7 @@ $.keyboard = function(el, options){
 		setTimeout(function(){
 			base.opening = false;
 			if (o.initialFocus) {
-				base.$preview.focus().caret( base.lastCaret );
+				base.$preview.focus().caret( base.last );
 			}
 			base.$el.trigger( 'visible.keyboard', [ base, base.el ] );
 		}, 10);
@@ -413,9 +409,13 @@ $.keyboard = function(el, options){
 		base.$preview
 			.unbind('keypress keyup keydown mouseup touchend '.split(' ').join('.keyboard '))
 			.bind('keypress.keyboard', function(e){
-				var k = base.lastKey = String.fromCharCode(e.charCode || e.which);
+				var c, k = base.last.key = String.fromCharCode(e.charCode || e.which);
 				base.$lastKey = []; // not a virtual keyboard key
-				if (base.checkCaret) { base.lastCaret = base.$preview.caret(); }
+				if (base.checkCaret) {
+					c = base.$preview.caret();
+					base.last.start = c.start;
+					base.last.end = c.end;
+				}
 
 				// update caps lock - can only do this while typing =(
 				base.capsLock = (((k >= 65 && k <= 90) && !e.shiftKey) ||
@@ -439,8 +439,8 @@ $.keyboard = function(el, options){
 				// example: \u0391 or \u0391(A) or \u0391:alpha or \u0391(A):alpha
 				if (layout.hasMappedKeys) {
 					if (layout.mappedKeys.hasOwnProperty(k)){
-						base.lastKey = layout.mappedKeys[k];
-						base.insertText( base.lastKey );
+						base.last.key = layout.mappedKeys[k];
+						base.insertText( base.last.key );
 						e.preventDefault();
 					}
 				}
@@ -484,6 +484,7 @@ $.keyboard = function(el, options){
 				// called during an external change event with all the necessary parameters (issue #157)
 				if ($.isFunction(o.change)){ o.change( $.Event("change"), base, base.el ); }
 				base.$el.trigger( 'change.keyboard', [ base, base.el ] );
+				base.last.val = base.$preview.val();
 			})
 			.bind('keydown.keyboard', function(e){
 				switch (e.which) {
@@ -525,7 +526,11 @@ $.keyboard = function(el, options){
 				}
 			})
 			.bind('mouseup.keyboard touchend.keyboard', function(){
-				if (base.checkCaret) { base.lastCaret = base.$preview.caret(); }
+				if (base.checkCaret) {
+					var c = base.$preview.caret();
+					base.last.start = c.start;
+					base.last.end = c.end;
+				}
 			});
 
 		// prevent keyboard event bubbling
@@ -562,20 +567,20 @@ $.keyboard = function(el, options){
 					timer = new Date().getTime();
 				// don't split colon key. Fixes #264
 				action = action === ':' ? ':' : action.split(':')[0];
-				if (timer - (base.lastEventTime || 0) < o.preventDoubleEventTime) { return; }
-				base.lastEventTime = timer;
+				if (timer - (base.last.eventTime || 0) < o.preventDoubleEventTime) { return; }
+				base.last.eventTime = timer;
 				base.$preview.focus();
 				base.$lastKey = $this;
-				base.lastKey = $this.attr('data-curtxt');
+				base.last.key = $this.attr('data-curtxt');
 				// Start caret in IE when not focused (happens with each virtual keyboard button click
-				if (base.checkCaret) { base.$preview.caret( base.lastCaret ); }
+				if (base.checkCaret) { base.$preview.caret( base.last ); }
 				if (action.match('meta')) { action = 'meta'; }
 				if ($.keyboard.keyaction.hasOwnProperty(action) && $(this).hasClass('ui-keyboard-actionkey')) {
 					// stop processing if action returns false (close & cancel)
 					if ($.keyboard.keyaction[action](base,this,e) === false) { return false; }
 				} else if (typeof action !== 'undefined') {
-					txt = base.lastKey = (base.wheel && !$(this).hasClass('ui-keyboard-actionkey')) ?
-						base.lastKey : action;
+					txt = base.last.key = (base.wheel && !$(this).hasClass('ui-keyboard-actionkey')) ?
+						base.last.key : action;
 					base.insertText(txt);
 					if (!base.capsLock && !o.stickyShift && !e.shiftKey) {
 						base.shiftActive = false;
@@ -583,11 +588,12 @@ $.keyboard = function(el, options){
 					}
 				}
 				// set caret if caret moved by action function; also, attempt to fix issue #131
-				base.$preview.focus().caret( base.lastCaret );
+				base.$preview.focus().caret( base.last );
 				base.checkCombos();
 				base.checkMaxLength();
 				if ($.isFunction(o.change)){ o.change( $.Event("change"), base, base.el ); }
 				base.$el.trigger( 'change.keyboard', [ base, base.el ] );
+				base.last.val = base.$preview.val();
 				e.preventDefault();
 			})
 			// Change hover class and tooltip
@@ -649,7 +655,7 @@ $.keyboard = function(el, options){
 					$(this).removeClass(o.css.buttonHover); // needed for touch devices
 				} else {
 					if (base.isVisible() && base.isCurrent()) { base.$preview.focus(); }
-					if (base.checkCaret) { base.$preview.caret( base.lastCaret ); }
+					if (base.checkCaret) { base.$preview.caret( base.last ); }
 				}
 				base.mouseRepeat = [false,''];
 				clearTimeout(base.repeater); // make sure key repeat stops!
@@ -711,19 +717,28 @@ $.keyboard = function(el, options){
 			.scrollLeft(scrL)
 			.caret(t, t);
 
-		base.lastCaret = { start: t, end: t }; // save caret in case of bksp
+		base.last.start = base.last.end = t; // save caret in case of bksp
 
 	};
 
 	// check max length
 	base.checkMaxLength = function(){
-		var t, p = base.$preview.val();
-		if (o.maxLength !== false && p.length > o.maxLength) {
-			t = Math.min(base.$preview.caret().start, o.maxLength);
-			base.$preview.val( p.substring(0, o.maxLength) );
+		var start, caret,
+			val = base.$preview.val();
+		if (o.maxLength !== false && val.length > o.maxLength) {
+			start = base.$preview.caret().start;
+			caret = Math.min(start, o.maxLength);
+
+			// prevent inserting new characters when maxed #289
+			if (!o.maxInsert) {
+				val = base.last.val;
+				caret = start - 1; // move caret back one
+			}
+
+			base.$preview.val( val.substring(0, o.maxLength) );
 			// restore caret on change, otherwise it ends up at the end.
-			base.$preview.caret( t, t );
-			base.lastCaret = { start: t, end: t };
+			base.$preview.caret( caret, caret );
+			base.last.start = base.last.end = caret;
 		}
 		if (base.$decBtn.length) {
 			base.checkDecimal();
@@ -755,12 +770,12 @@ $.keyboard = function(el, options){
 				base.metaActive = key;
 			}
 			// if meta keyset doesn't have a shift or alt keyset, then show just the meta key set
-			if ( (!o.stickyShift && base.lastKeyset[2] !== base.metaActive) ||
+			if ( (!o.stickyShift && base.last.keyset[2] !== base.metaActive) ||
 				( (base.shiftActive || base.altActive) && !base.$keyboard.find('.ui-keyboard-keyset-' + key +
 					base.rows[toShow]).length) ) {
 				base.shiftActive = base.altActive = false;
 			}
-		} else if (!o.stickyShift && base.lastKeyset[2] !== base.metaActive && base.shiftActive) {
+		} else if (!o.stickyShift && base.last.keyset[2] !== base.metaActive && base.shiftActive) {
 			// switching from meta key set back to default, reset shift & alt if using stickyShift
 			base.shiftActive = base.altActive = false;
 		}
@@ -768,9 +783,9 @@ $.keyboard = function(el, options){
 		key = (toShow === 0 && !base.metaActive) ? '-normal' : (key === '') ? '' : '-' + key;
 		if (!base.$keyboard.find('.ui-keyboard-keyset' + key + base.rows[toShow]).length) {
 			// keyset doesn't exist, so restore last keyset settings
-			base.shiftActive = base.lastKeyset[0];
-			base.altActive = base.lastKeyset[1];
-			base.metaActive = base.lastKeyset[2];
+			base.shiftActive = base.last.keyset[0];
+			base.altActive = base.last.keyset[1];
+			base.metaActive = base.last.keyset[2];
 			return;
 		}
 		base.$keyboard
@@ -782,7 +797,7 @@ $.keyboard = function(el, options){
 			.find('.ui-keyboard-keyset').hide().end()
 			.find('.ui-keyboard-keyset' + key + base.rows[toShow]).show().end()
 			.find('.ui-keyboard-actionkey.ui-keyboard' + key).addClass(o.css.buttonAction);
-		base.lastKeyset = [ base.shiftActive, base.altActive, base.metaActive ];
+		base.last.keyset = [ base.shiftActive, base.altActive, base.metaActive ];
 	};
 
 	// check for key combos (dead keys)
@@ -856,7 +871,8 @@ $.keyboard = function(el, options){
 		// find row, multiply by font-size
 		base.preview.scrollTop = base.lineHeight * (val.substring(0, pos.start).split('\n').length - 1);
 
-		base.lastCaret = { start: pos.start, end: pos.end };
+		base.last.start = pos.start;
+		base.last.end = pos.end;
 
 		if (o.acceptValid) { base.checkValid(); }
 
@@ -1360,14 +1376,14 @@ $.keyboard = function(el, options){
 		},
 		// caps lock key
 		lock : function(base,el){
-			base.lastKeyset[0] = base.shiftActive = base.capsLock = !base.capsLock;
+			base.last.keyset[0] = base.shiftActive = base.capsLock = !base.capsLock;
 			base.showKeySet(el);
 		},
 		left : function(base){
 			var p = base.$preview.caret();
 			if (p.start - 1 >= 0) {
 				// move both start and end of caret (prevents text selection) & save caret position
-				base.lastCaret = { start: p.start - 1, end: p.start - 1 };
+				base.last.start = base.last.end = p.start - 1;
 			}
 		},
 		meta : function(base,el){
@@ -1386,11 +1402,11 @@ $.keyboard = function(el, options){
 			var p = base.$preview.caret();
 			if (p.start + 1 <= base.$preview.val().length) {
 				// move both start and end of caret (prevents text selection) && save caret position
-				base.lastCaret = { start: p.start + 1, end: p.start + 1 };
+				base.last.start = base.last.end = p.start + 1;
 			}
 		},
 		shift : function(base,el){
-			base.lastKeyset[0] = base.shiftActive = !base.shiftActive;
+			base.last.keyset[0] = base.shiftActive = !base.shiftActive;
 			base.showKeySet(el);
 		},
 		sign : function(base){
@@ -1694,6 +1710,8 @@ $.keyboard = function(el, options){
 
 		// Set the max number of characters allowed in the input, setting it to false disables this option
 		maxLength    : false,
+		// allow inserting characters @ caret when maxLength is set
+		maxInsert    : true,
 
 		// Mouse repeat delay - when clicking/touching a virtual keyboard key, after this delay the key will
 		// start repeating
