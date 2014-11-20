@@ -492,9 +492,13 @@ $.keyboard = function(el, options){
 				base.checkMaxLength();
 				// change callback is no longer bound to the input element as the callback could be
 				// called during an external change event with all the necessary parameters (issue #157)
-				if ($.isFunction(o.change)){ o.change( $.Event("change"), base, base.el ); }
 				base.$el.trigger( 'change.keyboard', [ base, base.el ] );
 				base.last.val = base.$preview.val();
+
+				if ($.isFunction(o.change)){
+					o.change( $.Event("change"), base, base.el );
+					return false;
+				}
 			})
 			.bind('keydown.keyboard', function(e){
 				switch (e.which) {
@@ -567,6 +571,7 @@ $.keyboard = function(el, options){
 		base.$allKeys = base.$keyboard.find('button.ui-keyboard-button')
 			.unbind(allEvents)
 			.bind(o.keyBinding.split(' ').join('.keyboard ') + '.keyboard repeater.keyboard', function(e){
+				e.preventDefault();
 				// prevent errors when external triggers attempt to "type" - see issue #158
 				if (!base.$keyboard.is(":visible")){ return false; }
 				// 'key', { action: doAction, original: n, curtxt : n, curnum: 0 }
@@ -601,10 +606,15 @@ $.keyboard = function(el, options){
 				base.$preview.focus().caret( base.last );
 				base.checkCombos();
 				base.checkMaxLength();
-				if ($.isFunction(o.change)){ o.change( $.Event("change"), base, base.el ); }
 				base.$el.trigger( 'change.keyboard', [ base, base.el ] );
 				base.last.val = base.$preview.val();
-				e.preventDefault();
+
+				if ($.isFunction(o.change)){
+					o.change( $.Event("change"), base, base.el );
+					// return false to prevent reopening keyboard if base.accept() was called
+					return false;
+				}
+
 			})
 			// Change hover class and tooltip
 			.bind('mouseenter.keyboard mouseleave.keyboard touchstart.keyboard', function(e){
