@@ -179,7 +179,7 @@
 						// show correct key set
 						base.shiftActive = /shift/.test(meta);
 						base.altActive = /alt/.test(meta);
-						base.metaActive = base.lastKeyset[2] = (meta).match(/meta\d+/) || false;
+						base.metaActive = base.last.keyset[2] = (meta).match(/meta\d+/) || false;
 						// make the plugin think we're passing it a jQuery object with a name
 
 						base.showKeySet({ name : base.metaActive});
