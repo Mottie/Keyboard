@@ -1047,7 +1047,8 @@ $.keyboard = function(el, options){
 	base.addKey = function(keyName, name, regKey){
 		var t, keyType, m, map, nm,
 			txt = name.split(':'),
-			n = (regKey === true) ? keyName : o.display[name] || keyName,
+			len = txt.length - 1,
+			n = (regKey === true) ? keyName : o.display[txt[0]] || keyName,
 			kn = (regKey === true) ? keyName.charCodeAt(0) : keyName;
 		// map defined keys - format "key(A):Label_for_key"
 		// "key" = key that is seen (can any character; but it might need to be escaped using "\"
@@ -1070,7 +1071,7 @@ $.keyboard = function(el, options){
 		// allow alt naming of action keys
 		n = $.trim( regKey ? n : txt[1] || n );
 		// added to title
-		t = (nm.length > 1) ? $.trim(nm[1]).replace(/_/g, " ") || '' : '';
+		t = (nm.length > 1) ? $.trim(nm[1]).replace(/_/g, " ") || '' : len > 0 ? txt[len] || '' : '';
 
 		// Action keys will have the 'ui-keyboard-actionkey' class
 		// '\u2190'.length = 1 because the unicode is converted, so if more than one character,
@@ -1146,7 +1147,9 @@ $.keyboard = function(el, options){
 
 		// Main keyboard building loop
 		$.each($.keyboard.layouts[o.layout], function(set, keySet){
-			if (set !== "") {
+			var txt;
+			// skip layout name & lang settings
+			if (set !== "" && !/^(name|lang)$/.test(set)) {
 				// keep backwards compatibility for change from default to normal naming
 				if (set === 'default') { set = 'normal'; }
 				sets++;
@@ -1171,7 +1174,7 @@ $.keyboard = function(el, options){
 
 						// process here if it's an action key
 						if( /^\{\S+\}$/.test(keys[key])){
-							action = keys[key].match(/^\{(\S+)\}$/)[1].toLowerCase();
+							action = keys[key].match(/^\{(\S+)\}$/)[1];
 							// add active class if there are double exclamation points in the name
 							if (/\!\!/.test(action)) {
 								action = action.replace('!!','');
@@ -1179,26 +1182,26 @@ $.keyboard = function(el, options){
 							}
 
 							// add empty space
-							if (/^sp:((\d+)?([\.|,]\d+)?)(em|px)?$/.test(action)) {
+							if (/^sp:((\d+)?([\.|,]\d+)?)(em|px)?$/i.test(action)) {
 								// not perfect globalization, but allows you to use {sp:1,1em}, {sp:1.2em} or {sp:15px}
 								margin = parseFloat( action
 									.replace(/,/,'.')
-									.match(/^sp:((\d+)?([\.|,]\d+)?)(em|px)?$/)[1] || 0
+									.match(/^sp:((\d+)?([\.|,]\d+)?)(em|px)?$/i)[1] || 0
 								);
 								$('<span>&nbsp;</span>')
 									// previously {sp:1} would add 1em margin to each side of a 0 width span
 									// now Firefox doesn't seem to render 0px dimensions, so now we set the
 									// 1em margin x 2 for the width
-									.width( (action.match('px') ? margin + 'px' : (margin * 2) + 'em') )
+									.width( (action.match(/px/i) ? margin + 'px' : (margin * 2) + 'em') )
 									.addClass('ui-keyboard-button ui-keyboard-spacer')
 									.appendTo(newSet);
 							}
 
 							// add empty button
-							if (/^empty(:((\d+)?([\.|,]\d+)?)(em|px)?)?$/.test(action)) {
+							if (/^empty(:((\d+)?([\.|,]\d+)?)(em|px)?)?$/i.test(action)) {
 								margin = (/:/.test(action)) ? parseFloat( action
 									.replace(/,/,'.')
-									.match(/^empty:((\d+)?([\.|,]\d+)?)(em|px)?$/)[1] || 0
+									.match(/^empty:((\d+)?([\.|,]\d+)?)(em|px)?$/i)[1] || 0
 								) : '';
 								base
 									.addKey('', ' ')
@@ -1208,14 +1211,15 @@ $.keyboard = function(el, options){
 							}
 
 							// meta keys
-							if (/^meta\d+\:?(\w+)?/.test(action)){
-								base.addKey(action, action);
+							if (/^meta\d+\:?(\w+)?/i.test(action)){
+								base.addKey(action.split(':')[0], action);
 								continue;
 							}
 
 							// switch needed for action keys with multiple names/shortcuts or
 							// default will catch all others
-							switch(action.split(':')[0]){
+							txt = action.split(':');
+							switch(txt[0].toLowerCase()){
 
 								case 'a':
 								case 'accept':
@@ -1226,7 +1230,7 @@ $.keyboard = function(el, options){
 
 								case 'alt':
 								case 'altgr':
-									base.addKey('alt', 'alt');
+									base.addKey('alt', action);
 									break;
 
 								case 'b':
@@ -1244,14 +1248,14 @@ $.keyboard = function(el, options){
 								// toggle combo/diacritic key
 								case 'combo':
 									base
-										.addKey('combo', 'combo')
+										.addKey('combo', action)
 										.addClass(o.css.buttonAction);
 									break;
 
 								// Decimal - unique decimal point (num pad layout)
 								case 'dec':
 									acceptedKeys.push((base.decimal) ? '.' : ',');
-									base.addKey('dec', 'dec');
+									base.addKey('dec', action);
 									break;
 
 								case 'e':
@@ -1269,12 +1273,12 @@ $.keyboard = function(el, options){
 								// Change sign (for num pad layout)
 								case 'sign':
 									acceptedKeys.push('-');
-									base.addKey('sign', 'sign');
+									base.addKey('sign', action);
 									break;
 
 								case 'space':
 									acceptedKeys.push(' ');
-									base.addKey('space', 'space');
+									base.addKey('space', action);
 									break;
 
 								case 't':
@@ -1283,9 +1287,9 @@ $.keyboard = function(el, options){
 									break;
 
 								default:
-									if ($.keyboard.keyaction.hasOwnProperty(action)){
+									if ($.keyboard.keyaction.hasOwnProperty(txt[0])){
 										// acceptedKeys.push(action);
-										base.addKey(action, action)[isAction ? 'addClass' : 'removeClass'](o.css.buttonAction);
+										base.addKey(txt[0], action)[isAction ? 'addClass' : 'removeClass'](o.css.buttonAction);
 									}
 
 							}
