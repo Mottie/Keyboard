@@ -1847,7 +1847,7 @@ $.fn.caret = function(options,opt2) {
 	} catch(err){
 		supportCaret = false;
 	}
-	if (typeof options === 'object' && options.start && options.end) {
+	if (typeof options === 'object' && 'start' in options && 'end' in options) {
 		start = options.start;
 		end = options.end;
 	} else if (typeof options === 'number' && typeof opt2 === 'number') {
