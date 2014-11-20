@@ -42,6 +42,7 @@ $.keyboard = function(el, options){
 	base.$el.data("keyboard", base);
 
 	base.init = function(){
+		base.settings = options || {};
 		base.options = o = $.extend(true, {}, $.keyboard.defaultOptions, options);
 
 		// Shift and Alt key toggles, sets is true if a layout has more than one keyset
@@ -333,8 +334,8 @@ $.keyboard = function(el, options){
 			lang = lang[0].split('-')[0];
 
 			// set keyboard language
-			o.display = $.extend( true, {}, kblang.en.display, kblang[ lang ].display, options.display );
-			o.combos = $.extend( true, {}, kblang.en.combos, kblang[ lang ].combos, options.combos );
+			o.display = $.extend( true, {}, kblang.en.display, kblang[ lang ].display, base.settings.display );
+			o.combos = $.extend( true, {}, kblang.en.combos, kblang[ lang ].combos, base.settings.combos );
 			o.wheelMessage = kblang[ lang ] && kblang[ lang ].wheelMessage || kblang.en.wheelMessage;
 			// rtl can be in the layout or in the language definition; defaults to false
 			o.rtl = layouts[ o.layout ] && layouts[ o.layout ].rtl || kblang[ lang ] && kblang[ lang ].rtl  || false;
