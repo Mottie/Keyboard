@@ -1,5 +1,5 @@
 /*
- * jQuery UI Virtual Keyboard Autocomplete v1.5 for Keyboard v1.18+ only (3/1/2014)
+ * jQuery UI Virtual Keyboard Autocomplete v1.6 for Keyboard v1.18+ only (11/19/2014)
  *
  * By Rob Garrison (aka Mottie & Fudgey)
  * Licensed under the MIT License
@@ -23,7 +23,7 @@
  *   .keyboard(options)     // keyboard plugin
  *   .autocomplete(options) // jQuery UI autocomplete
  *   .addAutoComplete();    // this keyboard extension
- * 
+ *
  */
 /*jshint browser:true, jquery:true, unused:false */
 (function($){
@@ -41,7 +41,7 @@ $.fn.addAutocomplete = function(){
 		})($.ui.version.split("."));
 
 		// Setup
-		base.autocomplete_init = function(txt, delay, accept){
+		base.autocomplete_init = function(){
 
 			// visible event is fired before this extension is initialized, so check!
 			if (base.options.alwaysOpen && base.isVisible()) {
@@ -59,10 +59,10 @@ $.fn.addAutocomplete = function(){
 							.trigger('keydown.autocomplete');
 					}
 				})
-				.bind('hidden.keyboard', function(e){
+				.bind('hidden.keyboard', function(){
 					base.$el.autocomplete('close');
 				})
-				.bind('autocompleteopen', function(e, ui) {
+				.bind('autocompleteopen', function() {
 					if (base.hasAutocomplete){
 						// reposition autocomplete window next to the keyboard
 						base.$autocomplete.menu.element.position({
@@ -73,8 +73,8 @@ $.fn.addAutocomplete = function(){
 						});
 					}
 				})
-				.bind('autocompleteselect', function(e,ui){
-					var v = ui.item.value;
+				.bind('autocompleteselect', function(e, ui){
+					var v = ui.item && ui.item.value || '';
 					if (base.hasAutocomplete && v !== ''){
 						base.$preview
 							.val( v )
@@ -88,61 +88,25 @@ $.fn.addAutocomplete = function(){
 		// set up after keyboard is visible
 		base.autocomplete_setup = function(){
 			// look for autocomplete
-			base.$autocomplete = base.$el.data('autocomplete') || base.$el.data('uiAutocomplete');
+			base.$autocomplete = base.$el.data('autocomplete') || base.$el.data('uiAutocomplete') || base.$el.data('ui-autocomplete');
 			base.hasAutocomplete = (typeof(base.$autocomplete) === 'undefined') ? false : (base.$autocomplete.options.disabled) ? false : true;
 			// only bind to keydown once
 			if (base.hasAutocomplete) {
-				base.$preview.bind('keydown',function(e){
+				base.$preview.bind('keydown', function(e){
 					// send keys to the autocomplete widget (arrow, pageup/down, etc)
-					return base.autocomplete_input(e);
+					base.$el.val( base.$preview.val() ).triggerHandler(e);
 				});
-				base.$allKeys.bind('mouseup mousedown mouseleave touchstart touchend touchcancel',function(e){
-					base.autocomplete_input(e);
-				});
-			}
-		};
+				base.$allKeys.bind('mouseup mousedown mouseleave touchstart touchend touchcancel',function(){
+					clearTimeout( base.$autocomplete.searching );
+					base.$autocomplete.searching = setTimeout(function() {
+						// only search if the value has changed
+						if ( base.$autocomplete.term !== base.$autocomplete.element.val() ) {
+							base.$autocomplete.selectedItem = null;
+							base.$autocomplete.search( null, event );
+						}
+					}, base.$autocomplete.options.delay );
 
-		// Navigate and select inside autocomplete popup
-		base.autocomplete_input = function(event){
-			// copied from jquery ui autocomplete code to include autocomplete navigation
-			// there might be a better workaround
-			var t, keyCode = $.ui.keyCode;
-			switch( event.keyCode ) {
-			case keyCode.PAGE_UP:
-				base.$autocomplete._move( "previousPage", event );
-				event.preventDefault(); // stop page from moving up
-				break;
-			case keyCode.PAGE_DOWN:
-				base.$autocomplete._move( "nextPage", event );
-				event.preventDefault(); // stop page from moving down
-				break;
-			case keyCode.UP:
-				base.$autocomplete._move( "previous", event );
-				// prevent moving cursor to beginning of text field in some browsers
-				event.preventDefault();
-				break;
-			case keyCode.DOWN:
-				base.$autocomplete._move( "next", event );
-				// prevent moving cursor to end of text field in some browsers
-				event.preventDefault();
-				break;
-			case keyCode.ENTER:
-			case keyCode.NUMPAD_ENTER:
-				t = base.$autocomplete.menu.element.find('#ui-active-menuitem,.ui-state-focus').text() || '';
-				if (t !== '') { base.$preview.val(t); }
-				if (base.autocomplete_new_version) { base.$autocomplete.menu.select( event ); }
-				break;
-			default:
-				// keypress is triggered before the input value is changed
-				clearTimeout( base.$autocomplete.searching );
-				base.$autocomplete.searching = setTimeout(function() {
-					// only search if the value has changed
-					if ( base.$autocomplete.term !== base.$autocomplete.element.val() ) {
-						base.$autocomplete.selectedItem = null;
-						base.$autocomplete.search( null, event );
-					}
-				}, base.$autocomplete.options.delay );
-				break;
+				});
 			}
 		};
 
