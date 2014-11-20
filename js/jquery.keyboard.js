@@ -273,6 +273,7 @@ $.keyboard = function(el, options){
 			// get single target position || target stored in element data (multiple targets) || default @ element
 			base.position.of = base.position.of || base.$el.data('keyboardPosition') || base.$el;
 			base.position.collision = base.position.collision || 'flipfit flipfit';
+			o.position.at = o.usePreview ? o.position.orig_at : o.position.at2;
 			base.$keyboard.position(base.position);
 		}
 
@@ -379,7 +380,7 @@ $.keyboard = function(el, options){
 					.prependTo(base.$keyboard);
 			} else {
 				// No preview display, use element and reposition the keyboard under it.
-				if (!$.isEmptyObject(base.position)) {
+				if (!$.isEmptyObject(o.position)) {
 					o.position.at = o.position.at2;
 				}
 			}
