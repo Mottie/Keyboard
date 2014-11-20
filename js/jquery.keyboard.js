@@ -927,11 +927,16 @@ $.keyboard = function(el, options){
 		if (typeof o.switchInput === "function") {
 			o.switchInput(base, goToNext, isAccepted);
 		} else {
-			base.$keyboard.hide();
+			// base.$keyboard may be an empty array - see #275 (apod42)
+			if (base.$keyboard.length) {
+				base.$keyboard.hide();
+			}
 			var kb, stopped = false,
 				all = $('button, input, textarea, a').filter(':visible'),
 				indx = all.index(base.$el) + (goToNext ? 1 : -1);
+			if (base.$keyboard.length) {
 				base.$keyboard.show();
+			}
 			if (indx > all.length - 1) {
 				stopped = o.stopAtEnd;
 				indx = 0; // go to first input
