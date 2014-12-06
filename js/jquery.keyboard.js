@@ -316,6 +316,32 @@ $.keyboard = function(el, options){
 		return base;
 	};
 
+	base.updateLanguage = function(){
+		// change language if layout is named something like "french-azerty-1"
+		var layouts =  $.keyboard.layouts,
+			lang = o.language || layouts[ o.layout ] && layouts[ o.layout ].lang && layouts[ o.layout ].lang || [ o.language || 'en' ],
+			kblang = $.keyboard.language;
+
+		// some languages include a dash, e.g. 'en-gb' or 'fr-ca'
+		lang = lang[0].split('-')[0];
+
+		// set keyboard language
+		o.display = $.extend( true, {}, kblang.en.display, kblang[ lang ] && kblang[ lang ].display || {}, base.settings.display );
+
+		o.combos = $.extend( true, {}, kblang.en.combos, kblang[ lang ] && kblang[ lang ].combos || {}, base.settings.combos );
+		o.wheelMessage = kblang[ lang ] && kblang[ lang ].wheelMessage || kblang.en.wheelMessage;
+		// rtl can be in the layout or in the language definition; defaults to false
+		o.rtl = layouts[ o.layout ] && layouts[ o.layout ].rtl || kblang[ lang ] && kblang[ lang ].rtl  || false;
+
+		// save default regex (in case loading another layout changes it)
+		base.regex = kblang[ lang ] && kblang[ lang ].comboRegex || $.keyboard.comboRegex;
+		// determine if US "." or European "," system being used
+		base.decimal = /^\./.test(o.display.dec);
+		base.$el
+			.toggleClass('rtl', o.rtl)
+			.css('direction', o.rtl ? 'rtl' : '');
+	};
+
 	base.startup = function(){
 		// ensure base.$preview is defined
 		base.$preview = base.$el;
@@ -325,29 +351,7 @@ $.keyboard = function(el, options){
 			if (o.layout === "custom") { o.layoutHash = 'custom' + base.customHash(); }
 			base.layout = o.layout === "custom" ? o.layoutHash : o.layout;
 
-			// change language if layout is named something like "french-azerty-1"
-			var layouts =  $.keyboard.layouts,
-				lang = o.language || layouts[ o.layout ] && layouts[ o.layout ].lang && layouts[ o.layout ].lang || [ o.language || 'en' ] ,
-				kblang = $.keyboard.language;
-
-			// some languages include a dash, e.g. 'en-gb' or 'fr-ca'
-			lang = lang[0].split('-')[0];
-
-			// set keyboard language
-			o.display = $.extend( true, {}, kblang.en.display, kblang[ lang ].display, base.settings.display );
-			o.combos = $.extend( true, {}, kblang.en.combos, kblang[ lang ].combos, base.settings.combos );
-			o.wheelMessage = kblang[ lang ] && kblang[ lang ].wheelMessage || kblang.en.wheelMessage;
-			// rtl can be in the layout or in the language definition; defaults to false
-			o.rtl = layouts[ o.layout ] && layouts[ o.layout ].rtl || kblang[ lang ] && kblang[ lang ].rtl  || false;
-
-			// save default regex (in case loading another layout changes it)
-			base.regex = kblang[ lang ].comboRegex || $.keyboard.comboRegex;
-			// determine if US "." or European "," system being used
-			base.decimal = /^\./.test(o.display.dec);
-			base.$el
-				.toggleClass('rtl', o.rtl)
-				.css('direction', o.rtl ? 'rtl' : '');
-
+			base.updateLanguage();
 
 			if (typeof $.keyboard.builtLayouts[base.layout] === 'undefined') {
 				if ($.isFunction(o.create)) {
@@ -1156,6 +1160,11 @@ $.keyboard = function(el, options){
 	};
 
 	base.buildKeyboard = function(){
+		// o.display is empty when this is called from the scramble extension (when alwaysOpen:true)
+		if ( $.isEmptyObject(o.display) ) {
+			// set keyboard language
+			base.updateLanguage();
+		}
 		var t, action, row, newSet, isAction,
 			currentSet, key, keys, margin,
 			sets = 0,
