@@ -198,6 +198,7 @@ $.keyboard = function(el, options){
 		// update keyboard after a layout change
 		if (refresh) {
 			base.isOpen = false;
+			base.last.value = base.$preview.val();
 			if (base.$keyboard.length) {
 				base.$keyboard.remove();
 				base.$keyboard = [];
@@ -232,7 +233,7 @@ $.keyboard = function(el, options){
 		}
 		// save starting content, in case we cancel
 		base.originalContent = base.$el.val();
-		base.$preview.val( base.originalContent );
+		base.$preview.val( refresh ? base.last.value : base.originalContent );
 
 		// disable/enable accept button
 		if (o.acceptValid) { base.checkValid(); }
