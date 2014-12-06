@@ -201,6 +201,7 @@ $.keyboard = function(el, options){
 			if (base.$keyboard.length) {
 				base.$keyboard.remove();
 				base.$keyboard = [];
+				base.shiftActive = base.altActive = base.metaActive = false;
 			}
 		}
 
