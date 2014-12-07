@@ -198,7 +198,7 @@ $.keyboard = function(el, options){
 		// update keyboard after a layout change
 		if (refresh) {
 			base.isOpen = false;
-			base.last.value = base.$preview.val();
+			base.last.value = base.$preview && base.$preview.val() || '';
 			if (base.$keyboard.length) {
 				base.$keyboard.remove();
 				base.$keyboard = [];
@@ -591,9 +591,11 @@ $.keyboard = function(el, options){
 				// prevent errors when external triggers attempt to "type" - see issue #158
 				if (!base.$keyboard.is(":visible")){ return false; }
 				// 'key', { action: doAction, original: n, curtxt : n, curnum: 0 }
-				var txt,
-					$this = $(this),
-					action = $this.attr('data-action'),
+				var $this = $(this),
+					$keys = base.getLayers( $this ),
+					txt = $keys.map(function(){ return $(this).attr('data-curtxt'); }).get(),
+					indx = $this.data('curnum'),
+					action = $keys.eq(indx).attr('data-action'),
 					// prevent mousedown & touchstart from both firing events at the same time - see #184
 					timer = new Date().getTime();
 				// don't split colon key. Fixes #264
@@ -601,8 +603,8 @@ $.keyboard = function(el, options){
 				if (timer - (base.last.eventTime || 0) < o.preventDoubleEventTime) { return; }
 				base.last.eventTime = timer;
 				base.$preview.focus();
-				base.$lastKey = $this;
-				base.last.key = $this.attr('data-curtxt');
+				base.$lastKey = $keys.eq(indx);
+				base.last.key = $keys.eq(indx).attr('data-curtxt');
 				// Start caret in IE when not focused (happens with each virtual keyboard button click
 				if (base.checkCaret) { base.$preview.caret( base.last ); }
 				if (action.match('meta')) { action = 'meta'; }
@@ -636,9 +638,9 @@ $.keyboard = function(el, options){
 			.bind('mouseenter.keyboard mouseleave.keyboard touchstart.keyboard', function(e){
 				if (!base.isCurrent()) { return; }
 				var $this = $(this),
-					txt = $this.data('layers') || base.getLayers( $this );
-				// remove duplicates
-				$this.data('layers', txt = $.grep(txt, function(v, k){ return $.inArray(v, txt) === k; }) );
+					$keys = base.getLayers( $this ),
+					txt = ( $keys.length ? $keys.map(function(){ return $(this).attr('data-curtxt') || ''; }).get() : '' ) || [ $this.find('.ui-keyboard-text').text() ];
+
 				if ((e.type === 'mouseenter' || e.type === 'touchstart') && base.el.type !== 'password' &&
 					!$this.hasClass(o.css.buttonDisabled) ){
 					$this
@@ -658,7 +660,7 @@ $.keyboard = function(el, options){
 						// needed or IE flickers really bad
 						.removeClass( (base.el.type === 'password') ? '' : o.css.buttonHover)
 						.attr('title', function(i,t){ return (t === o.wheelMessage) ? '' : t; })
-						.find('span').html( $this.data('original') ); // restore original button text
+						.find('.ui-keyboard-text').html( $this.data('original') ); // restore original button text
 				}
 			})
 			// using "kb" namespace for mouse repeat functionality to keep it separate
@@ -685,8 +687,10 @@ $.keyboard = function(el, options){
 				if (base.wheel) {
 					// deltaY used by newer versions of mousewheel plugin
 					delta = delta || e.deltaY;
-					var n, txt, $this = $(this);
-					txt = $this.data('layers') || base.getLayers( $this );
+					var n,
+						$this = $(this),
+						$keys = base.getLayers( $this ),
+						txt = $keys.length && $keys.map(function(){ return $(this).attr('data-curtxt'); }).get() || [ $this.find('.ui-keyboard-text').text() ];
 					if (txt.length > 1) {
 						n = $this.data('curnum') + (delta > 0 ? -1 : 1);
 						if (n > txt.length-1) { n = 0; }
@@ -699,7 +703,7 @@ $.keyboard = function(el, options){
 						'layers' : txt,
 						'curtxt' : txt[n]
 					});
-					$this.find('span').html( txt[n] );
+					$this.find('.ui-keyboard-text').html( txt[n] );
 					return false;
 				}
 			})
@@ -946,14 +950,10 @@ $.keyboard = function(el, options){
 	};
 
 	// get other layer values for a specific key
-	base.getLayers = function(el){
-		var key, keys;
-		key = el.attr('data-pos');
-		keys = el.closest('.ui-keyboard').find('button[data-pos="' + key + '"]').map(function(){
-			// added '> span' because jQuery mobile adds multiple spans inside the button
-			return $(this).find('> span').html();
-		}).get();
-		return keys;
+	base.getLayers = function($el){
+		var key = $el.attr('data-pos'),
+			$keys = $el.closest('.ui-keyboard').find('button[data-pos="' + key + '"]');
+		return $keys.filter(function(){ return $(this).find('.ui-keyboard-text').text() !== ''; });
 	};
 
 	// Go to next or prev inputs
@@ -1132,7 +1132,7 @@ $.keyboard = function(el, options){
 			//  (e.g. "~" is a regular key, class = 'ui-keyboard-126'
 			//  (126 is the unicode value - same as typing &#126;)
 			.addClass( (kn === '' ? '' : 'ui-keyboard-' + kn + keyType + ' ') + o.css.buttonDefault)
-			.html('<span>' + n + '</span>')
+			.html('<span class="ui-keyboard-text">' + n + '</span>')
 			.appendTo(base.temp[0]);
 	};
 
@@ -1229,7 +1229,7 @@ $.keyboard = function(el, options){
 									.replace(/,/,'.')
 									.match(/^sp:((\d+)?([\.|,]\d+)?)(em|px)?$/i)[1] || 0
 								);
-								$('<span>&nbsp;</span>')
+								$('<span class="ui-keyboard-text">&nbsp;</span>')
 									// previously {sp:1} would add 1em margin to each side of a 0 width span
 									// now Firefox doesn't seem to render 0px dimensions, so now we set the
 									// 1em margin x 2 for the width
