@@ -77,6 +77,19 @@ Wiki: [Home](https://github.com/Mottie/Keyboard/wiki/Home) | [FAQ](https://githu
 
 Only the latest changes will be shown below, see the wiki log to view older versions.
 
+### Version 1.19.2 (12/26/2014)
+
+* Core
+  * Update keyboard languages before building.
+  * Reset active keysets when switching layouts.
+  * Restore contents of preview when swapping layouts.
+  * Fix clicking on mousewheel altered keys; empty keys are now ignored.
+* Layouts
+  * Fix mislabeled languages.
+  * Make corrections to Hindi layout. See [issue #323](https://github.com/Mottie/Keyboard/issues/323).
+  * Add Persian (Farsi) layout. Thanks to Majid R via email.
+  * Add layouts generated & modified from the [greywyvern virtual keyboard](http://www.greywyvern.com/code/javascript/keyboard).
+
 ### Version 1.19.1 (11/20/2014)
 
 * Num layout now uses `{dec}` instead of a decimal point. Fixes [issue #318](https://github.com/Mottie/Keyboard/issues/318).
@@ -121,13 +134,3 @@ Only the latest changes will be shown below, see the wiki log to view older vers
   * Autocomplete extension: now works with jQuery v2.1+. Fixes [issue #291](https://github.com/Mottie/Keyboard/issues/291).
   * Typing extension: add `lockTypeIn` option & fix javascript error while user types.
   * Scramble extension: Keyboard no longer disappears when scramble initializes more than once. Fixes [issue #283](https://github.com/Mottie/Keyboard/issues/283).
-
-### Version 1.18.12 (7/18/2014)
-
-* Added an internal version number. Access it as follows: `$('#keyboard').data('keyboard').version`
-* Updated mousewheel plugin &amp; made code backwards compatible.
-* Added `byKeySet` to scramble extension to allow scrambling of just one keyset, then making all other keysets match it. Fixes [issue #288](https://github.com/Mottie/Keyboard/issues/288).
-
-### Version 1.18.11 (7/16/2014)
-
-* Scramble extension no longer breaks layout when initialized twice. Fixes [issue #283](https://github.com/Mottie/Keyboard/issues/283).
