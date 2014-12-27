@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+
+	<title>Virtual Keyboard Language Layouts</title>
+
+	<!-- demo -->
+	<link href="demo/demo.css" rel="stylesheet">
+
+	<!-- jQuery & jQuery UI + theme (required) -->
+	<link href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.11.2/themes/ui-darkness/jquery-ui.css" rel="stylesheet">
+	<script src="http://code.jquery.com/jquery-2.1.1.min.js"></script>
+	<script src="http://code.jquery.com/ui/1.11.2/jquery-ui.min.js"></script>
+	<script src="http://code.jquery.com/jquery-migrate-1.2.1.min.js"></script>
+	<!-- keyboard widget css & script (required) -->
+	<link href="css/keyboard.css" rel="stylesheet">
+	<script src="js/jquery.keyboard.js"></script>
+
+	<!-- keyboard extensions (optional) -->
+	<script src="js/jquery.mousewheel.js"></script>
+	<script src="js/jquery.keyboard.extension-typing.js"></script>
+
+	<!-- preloaded keyboard layout -->
+	<script src="layouts/all.js" charset="utf-8"></script>
+
+	<script>
+	$(function(){
+
+		var t,
+			o = '',
+			layouts = [];
+
+		// Change display language, if the definitions are available
+		showKb = function(layout){
+			var kb = $('#multi').getkeyboard();
+			kb.options.layout = layout;
+			// true flag causes a keyboard refresh
+			kb.reveal(true);
+		};
+
+		$.each(jQuery.keyboard.layouts, function(i, l){
+			if (l.name) {
+				layouts.push([i,l.name]);
+			}
+		});
+		// sort select options by language name, not
+		layouts.sort( function( a, b ) {
+			return a[1] > b[1] ? 1 : a[1] < b[1] ? -1 : 0;
+		});
+		$.each(layouts, function(i, l){
+			o += '<option value="' + l[0] + '">' + l[1] + '</option>';
+		});
+
+		$('#multi').keyboard({
+			layout: 'qwerty',
+			stayOpen: true
+		})
+		// activate the typing extension
+		.addTyping({
+			showTyping: true,
+			delay: 200
+		});
+
+		$('#lang')
+			.html(o)
+			.change(function(){
+				var kb = $('#multi'),
+					$this = $(this),
+					$opt = $this.find('option:selected'),
+					layout = $this.val();
+				$('h2').text( $opt.text() );
+				showKb( layout );
+			}).trigger('change');
+
+	});
+	</script>
+	<style>
+	.rtl {
+		text-align: right;
+	}
+	</style>
+</head>
+<body>
+
+<div id="page-wrap">
+	<!-- Links to other demo pages & docs -->
+	<div id="nav">
+		<a href="index.html">Main Demo</a>
+		<a href="basic.html">Basic</a>
+		<a href="mobile.html">Mobile</a>
+		<a href="layouts.html">Layouts</a>
+		<a class="current" href="layouts2.html">Layouts2</a>
+		<a href="scramble.html">Scramble</a>
+		<a href="navigate.html">Navigate</a>
+		<a href="calculator.html">Calculator</a>
+		<a class="play" href="http://jsfiddle.net/Mottie/MK947/">Playground</a>
+		<a class="git" href="https://github.com/Mottie/Keyboard/wiki">Documentation</a>
+		<a class="git" href="https://github.com/Mottie/Keyboard/archive/master.zip">Download</a>
+		<a class="issue" href="https://github.com/Mottie/Keyboard/issues">Issues</a><br><br>
+	</div>
+	<!-- End Links -->
+
+	<h1><a href="https://github.com/Mottie/Keyboard">Virtual Keyboard "All.js" Language Layouts</a></h1>
+	<h4>This is a work in progress.</h4>
+
+	<div class="block2">
+		<select id="lang"></select>
+		<div style="height: 50px;"></div>
+
+		<h2></h2>
+		<input id="multi" type="text" />
+	</div>
+
+	<br class="clear" />
+
+	<div id="footer2">
+		<div>
+			All layouts in this file have been generated & modified from the<br>
+			<a href="http://www.greywyvern.com/code/javascript/keyboard">Javascript Graphical / Virtual Keyboard Interface</a><br>
+			Copyright (c) 2014 - GreyWyvern<br>
+			Licenced for free distribution under the BSDL
+		</div>
+	</div>
+
+</div>
+
+</body>
+</html>

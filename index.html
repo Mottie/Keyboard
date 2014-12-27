@@ -39,6 +39,7 @@
 		<a href="basic.html">Basic</a>
 		<a href="mobile.html">Mobile</a>
 		<a href="layouts.html">Layouts</a>
+		<a href="layouts2.html">Layouts2</a>
 		<a href="scramble.html">Scramble</a>
 		<a href="navigate.html">Navigate</a>
 		<a href="calculator.html">Calculator</a>
@@ -50,8 +51,8 @@
 	<!-- End Links -->
 
 	<h1><a href="https://github.com/Mottie/Keyboard">Virtual Keyboard</a></h1>
-	<h5>Original by 
-		<a href="http://jsatt.blogspot.com/2010/01/on-screen-keyboard-widget-using-jquery.html">Jeremy Satterfield</a>, 
+	<h5>Original by
+		<a href="http://jsatt.blogspot.com/2010/01/on-screen-keyboard-widget-using-jquery.html">Jeremy Satterfield</a>,
 		updated &amp; maintained by <a href="http://wowmotty.blogspot.com/2010/11/jquery-ui-keyboard-widget.html">Rob Garrison</a>
 	</h5>
 
@@ -111,7 +112,7 @@ $('.qwerty:eq(0)')
 &lt;input class="qwerty" type="password"&gt;</pre>
 			<h2>Script</h2>
 			<pre class="prettyprint lang-js">$('.qwerty:eq(1)')
-	.keyboard({ 
+	.keyboard({
 		openOn : null,
 		stayOpen : true,
 		layout : 'qwerty'
@@ -475,7 +476,7 @@ meta
 $('#map').keyboard({
 	layout: 'custom',
 	customLayout: {
-		'default' : [ 
+		'default' : [
 			// "n(a):title_or_tooltip"; n = new key, (a) = actual key, ":label" = title_or_tooltip (use an underscore "_" in place of a space " ")
 			'\u03b1(a):lower_case_alpha_(type_a) \u03b2(b):lower_case_beta_(type_b) \u03b3(c):lower_case_gamma_(type_c) \u03b4(d):lower_case_delta_(type_d) \u03b5(e):lower_case_epsilon_(type_e) \u03b6(f):lower_case_zeta_(type_f) \u03b7(g):lower_case_eta_(type_g)', // lower case Greek
 			'{shift} {accept} {cancel}'
@@ -512,7 +513,7 @@ $('.hiddenInput').click(function(){
 // Initialize keyboard script on hidden input
 // set "position.of" to the same link as above
 $('#hidden')
-	.keyboard({ 
+	.keyboard({
 		layout   : 'qwerty',
 		position : {
 			of : $('.hiddenInput'),
