@@ -591,20 +591,31 @@ $.keyboard = function(el, options){
 				// prevent errors when external triggers attempt to "type" - see issue #158
 				if (!base.$keyboard.is(":visible")){ return false; }
 				// 'key', { action: doAction, original: n, curtxt : n, curnum: 0 }
-				var $this = $(this),
+				var indx, action, $key,
+					key = this,
+					$this = $(key),
+					// get keys from other layers/keysets (shift, alt, meta, etc) that line up by data-position
 					$keys = base.getLayers( $this ),
 					txt = $keys.map(function(){ return $(this).attr('data-curtxt'); }).get(),
-					indx = $this.data('curnum'),
-					action = $keys.eq(indx).attr('data-action'),
 					// prevent mousedown & touchstart from both firing events at the same time - see #184
 					timer = new Date().getTime();
+				// find index of mousewheel selected key
+				$keys.each(function(i, v){
+					if (v === key) {
+						indx = i;
+						return false;
+					}
+				});
+				// target mousewheel selected key
+				$key = indx < 0 ? $this : $keys.eq(indx + $this.data('curnum'));
+				action = $key.attr('data-action');
 				// don't split colon key. Fixes #264
 				action = action === ':' ? ':' : action.split(':')[0];
 				if (timer - (base.last.eventTime || 0) < o.preventDoubleEventTime) { return; }
 				base.last.eventTime = timer;
 				base.$preview.focus();
-				base.$lastKey = $keys.eq(indx);
-				base.last.key = $keys.eq(indx).attr('data-curtxt');
+				base.$lastKey = $key;
+				base.last.key = $key.attr('data-curtxt');
 				// Start caret in IE when not focused (happens with each virtual keyboard button click
 				if (base.checkCaret) { base.$preview.caret( base.last ); }
 				if (action.match('meta')) { action = 'meta'; }
