@@ -77,6 +77,11 @@ Wiki: [Home](https://github.com/Mottie/Keyboard/wiki/Home) | [FAQ](https://githu
 
 Only the latest changes will be shown below, see the wiki log to view older versions.
 
+### Version 1.19.3 (1/3/2015)
+
+* Core: correct problem with typed characters (introduced in 1.19.2). Fixes [issue #324](https://github.com/Mottie/Keyboard/issues/324).
+* Typing extension: Fix issue with callback being called repeatedly.
+
 ### Version 1.19.2 (12/26/2014)
 
 * Core

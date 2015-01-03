@@ -734,7 +734,7 @@ $.keyboard = $.keyboard || {};
 })(jQuery);
 
 /*
- * jQuery UI Virtual Keyboard Typing Simulator v1.5 for Keyboard v1.18+ only (11/19/2014)
+ * jQuery UI Virtual Keyboard Typing Simulator v1.6 for Keyboard v1.18+ only (1/3/2015)
  *
  * By Rob Garrison (aka Mottie & Fudgey)
  * Licensed under the MIT License
@@ -860,14 +860,13 @@ $.keyboard = $.keyboard || {};
 					clearTimeout(base.typing_timer);
 					return;
 				}
-
 				if (!base.typing_event){
 
 					if (o.init !== true) {
 						o.init = true;
 						base.options.lockInput = o.lockTypeIn;
 						txt = o.text = txt || '';
-						o.len = txt.length;
+						o.len = txt.length - 1;
 						o.delay = delay || 300;
 						o.current = 0; // position in text string
 						if (callback) {
@@ -948,13 +947,14 @@ $.keyboard = $.keyboard || {};
 
 				}
 
-				if (o.current < o.len){
+				if (o.current <= o.len && o.len !== 0){
 					if (!base.isVisible()) { return; } // keyboard was closed, abort!!
 					setTimeout(function(){ base.typeIn(); }, o.delay);
 				} else if (o.len !== 0){
 					// o.len is zero when the user typed on the actual keyboard during simulation
 					base.typing_event = o.init = false;
 					base.options.lockInput = o.savedLockInput;
+					o.len = o.current = 0;
 					if ($.isFunction(o.callback)) {
 						// ensure all typing animation is done before the callback
 						setTimeout(function(){
@@ -1003,4 +1003,3 @@ $.keyboard = $.keyboard || {};
 		});
 	};
 })(jQuery);
-

@@ -1,6 +1,6 @@
 {
   "name": "keyboard",
-  "version": "1.19.2",
+  "version": "1.19.3",
   "main": ["./js/jquery.keyboard.js", "./css/keyboard.css"],
   "ignore": [
       "**/.*"
