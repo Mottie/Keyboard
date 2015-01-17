@@ -81,7 +81,9 @@ button.btn-default:active:hover {
 .alignRight { text-align: right; }
 
 #info { margin: 220px auto 0 auto; width: 720px;}
-#info ul { width: 350px; float: left; padding-right: 50px; }
+#info > ul { width: 350px; float: left; padding-right: 50px; }
+#info > ul > li > strong { color: #53a5ff; }
+#info > ul ul strong { color: #fff; }
 #info div.nav { width: 280px; float: left; padding-top: 20px; }
 #info button {
 	width: 90px;
@@ -92,20 +94,23 @@ button.btn-default:active:hover {
 	-webkit-border-radius: 5px;
 	margin: 1px;
 }
-#info button:hover {
+#info button:not(.half):hover {
 	background: #aaa;
 }
-.up, .left, .right, .down {
+#info .half {
+	width: 44px;
+}
+button.nav {
 	color: #fff;
 	background: #1e5799;
 	border: #2671c4 1px solid;
 }
-#info .up:hover, #info .left:hover, #info .right:hover, #info .down:hover {
+#info button.nav:hover {
 	color: #000;
 	background: #2ab0ed;
 }
 #info .key { font-weight: 700; color: #59b4d4; }
-#info .enter {
+#info .active, #info .toggle.active {
 	background: #f58400;
 }
 .underline { text-decoration: underline; }

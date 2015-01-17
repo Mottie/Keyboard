@@ -22,7 +22,7 @@
  *  $('#keyboard1')
  *   .keyboard(options)     // keyboard plugin
  *   .addNavigation();    // this keyboard extension
- * 
+ *
  */
 /*jshint browser:true, jquery:true, unused:false */
 (function($){
@@ -41,8 +41,22 @@ $.keyboard.navigationKeys = {
 	up         : 38,
 	right      : 39,
 	down       : 40,
+	// move caret WITH navigate toggle active
 	caretrt    : 45, // Insert key
-	caretlt    : 46  // delete key
+	caretlt    : 46, // delete key
+
+	// ** custom navigationKeys functions **
+	// move caret without navigate toggle active
+	caretrgt   : function(kb){
+		// keyaction right does not actually set the caret, so we need to do it here
+		$.keyboard.keyaction.right(kb);
+		kb.$preview.focus().caret( kb.last );
+	},
+	caretlft   : function(kb){
+		// keyaction left does not actually set the caret, so we need to do it here
+		$.keyboard.keyaction.left(kb);
+		kb.$preview.focus().caret( kb.last );
+	}
 };
 
 $.fn.addNavigation = function(options){
@@ -52,7 +66,7 @@ $.fn.addNavigation = function(options){
 			defaults = {
 				position   : [0,0],     // set start position [row-number, key-index]
 				toggleMode : false,     // true = navigate the virtual keyboard, false = navigate in input/textarea
-				
+
 				focusClass : 'hasFocus' // css class added when toggle mode is on
 			};
 		if (!base) { return; }
@@ -109,7 +123,7 @@ $.fn.addNavigation = function(options){
 			var vis = base.$keyboard.find('.ui-keyboard-keyset:visible'),
 				maxRow = vis.find('.ui-keyboard-button-endrow').length - 1,
 				maxIndx = vis.find('.ui-keyboard-button[data-pos^="' + row + ',"]').length - 1,
-				p = base.lastCaret,
+				p = base.last,
 				l = base.$preview.val().length,
 				k = base.navigation_keys;
 
@@ -122,16 +136,15 @@ $.fn.addNavigation = function(options){
 				case k.up       : row += (row > 0) ? -1 : 0; break; // Up
 				case k.right    : indx += 1; break; // Right
 				case k.down     : row += (row + 1 > maxRow) ? 0 : 1; break; // Down
-				case k.caretRt  : p.start++; break; // caret right
-				case k.caretLt  : p.start--; break; // caret right
+				case k.caretrt  : p.start++; break; // caret right
+				case k.caretlt  : p.start--; break; // caret left
 			}
 
 			// move caret
-			if (key === k.caretRt || key === k.caretLt) {
+			if (key === k.caretrt || key === k.caretlt) {
 				p.start = p.start < 0 ? 0 : p.start > l ? l : p.start;
-				p.end = p.start;
-				base.lastCaret = p;
-				base.$preview.focus().caret( p.start, p.start );
+				base.last.start = base.last.end = p.end = p.start;
+				base.$preview.focus().caret( base.last );
 			}
 
 			// get max index of new row
@@ -158,10 +171,24 @@ $.fn.addNavigation = function(options){
 				base.checkKeys(e.which, true); // disable toggle mode & revert navigation options
 			})
 			.bind('navigate navigateTo', function(e, row, indx){
-				// no row given, check if it's a key name
+				var key;
+				// no row given, check if it's a navigation key or keyaction
 				row = isNaN(row) ? row.toLowerCase() : row;
-				if (base.navigation_keys.hasOwnProperty(row)) {
-					base.checkKeys( base.navigation_keys[row] );
+				if (row in base.navigation_keys) {
+					key = base.navigation_keys[row];
+					if (isNaN(key) && key in $.keyboard.keyaction) {
+						// defined navigation_keys string name is a defined keyaction
+						$.keyboard.keyaction[key]( base, this, e );
+					} else if ($.isFunction(key)) {
+						// custom function defined in navigation_keys
+						key(base);
+					} else {
+						// key (e.which value) is defined in navigation_keys
+						base.checkKeys(key);
+					}
+				} else if ( typeof row === 'string' && row in $.keyboard.keyaction ) {
+					// navigate called directly with a keyaction name
+					$.keyboard.keyaction[row]( base, this, e );
 				} else {
 					base.navigateKeys(null, row, indx);
 				}
