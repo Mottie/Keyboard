@@ -170,6 +170,9 @@ $.fn.addNavigation = function(options){
 			.bind('inactive.keyboard hidden.keyboard', function(e){
 				base.checkKeys(e.which, true); // disable toggle mode & revert navigation options
 			})
+			.bind('keysetChange.keyboard', function(){
+				base.navigateKeys(null);
+			})
 			.bind('navigate navigateTo', function(e, row, indx){
 				var key;
 				// no row given, check if it's a navigation key or keyaction

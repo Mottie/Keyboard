@@ -849,6 +849,7 @@ $.keyboard = function(el, options){
 			.find('.ui-keyboard-keyset' + key + base.rows[toShow]).show().end()
 			.find('.ui-keyboard-actionkey.ui-keyboard' + key).addClass(o.css.buttonAction);
 		base.last.keyset = [ base.shiftActive, base.altActive, base.metaActive ];
+		base.$el.trigger( 'keysetChange.keyboard', [ base, base.el ] );
 	};
 
 	// check for key combos (dead keys)
