@@ -28,11 +28,14 @@
 $.keyboard = $.keyboard || {};
 	$.fn.addScramble = function(options) {
 		//Set the default values, use comma to separate the settings, example:
-		var defaults = {
+		var savedLayout,
+		defaults = {
 			targetKeys    : /[a-z\d]/i, // keys to randomize
-			byRow         : true, // randomize by row, otherwise randomize all keys
-			byKeySet      : false,// if true, randomize one keyset & duplicate
-			randomizeOnce : true  // if true, randomize only once on keyboard visible
+			byRow         : true,  // randomize by row, otherwise randomize all keys
+			byKeySet      : false, // if true, randomize one keyset & duplicate
+			randomizeOnce : true,  // if true, randomize only once on keyboard visible
+			sameForAll    : false, // use the same scrambled keyboard for all targetted keyboards
+			init          : null   // function(keyboard){}
 		};
 		return this.each(function() {
 			// make sure a keyboard is attached
@@ -181,16 +184,24 @@ $.keyboard = $.keyboard || {};
 			};
 
 			// scrambled layout already initialized
-			if (!/^scrambled/.test(base.options.layout)) {
-				base.orig_layout = base.options.layout;
-				base.options.layout = "scrambled" + Math.round(Math.random() * 10000);
+			if (!/^scrambled/.test(opts.layout)) {
+				base.orig_layout = opts.layout;
+				savedLayout = savedLayout || 'scrambled' + Math.round(Math.random() * 10000);
+				opts.layout = o.sameForAll ? savedLayout : 'scrambled' + Math.round(Math.random() * 10000);
 			}
 
 			// special case when keyboard is set to always be open
 			if (opts.alwaysOpen && base.$keyboard.length) {
 				setTimeout(function(){
 					base.$keyboard = base.scramble_setup(base.$keyboard);
+					if ($.isFunction(o.init)) {
+						o.init(base);
+					}
 				}, 0);
+			} else {
+				if ($.isFunction(o.init)) {
+					o.init(base);
+				}
 			}
 
 		});
