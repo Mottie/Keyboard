@@ -637,7 +637,6 @@ $.keyboard = function(el, options){
 				// set caret if caret moved by action function; also, attempt to fix issue #131
 				base.$preview.focus().caret( base.last );
 				base.checkCombos();
-				base.checkMaxLength();
 				base.$el.trigger( 'change.keyboard', [ base, base.el ] );
 				base.last.val = base.$preview.val();
 
@@ -929,6 +928,8 @@ $.keyboard = function(el, options){
 
 		base.last.start = pos.start;
 		base.last.end = pos.end;
+
+		base.checkMaxLength();
 
 		if (o.acceptValid) { base.checkValid(); }
 
@@ -1897,6 +1898,7 @@ $.keyboard = function(el, options){
 	$.fn.keyboard = function(options){
 		return this.each(function(){
 			if (!$(this).data('keyboard')) {
+				/*jshint nonew:false */
 				(new $.keyboard(this, options));
 			}
 		});
