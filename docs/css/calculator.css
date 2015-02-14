@@ -27,23 +27,23 @@
 .ui-keyboard-invx span {
 	display: block;
 	text-indent: -999em;
-	background: url(calc-1overx.png) center center no-repeat;
+	background: url(images/calc-1overx.png) center center no-repeat;
 }
 /* add y root of x image to button */
 .ui-keyboard-yroot span {
 	display: block;
 	text-indent: -999em;
-	background: url(calc-yroot.png) center center no-repeat;
+	background: url(images/calc-yroot.png) center center no-repeat;
 }
 /* add e^x image to button */
 .ui-keyboard-ex span {
 	display: block;
 	text-indent: -999em;
-	background: url(calc-ex.png) center center no-repeat;
+	background: url(images/calc-ex.png) center center no-repeat;
 }
 /* add x^y image to button */
 .ui-keyboard-xy span {
 	display: block;
 	text-indent: -999em;
-	background: url(calc-xy.png) center center no-repeat;
+	background: url(images/calc-xy.png) center center no-repeat;
 }

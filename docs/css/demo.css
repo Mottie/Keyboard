@@ -4,7 +4,7 @@ html, body, div, input, textarea {
  font-size: 14px;
 }
 
-body { background: #333; color: #ddd; height: 98%; margin: 0 auto; padding: 0; }
+body { background: #181818; color: #ddd; height: 98%; margin: 0 auto; padding: 0; }
 a:link { color: #9fcdff; text-decoration: none; }
 a:hover { color: #fff; }
 a:visited,a:active { color: #53a5ff; }
@@ -12,7 +12,8 @@ a:visited,a:active { color: #53a5ff; }
 #page-wrap { display: block; width: 90%; margin: 0 auto; text-align: center; height: 98%; min-height: 350px; }
 
 h1, h2, h3, h4 { color: #ddd; text-align: center; }
-h2 { margin: 5px; font-size: 130%; cursor: pointer; text-transform: capitalize; }
+.block h2 { margin: 5px; font-size: 130%; cursor: pointer; }
+h2 img { margin-bottom: 7px; }
 
 #nav { display: block; width: auto; text-align: center; margin: 20px auto 0 auto; line-height: 45px; }
 #nav a { text-align: center; background: #000; color: #FFF; border-radius: 5px; -moz-border-radius: 5px; -webkit-border-radius: 5px; padding: 10px; white-space: nowrap; }
@@ -20,6 +21,8 @@ h2 { margin: 5px; font-size: 130%; cursor: pointer; text-transform: capitalize; 
 #nav a.play { background: #060; }
 #nav a.issue { background: #600; }
 #nav a:hover,#nav a.current{ background: #555; }
+
+.github-btn { border: 0; }
 
 #switcher, #wrap { width: 260px; margin: 10px auto; }
 #switcher a { margin: 0 auto; }
@@ -58,8 +61,8 @@ button.btn-default:active:hover {
  overflow: auto;
  width: 100%;
  margin: 50px auto 0 auto;
- border: #555 1px solid;
- z-index: 1;
+ padding: 10px;
+
 }
 #showcode pre {
  background: #222;

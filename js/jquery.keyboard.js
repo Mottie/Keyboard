@@ -1,6 +1,4 @@
-/*!
-jQuery UI Virtual Keyboard
-Version 1.19.3
+/*! jQuery UI Virtual Keyboard v1.19.3 *//*
 
 Author: Jeremy Satterfield
 Modified: Rob Garrison (Mottie on github)

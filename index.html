@@ -6,9 +6,9 @@
 	<title>Virtual Keyboard</title>
 
 	<!-- jQuery & jQuery UI + theme (required) -->
-	<link href="http://code.jquery.com/ui/1.10.3/themes/ui-darkness/jquery-ui.css" rel="stylesheet">
-	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.8/jquery.min.js"></script>
-	<script src="http://code.jquery.com/ui/1.10.3/jquery-ui.min.js"></script>
+	<link href="docs/css/jquery-ui.min.css" rel="stylesheet">
+	<script src="docs/js/jquery.min.js"></script>
+	<script src="docs/js/jquery-ui.min.js"></script>
 
 	<!-- keyboard widget css & script (required) -->
 	<link href="css/keyboard.css" rel="stylesheet">
@@ -20,12 +20,12 @@
 	<script src="js/jquery.keyboard.extension-autocomplete.js"></script>
 
 	<!-- demo only -->
-	<link rel="stylesheet" href="http://netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css">
-	<link href="demo/demo.css" rel="stylesheet">
-	<link href="demo/prettify.css" rel="stylesheet">
-	<script src="demo/demo.js"></script>
-	<script src="http://mottie.github.com/Jatt/js/jquery.jatt.min.js"></script> <!-- tooltips -->
-	<script src="demo/prettify.js"></script> <!-- syntax highlighting -->
+	<link rel="stylesheet" href="docs/css/bootstrap.min.css">
+	<link href="docs/css/demo.css" rel="stylesheet">
+	<link href="docs/css/prettify.css" rel="stylesheet">
+	<script src="docs/js/demo.js"></script>
+	<script src="docs/js/jquery.jatt.min.js"></script> <!-- tooltips -->
+	<script src="docs/js/prettify.js"></script> <!-- syntax highlighting -->
 
 </head>
 
@@ -36,13 +36,14 @@
 	<!-- Links to other demo pages & docs -->
 	<div id="nav">
 		<a class="current" href="index.html">Main Demo</a>
-		<a href="basic.html">Basic</a>
-		<a href="mobile.html">Mobile</a>
-		<a href="layouts.html">Layouts</a>
-		<a href="layouts2.html">Layouts2</a>
-		<a href="scramble.html">Scramble</a>
-		<a href="navigate.html">Navigate</a>
-		<a href="calculator.html">Calculator</a>
+		<a href="docs/basic.html">Basic</a>
+		<a href="docs/mobile.html">Mobile</a>
+		<a href="docs/layouts.html">Layouts</a>
+		<a href="docs/layouts2.html">Layouts2</a>
+		<a href="docs/scramble.html">Scramble</a>
+		<a href="docs/navigate.html">Navigate</a>
+		<a href="preview-keyset.html">Keyset</a>
+		<a href="docs/calculator.html">Calculator</a>
 		<a class="play" href="http://jsfiddle.net/Mottie/MK947/">Playground</a>
 		<a class="git" href="https://github.com/Mottie/Keyboard/wiki">Documentation</a>
 		<a class="git" href="https://github.com/Mottie/Keyboard/archive/master.zip">Download</a>
@@ -51,6 +52,8 @@
 	<!-- End Links -->
 
 	<h1><a href="https://github.com/Mottie/Keyboard">Virtual Keyboard</a></h1>
+	<iframe class="github-btn" src="http://ghbtns.com/github-btn.html?user=Mottie&amp;repo=keyboard&amp;type=fork&amp;count=true" width="90" height="20" title="Fork on GitHub"></iframe>
+	<iframe class="github-btn" src="http://ghbtns.com/github-btn.html?user=Mottie&amp;repo=keyboard&amp;type=watch&amp;count=true" width="100" height="20" title="Star on GitHub"></iframe>
 	<h5>Original by
 		<a href="http://jsatt.blogspot.com/2010/01/on-screen-keyboard-widget-using-jquery.html">Jeremy Satterfield</a>,
 		updated &amp; maintained by <a href="http://wowmotty.blogspot.com/2010/11/jquery-ui-keyboard-widget.html">Rob Garrison</a>
@@ -76,9 +79,9 @@
 			* Autocomplete.
 		</small>
 		<div class="code ui-corner-all">
-			<h2>HTML</h2>
+			<h4>HTML</h4>
 			<pre class="prettyprint lang-html">&lt;input class="qwerty" type="text" placeholder="Enter something..."&gt;</pre>
-			<h2>Script</h2>
+			<h4>Script</h4>
 			<pre class="prettyprint lang-js">// Autocomplete demo
 var availableTags = ["ActionScript", "AppleScript", "Asp", "BASIC", "C", "C++", "Clojure",
 	"COBOL", "ColdFusion", "Erlang", "Fortran", "Groovy", "Haskell", "Java", "JavaScript",
@@ -97,7 +100,7 @@ $('.qwerty:eq(0)')
 	<div class="block">
 		<h2>
 			<span class="tooltip-jatt" title="Click, then scroll down to see this code">QWERTY Password</span>
-			<img id="passwd" class="tooltip-jatt" title="Click to open the virtual keyboard" src="demo/keyboard.png">
+			<img id="passwd" class="tooltip-jatt" title="Click to open the virtual keyboard" src="docs/css/images/keyboard.svg">
 		</h2>
 		<input id="password" class="qwerty" type="password">
 		<br>
@@ -107,10 +110,10 @@ $('.qwerty:eq(0)')
 			* Key hover disabled in this type.
 		</small>
 		<div class="code ui-corner-all">
-			<h2>HTML</h2>
-			<pre class="prettyprint lang-html">&lt;img id="passwd" class="tooltip-jatt" title="Click to open the virtual keyboard" src="demo/keyboard.png"&gt;
+			<h4>HTML</h4>
+			<pre class="prettyprint lang-html">&lt;img id="passwd" class="tooltip-jatt" title="Click to open the virtual keyboard" src="docs/css/images/keyboard.svg"&gt;
 &lt;input class="qwerty" type="password"&gt;</pre>
-			<h2>Script</h2>
+			<h4>Script</h4>
 			<pre class="prettyprint lang-js">$('.qwerty:eq(1)')
 	.keyboard({
 		openOn : null,
@@ -137,9 +140,9 @@ $('#passwd').click(function(){
 			* Known readonly bug in Safari.
 		</small>
 		<div class="code ui-corner-all">
-			<h2>HTML</h2>
+			<h4>HTML</h4>
 			<pre class="prettyprint lang-html">&lt;textarea class="qwerty"&gt;&lt;/textarea&gt;</pre>
-			<h2>Script</h2>
+			<h4>Script</h4>
 			<pre class="prettyprint lang-js">$('.qwerty:eq(2)')
 	.keyboard({
 		layout   : 'qwerty',
@@ -152,18 +155,18 @@ $('#passwd').click(function(){
 	<div class="block">
 		<h2>
 			<span class="tooltip-jatt" title="Click, then scroll down to see this code">International</span>
-			<img id="inter-type" class="tooltip-jatt" title="Try out the typing extension!" src="demo/keyboard.png">
+			<img id="inter-type" class="tooltip-jatt" title="Try out the typing extension!" src="docs/css/images/keyboard.svg">
 		</h2>
 		<textarea id="inter"></textarea>
 		<br>
 		<small>
-			* Bootstrap theme.
+			* <a href="http://bootswatch.com/darkly/">Bootswatch Darkly</a> theme.
 		</small>
 		<div class="code ui-corner-all">
-			<h2>HTML</h2>
-			<pre class="prettyprint lang-html">&lt;img id="inter-type" class="tooltip-jatt" title="Try out the typing extension!" src="demo/keyboard.png"&gt;
+			<h4>HTML</h4>
+			<pre class="prettyprint lang-html">&lt;img id="inter-type" class="tooltip-jatt" title="Try out the typing extension!" src="docs/css/images/keyboard.svg"&gt;
 &lt;textarea id="inter"&gt;&lt;/textarea&gt;</pre>
-			<h2>CSS</h2>
+			<h4>CSS</h4>
 			<pre class="prettyprint lang-css">/* override bootstrap active state */
 button.btn-default:active {
 	background-color: #FFF;
@@ -173,15 +176,17 @@ button.btn-default:active {
 button.btn-default:active:hover {
 	background-color: #3276B1;
 }</pre>
-			<h2>Script</h2>
+			<h4>Script</h4>
 			<pre class="prettyprint lang-js">$('#inter')
 	.keyboard({
 		layout: 'international',
 		css: {
 			// input & preview
-			input: 'form-control input-sm',
+			// "label-default" for a darker background
+			// "light" for white text
+			input: 'form-control input-sm dark',
 			// keyboard container
-			container: 'center-block dropdown-menu', // jumbotron
+			container: 'center-block well',
 			// default state
 			buttonDefault: 'btn btn-default',
 			// hovered button
@@ -211,9 +216,9 @@ $('#inter-type').click(function(){
 		</h2>
 		<textarea id="alpha"></textarea>
 		<div class="code ui-corner-all">
-			<h2>HTML</h2>
+			<h4>HTML</h4>
 			<pre class="prettyprint lang-html">&lt;textarea id="alpha"&gt;&lt;/textarea&gt;</pre>
-			<h2>Script</h2>
+			<h4>Script</h4>
 			<pre class="prettyprint lang-js">$('#alpha')
 	.keyboard({ layout: 'alpha' })
 	.addTyping();</pre>
@@ -226,9 +231,9 @@ $('#inter-type').click(function(){
 		</h2>
 		<textarea id="colemak"></textarea>
 		<div class="code ui-corner-all">
-			<h2>HTML</h2>
+			<h4>HTML</h4>
 			<pre class="prettyprint lang-html">&lt;textarea id="colemak"&gt;&lt;/textarea&gt;</pre>
-			<h2>Script</h2>
+			<h4>Script</h4>
 			<pre class="prettyprint lang-js">$('#colemak')
 	.keyboard({ layout: 'colemak' })
 	.addTyping();</pre>
@@ -241,9 +246,9 @@ $('#inter-type').click(function(){
 		</h2>
 		<textarea id="dvorak"></textarea>
 		<div class="code ui-corner-all">
-			<h2>HTML</h2>
+			<h4>HTML</h4>
 			<pre class="prettyprint lang-html">&lt;textarea id="dvorak"&gt;&lt;/textarea&gt;</pre>
-			<h2>Script</h2>
+			<h4>Script</h4>
 			<pre class="prettyprint lang-js">$('#dvorak')
 	.keyboard({ layout: 'dvorak' })
 	.addTyping();</pre>
@@ -263,9 +268,9 @@ $('#inter-type').click(function(){
 			* Auto accept content.
 		</small>
 		<div class="code ui-corner-all">
-			<h2>HTML</h2>
+			<h4>HTML</h4>
 			<pre class="prettyprint lang-html">&lt;input id="num" class="alignRight" type="text"&gt;</pre>
-			<h2>Script</h2>
+			<h4>Script</h4>
 			<pre class="prettyprint lang-js">$('#num')
 	.keyboard({
 		layout : 'num',
@@ -288,10 +293,10 @@ $('#inter-type').click(function(){
 			* Input restricted.
 		</small>
 		<div class="code ui-corner-all">
-			<h2>HTML</h2>
+			<h4>HTML</h4>
 			<pre class="prettyprint lang-html">
 &lt;input id="hex" type="text"&gt;</pre>
-			<h2>Script</h2>
+			<h4>Script</h4>
 			<pre class="prettyprint lang-js">$('#hex')
 	.keyboard({
 		layout: 'custom',
@@ -315,13 +320,13 @@ $('#inter-type').click(function(){
 	<div class="block">
 		<h2>
 			<span class="tooltip-jatt" title="Click, then scroll down to see this code">Custom: Meta Sets</span>
-			<img id="meta-type" class="tooltip-jatt" title="Try out the typing extension!" src="demo/keyboard.png">
+			<img id="meta-type" class="tooltip-jatt" title="Try out the typing extension!" src="docs/css/images/keyboard.svg">
 		</h2>
 		<textarea id="meta"></textarea>
 		<div class="code ui-corner-all">
-			<h2>HTML</h2>
+			<h4>HTML</h4>
 			<pre class="prettyprint lang-html">&lt;textarea id="meta"&gt;&lt;/textarea&gt;</pre>
-			<h2>Script</h2>
+			<h4>Script</h4>
 			<pre class="prettyprint lang-js">$('#meta')
 	.keyboard({
 		layout: 'custom',
@@ -423,9 +428,9 @@ meta
 			* Accept content to see the callback.
 		</small>
 		<div class="code ui-corner-all">
-			<h2>HTML</h2>
+			<h4>HTML</h4>
 			<pre class="prettyprint lang-html">&lt;textarea id="junk"&gt;&lt;/textarea&gt;</pre>
-			<h2>Script</h2>
+			<h4>Script</h4>
 			<pre class="prettyprint lang-js">$('#junk')
 	.keyboard({
 		layout: 'custom',
@@ -469,9 +474,9 @@ meta
 			* Type in A-G (shifted).<br>
 		</small>
 		<div class="code ui-corner-all">
-			<h2>HTML</h2>
+			<h4>HTML</h4>
 			<pre class="prettyprint lang-html">&lt;textarea id="map"&gt;&lt;/textarea&gt;</pre>
-			<h2>Script</h2>
+			<h4>Script</h4>
 			<pre class="prettyprint lang-js">// *** Mapped keys ***
 $('#map').keyboard({
 	layout: 'custom',
@@ -499,15 +504,15 @@ $('#map').keyboard({
 		<!-- DON'T use type="hidden" because IE doesn't like hidden inputs -->
 		<input id="hidden" type="text" style="display:none;">
 		<div class="code ui-corner-all">
-			<h2>HTML</h2>
+			<h4>HTML</h4>
 			<pre class="prettyprint lang-html">&lt;a href="#" class="hiddenInput"&gt;Hidden input&lt;/a&gt;
 &lt;!-- DON'T use type="hidden" because IE doesn't like hidden inputs --&gt;
 &lt;input id="hidden" type="text" style="display:none;"&gt;</pre>
-			<h2>Script</h2>
+			<h4>Script</h4>
 			<pre class="prettyprint lang-js">// *** Hidden input example ***
 // click on a link - add focus to hidden input
 $('.hiddenInput').click(function(){
-	$('#hidden').trigger('focus.keyboard');
+	$('#hidden').data('keyboard').reveal();
 	return false;
 });
 // Initialize keyboard script on hidden input
@@ -535,9 +540,9 @@ $('#hidden')
 			* Thanks to <a href="https://github.com/gitaarik">gitaarik</a> for sharing!.
 		</small>
 		<div class="code ui-corner-all">
-			<h2>HTML</h2>
+			<h4>HTML</h4>
 			<pre class="prettyprint lang-html">&lt;textarea id="ipad"&gt;&lt;/textarea&gt;</pre>
-			<h2>Script</h2>
+			<h4>Script</h4>
 			<pre class="prettyprint lang-js">$('#ipad').keyboard({
 
 	display: {
@@ -590,9 +595,9 @@ $('#hidden')
 			* Thanks to <a href="https://github.com/gitaarik">gitaarik</a> for sharing!.
 		</small>
 		<div class="code ui-corner-all">
-			<h2>HTML</h2>
+			<h4>HTML</h4>
 			<pre class="prettyprint lang-html">&lt;textarea id="ipad-email"&gt;&lt;/textarea&gt;</pre>
-			<h2>Script</h2>
+			<h4>Script</h4>
 			<pre class="prettyprint lang-js">$('#ipad-email').keyboard({
 
 	display: {

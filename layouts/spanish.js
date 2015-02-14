@@ -29,7 +29,7 @@ jQuery.keyboard.layouts['spanish-qwerty'] = {
 	],
 	'alt' : [
 		"\u00ac 1 2 3 4 5 6 7 8 9 0 \\ \u00bf {bksp}",
-		"{tab} \@ w e r t y u i o p \u0301 \u0303",
+		"{tab} @ w e r t y u i o p \u0301 \u0303",
 		"a s d f g h j k l \u00f1 \u0302 \u0300 {enter}",
 		"{shift} < z x c v b n m , . - {shift}",
 		"{accept} {alt} {space} {alt} {cancel}"

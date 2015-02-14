@@ -42,5 +42,19 @@
     "js/jquery.keyboard.extension-navigation.js",
     "js/jquery.keyboard.extension-typing.js",
     "js/jquery.mousewheel.js"
-  ]
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/Mottie/keyboard.git"
+  },
+  "devDependencies": {
+    "grunt": "~0.4.1",
+    "grunt-cli": "~0.1.13",
+    "grunt-contrib-jshint": "~0.9.2",
+    "grunt-contrib-qunit": "~0.4.0",
+    "grunt-contrib-concat": "~0.3.0",
+    "grunt-contrib-uglify": "~0.4.0",
+    "grunt-contrib-clean": "~0.5.0",
+    "grunt-contrib-watch": "~0.6.1"
+  }
 }

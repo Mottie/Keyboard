@@ -34,9 +34,11 @@ jQuery(function($) {
 		layout: 'international',
 		css: {
 			// input & preview
-			input: 'form-control input-sm',
+			// "label-default" for a darker background
+			// "light" for white text
+			input: 'form-control input-sm dark',
 			// keyboard container
-			container: 'center-block dropdown-menu', // jumbotron
+			container: 'center-block well',
 			// default state
 			buttonDefault: 'btn btn-default',
 			// hovered button
@@ -113,7 +115,7 @@ jQuery(function($) {
 				'{shift} {alt} {meta1} {meta2} {meta3} {meta99}',
 				'{bksp} {sp:1} {accept} {cancel}'
 			],
-			'alt' : [ 
+			'alt' : [
 				'\u03b1:alpha \u03b2:beta \u03B3:gamma \u03b4:delta \u03b5:epsilon \u03b6:zeta \u03b7:eta', // lower case Greek
 				'{shift} {alt} {meta1} {meta2} {meta3} {meta99}',
 				'{bksp} {sp:1} {accept} {cancel}'
@@ -224,7 +226,7 @@ jQuery(function($) {
 	$('#map').keyboard({
 		layout : 'custom',
 		customLayout: {
-			'default' : [ 
+			'default' : [
 				// "n(a):title/tooltip"; n = new key, (a) = actual key, ":label" = title/tooltip (use an underscore "_" in place of a space " ")
 				'\u03b1(a):lower_case_alpha_(type_a) \u03b2(b):lower_case_beta_(type_b) \u03be(c):lower_case_xi_(type_c) \u03b4(d):lower_case_delta_(type_d) \u03b5(e):lower_case_epsilon_(type_e) \u03b6(f):lower_case_zeta_(type_f) \u03b3(g):lower_case_gamma_(type_g)', // lower case Greek
 				'{shift} {accept} {cancel}'
@@ -241,12 +243,12 @@ jQuery(function($) {
 	// click on a link - add focus to hidden input
 	// ********************
 	$('.hiddenInput').click(function(){
-		$('#hidden').trigger('focus.keyboard');
+		$('#hidden').data('keyboard').reveal();
 		return false;
 	});
 	// Initialize keyboard script on hidden input
 	// set "position.of" to the same link as above
-	$('#hidden').keyboard({ 
+	$('#hidden').keyboard({
 		layout: 'qwerty',
 		position     : {
 			of : $('.hiddenInput'),
@@ -368,8 +370,12 @@ jQuery(function($) {
 	// Show code
 	// ********************
 	$('h2 span').click(function(){
-		var t = '<h2>' + $(this).parent().text() + ' Code</h2>' + $(this).closest('.block').find('.code').html();
+		var t = '<h3>' + $(this).parent().text() + ' Code</h3>' + $(this).closest('.block').find('.code').html();
 		$('#showcode').html(t).show();
+	});
+
+	$('#showcode').click(function(){
+		$(this).hide();
 	});
 
 	// add tooltips

@@ -8,7 +8,7 @@
 .ui-keyboard-space { width: 15em; }
 .ui-keyboard-space span, .ui-keyboard-empty span { font: 0/0 a; text-shadow: none; color: transparent; } /* see http://nicolasgallagher.com/another-css-image-replacement-technique/ */
 .ui-keyboard-preview-wrapper { text-align: center; }
-.ui-keyboard-preview { text-align: left; margin: 0 0 3px 0; display: inline; width: 99%;} /* width is calculated in IE, since 99% = 99% full browser width =( */ 
+.ui-keyboard-preview { text-align: left; margin: 0 0 3px 0; display: inline; width: 99%;} /* width is calculated in IE, since 99% = 99% full browser width =( */
 .ui-keyboard-keyset { text-align: center; white-space: nowrap; }
 .ui-keyboard-input { text-align: left; }
 .ui-keyboard-input-current { -moz-box-shadow: 1px 1px 10px #00f; -webkit-box-shadow: 1px 1px 10px #00f; box-shadow: 1px 1px 10px #00f; }
@@ -16,6 +16,8 @@
 .ui-keyboard-nokeyboard { color: #888; border-color: #888; } /* disabled or readonly inputs, or use input[disabled='disabled'] { color: #f00; } */
 .ui-keyboard-button.disabled { opacity: 0.5; filter: alpha(opacity=50); } /* used by the acceptValid option to make the accept button appear faded */
 .ui-keyboard-spacer { display: inline-block; width: 1px; height: 0; }
+.ui-keyboard-input.light, .ui-keyboard-preview.light { color: #222; background: #ddd; }
+.ui-keyboard-input.dark, .ui-keyboard-preview.dark { color: #ddd; background: #222; }
 
 /* combo key styling - toggles diacritics on/off */
 .ui-keyboard-button.ui-keyboard-combo.ui-state-default { border-color: #ffaf0f; }
@@ -38,6 +40,9 @@ button.ui-keyboard-accept.ui-keyboard-invalid-input:hover { background: #a00; }
 /* over-ride padding set by mobile ui theme - needed because the mobile script wraps button text with several more spans */
 .ui-bar .ui-btn-inner { height: 2em; padding: 0.2em 0; margin: 0; }
 .ui-bar .ui-btn { margin: 0; font-size: 13px; } /* mobile default size is 13px */
+
+/* override Bootstrap excessive button padding */
+button.ui-keyboard-button.btn { padding: 1px 6px; }
 
 /* Media Queries (optimized for jQuery UI themes; may be slightly off in jQuery Mobile themes) */
 /* 240 x 320 (small phone)  */

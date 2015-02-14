@@ -1,90 +1,12 @@
-/*! Copyright (c) 2011 Brandon Aaron (http://brandonaaron.net)
- * Licensed under the MIT License (LICENSE.txt).
- *
- * Thanks to: http://adomas.org/javascript-mouse-wheel/ for some pointers.
- * Thanks to: Mathias Bank(http://www.mathias-bank.de) for a scope bug fix.
- * Thanks to: Seamus Leahy for adding deltaX and deltaY
- *
- * Version: 3.0.6
- *
- * Requires: 1.2.2+
- */
-
-(function($) {
-
-var types = ['DOMMouseScroll', 'mousewheel'];
-
-if ($.event.fixHooks) {
-    for ( var i=types.length; i; ) {
-        $.event.fixHooks[ types[--i] ] = $.event.mouseHooks;
-    }
-}
-
-$.event.special.mousewheel = {
-    setup: function() {
-        if ( this.addEventListener ) {
-            for ( var i=types.length; i; ) {
-                this.addEventListener( types[--i], handler, false );
-            }
-        } else {
-            this.onmousewheel = handler;
-        }
-    },
-
-    teardown: function() {
-        if ( this.removeEventListener ) {
-            for ( var i=types.length; i; ) {
-                this.removeEventListener( types[--i], handler, false );
-            }
-        } else {
-            this.onmousewheel = null;
-        }
-    }
-};
-
-$.fn.extend({
-    mousewheel: function(fn) {
-        return fn ? this.bind("mousewheel", fn) : this.trigger("mousewheel");
-    },
-
-    unmousewheel: function(fn) {
-        return this.unbind("mousewheel", fn);
-    }
-});
-
-
-function handler(event) {
-    var orgEvent = event || window.event, args = [].slice.call( arguments, 1 ), delta = 0, returnValue = true, deltaX = 0, deltaY = 0;
-    event = $.event.fix(orgEvent);
-    event.type = "mousewheel";
-
-    // Old school scrollwheel delta
-    if ( orgEvent.wheelDelta ) { delta = orgEvent.wheelDelta/120; }
-    if ( orgEvent.detail     ) { delta = -orgEvent.detail/3; }
-
-    // New school multidimensional scroll (touchpads) deltas
-    deltaY = delta;
-
-    // Gecko
-    if ( orgEvent.axis !== undefined && orgEvent.axis === orgEvent.HORIZONTAL_AXIS ) {
-        deltaY = 0;
-        deltaX = -1*delta;
-    }
-
-    // Webkit
-    if ( orgEvent.wheelDeltaY !== undefined ) { deltaY = orgEvent.wheelDeltaY/120; }
-    if ( orgEvent.wheelDeltaX !== undefined ) { deltaX = -1*orgEvent.wheelDeltaX/120; }
-
-    // Add event and delta to the front of the arguments
-    args.unshift(event, delta, deltaX, deltaY);
-
-    return ($.event.dispatch || $.event.handle).apply(this, args);
-}
-
-})(jQuery);
-
-/*
- * jQuery UI Virtual Keyboard Autocomplete v1.6 for Keyboard v1.18+ only (11/19/2014)
+/*** This file is dynamically generated ***
+█████▄ ▄████▄   █████▄ ▄████▄ ██████   ███████▄ ▄████▄ █████▄ ██ ██████ ██  ██
+██  ██ ██  ██   ██  ██ ██  ██   ██     ██ ██ ██ ██  ██ ██  ██ ██ ██     ██  ██
+██  ██ ██  ██   ██  ██ ██  ██   ██     ██ ██ ██ ██  ██ ██  ██ ██ ██▀▀   ▀▀▀▀██
+█████▀ ▀████▀   ██  ██ ▀████▀   ██     ██ ██ ██ ▀████▀ █████▀ ██ ██     █████▀
+*/
+/*! jQuery UI Virtual Keyboard - ALL Extensions + Mousewheel */
+/*! jQuery UI Virtual Keyboard Autocomplete v1.6 *//*
+ * for Keyboard v1.18+ only (11/19/2014)
  *
  * By Rob Garrison (aka Mottie & Fudgey)
  * Licensed under the MIT License
@@ -210,8 +132,8 @@ $.fn.addAutocomplete = function(){
 };
 })(jQuery);
 
-/*
- * jQuery UI Virtual Keyboard for jQuery Mobile Themes v1.2 for Keyboard v1.18+ (updated 6/1/2014)
+/*! jQuery UI Virtual Keyboard for jQuery Mobile Themes v1.2 *//*
+ * for Keyboard v1.18+ (updated 6/1/2014)
  *
  * By Rob Garrison (aka Mottie & Fudgey)
  * Licensed under the MIT License
@@ -361,8 +283,8 @@ $.fn.addMobile = function(options){
 };
 })(jQuery);
 
-/*
- * jQuery UI Virtual Keyboard Navigation v1.4 for Keyboard v1.18+ only (updated 3/1/2014)
+/*! jQuery UI Virtual Keyboard Navigation v1.4 *//*
+ * for Keyboard v1.18+ only (updated 3/1/2014)
  *
  * By Rob Garrison (aka Mottie & Fudgey)
  * Licensed under the MIT License
@@ -404,8 +326,22 @@ $.keyboard.navigationKeys = {
 	up         : 38,
 	right      : 39,
 	down       : 40,
+	// move caret WITH navigate toggle active
 	caretrt    : 45, // Insert key
-	caretlt    : 46  // delete key
+	caretlt    : 46, // delete key
+
+	// ** custom navigationKeys functions **
+	// move caret without navigate toggle active
+	caretrgt   : function(kb){
+		// keyaction right does not actually set the caret, so we need to do it here
+		$.keyboard.keyaction.right(kb);
+		kb.$preview.focus().caret( kb.last );
+	},
+	caretlft   : function(kb){
+		// keyaction left does not actually set the caret, so we need to do it here
+		$.keyboard.keyaction.left(kb);
+		kb.$preview.focus().caret( kb.last );
+	}
 };
 
 $.fn.addNavigation = function(options){
@@ -472,7 +408,7 @@ $.fn.addNavigation = function(options){
 			var vis = base.$keyboard.find('.ui-keyboard-keyset:visible'),
 				maxRow = vis.find('.ui-keyboard-button-endrow').length - 1,
 				maxIndx = vis.find('.ui-keyboard-button[data-pos^="' + row + ',"]').length - 1,
-				p = base.lastCaret,
+				p = base.last,
 				l = base.$preview.val().length,
 				k = base.navigation_keys;
 
@@ -485,16 +421,15 @@ $.fn.addNavigation = function(options){
 				case k.up       : row += (row > 0) ? -1 : 0; break; // Up
 				case k.right    : indx += 1; break; // Right
 				case k.down     : row += (row + 1 > maxRow) ? 0 : 1; break; // Down
-				case k.caretRt  : p.start++; break; // caret right
-				case k.caretLt  : p.start--; break; // caret right
+				case k.caretrt  : p.start++; break; // caret right
+				case k.caretlt  : p.start--; break; // caret left
 			}
 
 			// move caret
-			if (key === k.caretRt || key === k.caretLt) {
+			if (key === k.caretrt || key === k.caretlt) {
 				p.start = p.start < 0 ? 0 : p.start > l ? l : p.start;
-				p.end = p.start;
-				base.lastCaret = p;
-				base.$preview.focus().caret( p.start, p.start );
+				base.last.start = base.last.end = p.end = p.start;
+				base.$preview.focus().caret( base.last );
 			}
 
 			// get max index of new row
@@ -520,11 +455,28 @@ $.fn.addNavigation = function(options){
 			.bind('inactive.keyboard hidden.keyboard', function(e){
 				base.checkKeys(e.which, true); // disable toggle mode & revert navigation options
 			})
+			.bind('keysetChange.keyboard', function(){
+				base.navigateKeys(null);
+			})
 			.bind('navigate navigateTo', function(e, row, indx){
-				// no row given, check if it's a key name
+				var key;
+				// no row given, check if it's a navigation key or keyaction
 				row = isNaN(row) ? row.toLowerCase() : row;
-				if (base.navigation_keys.hasOwnProperty(row)) {
-					base.checkKeys( base.navigation_keys[row] );
+				if (row in base.navigation_keys) {
+					key = base.navigation_keys[row];
+					if (isNaN(key) && key in $.keyboard.keyaction) {
+						// defined navigation_keys string name is a defined keyaction
+						$.keyboard.keyaction[key]( base, this, e );
+					} else if ($.isFunction(key)) {
+						// custom function defined in navigation_keys
+						key(base);
+					} else {
+						// key (e.which value) is defined in navigation_keys
+						base.checkKeys(key);
+					}
+				} else if ( typeof row === 'string' && row in $.keyboard.keyaction ) {
+					// navigate called directly with a keyaction name
+					$.keyboard.keyaction[row]( base, this, e );
 				} else {
 					base.navigateKeys(null, row, indx);
 				}
@@ -533,6 +485,78 @@ $.fn.addNavigation = function(options){
 	});
 };
 })(jQuery);
+
+/*! jQuery UI Virtual Keyboard previewKeyset v1.0 *//*
+ * for Keyboard v1.18+ only (updated 2/10/2015)
+ *
+ * By Rob Garrison (aka Mottie & Fudgey)
+ * Licensed under the MIT License
+ *
+ * Use this extension with the Virtual Keyboard to add a preview
+ * of other keysets to the main keyboard.
+ *
+ * Requires:
+ *  jQuery
+ *  Keyboard plugin : https://github.com/Mottie/Keyboard
+ *
+ * Setup:
+ *  $('.ui-keyboard-input')
+ *   .keyboard(options)
+ *   .previewKeyset();
+ *
+ *  // or if targeting a specific keyboard
+ *  $('#keyboard1')
+ *   .keyboard(options)     // keyboard plugin
+ *   .previewKeyset();    // this keyboard extension
+ *
+ */
+/*jshint browser:true, jquery:true, unused:false */
+(function($){
+"use strict";
+$.keyboard = $.keyboard || {};
+
+$.fn.previewKeyset = function( options ) {
+	return this.each( function() {
+		// make sure a keyboard is attached
+		var base = $( this ).data( 'keyboard' ),
+			defaults = {
+				sets : [ 'normal', 'shift', 'alt', 'alt-shift' ]
+			};
+
+		if ( !base ) { return; }
+
+		base.previewKeyset_options = $.extend( {}, defaults, options );
+
+		base.previewKeyset = function() {
+			var sets = base.previewKeyset_options.sets,
+				// only target option defined sets
+				$sets = base.$keyboard.find( '.ui-keyboard-keyset' ).filter( '[name="' + sets.join('"],[name="') + '"]' );
+			if ( $sets.length > 1 ) {
+				// start with normal keyset & find all non-action buttons
+				$sets.eq( 0 ).find( '.ui-keyboard-button' ).not( '.ui-keyboard-actionkey' ).each(function(){
+					var indx, nam,
+						data = {},
+						len = sets.length,
+						// find all keys with the same position
+						$sibs = $sets.find( 'button[data-pos="' + $(this).attr('data-pos') + '"]' );
+					for ( indx = 0; indx < len; indx++ ) {
+						nam = $sibs.eq( indx ).parent().attr( 'name' );
+						if ( $.inArray( nam, sets ) >= 0 ) {
+							data[ 'data-' + nam ] = $sibs.eq( indx ).find( '.ui-keyboard-text' ).text();
+						}
+					}
+					$sibs.attr( data );
+				});
+			}
+		};
+
+		base.$el.bind( 'beforeVisible.keyboard', function() {
+			base.previewKeyset();
+		});
+
+	});
+};
+})( jQuery );
 
 /*
  * jQuery UI Virtual Keyboard Scramble Extension v1.4 for Keyboard v1.18+ (updated 11/19/2014)
@@ -733,8 +757,8 @@ $.keyboard = $.keyboard || {};
 	};
 })(jQuery);
 
-/*
- * jQuery UI Virtual Keyboard Typing Simulator v1.6 for Keyboard v1.18+ only (1/3/2015)
+/*! jQuery UI Virtual Keyboard Typing Simulator v1.6 *//*
+ * for Keyboard v1.18+ only (1/3/2015)
  *
  * By Rob Garrison (aka Mottie & Fudgey)
  * Licensed under the MIT License
@@ -1003,3 +1027,225 @@ $.keyboard = $.keyboard || {};
 		});
 	};
 })(jQuery);
+
+/* Copyright (c) 2013 Brandon Aaron (http://brandon.aaron.sh)
+ * Licensed under the MIT License (LICENSE.txt).
+ *
+ * Version: 3.1.12
+ *
+ * Requires: jQuery 1.2.2+
+ */
+/*! Mousewheel version: 3.1.12 * (c) 2014 Brandon Aaron * MIT License */
+(function (factory) {
+    if ( typeof define === 'function' && define.amd ) {
+        // AMD. Register as an anonymous module.
+        define(['jquery'], factory);
+    } else if (typeof exports === 'object') {
+        // Node/CommonJS style for Browserify
+        module.exports = factory;
+    } else {
+        // Browser globals
+        factory(jQuery);
+    }
+}(function ($) {
+
+    var toFix  = ['wheel', 'mousewheel', 'DOMMouseScroll', 'MozMousePixelScroll'],
+        toBind = ( 'onwheel' in document || document.documentMode >= 9 ) ?
+                    ['wheel'] : ['mousewheel', 'DomMouseScroll', 'MozMousePixelScroll'],
+        slice  = Array.prototype.slice,
+        nullLowestDeltaTimeout, lowestDelta;
+
+    if ( $.event.fixHooks ) {
+        for ( var i = toFix.length; i; ) {
+            $.event.fixHooks[ toFix[--i] ] = $.event.mouseHooks;
+        }
+    }
+
+    var special = $.event.special.mousewheel = {
+        version: '3.1.12',
+
+        setup: function() {
+            if ( this.addEventListener ) {
+                for ( var i = toBind.length; i; ) {
+                    this.addEventListener( toBind[--i], handler, false );
+                }
+            } else {
+                this.onmousewheel = handler;
+            }
+            // Store the line height and page height for this particular element
+            $.data(this, 'mousewheel-line-height', special.getLineHeight(this));
+            $.data(this, 'mousewheel-page-height', special.getPageHeight(this));
+        },
+
+        teardown: function() {
+            if ( this.removeEventListener ) {
+                for ( var i = toBind.length; i; ) {
+                    this.removeEventListener( toBind[--i], handler, false );
+                }
+            } else {
+                this.onmousewheel = null;
+            }
+            // Clean up the data we added to the element
+            $.removeData(this, 'mousewheel-line-height');
+            $.removeData(this, 'mousewheel-page-height');
+        },
+
+        getLineHeight: function(elem) {
+            var $elem = $(elem),
+                $parent = $elem['offsetParent' in $.fn ? 'offsetParent' : 'parent']();
+            if (!$parent.length) {
+                $parent = $('body');
+            }
+            return parseInt($parent.css('fontSize'), 10) || parseInt($elem.css('fontSize'), 10) || 16;
+        },
+
+        getPageHeight: function(elem) {
+            return $(elem).height();
+        },
+
+        settings: {
+            adjustOldDeltas: true, // see shouldAdjustOldDeltas() below
+            normalizeOffset: true  // calls getBoundingClientRect for each event
+        }
+    };
+
+    $.fn.extend({
+        mousewheel: function(fn) {
+            return fn ? this.bind('mousewheel', fn) : this.trigger('mousewheel');
+        },
+
+        unmousewheel: function(fn) {
+            return this.unbind('mousewheel', fn);
+        }
+    });
+
+
+    function handler(event) {
+        var orgEvent   = event || window.event,
+            args       = slice.call(arguments, 1),
+            delta      = 0,
+            deltaX     = 0,
+            deltaY     = 0,
+            absDelta   = 0,
+            offsetX    = 0,
+            offsetY    = 0;
+        event = $.event.fix(orgEvent);
+        event.type = 'mousewheel';
+
+        // Old school scrollwheel delta
+        if ( 'detail'      in orgEvent ) { deltaY = orgEvent.detail * -1;      }
+        if ( 'wheelDelta'  in orgEvent ) { deltaY = orgEvent.wheelDelta;       }
+        if ( 'wheelDeltaY' in orgEvent ) { deltaY = orgEvent.wheelDeltaY;      }
+        if ( 'wheelDeltaX' in orgEvent ) { deltaX = orgEvent.wheelDeltaX * -1; }
+
+        // Firefox < 17 horizontal scrolling related to DOMMouseScroll event
+        if ( 'axis' in orgEvent && orgEvent.axis === orgEvent.HORIZONTAL_AXIS ) {
+            deltaX = deltaY * -1;
+            deltaY = 0;
+        }
+
+        // Set delta to be deltaY or deltaX if deltaY is 0 for backwards compatabilitiy
+        delta = deltaY === 0 ? deltaX : deltaY;
+
+        // New school wheel delta (wheel event)
+        if ( 'deltaY' in orgEvent ) {
+            deltaY = orgEvent.deltaY * -1;
+            delta  = deltaY;
+        }
+        if ( 'deltaX' in orgEvent ) {
+            deltaX = orgEvent.deltaX;
+            if ( deltaY === 0 ) { delta  = deltaX * -1; }
+        }
+
+        // No change actually happened, no reason to go any further
+        if ( deltaY === 0 && deltaX === 0 ) { return; }
+
+        // Need to convert lines and pages to pixels if we aren't already in pixels
+        // There are three delta modes:
+        //   * deltaMode 0 is by pixels, nothing to do
+        //   * deltaMode 1 is by lines
+        //   * deltaMode 2 is by pages
+        if ( orgEvent.deltaMode === 1 ) {
+            var lineHeight = $.data(this, 'mousewheel-line-height');
+            delta  *= lineHeight;
+            deltaY *= lineHeight;
+            deltaX *= lineHeight;
+        } else if ( orgEvent.deltaMode === 2 ) {
+            var pageHeight = $.data(this, 'mousewheel-page-height');
+            delta  *= pageHeight;
+            deltaY *= pageHeight;
+            deltaX *= pageHeight;
+        }
+
+        // Store lowest absolute delta to normalize the delta values
+        absDelta = Math.max( Math.abs(deltaY), Math.abs(deltaX) );
+
+        if ( !lowestDelta || absDelta < lowestDelta ) {
+            lowestDelta = absDelta;
+
+            // Adjust older deltas if necessary
+            if ( shouldAdjustOldDeltas(orgEvent, absDelta) ) {
+                lowestDelta /= 40;
+            }
+        }
+
+        // Adjust older deltas if necessary
+        if ( shouldAdjustOldDeltas(orgEvent, absDelta) ) {
+            // Divide all the things by 40!
+            delta  /= 40;
+            deltaX /= 40;
+            deltaY /= 40;
+        }
+
+        // Get a whole, normalized value for the deltas
+        delta  = Math[ delta  >= 1 ? 'floor' : 'ceil' ](delta  / lowestDelta);
+        deltaX = Math[ deltaX >= 1 ? 'floor' : 'ceil' ](deltaX / lowestDelta);
+        deltaY = Math[ deltaY >= 1 ? 'floor' : 'ceil' ](deltaY / lowestDelta);
+
+        // Normalise offsetX and offsetY properties
+        if ( special.settings.normalizeOffset && this.getBoundingClientRect ) {
+            var boundingRect = this.getBoundingClientRect();
+            offsetX = event.clientX - boundingRect.left;
+            offsetY = event.clientY - boundingRect.top;
+        }
+
+        // Add information to the event object
+        event.deltaX = deltaX;
+        event.deltaY = deltaY;
+        event.deltaFactor = lowestDelta;
+        event.offsetX = offsetX;
+        event.offsetY = offsetY;
+        // Go ahead and set deltaMode to 0 since we converted to pixels
+        // Although this is a little odd since we overwrite the deltaX/Y
+        // properties with normalized deltas.
+        event.deltaMode = 0;
+
+        // Add event and delta to the front of the arguments
+        args.unshift(event, delta, deltaX, deltaY);
+
+        // Clearout lowestDelta after sometime to better
+        // handle multiple device types that give different
+        // a different lowestDelta
+        // Ex: trackpad = 3 and mouse wheel = 120
+        if (nullLowestDeltaTimeout) { clearTimeout(nullLowestDeltaTimeout); }
+        nullLowestDeltaTimeout = setTimeout(nullLowestDelta, 200);
+
+        return ($.event.dispatch || $.event.handle).apply(this, args);
+    }
+
+    function nullLowestDelta() {
+        lowestDelta = null;
+    }
+
+    function shouldAdjustOldDeltas(orgEvent, absDelta) {
+        // If this is an older event and the delta is divisable by 120,
+        // then we are assuming that the browser is treating this as an
+        // older mouse wheel event and that we should divide the deltas
+        // by 40 to try and get a more usable deltaFactor.
+        // Side note, this actually impacts the reported scroll distance
+        // in older browsers and can cause scrolling to be slower than native.
+        // Turn this off by setting $.event.special.mousewheel.settings.adjustOldDeltas to false.
+        return special.settings.adjustOldDeltas && orgEvent.type === 'mousewheel' && absDelta % 120 === 0;
+    }
+
+}));

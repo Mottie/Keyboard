@@ -100,11 +100,9 @@ jQuery.keyboard.language.vi = {
 		"\u0102"  : { S:"\u1EAE", F:"\u1EB0", R:"\u1EB2", X:"\u1EB4", J:"\u1EB6" }, //A(
 		"\u00C2"  : { S:"\u1EA4", F:"\u1EA6", R:"\u1EA8", X:"\u1EAA", J:"\u1EAC" }, //A^
 
-		"\u00E2" : { s:"\u1EA5", f:"\u1EA7", r:"\u1EA9", x:"\u1EAB", j:"\u1EAD" }, //a^
 		"\u00F4" : { s:"\u1ED1", f:"\u1ED3", r:"\u1ED5", x:"\u1ED7", j:"\u1ED9" }, //o^
 		"\u00EA" : { s:"\u1EBF", f:"\u1EC1", r:"\u1EC3", x:"\u1EC5", j:"\u1EC7" }, //e^
 
-		"\u00C2" : { S:"\u1EA4", F:"\u1EA6", R:"\u1EA8", X:"\u1EAA", J:"\u1EAC" }, //A^
 		"\u00D4" : { S:"\u1ED0", F:"\u1ED2", R:"\u1ED4", X:"\u1ED6", J:"\u1ED8" }, //O^
 		"\u00CA" : { S:"\u1EBE", F:"\u1EC0", R:"\u1EC2", X:"\u1EC4", J:"\u1EC6" }  //E^
 

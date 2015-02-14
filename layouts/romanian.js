@@ -8,7 +8,7 @@
  * license for this file: WTFPL, unless the source layout site has a problem with me using them as a reference
  */
 
-/* based on http://en.wikipedia.org/wiki/Romanian_keyboard_layout for the actual (standard) layout. 
+/* based on http://en.wikipedia.org/wiki/Romanian_keyboard_layout for the actual (standard) layout.
 More details http://www.microsoft.com/resources/msdn/goglobal/keyboards/kbdrost.html  and http://ascii-table.com/keyboard.php/446 (for the actual codes)*/
 
 /* Submitted July 2014 - Alex Florea <alecz.fia@gmail.com>*/
@@ -48,7 +48,7 @@ $.keyboard.layouts['romanian'] = {
 // Keyboard Language
 // please update this section to match this language and email me with corrections!
 // ***********************
-if (typeof(language) === 'undefined') { var language = {}; };
+if (typeof(language) === 'undefined') { var language = {}; }
 language.romanian = {
 	display : {
 		'a'      : '\u2714:Accept (Shift-Enter)', // check mark - same action as accept

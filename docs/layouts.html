@@ -6,24 +6,24 @@
 	<title>Virtual Keyboard Language Layouts</title>
 
 	<!-- demo -->
-	<link href="demo/demo.css" rel="stylesheet">
+	<link href="css/demo.css" rel="stylesheet">
 
 	<!-- jQuery & jQuery UI + theme (required) -->
-	<link href="http://code.jquery.com/ui/1.9.0/themes/ui-darkness/jquery-ui.css" rel="stylesheet">
-	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.8/jquery.js"></script>
-	<script src="http://code.jquery.com/ui/1.9.0/jquery-ui.min.js"></script>
+	<link href="css/jquery-ui.min.css" rel="stylesheet">
+	<script src="js/jquery.min.js"></script>
+	<script src="js/jquery-ui.min.js"></script>
 
 	<!-- keyboard widget css & script (required) -->
-	<link href="css/keyboard.css" rel="stylesheet">
-	<script src="js/jquery.keyboard.js"></script>
+	<link href="../css/keyboard.css" rel="stylesheet">
+	<script src="../js/jquery.keyboard.js"></script>
 
 	<!-- keyboard extensions (optional) -->
-	<script src="js/jquery.mousewheel.js"></script>
-	<script src="js/jquery.keyboard.extension-typing.js"></script>
+	<script src="../js/jquery.mousewheel.js"></script>
+	<script src="../js/jquery.keyboard.extension-typing.js"></script>
 
 
 	<!-- preloaded keyboard layout -->
-	<script src="layouts/albanian.js" charset="utf-8"></script>
+	<script src="../layouts/albanian.js" charset="utf-8"></script>
 
 	<!-- theme switcher
 	<script src="http://jqueryui.com/themeroller/themeswitchertool/"></script> -->
@@ -83,7 +83,7 @@
 		t, o = '',
 
 		// Change display language, if the definitions are available
-		showKb = function(layout){
+		showKb = function(layout){ console.log('got here');
 			var kb = $('#multi').getkeyboard();
 			kb.options.layout = layout;
 			// true flag causes a keyboard refresh
@@ -115,8 +115,8 @@
 				layout = $this.val(),
 				file = $opt.data('filename');
 			$('h2').text(title);
-			if (!$.keyboard.language.hasOwnProperty(file)) {
-				$.getScript('layouts/' + file + '.js', function(){
+			if ( !( layout in $.keyboard.layouts ) ) {
+				$.getScript('../layouts/' + file + '.js', function(){
 					showKb( layout );
 				});
 			} else {
@@ -138,13 +138,14 @@
 <div id="page-wrap">
 	<!-- Links to other demo pages & docs -->
 	<div id="nav">
-		<a href="index.html">Main Demo</a>
+		<a href="../index.html">Main Demo</a>
 		<a href="basic.html">Basic</a>
 		<a href="mobile.html">Mobile</a>
 		<a class="current" href="layouts.html">Layouts</a>
 		<a href="layouts2.html">Layouts2</a>
 		<a href="scramble.html">Scramble</a>
 		<a href="navigate.html">Navigate</a>
+		<a href="preview-keyset.html">Keyset</a>
 		<a href="calculator.html">Calculator</a>
 		<a class="play" href="http://jsfiddle.net/Mottie/MK947/">Playground</a>
 		<a class="git" href="https://github.com/Mottie/Keyboard/wiki">Documentation</a>
