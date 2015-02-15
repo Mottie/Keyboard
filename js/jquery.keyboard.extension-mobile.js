@@ -42,7 +42,9 @@ $.fn.addMobile = function(options){
 		buttonAction : { theme:'b', cssClass:'ui-btn-active' },
 		// theme added to button when it is active (e.g. shift is down)
 		// All extra parameters will be ignored
-		buttonActive : { theme:'b', cssClass:'ui-btn-active' }
+		buttonActive : { theme:'b', cssClass:'ui-btn-active' },
+		// if more than 3 mobile themes are used, add them here
+		allThemes : 'a b c'
 	};
 
 	return this.each(function(){
@@ -52,12 +54,23 @@ $.fn.addMobile = function(options){
 		if (!base || typeof($.fn.textinput) === 'undefined') { return; }
 
 		base.mobile_options = o = $.extend(true, {}, defaults, options);
+		// create a list of theme class names to remove
+		base.mobile_themes = $.trim(
+			(' ' + o.allThemes).split(' ').join(' ' + o.buttonMarkup.cssClass + '-') +
+			(' ' + o.allThemes).split(' ').join(' ' + o.buttonAction.cssClass + '-') +
+			(' ' + o.allThemes).split(' ').join(' ' + o.buttonActive.cssClass + '-')
+		);
+
+		// save original action class because it gets removed when this theme switches swatches
+		if (typeof base.options.mobile_savedActiveClass === 'undefined') {
+			base.options.mobile_savedActiveClass = '' + base.options.css.buttonActive;
+		}
 
 		// Setup
-		base.mobile_init = function(){
+		base.mobile_init = function() {
 
 			// Add theme to input - if not already done through the markup
-			$('.ui-keyboard-input').textinput();
+			$('.' + $.keyboard.css.input).textinput();
 
 			// visible event is fired before this extension is initialized, so check!
 			if (base.options.alwaysOpen && base.isVisible) {
@@ -69,49 +82,56 @@ $.fn.addMobile = function(options){
 			// Since we are restyling here, the user will experience FlashOfUnstyledContent (FOUC).
 			// This is avoided by first setting the visibility to hidden, then after the mobile styles are applied we
 			// set it visible.
-			//
 			base.$el
-			.on('beforeVisible.keyboard', function () {
-				base.$keyboard.css("visibility", "hidden");
-			})
-			.on('visible.keyboard', function () {
-				base.mobile_setup();
-				base.$keyboard.css("visibility", "visible");
-				base.$preview.focus();
-			});
+				.unbind('beforeVisible.keyboard-mobile visible.keyboard-mobile')
+				.bind('beforeVisible.keyboard-mobile', function() {
+					base.$keyboard.css('visibility', 'hidden');
+				})
+				.bind('visible.keyboard-mobile', function() {
+					base.mobile_setup();
+					base.$keyboard.css('visibility', 'visible');
+					base.$preview.focus();
+				});
 
 		};
 
 		base.mobile_setup = function(){
 			var p,
+				kbcss = $.keyboard.css,
 				opts = base.options,
-				markup = o.buttonMarkup.cssClass || '',
-				actions = opts.css.buttonAction;
+				themes = base.mobile_themes;
 
-			opts.css.buttonAction += ' ' + o.buttonAction.cssClass;
+			base.mobile_$actionKeys = base.$keyboard.find('.' + base.options.css.buttonAction);
+
+			opts.css.buttonActive = opts.mobile_savedActiveClass + ' ' + base.modOptions(o.buttonActive, o.buttonMarkup);
 
 			base.$keyboard
-				// 'ui-bar ui-bar-a' classes to apply swatch theme
+				// 'ui-body ui-body-a' classes to apply swatch theme
 				.addClass( base.modOptions(o.container, o.container) )
 				// preview input
-				.find('.ui-keyboard-preview').addClass( base.modOptions(o.input, o.input) ).end()
+				.find('.' + kbcss.preview)
 				// removing 'ui-widget-content' will prevent jQuery UI theme from applying to the keyboard
 				.removeClass('ui-widget ui-widget-content')
-				.find('.' + actions).addClass( base.modOptions(o.buttonAction, o.buttonMarkup) ).end()
+				.addClass( base.modOptions(o.input, o.input) ).end()
 				// apply jQuery Mobile button markup
 				// removed call to jQuery Mobile buttonMarkup function; replaced with base.modOptions
 				.find('button')
-				.removeClass('ui-corner-all ui-state-default')
-				.addClass( base.modOptions(o.buttonMarkup) )
+				.removeClass( $.trim('ui-corner-all ui-state-default ' + themes) )
+				.addClass( base.modOptions(o.buttonMarkup, o.buttonMarkup) )
+				.not( base.mobile_$actionKeys )
 				.hover(function(){
 					$(this)
-						.removeClass( markup ? markup + '-' + o.buttonMarkup.theme : '' )
+						.removeClass( themes )
 						.addClass( base.modOptions(o.buttonHover, o.buttonMarkup) );
 				},function(){
 					$(this)
-						.removeClass( markup ? markup + '-' + o.buttonHover.theme : '' )
+						.removeClass( themes + ' ' + o.buttonHover.cssClass )
 						.addClass( base.modOptions(o.buttonMarkup, o.buttonMarkup) );
 				});
+
+				base.mobile_$actionKeys
+					.removeClass( themes )
+					.addClass( base.modOptions(o.buttonAction, o.buttonMarkup) );
 
 			// update keyboard width if preview is showing... after applying mobile theme
 			if (base.msie && base.$preview[0] !== base.el) {
