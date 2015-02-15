@@ -60,7 +60,7 @@ $.fn.addAutocomplete = function(){
 				.bind('visible.keyboard-autocomplete',function(){
 					base.autocomplete_setup();
 				})
-				.bind('change.keyboard-autocomplete',function(e){ console.log(e);
+				.bind('change.keyboard-autocomplete',function(e){
 					if (base.hasAutocomplete && base.isVisible()) {
 						base.$el
 							.val(base.$preview.val())
