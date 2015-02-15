@@ -1,4 +1,4 @@
-/*
+/*! Layouts from greywyvern.com *//*
  All layouts in this file have been generated & modified from the
  Javascript Graphical / Virtual Keyboard Interface
  (http://www.greywyvern.com/code/javascript/keyboard)

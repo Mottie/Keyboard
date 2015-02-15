@@ -9,22 +9,36 @@ module.exports = function(grunt) {
 
 		clean: {
 			build: {
-				src: [ 'dist/*', 'js/jquery.keyboard.extension-all.js' ]
+				src: [ 'dist/*', 'js/jquery.keyboard.extension-all.js', 'layouts/keyboard-layouts-combined.js' ]
 			}
 		},
 
 		concat: {
-			options: {
-				banner: '/*** This file is dynamically generated ***\n' +
-					'█████▄ ▄████▄   █████▄ ▄████▄ ██████   ███████▄ ▄████▄ █████▄ ██ ██████ ██  ██\n' +
-					'██  ██ ██  ██   ██  ██ ██  ██   ██     ██ ██ ██ ██  ██ ██  ██ ██ ██     ██  ██\n' +
-					'██  ██ ██  ██   ██  ██ ██  ██   ██     ██ ██ ██ ██  ██ ██  ██ ██ ██▀▀   ▀▀▀▀██\n' +
-					'█████▀ ▀████▀   ██  ██ ▀████▀   ██     ██ ██ ██ ▀████▀ █████▀ ██ ██     █████▀\n*/\n' +
-					'/*! jQuery UI Virtual Keyboard - ALL Extensions + Mousewheel */\n'
-			},
 			exts: {
-				src: [ 'js/jquery.keyboard.extension-*.js', 'js/jquery.mousewheel.js' ],
-				dest : 'js/jquery.keyboard.extension-all.js'
+				options: {
+					banner: '/*** This file is dynamically generated ***\n' +
+						'█████▄ ▄████▄   █████▄ ▄████▄ ██████   ███████▄ ▄████▄ █████▄ ██ ██████ ██  ██\n' +
+						'██  ██ ██  ██   ██  ██ ██  ██   ██     ██ ██ ██ ██  ██ ██  ██ ██ ██     ██  ██\n' +
+						'██  ██ ██  ██   ██  ██ ██  ██   ██     ██ ██ ██ ██  ██ ██  ██ ██ ██▀▀   ▀▀▀▀██\n' +
+						'█████▀ ▀████▀   ██  ██ ▀████▀   ██     ██ ██ ██ ▀████▀ █████▀ ██ ██     █████▀\n*/\n' +
+ 						'/*! jQuery UI Virtual Keyboard - ALL Extensions + Mousewheel */\n'
+				},
+				files: {
+					'js/jquery.keyboard.extension-all.js': [ 'js/jquery.keyboard.extension-*.js', 'js/jquery.mousewheel.js' ]
+				}
+			},
+			layouts: {
+				options: {
+					banner: '/*** This file is dynamically generated ***\n' +
+						'█████▄ ▄████▄   █████▄ ▄████▄ ██████   ███████▄ ▄████▄ █████▄ ██ ██████ ██  ██\n' +
+						'██  ██ ██  ██   ██  ██ ██  ██   ██     ██ ██ ██ ██  ██ ██  ██ ██ ██     ██  ██\n' +
+						'██  ██ ██  ██   ██  ██ ██  ██   ██     ██ ██ ██ ██  ██ ██  ██ ██ ██▀▀   ▀▀▀▀██\n' +
+						'█████▀ ▀████▀   ██  ██ ▀████▀   ██     ██ ██ ██ ▀████▀ █████▀ ██ ██     █████▀\n*/\n' +
+						'/*! jQuery UI Virtual Keyboard - ALL Layouts (except greywyvern layouts) */\n'
+				},
+				files: {
+					'layouts/keyboard-layouts-combined.js': [ 'layouts/*', '!layouts/_template.js', '!layouts/keyboard-layouts-greywyvern.js' ]
+				}
 			}
 		},
 
@@ -35,7 +49,7 @@ module.exports = function(grunt) {
 			options: {
 				"jquery": true,
 				"browser": true,
-				"sub": true,
+				"sub": true, // used by layouts
 				"-W100": true // ignore "This character may get silently deleted by one or more browsers."
 			}
 		},
