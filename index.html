@@ -9,6 +9,7 @@
 	<link href="docs/css/jquery-ui.min.css" rel="stylesheet">
 	<script src="docs/js/jquery.min.js"></script>
 	<script src="docs/js/jquery-ui.min.js"></script>
+	<script src="docs/js/jquery-migrate-1.2.1.min.js"></script>
 
 	<!-- keyboard widget css & script (required) -->
 	<link href="css/keyboard.css" rel="stylesheet">
@@ -22,9 +23,10 @@
 	<!-- demo only -->
 	<link rel="stylesheet" href="docs/css/bootstrap.min.css">
 	<link href="docs/css/demo.css" rel="stylesheet">
+	<link href="docs/css/tipsy.css" rel="stylesheet">
 	<link href="docs/css/prettify.css" rel="stylesheet">
 	<script src="docs/js/demo.js"></script>
-	<script src="docs/js/jquery.jatt.min.js"></script> <!-- tooltips -->
+	<script src="docs/js/jquery.tipsy.min.js"></script>
 	<script src="docs/js/prettify.js"></script> <!-- syntax highlighting -->
 
 </head>
@@ -44,6 +46,7 @@
 		<a href="docs/navigate.html">Navigate</a>
 		<a href="preview-keyset.html">Keyset</a>
 		<a href="docs/calculator.html">Calculator</a>
+		<br>
 		<a class="play" href="http://jsfiddle.net/Mottie/MK947/">Playground</a>
 		<a class="git" href="https://github.com/Mottie/Keyboard/wiki">Documentation</a>
 		<a class="git" href="https://github.com/Mottie/Keyboard/archive/master.zip">Download</a>
@@ -66,13 +69,17 @@
 		<li>...</li>
 		<li>...</li>
 	</ul>
-<h5>Click on the keyboard title, then scroll down to see its code</h5>
+
+	<h5>
+		Click inside the input or textarea to open the keyboard<br>
+		Click on the keyboard title, then scroll down to see its code
+	</h5>
 
 	<div class="block">
 		<h2>
-			<span class="tooltip-jatt" title="Click, then scroll down to see this code">QWERTY Text</span>
+			<span class="tooltip-tipsy" title="Click, then scroll down to see this code">QWERTY Text</span>
 		</h2>
-		<input id="text" class="qwerty" type="text" placeholder="Enter something...">
+		<input id="text" class="qwerty" type="text" placeholder=" Enter something...">
 		<br>
 		<small>
 			* Placeholder (watermark).<br>
@@ -80,7 +87,7 @@
 		</small>
 		<div class="code ui-corner-all">
 			<h4>HTML</h4>
-			<pre class="prettyprint lang-html">&lt;input class="qwerty" type="text" placeholder="Enter something..."&gt;</pre>
+			<pre class="prettyprint lang-html">&lt;input class="qwerty" type="text" placeholder=" Enter something..."&gt;</pre>
 			<h4>Script</h4>
 			<pre class="prettyprint lang-js">// Autocomplete demo
 var availableTags = ["ActionScript", "AppleScript", "Asp", "BASIC", "C", "C++", "Clojure",
@@ -99,8 +106,8 @@ $('.qwerty:eq(0)')
 
 	<div class="block">
 		<h2>
-			<span class="tooltip-jatt" title="Click, then scroll down to see this code">QWERTY Password</span>
-			<img id="passwd" class="tooltip-jatt" title="Click to open the virtual keyboard" src="docs/css/images/keyboard.svg">
+			<span class="tooltip-tipsy" title="Click, then scroll down to see this code">QWERTY Password</span>
+			<img id="passwd" class="tooltip-tipsy" title="Click to open the virtual keyboard" src="docs/css/images/keyboard.svg">
 		</h2>
 		<input id="password" class="qwerty" type="password">
 		<br>
@@ -111,7 +118,7 @@ $('.qwerty:eq(0)')
 		</small>
 		<div class="code ui-corner-all">
 			<h4>HTML</h4>
-			<pre class="prettyprint lang-html">&lt;img id="passwd" class="tooltip-jatt" title="Click to open the virtual keyboard" src="docs/css/images/keyboard.svg"&gt;
+			<pre class="prettyprint lang-html">&lt;img id="passwd" class="tooltip-tipsy" title="Click to open the virtual keyboard" src="docs/css/images/keyboard.svg"&gt;
 &lt;input class="qwerty" type="password"&gt;</pre>
 			<h4>Script</h4>
 			<pre class="prettyprint lang-js">$('.qwerty:eq(1)')
@@ -130,7 +137,7 @@ $('#passwd').click(function(){
 
 	<div class="block">
 		<h2>
-			<span class="tooltip-jatt" title="Click, then scroll down to see this code">QWERTY Text Area</span>
+			<span class="tooltip-tipsy" title="Click, then scroll down to see this code">QWERTY Text Area</span>
 		</h2>
 		<textarea id="textarea" class="qwerty"></textarea>
 		<br>
@@ -154,8 +161,8 @@ $('#passwd').click(function(){
 
 	<div class="block">
 		<h2>
-			<span class="tooltip-jatt" title="Click, then scroll down to see this code">International</span>
-			<img id="inter-type" class="tooltip-jatt" title="Try out the typing extension!" src="docs/css/images/keyboard.svg">
+			<span class="tooltip-tipsy" title="Click, then scroll down to see this code">International</span>
+			<img id="inter-type" class="tooltip-tipsy" title="Try out the typing extension!" src="docs/css/images/keyboard.svg">
 		</h2>
 		<textarea id="inter"></textarea>
 		<br>
@@ -164,7 +171,7 @@ $('#passwd').click(function(){
 		</small>
 		<div class="code ui-corner-all">
 			<h4>HTML</h4>
-			<pre class="prettyprint lang-html">&lt;img id="inter-type" class="tooltip-jatt" title="Try out the typing extension!" src="docs/css/images/keyboard.svg"&gt;
+			<pre class="prettyprint lang-html">&lt;img id="inter-type" class="tooltip-tipsy" title="Try out the typing extension!" src="docs/css/images/keyboard.svg"&gt;
 &lt;textarea id="inter"&gt;&lt;/textarea&gt;</pre>
 			<h4>CSS</h4>
 			<pre class="prettyprint lang-css">/* override bootstrap active state */
@@ -175,7 +182,15 @@ button.btn-default:active {
 }
 button.btn-default:active:hover {
 	background-color: #3276B1;
-}</pre>
+}
+/* override Bootstrap excessive button padding */
+button.ui-keyboard-button.btn {
+	padding: 1px 6px;
+}
+/* Bootswatch Darkly input is too bright */
+.ui-keyboard-input.light, .ui-keyboard-preview.light { color: #222; background: #ddd; }
+.ui-keyboard-input.dark, .ui-keyboard-preview.dark { color: #ddd; background: #222; }
+</pre>
 			<h4>Script</h4>
 			<pre class="prettyprint lang-js">$('#inter')
 	.keyboard({
@@ -212,7 +227,7 @@ $('#inter-type').click(function(){
 
 	<div class="block">
 		<h2>
-			<span class="tooltip-jatt" title="Click, then scroll down to see this code">Alphabetical</span>
+			<span class="tooltip-tipsy" title="Click, then scroll down to see this code">Alphabetical</span>
 		</h2>
 		<textarea id="alpha"></textarea>
 		<div class="code ui-corner-all">
@@ -227,7 +242,7 @@ $('#inter-type').click(function(){
 
 	<div class="block">
 		<h2>
-			<span class="tooltip-jatt" title="Click, then scroll down to see this code">Colemak</span>
+			<span class="tooltip-tipsy" title="Click, then scroll down to see this code">Colemak</span>
 		</h2>
 		<textarea id="colemak"></textarea>
 		<div class="code ui-corner-all">
@@ -242,7 +257,7 @@ $('#inter-type').click(function(){
 
 	<div class="block">
 		<h2>
-			<span class="tooltip-jatt" title="Click, then scroll down to see this code">Dvorak</span>
+			<span class="tooltip-tipsy" title="Click, then scroll down to see this code">Dvorak</span>
 		</h2>
 		<textarea id="dvorak"></textarea>
 		<div class="code ui-corner-all">
@@ -258,7 +273,7 @@ $('#inter-type').click(function(){
 
 	<div class="block">
 		<h2>
-			<span class="tooltip-jatt" title="Click, then scroll down to see this code">Num Pad</span>
+			<span class="tooltip-tipsy" title="Click, then scroll down to see this code">Num Pad</span>
 		</h2>
 		<input id="num" class="alignRight" type="text">
 		<br>
@@ -284,13 +299,14 @@ $('#inter-type').click(function(){
 
 	<div class="block">
 		<h2>
-			<span class="tooltip-jatt" title="Click, then scroll down to see this code">Custom: Hex</span>
+			<span class="tooltip-tipsy" title="Click, then scroll down to see this code">Custom: Hex</span>
 		</h2>
 		<input id="hex" type="text">
 		<br>
 		<small>
 			* maxLength = 6.<br>
-			* Input restricted.
+			* Input restricted.<br>
+			* Valid @ length = 6.
 		</small>
 		<div class="code ui-corner-all">
 			<h4>HTML</h4>
@@ -311,7 +327,12 @@ $('#inter-type').click(function(){
 		},
 		maxLength : 6,
 		restrictInput : true, // Prevent keys not in the displayed keyboard from being typed in
-		useCombos : false // don't want A+E to become a ligature
+		useCombos : false, // don't want A+E to become a ligature
+		acceptValid: true,
+		validate: function(keyboard, value, isClosing){
+			// only make valid if input is 6 characters in length
+			return value.length === 6;
+		}
 	})
 	.addTyping();</pre>
 		</div>
@@ -319,8 +340,8 @@ $('#inter-type').click(function(){
 
 	<div class="block">
 		<h2>
-			<span class="tooltip-jatt" title="Click, then scroll down to see this code">Custom: Meta Sets</span>
-			<img id="meta-type" class="tooltip-jatt" title="Try out the typing extension!" src="docs/css/images/keyboard.svg">
+			<span class="tooltip-tipsy" title="Click, then scroll down to see this code">Custom: Meta Sets</span>
+			<img id="meta-type" class="tooltip-tipsy" title="Try out the typing extension!" src="docs/css/images/keyboard.svg">
 		</h2>
 		<textarea id="meta"></textarea>
 		<div class="code ui-corner-all">
@@ -417,7 +438,7 @@ meta
 
 	<div class="block">
 		<h2>
-			<span class="tooltip-jatt" title="Click, then scroll down to see this code">Custom: Junk</span>
+			<span class="tooltip-tipsy" title="Click, then scroll down to see this code">Custom: Junk</span>
 		</h2>
 		<textarea id="junk"></textarea>
 		<br>
@@ -464,7 +485,7 @@ meta
 
 	<div class="block">
 		<h2>
-			<span class="tooltip-jatt" title="Click, then scroll down to see this code">Custom: Mapped Keys</span>
+			<span class="tooltip-tipsy" title="Click, then scroll down to see this code">Custom: Mapped Keys</span>
 		</h2>
 		<textarea id="map"></textarea>
 		<br>
@@ -498,7 +519,7 @@ $('#map').keyboard({
 
 	<div class="block">
 		<h2>
-			<span class="tooltip-jatt" title="Click, then scroll down to see this code">Custom: Hidden</span>
+			<span class="tooltip-tipsy" title="Click, then scroll down to see this code">Custom: Hidden</span>
 		</h2>
 		<a href="#" class="hiddenInput">Hidden input</a>
 		<!-- DON'T use type="hidden" because IE doesn't like hidden inputs -->
@@ -532,7 +553,7 @@ $('#hidden')
 
 	<div class="block">
 		<h2>
-			<span class="tooltip-jatt" title="Click, then scroll down to see this code">Custom: iPad</span>
+			<span class="tooltip-tipsy" title="Click, then scroll down to see this code">Custom: iPad</span>
 		</h2>
 		<textarea id="ipad"></textarea>
 		<br>
@@ -587,7 +608,7 @@ $('#hidden')
 
 	<div class="block">
 		<h2>
-			<span class="tooltip-jatt" title="Click, then scroll down to see this code">Custom: iPad email</span>
+			<span class="tooltip-tipsy" title="Click, then scroll down to see this code">Custom: iPad email</span>
 		</h2>
 		<textarea id="ipad-email"></textarea>
 		<br>

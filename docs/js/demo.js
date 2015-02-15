@@ -88,7 +88,12 @@ jQuery(function($) {
 		},
 		maxLength : 6,
 		restrictInput : true, // Prevent keys not in the displayed keyboard from being typed in
-		useCombos : false // don't want A+E to become a ligature
+		useCombos : false, // don't want A+E to become a ligature
+		acceptValid: true,
+		validate: function(keyboard, value, isClosing){
+			// only make valid if input is 6 characters in length
+			return value.length === 6;
+		}
 	});
 
 	// Custom: Meta Sets
@@ -353,7 +358,7 @@ jQuery(function($) {
 	// ********************
 	$('.ui-keyboard-input').bind('visible.keyboard hidden.keyboard beforeClose.keyboard accepted.keyboard canceled.keyboard restricted.keyboard', function(e, keyboard, el, status){
 		var c = $('#console'),
-			t = '<li><span class="keyboard">' + $(el).parent().find('h2 .tooltip-jatt').text() + '</span>';
+			t = '<li><span class="keyboard">' + $(el).parent().find('h2 .tooltip-tipsy').text() + '</span>';
 			switch (e.type){
 				case 'visible'  : t += ' keyboard is <span class="event">visible</span>'; break;
 				case 'hidden'   : t += ' keyboard is now <span class="event">hidden</span>'; break;
@@ -370,17 +375,27 @@ jQuery(function($) {
 	// Show code
 	// ********************
 	$('h2 span').click(function(){
-		var t = '<h3>' + $(this).parent().text() + ' Code</h3>' + $(this).closest('.block').find('.code').html();
+		var orig = 'Click, then scroll down to see this code',
+			active = 'Scroll down to see the code for this example',
+			t = '<h3>' + $(this).parent().text() + ' Code</h3>' + $(this).closest('.block').find('.code').html();
+		// add indicator & update tooltips
+		$('h2 span')
+			.attr({ title : orig, 'original-title': orig })
+			.parent()
+			.filter('.active')
+			.removeClass('active');
+		$(this)
+			.attr({ title : active, 'original-title': active })
+			// hide, then show the tooltip to force updating & realignment
+			.tipsy('hide')
+			.tipsy('show')
+			.parent().addClass('active');
 		$('#showcode').html(t).show();
-	});
-
-	$('#showcode').click(function(){
-		$(this).hide();
 	});
 
 	// add tooltips
 	// ********************
-	$.jatt({ tooltip : '.tooltip-jatt' });
+	$('.tooltip-tipsy').tipsy({ gravity: 's' });
 
 // ********************
 // Extension demos
