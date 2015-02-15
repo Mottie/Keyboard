@@ -24,7 +24,7 @@
  */
 /*jshint browser:true, jquery:true, unused:false */
 (function($){
-"use strict";
+'use strict';
 $.keyboard = $.keyboard || {};
 
 $.fn.previewKeyset = function( options ) {
@@ -40,12 +40,13 @@ $.fn.previewKeyset = function( options ) {
 		base.previewKeyset_options = $.extend( {}, defaults, options );
 
 		base.previewKeyset = function() {
-			var sets = base.previewKeyset_options.sets,
+			var kbcss = $.keyboard.css,
+				sets = base.previewKeyset_options.sets,
 				// only target option defined sets
-				$sets = base.$keyboard.find( '.ui-keyboard-keyset' ).filter( '[name="' + sets.join('"],[name="') + '"]' );
+				$sets = base.$keyboard.find( '.' + kbcss.keySet ).filter( '[name="' + sets.join('"],[name="') + '"]' );
 			if ( $sets.length > 1 ) {
 				// start with normal keyset & find all non-action buttons
-				$sets.eq( 0 ).find( '.ui-keyboard-button' ).not( '.ui-keyboard-actionkey' ).each(function(){
+				$sets.eq( 0 ).find( '.' + kbcss.keyButton ).not( '.' + kbcss.keyAction ).each(function(){
 					var indx, nam,
 						data = {},
 						len = sets.length,
@@ -54,7 +55,7 @@ $.fn.previewKeyset = function( options ) {
 					for ( indx = 0; indx < len; indx++ ) {
 						nam = $sibs.eq( indx ).parent().attr( 'name' );
 						if ( $.inArray( nam, sets ) >= 0 ) {
-							data[ 'data-' + nam ] = $sibs.eq( indx ).find( '.ui-keyboard-text' ).text();
+							data[ 'data-' + nam ] = $sibs.eq( indx ).find( '.' + kbcss.keyText ).text();
 						}
 					}
 					$sibs.attr( data );
@@ -62,7 +63,7 @@ $.fn.previewKeyset = function( options ) {
 			}
 		};
 
-		base.$el.bind( 'beforeVisible.keyboard', function() {
+		base.$el.bind($.keyboard.events.kbBeforeVisible, function() {
 			base.previewKeyset();
 		});
 

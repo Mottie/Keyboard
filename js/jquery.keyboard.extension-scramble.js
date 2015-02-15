@@ -46,7 +46,7 @@ $.keyboard = $.keyboard || {};
 			base.scramble_setup = function($keyboard) {
 				var $sets, set, $keys, key, index, tmp,
 					rowIndex, keyboardmap, map, keyboard, row;
-				$sets = $keyboard.find('.ui-keyboard-keyset');
+				$sets = $keyboard.find('.' + $.keyboard.css.keySet);
 				if ($keyboard.length) {
 					if (o.byKeySet) {
 						$sets = $sets.eq(0);
@@ -88,7 +88,7 @@ $.keyboard = $.keyboard || {};
 							}
 						});
 						// remove original <br> elements
-						$keys.find('.ui-keyboard-button-endrow').remove();
+						$keys.find('.' + $.keyboard.css.endRow).remove();
 						// re-map keys
 						if (!o.byRow) {
 							row = base.shuffle( keyboard, keyboardmap );
@@ -138,7 +138,7 @@ $.keyboard = $.keyboard || {};
 			// make other keysets "line-up" with scrambled keyset
 			base.realign = function($keyboard) {
 				var selector, typ, pos,
-					$sets = $keyboard.find('.ui-keyboard-keyset'),
+					$sets = $keyboard.find('.' + $.keyboard.css.keySet),
 					$orig = $sets.eq(0);
 				$sets = $sets.filter(':gt(0)');
 				$orig.children().each(function(i, cell){
@@ -174,7 +174,7 @@ $.keyboard = $.keyboard || {};
 				}
 				base.$keyboard = $.keyboard.builtLayouts[layout].$keyboard;
 				if ( !o.randomizeOnce ) {
-					base.$el.bind('beforeVisible.keyboard', function(e, kb) {
+					base.$el.bind($.keyboard.events.kbBeforeVisible, function(e, kb) {
 						kb.$keyboard = kb.scramble_setup(kb.$keyboard);
 					});
 				}

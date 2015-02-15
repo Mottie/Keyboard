@@ -62,7 +62,9 @@ $.keyboard.navigationKeys = {
 $.fn.addNavigation = function(options){
 	return this.each(function(){
 		// make sure a keyboard is attached
-		var o, k, base = $(this).data('keyboard'),
+		var o, k,
+			base = $(this).data('keyboard'),
+			opts = base.options,
 			defaults = {
 				position   : [0,0],     // set start position [row-number, key-index]
 				toggleMode : false,     // true = navigate the virtual keyboard, false = navigate in input/textarea
@@ -79,17 +81,17 @@ $.fn.addNavigation = function(options){
 
 		// Setup
 		base.navigation_init = function(){
-
+			var kbcss = $.keyboard.css;
 			base.$keyboard.toggleClass(o.focusClass, o.toggleMode)
-				.find('.ui-keyboard-keyset:visible')
-				.find('.ui-keyboard-button[data-pos="' + o.position[0] + ',' + o.position[1] + '"]')
-				.addClass('ui-state-hover');
+				.find('.' + kbcss.keySet + ':visible')
+				.find('.' + kbcss.keyButton + '[data-pos="' + o.position[0] + ',' + o.position[1] + '"]')
+				.addClass(opts.css.buttonHover);
 
 			base.$preview
-			.unbind('keydown.keyboardNav')
-			.bind('keydown.keyboardNav',function(e){
-				return base.checkKeys(e.which);
-			});
+				.unbind('keydown.keyboardNav')
+				.bind('keydown.keyboardNav',function(e){
+					return base.checkKeys(e.which);
+				});
 
 		};
 
@@ -97,7 +99,8 @@ $.fn.addNavigation = function(options){
 			if (typeof(key) === "undefined") {
 				return;
 			}
-			var k = base.navigation_keys;
+			var k = base.navigation_keys,
+				kbcss = $.keyboard.css;
 			if (key === k.toggle || disable) {
 				o.toggleMode = (disable) ? false : !o.toggleMode;
 				base.options.tabNavigation = (o.toggleMode) ? false : base.saveNav[0];
@@ -106,8 +109,8 @@ $.fn.addNavigation = function(options){
 			base.$keyboard.toggleClass(o.focusClass, o.toggleMode);
 			if ( o.toggleMode && key === k.enter ) {
 				base.$keyboard
-					.find('.ui-keyboard-keyset:visible')
-					.find('.ui-keyboard-button[data-pos="' + o.position[0] + ',' + o.position[1] + '"]')
+					.find('.' + kbcss.keySet + ':visible')
+					.find('.' + kbcss.keyButton + '[data-pos="' + o.position[0] + ',' + o.position[1] + '"]')
 					.trigger('repeater.keyboard');
 				return false;
 			}
@@ -120,9 +123,11 @@ $.fn.addNavigation = function(options){
 		base.navigateKeys = function(key, row, indx){
 			indx = indx || o.position[1];
 			row = row || o.position[0];
-			var vis = base.$keyboard.find('.ui-keyboard-keyset:visible'),
-				maxRow = vis.find('.ui-keyboard-button-endrow').length - 1,
-				maxIndx = vis.find('.ui-keyboard-button[data-pos^="' + row + ',"]').length - 1,
+			var kbcss = $.keyboard.css,
+				kbevents = $.keyboard.events,
+				vis = base.$keyboard.find('.' + kbcss.keySet + ':visible'),
+				maxRow = vis.find('.' + kbcss.endRow).length - 1,
+				maxIndx = vis.find('.' + kbcss.keyButton + '[data-pos^="' + row + ',"]').length - 1,
 				p = base.last,
 				l = base.$preview.val().length,
 				k = base.navigation_keys;
@@ -148,29 +153,29 @@ $.fn.addNavigation = function(options){
 			}
 
 			// get max index of new row
-			maxIndx = vis.find('.ui-keyboard-button[data-pos^="' + row + ',"]').length - 1;
+			maxIndx = vis.find('.' + kbcss.keyButton + '[data-pos^="' + row + ',"]').length - 1;
 			if (indx > maxIndx) { indx = maxIndx; }
 
-			vis.find('.ui-state-hover').removeClass('ui-state-hover');
-			vis.find('.ui-keyboard-button[data-pos="' + row + ',' + indx + '"]').addClass('ui-state-hover');
+			vis.find('.' + opts.css.buttonHover).removeClass(opts.css.buttonHover);
+			vis.find('.' + kbcss.keyButton + '[data-pos="' + row + ',' + indx + '"]').addClass(opts.css.buttonHover);
 			o.position = [ row, indx ];
 		};
 
 		// visible event is fired before this extension is initialized, so check!
 		if (base.options.alwaysOpen && base.isVisible) {
-			base.$keyboard.find('.ui-state-hover').removeClass('ui-state-hover');
+			base.$keyboard.find('.' + opts.css.buttonHover).removeClass(opts.css.buttonHover);
 			base.navigation_init();
 		}
 		// capture and simulate typing
 		base.$el
-			.bind('visible.keyboard', function(e){
-				base.$keyboard.find('.ui-state-hover').removeClass('ui-state-hover');
+			.bind(kbevents.kbVisible + '.keyboardNav', function(e){
+				base.$keyboard.find('.' + opts.css.buttonHover).removeClass(opts.css.buttonHover);
 				base.navigation_init();
 			})
-			.bind('inactive.keyboard hidden.keyboard', function(e){
+			.bind(kbevents.kbInactive + ' ' + kbevents.kbHidden, function(e){
 				base.checkKeys(e.which, true); // disable toggle mode & revert navigation options
 			})
-			.bind('keysetChange.keyboard', function(){
+			.bind(kbevents.kbKeysetChange, function(){
 				base.navigateKeys(null);
 			})
 			.bind('navigate navigateTo', function(e, row, indx){

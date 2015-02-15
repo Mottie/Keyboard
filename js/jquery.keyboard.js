@@ -25,8 +25,8 @@ Setup/Usage:
 	Please refer to https://github.com/Mottie/Keyboard/wiki
 */
 /*jshint browser:true, jquery:true, unused:false */
-;(function($){
-"use strict";
+;(function($, window, document){
+'use strict';
 $.keyboard = function(el, options){
 	var base = this, o;
 
@@ -131,7 +131,7 @@ $.keyboard = function(el, options){
 				.val( base.inPlaceholder );
 		}
 
-		base.$el.trigger( 'initialized.keyboard', [ base, base.el ] );
+		base.$el.trigger( $.keyboard.events.kbInit, [ base, base.el ] );
 
 		// initialized with keyboard open
 		if (o.alwaysOpen) {
@@ -253,7 +253,7 @@ $.keyboard = function(el, options){
 		}
 
 		// beforeVisible event
-		base.$el.trigger( 'beforeVisible.keyboard', [ base, base.el ] );
+		base.$el.trigger( $.keyboard.events.kbBeforeVisible, [ base, base.el ] );
 
 		base.setCurrent();
 
@@ -313,7 +313,7 @@ $.keyboard = function(el, options){
 			if (o.initialFocus) {
 				base.$preview.focus().caret( base.last );
 			}
-			base.$el.trigger( 'visible.keyboard', [ base, base.el ] );
+			base.$el.trigger( $.keyboard.events.kbVisible, [ base, base.el ] );
 		}, 10);
 		// return base to allow chaining in typing extension
 		return base;
@@ -510,11 +510,11 @@ $.keyboard = function(el, options){
 				base.checkMaxLength();
 				// change callback is no longer bound to the input element as the callback could be
 				// called during an external change event with all the necessary parameters (issue #157)
-				base.$el.trigger( 'change.keyboard', [ base, base.el ] );
+				base.$el.trigger( $.keyboard.events.kbChange, [ base, base.el ] );
 				base.last.val = base.$preview.val();
 
 				if ($.isFunction(o.change)){
-					o.change( $.Event("change"), base, base.el );
+					o.change( $.Event('change'), base, base.el );
 					return false;
 				}
 			})
@@ -584,12 +584,12 @@ $.keyboard = function(el, options){
 
 	base.bindKeys = function(){
 		var kbcss = $.keyboard.css,
-			allEvents = (o.keyBinding + ' repeater mouseenter mouseleave touchstart mousewheel ' +
+			allEvents = (o.keyBinding + ' ' + $.keyboard.events.kbRepeater + ' mouseenter mouseleave touchstart mousewheel ' +
 				'mouseup click ').split(' ').join('.keyboard ') + ('mouseleave mousedown touchstart ' +
 				'touchend touchmove touchcancel ').split(' ').join('.kb ');
 		base.$allKeys = base.$keyboard.find('button.' + kbcss.keyButton)
 			.unbind(allEvents)
-			.bind(o.keyBinding.split(' ').join('.keyboard ') + '.keyboard repeater.keyboard', function(e){
+			.bind(o.keyBinding.split(' ').join('.keyboard ') + '.keyboard ' + $.keyboard.events.kbRepeater, function(e){
 				e.preventDefault();
 				// prevent errors when external triggers attempt to "type" - see issue #158
 				if (!base.$keyboard.is(":visible")){ return false; }
@@ -637,11 +637,11 @@ $.keyboard = function(el, options){
 				// set caret if caret moved by action function; also, attempt to fix issue #131
 				base.$preview.focus().caret( base.last );
 				base.checkCombos();
-				base.$el.trigger( 'change.keyboard', [ base, base.el ] );
+				base.$el.trigger( $.keyboard.events.kbChange, [ base, base.el ] );
 				base.last.val = base.$preview.val();
 
 				if ($.isFunction(o.change)){
-					o.change( $.Event("change"), base, base.el );
+					o.change( $.Event( $.keyboard.events.inputChange ), base, base.el );
 					// return false to prevent reopening keyboard if base.accept() was called
 					return false;
 				}
@@ -800,7 +800,7 @@ $.keyboard = function(el, options){
 
 	// mousedown repeater
 	base.repeatKey = function(key){
-		key.trigger('repeater.keyboard');
+		key.trigger( $.keyboard.events.kbRepeater );
 		if (base.mouseRepeat[0]) {
 			base.repeater = setTimeout(function() {
 				base.repeatKey(key);
@@ -809,6 +809,7 @@ $.keyboard = function(el, options){
 	};
 
 	base.showKeySet = function(el){
+		o = base.options; // refresh options
 		var kbcss = $.keyboard.css,
 			key = '',
 			toShow = (base.shiftActive ? 1 : 0) + (base.altActive ? 2 : 0);
@@ -852,7 +853,7 @@ $.keyboard = function(el, options){
 			.find('.' + kbcss.keySet + key + base.rows[toShow]).show().end()
 			.find('.' + kbcss.keyAction + '.' + kbcss.keyboard + key).addClass(o.css.buttonActive);
 		base.last.keyset = [ base.shiftActive, base.altActive, base.metaActive ];
-		base.$el.trigger( 'keysetChange.keyboard', [ base, base.el ] );
+		base.$el.trigger( $.keyboard.events.kbKeysetChange, [ base, base.el ] );
 	};
 
 	// check for key combos (dead keys)
@@ -1021,6 +1022,7 @@ $.keyboard = function(el, options){
 		if (base.isOpen) {
 			clearTimeout(base.throttled);
 			var kbcss = $.keyboard.css,
+				kbevents = $.keyboard.events,
 				val = (accepted) ?  base.checkCombos() : base.originalContent;
 			// validate input if accepted
 			if (accepted && o.validate && typeof(o.validate) === "function" && !o.validate(base, val, true)) {
@@ -1037,11 +1039,11 @@ $.keyboard = function(el, options){
 				.removeClass(kbcss.isCurrent + ' ' + kbcss.inputAutoAccepted)
 				// add "ui-keyboard-autoaccepted" to inputs - see issue #66
 				.addClass( (accepted || false) ? accepted === true ? '' : kbcss.inputAutoAccepted : '' )
-				.trigger( (o.alwaysOpen) ? '' : 'beforeClose.keyboard', [ base, base.el, (accepted || false) ] )
+				.trigger( (o.alwaysOpen) ? '' : kbevents.kbBeforeClose, [ base, base.el, (accepted || false) ] )
 				.val( val )
 				.scrollTop( base.el.scrollHeight )
-				.trigger( ((accepted || false) ? 'accepted.keyboard' : 'canceled.keyboard'), [ base, base.el ] )
-				.trigger( (o.alwaysOpen) ? 'inactive.keyboard' : 'hidden.keyboard', [ base, base.el ] )
+				.trigger( ((accepted || false) ? kbevents.inputAccepted : kbevents.inputCanceled), [ base, base.el ] )
+				.trigger( (o.alwaysOpen) ? kbevents.kbInactive : kbevents.kbHidden, [ base, base.el ] )
 				.blur();
 			if (o.openOn) {
 				// rebind input focus - delayed to fix IE issue #72
@@ -1062,7 +1064,7 @@ $.keyboard = function(el, options){
 					.val(base.inPlaceholder);
 			}
 			// trigger default change event - see issue #146
-			base.$el.trigger('change');
+			base.$el.trigger(kbevents.inputChange);
 		}
 		return !!accepted;
 	};
@@ -1292,7 +1294,7 @@ $.keyboard = function(el, options){
 								case 'accept':
 									base
 										.addKey('accept', action)
-										.addClass(o.css.buttonAction);
+										.addClass(o.css.buttonAction + ' ' + kbcss.keyAction);
 									break;
 
 								case 'alt':
@@ -1311,7 +1313,7 @@ $.keyboard = function(el, options){
 								case 'cancel':
 									base
 										.addKey('cancel', action)
-										.addClass(o.css.buttonAction);
+										.addClass(o.css.buttonAction + ' ' + kbcss.keyAction);
 									break;
 
 								// toggle combo/diacritic key
@@ -1332,7 +1334,7 @@ $.keyboard = function(el, options){
 								case 'enter':
 									base
 										.addKey('enter', action)
-										.addClass(o.css.buttonAction);
+										.addClass(o.css.buttonAction + ' ' + kbcss.keyAction);
 									break;
 
 								case 'lock':
@@ -1367,7 +1369,7 @@ $.keyboard = function(el, options){
 								default:
 									if ($.keyboard.keyaction.hasOwnProperty(txt[0])){
 										// acceptedKeys.push(action);
-										base.addKey(txt[0], action).toggleClass( o.css.buttonAction, isAction );
+										base.addKey(txt[0], action).toggleClass( o.css.buttonAction + ' ' + kbcss.keyAction, isAction );
 									}
 
 							}
@@ -1438,6 +1440,23 @@ $.keyboard = function(el, options){
 		endRow: 'ui-keyboard-button-endrow' // class added to <br>
 	};
 
+	$.keyboard.events = {
+		// keyboard events
+		kbChange: 'change.keyboard',
+		kbBeforeClose: 'beforeClose',
+		kbBeforeVisible: 'beforeVisible',
+		kbVisible: 'visible',
+		kbInit: 'initialized.keyboard',
+		kbInactive: 'inactive.keyboard',
+		kbHidden: 'hidden.keyboard',
+		kbRepeater: 'repeater.keyboard',
+		kbKeysetChange: 'keysetChange',
+		// input events
+		inputAccepted: 'accepted.keyboard',
+		inputCanceled: 'canceled.keyboard',
+		inputChange: 'change',
+	};
+
 	// Action key function list
 	$.keyboard.keyaction = {
 		accept : function(base){
@@ -1505,7 +1524,7 @@ $.keyboard = function(el, options){
 			}
 		},
 		meta : function(base,el){
-			base.metaActive = ($(el).hasClass(base.options.css.buttonActive)) ? false : true;
+			base.metaActive = !$(el).hasClass($.keyboard.css.keyHasActive);
 			base.showKeySet(el);
 		},
 		next : function(base) {
@@ -1726,9 +1745,7 @@ $.keyboard = function(el, options){
 		}
 	});
 
-
 	$.keyboard.defaultOptions = {
-
 		// set this to ISO 639-1 language code to override language set by the layout
 		// http://en.wikipedia.org/wiki/List_of_ISO_639-1_codes
 		// language defaults to "en" if not found
@@ -1908,7 +1925,7 @@ $.keyboard = function(el, options){
 		return this.data("keyboard");
 	};
 
-})(jQuery);
+})(jQuery, window, document);
 
 /* Copyright (c) 2010 C. F., Wong (<a href="http://cloudgen.w0ng.hk">Cloudgen Examplet Store</a>)
  * Licensed under the MIT License:

@@ -56,20 +56,21 @@ $.fn.addAutocomplete = function(){
 			}
 
 			base.$el
-				.bind('visible.keyboard',function(){
+				.unbind('visible hidden autocompleteopen autocompleteselect '.split(' ').join('.keyboard-autocomplete '))
+				.bind('visible.keyboard-autocomplete',function(){
 					base.autocomplete_setup();
 				})
-				.bind('change.keyboard',function(){
+				.bind('change.keyboard-autocomplete',function(e){ console.log(e);
 					if (base.hasAutocomplete && base.isVisible()) {
 						base.$el
 							.val(base.$preview.val())
 							.trigger('keydown.autocomplete');
 					}
 				})
-				.bind('hidden.keyboard', function(){
+				.bind('hidden.keyboard-autocomplete', function(){
 					base.$el.autocomplete('close');
 				})
-				.bind('autocompleteopen', function() {
+				.bind('autocompleteopen.keyboard-autocomplete', function() {
 					if (base.hasAutocomplete){
 						// reposition autocomplete window next to the keyboard
 						base.$autocomplete.menu.element.position({
@@ -80,7 +81,7 @@ $.fn.addAutocomplete = function(){
 						});
 					}
 				})
-				.bind('autocompleteselect', function(e, ui){
+				.bind('autocompleteselect.keyboard-autocomplete', function(e, ui){
 					var v = ui.item && ui.item.value || '';
 					if (base.hasAutocomplete && v !== ''){
 						base.$preview
@@ -176,7 +177,9 @@ $.fn.addMobile = function(options){
 		buttonAction : { theme:'b', cssClass:'ui-btn-active' },
 		// theme added to button when it is active (e.g. shift is down)
 		// All extra parameters will be ignored
-		buttonActive : { theme:'b', cssClass:'ui-btn-active' }
+		buttonActive : { theme:'b', cssClass:'ui-btn-active' },
+		// if more than 3 mobile themes are used, add them here
+		allThemes : 'a b c'
 	};
 
 	return this.each(function(){
@@ -186,12 +189,23 @@ $.fn.addMobile = function(options){
 		if (!base || typeof($.fn.textinput) === 'undefined') { return; }
 
 		base.mobile_options = o = $.extend(true, {}, defaults, options);
+		// create a list of theme class names to remove
+		base.mobile_themes = $.trim(
+			(' ' + o.allThemes).split(' ').join(' ' + o.buttonMarkup.cssClass + '-') +
+			(' ' + o.allThemes).split(' ').join(' ' + o.buttonAction.cssClass + '-') +
+			(' ' + o.allThemes).split(' ').join(' ' + o.buttonActive.cssClass + '-')
+		);
+
+		// save original action class because it gets removed when this theme switches swatches
+		if (typeof base.options.mobile_savedActiveClass === 'undefined') {
+			base.options.mobile_savedActiveClass = '' + base.options.css.buttonActive;
+		}
 
 		// Setup
-		base.mobile_init = function(){
+		base.mobile_init = function() {
 
 			// Add theme to input - if not already done through the markup
-			$('.ui-keyboard-input').textinput();
+			$('.' + $.keyboard.css.input).textinput();
 
 			// visible event is fired before this extension is initialized, so check!
 			if (base.options.alwaysOpen && base.isVisible) {
@@ -203,49 +217,56 @@ $.fn.addMobile = function(options){
 			// Since we are restyling here, the user will experience FlashOfUnstyledContent (FOUC).
 			// This is avoided by first setting the visibility to hidden, then after the mobile styles are applied we
 			// set it visible.
-			//
 			base.$el
-			.on('beforeVisible.keyboard', function () {
-				base.$keyboard.css("visibility", "hidden");
-			})
-			.on('visible.keyboard', function () {
-				base.mobile_setup();
-				base.$keyboard.css("visibility", "visible");
-				base.$preview.focus();
-			});
+				.unbind('beforeVisible.keyboard-mobile visible.keyboard-mobile')
+				.bind('beforeVisible.keyboard-mobile', function() {
+					base.$keyboard.css('visibility', 'hidden');
+				})
+				.bind('visible.keyboard-mobile', function() {
+					base.mobile_setup();
+					base.$keyboard.css('visibility', 'visible');
+					base.$preview.focus();
+				});
 
 		};
 
 		base.mobile_setup = function(){
 			var p,
+				kbcss = $.keyboard.css,
 				opts = base.options,
-				markup = o.buttonMarkup.cssClass || '',
-				actions = opts.css.buttonAction;
+				themes = base.mobile_themes;
 
-			opts.css.buttonAction += ' ' + o.buttonAction.cssClass;
+			base.mobile_$actionKeys = base.$keyboard.find('.' + base.options.css.buttonAction);
+
+			opts.css.buttonActive = opts.mobile_savedActiveClass + ' ' + base.modOptions(o.buttonActive, o.buttonMarkup);
 
 			base.$keyboard
-				// 'ui-bar ui-bar-a' classes to apply swatch theme
+				// 'ui-body ui-body-a' classes to apply swatch theme
 				.addClass( base.modOptions(o.container, o.container) )
 				// preview input
-				.find('.ui-keyboard-preview').addClass( base.modOptions(o.input, o.input) ).end()
+				.find('.' + kbcss.preview)
 				// removing 'ui-widget-content' will prevent jQuery UI theme from applying to the keyboard
 				.removeClass('ui-widget ui-widget-content')
-				.find('.' + actions).addClass( base.modOptions(o.buttonAction, o.buttonMarkup) ).end()
+				.addClass( base.modOptions(o.input, o.input) ).end()
 				// apply jQuery Mobile button markup
 				// removed call to jQuery Mobile buttonMarkup function; replaced with base.modOptions
 				.find('button')
-				.removeClass('ui-corner-all ui-state-default')
-				.addClass( base.modOptions(o.buttonMarkup) )
+				.removeClass( $.trim('ui-corner-all ui-state-default ' + themes) )
+				.addClass( base.modOptions(o.buttonMarkup, o.buttonMarkup) )
+				.not( base.mobile_$actionKeys )
 				.hover(function(){
 					$(this)
-						.removeClass( markup ? markup + '-' + o.buttonMarkup.theme : '' )
+						.removeClass( themes )
 						.addClass( base.modOptions(o.buttonHover, o.buttonMarkup) );
 				},function(){
 					$(this)
-						.removeClass( markup ? markup + '-' + o.buttonHover.theme : '' )
+						.removeClass( themes + ' ' + o.buttonHover.cssClass )
 						.addClass( base.modOptions(o.buttonMarkup, o.buttonMarkup) );
 				});
+
+				base.mobile_$actionKeys
+					.removeClass( themes )
+					.addClass( base.modOptions(o.buttonAction, o.buttonMarkup) );
 
 			// update keyboard width if preview is showing... after applying mobile theme
 			if (base.msie && base.$preview[0] !== base.el) {
@@ -347,7 +368,9 @@ $.keyboard.navigationKeys = {
 $.fn.addNavigation = function(options){
 	return this.each(function(){
 		// make sure a keyboard is attached
-		var o, k, base = $(this).data('keyboard'),
+		var o, k,
+			base = $(this).data('keyboard'),
+			opts = base.options,
 			defaults = {
 				position   : [0,0],     // set start position [row-number, key-index]
 				toggleMode : false,     // true = navigate the virtual keyboard, false = navigate in input/textarea
@@ -364,17 +387,17 @@ $.fn.addNavigation = function(options){
 
 		// Setup
 		base.navigation_init = function(){
-
+			var kbcss = $.keyboard.css;
 			base.$keyboard.toggleClass(o.focusClass, o.toggleMode)
-				.find('.ui-keyboard-keyset:visible')
-				.find('.ui-keyboard-button[data-pos="' + o.position[0] + ',' + o.position[1] + '"]')
-				.addClass('ui-state-hover');
+				.find('.' + kbcss.keySet + ':visible')
+				.find('.' + kbcss.keyButton + '[data-pos="' + o.position[0] + ',' + o.position[1] + '"]')
+				.addClass(opts.css.buttonHover);
 
 			base.$preview
-			.unbind('keydown.keyboardNav')
-			.bind('keydown.keyboardNav',function(e){
-				return base.checkKeys(e.which);
-			});
+				.unbind('keydown.keyboardNav')
+				.bind('keydown.keyboardNav',function(e){
+					return base.checkKeys(e.which);
+				});
 
 		};
 
@@ -382,7 +405,8 @@ $.fn.addNavigation = function(options){
 			if (typeof(key) === "undefined") {
 				return;
 			}
-			var k = base.navigation_keys;
+			var k = base.navigation_keys,
+				kbcss = $.keyboard.css;
 			if (key === k.toggle || disable) {
 				o.toggleMode = (disable) ? false : !o.toggleMode;
 				base.options.tabNavigation = (o.toggleMode) ? false : base.saveNav[0];
@@ -391,8 +415,8 @@ $.fn.addNavigation = function(options){
 			base.$keyboard.toggleClass(o.focusClass, o.toggleMode);
 			if ( o.toggleMode && key === k.enter ) {
 				base.$keyboard
-					.find('.ui-keyboard-keyset:visible')
-					.find('.ui-keyboard-button[data-pos="' + o.position[0] + ',' + o.position[1] + '"]')
+					.find('.' + kbcss.keySet + ':visible')
+					.find('.' + kbcss.keyButton + '[data-pos="' + o.position[0] + ',' + o.position[1] + '"]')
 					.trigger('repeater.keyboard');
 				return false;
 			}
@@ -405,9 +429,11 @@ $.fn.addNavigation = function(options){
 		base.navigateKeys = function(key, row, indx){
 			indx = indx || o.position[1];
 			row = row || o.position[0];
-			var vis = base.$keyboard.find('.ui-keyboard-keyset:visible'),
-				maxRow = vis.find('.ui-keyboard-button-endrow').length - 1,
-				maxIndx = vis.find('.ui-keyboard-button[data-pos^="' + row + ',"]').length - 1,
+			var kbcss = $.keyboard.css,
+				kbevents = $.keyboard.events,
+				vis = base.$keyboard.find('.' + kbcss.keySet + ':visible'),
+				maxRow = vis.find('.' + kbcss.endRow).length - 1,
+				maxIndx = vis.find('.' + kbcss.keyButton + '[data-pos^="' + row + ',"]').length - 1,
 				p = base.last,
 				l = base.$preview.val().length,
 				k = base.navigation_keys;
@@ -433,29 +459,29 @@ $.fn.addNavigation = function(options){
 			}
 
 			// get max index of new row
-			maxIndx = vis.find('.ui-keyboard-button[data-pos^="' + row + ',"]').length - 1;
+			maxIndx = vis.find('.' + kbcss.keyButton + '[data-pos^="' + row + ',"]').length - 1;
 			if (indx > maxIndx) { indx = maxIndx; }
 
-			vis.find('.ui-state-hover').removeClass('ui-state-hover');
-			vis.find('.ui-keyboard-button[data-pos="' + row + ',' + indx + '"]').addClass('ui-state-hover');
+			vis.find('.' + opts.css.buttonHover).removeClass(opts.css.buttonHover);
+			vis.find('.' + kbcss.keyButton + '[data-pos="' + row + ',' + indx + '"]').addClass(opts.css.buttonHover);
 			o.position = [ row, indx ];
 		};
 
 		// visible event is fired before this extension is initialized, so check!
 		if (base.options.alwaysOpen && base.isVisible) {
-			base.$keyboard.find('.ui-state-hover').removeClass('ui-state-hover');
+			base.$keyboard.find('.' + opts.css.buttonHover).removeClass(opts.css.buttonHover);
 			base.navigation_init();
 		}
 		// capture and simulate typing
 		base.$el
-			.bind('visible.keyboard', function(e){
-				base.$keyboard.find('.ui-state-hover').removeClass('ui-state-hover');
+			.bind(kbevents.kbVisible + '.keyboardNav', function(e){
+				base.$keyboard.find('.' + opts.css.buttonHover).removeClass(opts.css.buttonHover);
 				base.navigation_init();
 			})
-			.bind('inactive.keyboard hidden.keyboard', function(e){
+			.bind(kbevents.kbInactive + ' ' + kbevents.kbHidden, function(e){
 				base.checkKeys(e.which, true); // disable toggle mode & revert navigation options
 			})
-			.bind('keysetChange.keyboard', function(){
+			.bind(kbevents.kbKeysetChange, function(){
 				base.navigateKeys(null);
 			})
 			.bind('navigate navigateTo', function(e, row, indx){
@@ -512,7 +538,7 @@ $.fn.addNavigation = function(options){
  */
 /*jshint browser:true, jquery:true, unused:false */
 (function($){
-"use strict";
+'use strict';
 $.keyboard = $.keyboard || {};
 
 $.fn.previewKeyset = function( options ) {
@@ -528,12 +554,13 @@ $.fn.previewKeyset = function( options ) {
 		base.previewKeyset_options = $.extend( {}, defaults, options );
 
 		base.previewKeyset = function() {
-			var sets = base.previewKeyset_options.sets,
+			var kbcss = $.keyboard.css,
+				sets = base.previewKeyset_options.sets,
 				// only target option defined sets
-				$sets = base.$keyboard.find( '.ui-keyboard-keyset' ).filter( '[name="' + sets.join('"],[name="') + '"]' );
+				$sets = base.$keyboard.find( '.' + kbcss.keySet ).filter( '[name="' + sets.join('"],[name="') + '"]' );
 			if ( $sets.length > 1 ) {
 				// start with normal keyset & find all non-action buttons
-				$sets.eq( 0 ).find( '.ui-keyboard-button' ).not( '.ui-keyboard-actionkey' ).each(function(){
+				$sets.eq( 0 ).find( '.' + kbcss.keyButton ).not( '.' + kbcss.keyAction ).each(function(){
 					var indx, nam,
 						data = {},
 						len = sets.length,
@@ -542,7 +569,7 @@ $.fn.previewKeyset = function( options ) {
 					for ( indx = 0; indx < len; indx++ ) {
 						nam = $sibs.eq( indx ).parent().attr( 'name' );
 						if ( $.inArray( nam, sets ) >= 0 ) {
-							data[ 'data-' + nam ] = $sibs.eq( indx ).find( '.ui-keyboard-text' ).text();
+							data[ 'data-' + nam ] = $sibs.eq( indx ).find( '.' + kbcss.keyText ).text();
 						}
 					}
 					$sibs.attr( data );
@@ -550,7 +577,7 @@ $.fn.previewKeyset = function( options ) {
 			}
 		};
 
-		base.$el.bind( 'beforeVisible.keyboard', function() {
+		base.$el.bind($.keyboard.events.kbBeforeVisible, function() {
 			base.previewKeyset();
 		});
 
@@ -606,7 +633,7 @@ $.keyboard = $.keyboard || {};
 			base.scramble_setup = function($keyboard) {
 				var $sets, set, $keys, key, index, tmp,
 					rowIndex, keyboardmap, map, keyboard, row;
-				$sets = $keyboard.find('.ui-keyboard-keyset');
+				$sets = $keyboard.find('.' + $.keyboard.css.keySet);
 				if ($keyboard.length) {
 					if (o.byKeySet) {
 						$sets = $sets.eq(0);
@@ -648,7 +675,7 @@ $.keyboard = $.keyboard || {};
 							}
 						});
 						// remove original <br> elements
-						$keys.find('.ui-keyboard-button-endrow').remove();
+						$keys.find('.' + $.keyboard.css.endRow).remove();
 						// re-map keys
 						if (!o.byRow) {
 							row = base.shuffle( keyboard, keyboardmap );
@@ -698,7 +725,7 @@ $.keyboard = $.keyboard || {};
 			// make other keysets "line-up" with scrambled keyset
 			base.realign = function($keyboard) {
 				var selector, typ, pos,
-					$sets = $keyboard.find('.ui-keyboard-keyset'),
+					$sets = $keyboard.find('.' + $.keyboard.css.keySet),
 					$orig = $sets.eq(0);
 				$sets = $sets.filter(':gt(0)');
 				$orig.children().each(function(i, cell){
@@ -734,7 +761,7 @@ $.keyboard = $.keyboard || {};
 				}
 				base.$keyboard = $.keyboard.builtLayouts[layout].$keyboard;
 				if ( !o.randomizeOnce ) {
-					base.$el.bind('beforeVisible.keyboard', function(e, kb) {
+					base.$el.bind($.keyboard.events.kbBeforeVisible, function(e, kb) {
 						kb.$keyboard = kb.scramble_setup(kb.$keyboard);
 					});
 				}
@@ -837,7 +864,8 @@ $.keyboard = $.keyboard || {};
 				var el = (base.$preview) ? base.$preview : base.$el;
 
 				el
-				.bind('keyup.keyboard', function(e){
+				.unbind('keyup.keyboard-typing keydown.keyboard-typing keypress.keyboard-typing')
+				.bind('keyup.keyboard-typing', function(e){
 					if (o.init && o.lockTypeIn) { return false; }
 					if (e.which >= 37 && e.which <=40) { return; } // ignore arrow keys
 					if (e.which === 16) { base.shiftActive = false; }
@@ -849,7 +877,7 @@ $.keyboard = $.keyboard || {};
 					}
 				})
 				// change keyset when either shift or alt is held down
-				.bind('keydown.keyboard', function(e){
+				.bind('keydown.keyboard-typing', function(e){
 					if (o.init && o.lockTypeIn) { return false; }
 					e.temp = false; // prevent repetitive calls while keydown repeats.
 					if (e.which === 16) { e.temp = !base.shiftActive; base.shiftActive = true; }
@@ -866,7 +894,7 @@ $.keyboard = $.keyboard || {};
 					}
 
 				})
-				.bind('keypress.keyboard', function(e){
+				.bind('keypress.keyboard-typing', function(e){
 					if (o.init && o.lockTypeIn) { return false; }
 					// Simulate key press on virtual keyboard
 					if (base.typing_event && !base.options.lockInput) {
@@ -911,20 +939,23 @@ $.keyboard = $.keyboard || {};
 
 			base.typing_findKey = function(txt, e){
 				var tar, m, n, k, key, ks, meta, set,
+					kbcss = $.keyboard.css,
 					mappedKeys = $.keyboard.builtLayouts[base.layout].mappedKeys;
-				ks = base.$keyboard.find('.ui-keyboard-keyset');
+				ks = base.$keyboard.find('.' + kbcss.keySet);
 				k = (base.typing_keymap.hasOwnProperty(txt)) ? base.typing_keymap[txt] : txt;
 
 				// typing_event is true when typing on the actual keyboard - look for actual key
 				// All of this breaks when the CapLock is on... unable to find a cross-browser method that works.
-				tar = '.ui-keyboard-button[data-value="' + k + '"]';
+				tar = '.' + kbcss.keyButton + '[data-value="' + k + '"]';
 				if (base.typing_event && e) {
 					if (base.typing_xref.hasOwnProperty(e.keyCode || e.which)) {
 						// special named keys: bksp, tab and enter
-						tar = '.ui-keyboard-' + base.typing_xref[e.keyCode || e.which];
+						tar = '.' + kbcss.keyPrefix + base.typing_xref[e.keyCode || e.which];
 					} else {
 						m = String.fromCharCode(e.charCode || e.which);
-						tar = (mappedKeys.hasOwnProperty(m)) ? '.ui-keyboard-button[data-value="' + mappedKeys[m]  + '"]' : '.ui-keyboard-' + (e.charCode || e.which);
+						tar = (mappedKeys.hasOwnProperty(m)) ?
+							'.' + kbcss.keyButton + '[data-value="' + mappedKeys[m]  + '"]' :
+							'.' + kbcss.keyPrefix + (e.charCode || e.which);
 					}
 				}
 				// find key
@@ -941,11 +972,11 @@ $.keyboard = $.keyboard || {};
 						n = (base.typing_keymap.hasOwnProperty(txt)) ? base.typing_keymap[txt] : txt.charCodeAt(0);
 						if (n === 'bksp') { txt = n; }
 						// find actual key on keyboard
-						key = ks.find('.ui-keyboard-' + n);
+						key = ks.find('.' + kbcss.keyPrefix + n);
 					}
 
 					// find the keyset
-					set = key.closest('.ui-keyboard-keyset');
+					set = key.closest('.' + kbcss.keySet);
 
 					// figure out which keyset the key is in then simulate clicking on that meta key, then on the key
 					if (set.attr('name')) {
