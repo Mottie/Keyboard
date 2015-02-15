@@ -15,6 +15,7 @@
 
 	<!-- keyboard widget css & script (required) -->
 	<link href="../css/keyboard.css" rel="stylesheet">
+	<link href="../css/keyboard-previewkeyset.css" rel="stylesheet">
 	<script src="../js/jquery.keyboard.js"></script>
 
 	<!-- keyboard extensions (optional) -->
@@ -24,53 +25,6 @@
 	<script src="../js/jquery.keyboard.extension-typing.js"></script>
 	<script src="../js/jquery.keyboard.extension-autocomplete.js"></script>
 	-->
-
-	<style>
-	.ui-keyboard-keyset .ui-keyboard-button {
-		position: relative;
-	}
-	/* show mini-shift keyset with normal keyset */
-	.ui-keyboard-keyset-normal .ui-keyboard-button::after {
-		content: attr(data-shift);
-		font-size: 0.6em;
-		color: #999;
-		position: absolute;
-		top: -1em;
-		left: 2px;
-		z-index: 200;
-	}
-	/* show mini-normal keyset with shift keyset */
-	.ui-keyboard-keyset-shift .ui-keyboard-button::after {
-		content: attr(data-normal);
-		font-size: 0.6em;
-		color: #999;
-		position: absolute;
-		top: -1em;
-		left: 2px;
-		z-index: 200;
-	}
-	/* show mini-normal keyset with alt keyset */
-	.ui-keyboard-keyset-alt .ui-keyboard-button::after {
-		content: attr(data-alt-shift);
-		font-size: 0.6em;
-		color: #999;
-		position: absolute;
-		top: -1em;
-		left: 2px;
-		z-index: 200;
-	}
-	/* show mini-alt-shift keyset with alt-shift keyset */
-	.ui-keyboard-keyset-alt-shift .ui-keyboard-button::after {
-		content: attr(data-alt);
-		font-size: 0.6em;
-		color: #999;
-		position: absolute;
-		top: -1em;
-		left: 2px;
-		z-index: 200;
-	}
-	</style>
-
 
 	<!-- initialize keyboard (required) -->
 	<script>
@@ -96,12 +50,20 @@
 		<a href="navigate.html">Navigate</a>
 		<a class="current" href="preview-keyset.html">Keyset</a>
 		<a href="calculator.html">Calculator</a>
+		<br>
 		<a class="play" href="http://jsfiddle.net/Mottie/MK947/">Playground</a>
 		<a class="git" href="https://github.com/Mottie/Keyboard/wiki">Documentation</a>
 		<a class="git" href="https://github.com/Mottie/Keyboard/archive/master.zip">Download</a>
-		<a class="issue" href="https://github.com/Mottie/Keyboard/issues">Issues</a><br><br>
+		<a class="issue" href="https://github.com/Mottie/Keyboard/issues">Issues</a><br>
 	</div>
 	<!-- End Links -->
+
+	<h1><a href="https://github.com/Mottie/Keyboard">Virtual Keyboard Preview Keyset Demo</a></h1>
+	<h4>
+		See a preview of a chosen keyset; display &amp; position is done using css
+		<br>
+		Note: Look at this demo source or refer to the <a href="https://github.com/Mottie/Keyboard/wiki/Setup#wiki-previewkeyset">documentation</a> on how to set up this extension.
+	</h4>
 
 	<div id="wrap"> <!-- wrapper only needed to center the input -->
 
