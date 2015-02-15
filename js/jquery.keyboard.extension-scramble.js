@@ -1,5 +1,5 @@
 /*
- * jQuery UI Virtual Keyboard Scramble Extension v1.4 for Keyboard v1.18+ (updated 11/19/2014)
+ * jQuery UI Virtual Keyboard Scramble Extension v1.5 for Keyboard v1.18+ (updated 2/15/2015)
  *
  * By Rob Garrison (aka Mottie & Fudgey)
  * Licensed under the MIT License

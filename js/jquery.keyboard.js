@@ -1,4 +1,4 @@
-/*! jQuery UI Virtual Keyboard v1.19.3 *//*
+/*! jQuery UI Virtual Keyboard v1.20.0 *//*
 
 Author: Jeremy Satterfield
 Modified: Rob Garrison (Mottie on github)
@@ -30,7 +30,7 @@ Setup/Usage:
 $.keyboard = function(el, options){
 	var base = this, o;
 
-	base.version = '1.19.3';
+	base.version = '1.20.0';
 
 	// Access to jQuery and DOM versions of element
 	base.$el = $(el);

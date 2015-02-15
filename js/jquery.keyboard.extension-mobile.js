@@ -1,5 +1,5 @@
-/*! jQuery UI Virtual Keyboard for jQuery Mobile Themes v1.2 *//*
- * for Keyboard v1.18+ (updated 6/1/2014)
+/*! jQuery UI Virtual Keyboard for jQuery Mobile Themes v1.3 *//*
+ * for Keyboard v1.18+ (updated 2/15/2015)
  *
  * By Rob Garrison (aka Mottie & Fudgey)
  * Licensed under the MIT License

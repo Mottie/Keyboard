@@ -5,8 +5,8 @@
 █████▀ ▀████▀   ██  ██ ▀████▀   ██     ██ ██ ██ ▀████▀ █████▀ ██ ██     █████▀
 */
 /*! jQuery UI Virtual Keyboard - ALL Extensions + Mousewheel */
-/*! jQuery UI Virtual Keyboard Autocomplete v1.6 *//*
- * for Keyboard v1.18+ only (11/19/2014)
+/*! jQuery UI Virtual Keyboard Autocomplete v1.7 *//*
+ * for Keyboard v1.18+ only (2/15/2015)
  *
  * By Rob Garrison (aka Mottie & Fudgey)
  * Licensed under the MIT License
@@ -133,8 +133,8 @@ $.fn.addAutocomplete = function(){
 };
 })(jQuery);
 
-/*! jQuery UI Virtual Keyboard for jQuery Mobile Themes v1.2 *//*
- * for Keyboard v1.18+ (updated 6/1/2014)
+/*! jQuery UI Virtual Keyboard for jQuery Mobile Themes v1.3 *//*
+ * for Keyboard v1.18+ (updated 2/15/2015)
  *
  * By Rob Garrison (aka Mottie & Fudgey)
  * Licensed under the MIT License
@@ -304,8 +304,8 @@ $.fn.addMobile = function(options){
 };
 })(jQuery);
 
-/*! jQuery UI Virtual Keyboard Navigation v1.4 *//*
- * for Keyboard v1.18+ only (updated 3/1/2014)
+/*! jQuery UI Virtual Keyboard Navigation v1.5 *//*
+ * for Keyboard v1.18+ only (updated 2/15/2015)
  *
  * By Rob Garrison (aka Mottie & Fudgey)
  * Licensed under the MIT License
@@ -513,7 +513,7 @@ $.fn.addNavigation = function(options){
 })(jQuery);
 
 /*! jQuery UI Virtual Keyboard previewKeyset v1.0 *//*
- * for Keyboard v1.18+ only (updated 2/10/2015)
+ * for Keyboard v1.18+ only (updated 2/15/2015)
  *
  * By Rob Garrison (aka Mottie & Fudgey)
  * Licensed under the MIT License
@@ -586,7 +586,7 @@ $.fn.previewKeyset = function( options ) {
 })( jQuery );
 
 /*
- * jQuery UI Virtual Keyboard Scramble Extension v1.4 for Keyboard v1.18+ (updated 11/19/2014)
+ * jQuery UI Virtual Keyboard Scramble Extension v1.5 for Keyboard v1.18+ (updated 2/15/2015)
  *
  * By Rob Garrison (aka Mottie & Fudgey)
  * Licensed under the MIT License
@@ -784,8 +784,8 @@ $.keyboard = $.keyboard || {};
 	};
 })(jQuery);
 
-/*! jQuery UI Virtual Keyboard Typing Simulator v1.6 *//*
- * for Keyboard v1.18+ only (1/3/2015)
+/*! jQuery UI Virtual Keyboard Typing Simulator v1.7 *//*
+ * for Keyboard v1.18+ only (2/15/2015)
  *
  * By Rob Garrison (aka Mottie & Fudgey)
  * Licensed under the MIT License

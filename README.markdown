@@ -64,8 +64,17 @@ Wiki: [Home](https://github.com/Mottie/Keyboard/wiki/Home) | [FAQ](https://githu
     * jQuery caret (included with source)
 * Optional
     * jQuery mousewheel plugin - allows using mousewheel to scroll through other key sets
-    * jQuery keyboard typing extension - simulate typing on the virtual keyboard
-    * jQuery keyboard autocomplete extension - for use with jQuery UI autocomplete (also requires jQuery UI Positioning Utility)
+    * jQuery UI Autocomplete widget - use with jQuery keyboard autocomplete extension
+
+## Contributing
+
+* Install [node.js]() - this includes `npm` (node package manager).
+* Run `npm install` in the root directory.
+* Run `npm install -g grunt-cli` to install the grunt command-line interface.
+* Make any changes to the code.
+* Unit tests will be added later.
+* Run `grunt` to perform a new build in the `/dist` folder.
+* Submit a pull request from a branch other than the `main`.
 
 ## Licensing
 
@@ -76,6 +85,36 @@ Wiki: [Home](https://github.com/Mottie/Keyboard/wiki/Home) | [FAQ](https://githu
 ## Change Log
 
 Only the latest changes will be shown below, see the wiki log to view older versions.
+
+### Version 1.20.0 (2/15/2015)
+
+* Build
+  * Add build process.
+  * Rename "all.js" to "keyboard-layouts-greywyvern.js"
+  * Combine all other layouts into a "keyboard-layouts-combined.js" file.
+  * Combine all extensions into "jquery.keyboard.extension-all.js" file.
+  * Create a minimized version of all files (css & js) in a 'dist' folder.
+  * Removed all `.min.js` files from the `js` folder; this might break some external demos.
+* Core
+  * Add "keysetChange" event; fired when the visible keyset changes.
+  * Moved internal class names to `$.keyboard.css`.
+  * Moved internal event names to `$.keyboard.events`.
+  * Perform max length check before validating.
+* Docs
+  * Add jQuery & jQuery UI files.
+  * Replace tooltip plugin.
+  * Add keyboard svg icon.
+  * Layout demo now uses combined layouts file instead of loading each layout separately.
+  * Navigation demo now includes external caret navigation buttons that work without the toggle engaged.
+* Mobile
+  * Fix mobile css styles.
+  * Fix issues with mobile theming.
+* Navigate
+  * Fixed broken extension code.
+  * Add navigation functions that work in untoggle mode.
+* Preview Keyset
+  * Add new preview keyset extension.
+  * Choose which keysets to preview & use pure css to display it.
 
 ### Version 1.19.3 (1/3/2015)
 
@@ -94,48 +133,3 @@ Only the latest changes will be shown below, see the wiki log to view older vers
   * Make corrections to Hindi layout. See [issue #323](https://github.com/Mottie/Keyboard/issues/323).
   * Add Persian (Farsi) layout. Thanks to Majid R via email.
   * Add layouts generated & modified from the [greywyvern virtual keyboard](http://www.greywyvern.com/code/javascript/keyboard).
-
-### Version 1.19.1 (11/20/2014)
-
-* Num layout now uses `{dec}` instead of a decimal point. Fixes [issue #318](https://github.com/Mottie/Keyboard/issues/318).
-* Save original settings, so scramble extension works properly. Fixes [issue #276](https://github.com/Mottie/Keyboard/issues/276).
-
-### Version 1.19.0 (11/19/2014)
-
-* Core
-  * Check for jQuery UI before checking for the position utility. Fixes [issue #263](https://github.com/Mottie/Keyboard/issues/263).
-  * Add `maxInsert` option; when `true` it allows inserting characters at the caret when the max length is set. Fixes [issue #289](https://github.com/Mottie/Keyboard/issues/289).
-  * Fix tab navigation when `openOn` option is empty. Fixes [issue #275](https://github.com/Mottie/Keyboard/issues/275).
-  * Allow inline renaming of action keys; it works the same as the other non-action keys
-  * Remove mousewheel scrolling through keyset text for action keys
-  * Build will now ignore layout keys `name`, `lang` and `rtl`.
-  * Add `restricted` callback function. Fixes [issue #305](https://github.com/Mottie/Keyboard/issues/305).
-  * Add `reposition` option to automatically reposition the keyboard on window resize.
-  * Modified `reposition` option to ignore repositioning when the keyboard is not attached to the page 'body'. See [pull request #317](https://github.com/Mottie/Keyboard/pull/317). Thanks [eugenius](https://github.com/eugenius)!
-  * The `change` callback no longer keeps the last keyboard open. Fixes [issue #311](https://github.com/Mottie/Keyboard/issues/311) and [issue #308](https://github.com/Mottie/Keyboard/issues/308).
-  * Ensure preview variable is updated & keyboard is positioned properly when `usePreview` is `false`.
-  * Switching inputs (tab/enter navigation) now ignores disabled elements.
-  * Page no longer scrolls in Firefox upon initialization. Fixes [issue #213](https://github.com/Mottie/Keyboard/issues/213).
-  * Fix initial positioning when `usePreview` is `false`.
-
-* Caret
-  * Fix js error when using email/number inputs. Fixes [issue #309](https://github.com/Mottie/Keyboard/issues/309).
-  * Caret detect `selectionStart` in Firefox using alternate method. Fixes [issue #311](https://github.com/Mottie/Keyboard/issues/311).
-  * Caret position can again be set to zero. Fixes [issue #315](https://github.com/Mottie/Keyboard/issues/315).
-
-* Demo
-  * Fix Colemak demo; contenteditable not yet supported.
-  * Changed International demo to use a Bootstrap theme.
-  * Changed syntax highlighting script to prettify.
-
-* Layouts
-  * Updated all layouts to include an internal language definition.
-  * The language used in virtual keyboard keys now automatically switches to the layout set language; this can be overridden by the core `language` setting.
-  * Updated Russian layout. Thanks to James Newton via email.
-  * Add Serbian layout. Thanks to James Newton via email.
-  * Add an example template file (`_template.js`) for use as a starting template to add more language layouts.
-
-* Extensions
-  * Autocomplete extension: now works with jQuery v2.1+. Fixes [issue #291](https://github.com/Mottie/Keyboard/issues/291).
-  * Typing extension: add `lockTypeIn` option & fix javascript error while user types.
-  * Scramble extension: Keyboard no longer disappears when scramble initializes more than once. Fixes [issue #283](https://github.com/Mottie/Keyboard/issues/283).
