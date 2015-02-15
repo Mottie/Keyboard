@@ -613,7 +613,7 @@ $.keyboard = function(el, options){
 				$key = indx < 0 ? $this : $keys.eq(indx + $this.data('curnum'));
 				action = $key.attr('data-action');
 				// don't split colon key. Fixes #264
-				action = action === ':' ? ':' : action.split(':')[0];
+				action = action === ':' ? ':' : (action || '').split(':')[0];
 				if (timer - (base.last.eventTime || 0) < o.preventDoubleEventTime) { return; }
 				base.last.eventTime = timer;
 				base.$preview.focus();
