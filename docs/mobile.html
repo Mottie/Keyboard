@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+
+	<title>Virtual Keyboard Mobile Demo</title>
+
+	<!-- demo -->
+	<link href="css/demo.css" rel="stylesheet">
+
+	<!-- jQuery & jQuery UI + theme (required) -->
+	<script src="http://code.jquery.com/jquery-2.1.3.min.js"></script>
+	<script src="http://code.jquery.com/ui/1.11.3/jquery-ui.min.js"></script>
+
+	<link href="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.css" rel="stylesheet">
+	<script src="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.js"></script>
+
+	<!-- keyboard widget css & script (required) -->
+	<link href="../css/keyboard.css" rel="stylesheet">
+	<script src="../js/jquery.keyboard.js"></script>
+
+	<!-- keyboard extensions (optional) -->
+	<script src="../js/jquery.mousewheel.js"></script>
+
+	<!--
+	<script src="../js/jquery.keyboard.extension-typing.js"></script>
+	<script src="../js/jquery.keyboard.extension-autocomplete.js"></script>
+	-->
+	<script src="../js/jquery.keyboard.extension-mobile.js"></script>
+
+	<style>
+	html head + body .ui-btn.ui-btn-c:hover,
+	html head + body .ui-btn.ui-btn-c.ui-btn-hover,
+	html head + body .ui-btn.ui-btn-c:active,
+	html head + body .ui-btn.ui-btn-c.ui-btn-active {
+		background-color: #f7931e;
+		border-color: #a37a00;
+		color: #fff;
+		text-shadow: 0 1px 0 #ffcc33;
+	}
+	</style>
+
+	<!-- initialize keyboard (required) -->
+	<script>
+	$(document).on('pagecreate', function(){
+
+		var $k = $('#keyboard'),
+			$s = $('#switcher').find('input'),
+			set = $('#switcher').find('.ui-controlgroup-controls');
+
+		$k
+			.keyboard({
+				keyBinding : 'mousedown touchstart',
+				stayOpen : true
+			})
+			/* initial setup for mobile extension */
+			.addMobile({
+				// keyboard wrapper theme
+				container    : { theme:'b' },
+				// theme added to all regular buttons
+				buttonMarkup : { theme:'b', shadow:'true', corners:'true' },
+				// theme added to all buttons when they are being hovered
+				buttonHover  : { theme:'b' },
+				// theme added to action buttons (e.g. tab, shift, accept, cancel);
+				// parameters here will override the settings in the buttonMarkup
+				buttonAction : { theme:'c' },
+				// theme added to button when it is active (e.g. shift is down)
+				// All extra parameters will be ignored
+				buttonActive : { theme:'c' }
+			});
+
+		/* Theme switcher - temporary until jQuery Mobile Theme Switcher is available */
+		$s.bind('change', function(){
+			$k.data('keyboard').close();
+			$k.addMobile({
+				container    : { theme : set.eq(0).find(':checked')[0].id.slice(-1) },
+				buttonMarkup : { theme : set.eq(1).find(':checked')[0].id.slice(-1), shadow:'true', corners:'true' },
+				buttonHover  : { theme : set.eq(2).find(':checked')[0].id.slice(-1) },
+				buttonAction : { theme : set.eq(3).find(':checked')[0].id.slice(-1) },
+				buttonActive : { theme : set.eq(4).find(':checked')[0].id.slice(-1) }
+			});
+			$k.data('keyboard').reveal();
+		});
+
+	});
+	</script>
+
+</head>
+<body id="mobile">
+
+	<div id="pagewrap" data-role="page" data-theme="b">
+
+		<!-- Links to other demo pages & docs -->
+		<div id="nav">
+			<a data-ajax="false" href="../index.html">Main Demo</a>
+			<a data-ajax="false" href="basic.html">Basic</a>
+			<a data-ajax="false" class="current" href="mobile.html">Mobile</a>
+			<a data-ajax="false" href="layouts.html">Layouts</a>
+			<a data-ajax="false" href="layouts2.html">Layouts2</a>
+			<a data-ajax="false" href="scramble.html">Scramble</a>
+			<a data-ajax="false" href="navigate.html">Navigate</a>
+			<a data-ajax="false" href="preview-keyset.html">Keyset</a>
+			<a data-ajax="false" href="calculator.html">Calculator</a>
+			<br>
+			<a data-ajax="false" class="play" href="http://jsfiddle.net/Mottie/MK947/">Playground</a>
+			<a data-ajax="false" class="git" href="https://github.com/Mottie/Keyboard/wiki">Documentation</a>
+			<a data-ajax="false" class="git" href="https://github.com/Mottie/Keyboard/archive/master.zip">Download</a>
+			<a data-ajax="false" class="issue" href="https://github.com/Mottie/Keyboard/issues">Issues</a><br>
+		</div>
+		<!-- End Links -->
+
+		<h1><a data-ajax="false" href="https://github.com/Mottie/Keyboard">Virtual Keyboard jQuery Mobile Themes</a></h1>
+
+		<div id="switcher">
+
+			<div class="swatch" data-role="fieldcontain">
+				<fieldset data-role="controlgroup" data-type="horizontal">
+					<legend>Container<br>(background)</legend>
+					<input type="radio" id="radio-ca" name="radio-c" class="custom"><label for="radio-ca">A</label>
+					<input type="radio" id="radio-cb" name="radio-c" class="custom" checked><label for="radio-cb">B</label>
+				</fieldset>
+			</div>
+
+			<div class="swatch" data-role="fieldcontain">
+				<fieldset data-role="controlgroup" data-type="horizontal">
+					<legend>Regular Buttons<br>(non-action)</legend>
+					<input type="radio" id="radio-ra" name="radio-r" class="custom"><label for="radio-ra">A</label>
+					<input type="radio" id="radio-rb" name="radio-r" class="custom" checked><label for="radio-rb">B</label>
+				</fieldset>
+			</div>
+
+			<div class="swatch" data-role="fieldcontain">
+				<fieldset data-role="controlgroup" data-type="horizontal">
+					<legend>Hovered Buttons<br>(all)</legend>
+					<input type="radio" id="radio-ha" name="radio-h" class="custom"><label for="radio-ha">A</label>
+					<input type="radio" id="radio-hb" name="radio-h" class="custom" checked><label for="radio-hb">B</label>
+					<input type="radio" id="radio-hc" name="radio-h" class="custom"><label for="radio-hc">C</label>
+				</fieldset>
+			</div>
+
+			<div class="swatch" data-role="fieldcontain">
+				<fieldset data-role="controlgroup" data-type="horizontal">
+					<legend>Action Buttons<br>(Enter)</legend>
+					<input type="radio" id="radio-aa" name="radio-a" class="custom"><label for="radio-aa">A</label>
+					<input type="radio" id="radio-ab" name="radio-a" class="custom"><label for="radio-ab">B</label>
+					<input type="radio" id="radio-ac" name="radio-a" class="custom" checked><label for="radio-ac">C</label>
+				</fieldset>
+			</div>
+
+			<div class="swatch" data-role="fieldcontain">
+				<fieldset data-role="controlgroup" data-type="horizontal">
+					<legend>Active Buttons<br>(Shift down)</legend>
+					<input type="radio" id="radio-va" name="radio-v" class="custom"><label for="radio-va">A</label>
+					<input type="radio" id="radio-vb" name="radio-v" class="custom"><label for="radio-vb">B</label>
+					<input type="radio" id="radio-vc" name="radio-v" class="custom" checked><label for="radio-vc">C</label>
+				</fieldset>
+			</div>
+
+		</div>
+
+		<h4>Check out the <a data-ajax="false" href="jquery-mobile-1.4.html">jQuery Mobile v1.4 demo</a> that automatically adds a virtual numeric keypad to all numeric <code>&lt;input&gt;</code> elements</h4>
+
+		<div id="wrap"> <!-- wrapper only needed to center the input -->
+
+			<!-- keyboard input -->
+			<label for="keyboard"></label>
+			<input id="keyboard" name="keyboard" type="text">
+
+		</div> <!-- End wrapper -->
+
+	</div>
+
+</body>
+</html>

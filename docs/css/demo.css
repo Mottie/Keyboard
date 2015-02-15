@@ -1,0 +1,135 @@
+/* keyboard - demo CSS */
+html, body, div, input, textarea {
+ font-family: Verdana,Tahoma,Segoe,sans-serif;
+ font-size: 14px;
+}
+
+body { background: #181818; color: #ddd; height: 98%; margin: 0 auto; padding: 0; }
+a:link { color: #9fcdff; text-decoration: none; }
+a:hover { color: #fff; }
+a:visited, a:active, h2.active { color: #53a5ff; }
+
+#page-wrap { display: block; width: 90%; margin: 0 auto; text-align: center; height: 98%; min-height: 350px; }
+
+h1, h2, h3, h4 { color: #ddd; text-align: center; }
+.block h2 { margin: 5px; font-size: 130%; cursor: pointer; }
+h2 img { margin-bottom: 7px; }
+
+#nav { display: block; width: auto; text-align: center; margin: 20px auto 0 auto; line-height: 45px; }
+#nav a { text-align: center; background: #000; color: #FFF; border-radius: 5px; -moz-border-radius: 5px; -webkit-border-radius: 5px; padding: 10px; white-space: nowrap; }
+#nav a.git { background: #006; }
+#nav a.play { background: #060; }
+#nav a.issue { background: #600; }
+#nav a:hover,#nav a.current{ background: #555; }
+
+.github-btn { border: 0; }
+
+#switcher, #wrap { width: 260px; margin: 10px auto; }
+#switcher a { margin: 0 auto; }
+#wrap { margin-top: 30px; }
+
+#console { width: 90%; list-style-type: none; margin: 0 auto; padding: 0; }
+#console li { text-align: center; }
+#console .keyboard { color: #ec7600; }
+#console .event { color: #facd22; }
+#console .accepted { color: #8AC763; }
+#console .ignored { color: #f00; }
+#console .content { color: RoyalBlue; }
+
+.block { width: 270px; display: inline-block; height: 170px; margin: 15px; padding-bottom: 30px; text-align: center; vertical-align: top; position: relative; }
+.block2 { margin: 0 auto; text-align: center; }
+textarea, input { width: 260px; background: #333; color: #ddd; border: #777 1px solid; padding: 5px 0; }
+.hiddenInput { display: inline-block; width: 240px; }
+.code { display: none; }
+.attn { color: #c00; }
+
+#nav-demo .block { height: 250px; padding: 0; }
+#nav-demo input, #nav-demo textarea { margin: 2px; }
+
+/* override bootstrap active state */
+button.btn-default:active {
+ background-color: #FFF;
+ -webkit-box-shadow: none;
+ box-shadow: none;
+}
+button.btn-default:active:hover {
+ background-color: #3276B1;
+}
+
+#showcode {
+ display: none;
+ overflow: auto;
+ width: 100%;
+ margin: 50px auto 0 auto;
+ padding: 10px;
+
+}
+#showcode pre {
+ background: #222;
+ margin: 0 20px;
+ padding: 10px;
+ text-align: left;
+ tab-size: 4;
+ -moz-tab-size: 4;
+}
+
+.oldie #page-wrap { width: 900px; }
+.oldie .block { float: left; display: inherit; }
+.oldie #showcode { width: 850px; }
+
+.clear { clear: both; }
+
+/* used .alignRight instead of #num (for the number pad) here because the virtual keyboard
+ strips IDs from the input - ID's are supposed to be unique! */
+.alignRight { text-align: right; }
+
+#info { margin: 220px auto 0 auto; width: 720px;}
+#info > ul { width: 350px; float: left; padding-right: 50px; }
+#info > ul > li > strong { color: #53a5ff; }
+#info > ul ul strong { color: #fff; }
+#info div.nav { width: 280px; float: left; padding-top: 20px; }
+#info button {
+	width: 90px;
+	height: 25px;
+	border: #555 1px solid;
+	border-radius: 5px;
+	-moz-border-radius: 5px;
+	-webkit-border-radius: 5px;
+	margin: 1px;
+}
+#info button:not(.half):hover {
+	background: #aaa;
+}
+#info .half {
+	width: 44px;
+}
+button.nav {
+	color: #fff;
+	background: #1e5799;
+	border: #2671c4 1px solid;
+}
+#info button.nav:hover {
+	color: #000;
+	background: #2ab0ed;
+}
+#info .key { font-weight: 700; color: #59b4d4; }
+#info .active, #info .toggle.active {
+	background: #f58400;
+}
+.underline { text-decoration: underline; }
+
+#mobile #wrap { height: 200px; }
+#mobile #switcher { max-width: 920px; width: auto; margin: 0 auto; }
+#mobile #switcher .swatch { width: 180px; height: 80px; display: inline-block; margin: 0; }
+.oldie #switcher .ui-body { float: left; clear: none !important; }
+#mobile #switcher fieldset { text-align: center; white-space: nowrap; margin: 0; height: 20px; }
+#mobile #switcher input { visibility: hidden; }
+#mobile .ui-icon-radio-on, #mobile .ui-icon-radio-off { display: none; }
+#mobile #switcher .ui-btn-active { box-shadow: 0 1px 5px rgba(255, 255, 255, 0.7); }
+#mobile #switcher .ui-controlgroup-label { display: block; margin: 0 0 15px 0; width: auto; }
+#mobile #switcher .ui-btn-inner { padding: 0; }
+#mobile #switcher .ui-radio, #mobile #switcher .ui-radio label { font-size: 10px; }
+#mobile #switcher .ui-btn-text { position: relative; top: 2px; left: 5px; width: 10px; }
+
+#footer { height: 150px; }
+#footer2 div { margin: 250px auto; width: 650px; text-align: center; }

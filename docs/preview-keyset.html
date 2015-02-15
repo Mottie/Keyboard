@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+
+	<title>Virtual Keyboard Basic Demo</title>
+
+	<!-- demo -->
+	<link href="css/demo.css" rel="stylesheet">
+
+	<!-- jQuery & jQuery UI + theme (required) -->
+	<link href="css/jquery-ui.min.css" rel="stylesheet">
+	<script src="js/jquery.min.js"></script>
+	<script src="js/jquery-ui.min.js"></script>
+
+	<!-- keyboard widget css & script (required) -->
+	<link href="../css/keyboard.css" rel="stylesheet">
+	<link href="../css/keyboard-previewkeyset.css" rel="stylesheet">
+	<script src="../js/jquery.keyboard.js"></script>
+
+	<!-- keyboard extensions (optional) -->
+	<script src="../js/jquery.mousewheel.js"></script>
+	<script src="../js/jquery.keyboard.extension-previewkeyset.js"></script>
+	<!--
+	<script src="../js/jquery.keyboard.extension-typing.js"></script>
+	<script src="../js/jquery.keyboard.extension-autocomplete.js"></script>
+	-->
+
+	<!-- initialize keyboard (required) -->
+	<script>
+		$(function(){
+			$('#keyboard').keyboard({ layout: 'international' }).previewKeyset({
+				sets : [ 'normal', 'shift', 'alt', 'alt-shift' ]
+			});
+		});
+	</script>
+
+</head>
+
+<body>
+
+	<!-- Links to other demo pages & docs -->
+	<div id="nav">
+		<a href="../index.html">Main Demo</a>
+		<a href="basic.html">Basic</a>
+		<a href="mobile.html">Mobile</a>
+		<a href="layouts.html">Layouts</a>
+		<a href="layouts2.html">Layouts2</a>
+		<a href="scramble.html">Scramble</a>
+		<a href="navigate.html">Navigate</a>
+		<a class="current" href="preview-keyset.html">Keyset</a>
+		<a href="calculator.html">Calculator</a>
+		<br>
+		<a class="play" href="http://jsfiddle.net/Mottie/MK947/">Playground</a>
+		<a class="git" href="https://github.com/Mottie/Keyboard/wiki">Documentation</a>
+		<a class="git" href="https://github.com/Mottie/Keyboard/archive/master.zip">Download</a>
+		<a class="issue" href="https://github.com/Mottie/Keyboard/issues">Issues</a><br>
+	</div>
+	<!-- End Links -->
+
+	<h1><a href="https://github.com/Mottie/Keyboard">Virtual Keyboard Preview Keyset Demo</a></h1>
+	<h4>
+		See a preview of a chosen keyset; display &amp; position is done using css
+		<br>
+		Note: Look at this demo source or refer to the <a href="https://github.com/Mottie/Keyboard/wiki/Setup#wiki-previewkeyset">documentation</a> on how to set up this extension.
+	</h4>
+
+	<div id="wrap"> <!-- wrapper only needed to center the input -->
+
+		<!-- keyboard input -->
+		<input id="keyboard" type="text">
+
+	</div> <!-- End wrapper -->
+
+</body>
+
+</html>

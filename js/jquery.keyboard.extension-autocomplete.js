@@ -1,5 +1,5 @@
-/*
- * jQuery UI Virtual Keyboard Autocomplete v1.6 for Keyboard v1.18+ only (11/19/2014)
+/*! jQuery UI Virtual Keyboard Autocomplete v1.7 *//*
+ * for Keyboard v1.18+ only (2/15/2015)
  *
  * By Rob Garrison (aka Mottie & Fudgey)
  * Licensed under the MIT License
@@ -49,20 +49,21 @@ $.fn.addAutocomplete = function(){
 			}
 
 			base.$el
-				.bind('visible.keyboard',function(){
+				.unbind('visible hidden autocompleteopen autocompleteselect '.split(' ').join('.keyboard-autocomplete '))
+				.bind('visible.keyboard-autocomplete',function(){
 					base.autocomplete_setup();
 				})
-				.bind('change.keyboard',function(){
+				.bind('change.keyboard-autocomplete',function(e){
 					if (base.hasAutocomplete && base.isVisible()) {
 						base.$el
 							.val(base.$preview.val())
 							.trigger('keydown.autocomplete');
 					}
 				})
-				.bind('hidden.keyboard', function(){
+				.bind('hidden.keyboard-autocomplete', function(){
 					base.$el.autocomplete('close');
 				})
-				.bind('autocompleteopen', function() {
+				.bind('autocompleteopen.keyboard-autocomplete', function() {
 					if (base.hasAutocomplete){
 						// reposition autocomplete window next to the keyboard
 						base.$autocomplete.menu.element.position({
@@ -73,7 +74,7 @@ $.fn.addAutocomplete = function(){
 						});
 					}
 				})
-				.bind('autocompleteselect', function(e, ui){
+				.bind('autocompleteselect.keyboard-autocomplete', function(e, ui){
 					var v = ui.item && ui.item.value || '';
 					if (base.hasAutocomplete && v !== ''){
 						base.$preview

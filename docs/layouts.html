@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+
+	<title>Virtual Keyboard Language Layouts</title>
+
+	<!-- demo -->
+	<link href="css/demo.css" rel="stylesheet">
+
+	<!-- jQuery & jQuery UI + theme (required) -->
+	<link href="css/jquery-ui.min.css" rel="stylesheet">
+	<script src="js/jquery.min.js"></script>
+	<script src="js/jquery-ui.min.js"></script>
+
+	<!-- keyboard widget css & script (required) -->
+	<link href="../css/keyboard.css" rel="stylesheet">
+	<link href="../css/keyboard-previewkeyset.css" rel="stylesheet">
+	<script src="../js/jquery.keyboard.js"></script>
+
+	<!-- keyboard extensions (optional) -->
+	<script src="../js/jquery.mousewheel.js"></script>
+	<script src="../js/jquery.keyboard.extension-typing.js"></script>
+	<script src="../js/jquery.keyboard.extension-previewkeyset.js"></script>
+
+	<!-- keyboard layout -->
+	<script src="../layouts/keyboard-layouts-combined.js" charset="utf-8"></script>
+
+	<!-- theme switcher -->
+	<script src="http://jqueryui.com/themeroller/themeswitchertool/"></script>
+
+	<script>
+	$(function(){
+
+		var layouts = [
+			// 'title , file name , layout name'
+			"Albanian (qwerty), albanian, albanian-qwerty",
+			"Albanian (qwertz), albanian, albanian-qwertz",
+			"Arabic (azerty), arabic, arabic-azerty",
+			"Arabic (qwerty-1), arabic, arabic-qwerty-1",
+			"Arabic (qwerty-2), arabic, arabic-qwerty-2",
+			"Arabic (qwerty-3), arabic, arabic-qwerty-3",
+			"Arabic (qwerty-4), arabic, arabic-qwerty-4",
+			"Belarusian (Belarus), belarusian, belarusian-qwerty",
+			"Bengali (qwerty-1), bengali, bengali-qwerty-1",
+			"Bengali (qwerty-2), bengali, bengali-qwerty-2",
+			"Bulgarian (qwerty), bulgarian, bulgarian-qwerty",
+			"Catalan (qwerty), catalan, catalan-qwerty",
+			"Chinese, chinese, chinese",
+			"Danish (qwerty), danish, danish-qwerty", // mmm danish
+			"French (azerty-1), french, french-azerty-1",
+			"French (azerty-2), french, french-azerty-2",
+			"French (bepo v1.0rc2), french, french-bepo-V1.0rc2",
+			"German (qwertz-1), german, german-qwertz-1",
+			"German (qwertz-2), german, german-qwertz-2",
+			"Hebrew (qwerty), hebrew, hebrew-qwerty",
+			"Hindi, hindi, hindi",
+			"Magyar (qwertz-1) utf8, hungarian, hungarian-qwertz-1",
+			"Magyar (qwertz-2) utf8, hungarian, hungarian-qwertz-2",
+			"Magyar (qwertz-1) ansi, hungariansi, hungarianansi-qwertz-1",
+			"Magyar (qwertz-2) ansi, hungariansi, hungarianansi-qwertz-2",
+			"Japanese (kana), japanese, japanese-kana",
+			"Japanese (qwerty), japanese, japanese-qwerty",
+			"Latvian (qwerty), latvian, latvian-qwerty",
+			"Mongolian, mongolian, mongolian",
+			"Persian (Farsi), persian, Persian",
+			"Polish (qwerty), polish, polish-qwerty",
+			"Portuguese (qwerty), portuguese, portuguese-qwerty",
+			"Russian (qwerty), russian, russian-qwerty",
+			"Russian (mac), russian, russian-mac",
+			"Serbian Cyrillic (sr-Cyrl), serbian, sr-Cyrl",
+			"Serbian Latin (sr), serbian, sr",
+			"Spanish (qwerty), spanish, spanish-qwerty",
+			"Spanish (qwerty) special, spanish, spanish-qwerty-sp",
+			"Swedish (qwerty), swedish, swedish-qwerty",
+			"Swedish (dvorak), swedish, swedish-dvorak",
+			"Tamil (qwerty), tamil, tamil-tamil99-mod",
+			"Thai (qwerty), thai, thai-qwerty",
+			"Turkish (q), turkish, turkish-q",
+			"Turkish (f), turkish, turkish-f",
+			"Vietnamese (qwerty), vietnamese, vietnamese-qwerty"
+		],
+
+		t, o = '',
+
+		// Change display language, if the definitions are available
+		showKb = function(layout){
+			var kb = $('#multi').getkeyboard();
+			kb.options.layout = layout;
+			// true flag causes a keyboard refresh
+			kb.reveal(true);
+		};
+
+		$.each(layouts.sort(), function(i, l){
+			t = l.split(/\s*,\s*/);
+			o += '<option data-filename="' + t[1] + '" value="' + t[2] + '">' + t[0] + '</option>';
+		});
+
+		$('#multi').keyboard({
+			layout: 'qwerty',
+			stayOpen: true
+		})
+		// activate the typing extension
+		.addTyping({
+			showTyping: true,
+			delay: 50
+		})
+		.previewKeyset();
+
+		$('#lang')
+		.html(o)
+		.change(function(){
+			var kb = $('#multi'),
+				$this = $(this),
+				$opt = $this.find('option:selected'),
+				layout = $this.val();
+			$('h2').text( $opt.text() );
+			showKb( layout );
+		}).trigger('change');
+
+	});
+	</script>
+	<style>
+
+	.rtl {
+		text-align: right;
+	}
+	</style>
+</head>
+<body>
+
+<div id="page-wrap">
+	<!-- Links to other demo pages & docs -->
+	<div id="nav">
+		<a href="../index.html">Main Demo</a>
+		<a href="basic.html">Basic</a>
+		<a href="mobile.html">Mobile</a>
+		<a class="current" href="layouts.html">Layouts</a>
+		<a href="layouts2.html">Layouts2</a>
+		<a href="scramble.html">Scramble</a>
+		<a href="navigate.html">Navigate</a>
+		<a href="preview-keyset.html">Keyset</a>
+		<a href="calculator.html">Calculator</a>
+		<br>
+		<a class="play" href="http://jsfiddle.net/Mottie/MK947/">Playground</a>
+		<a class="git" href="https://github.com/Mottie/Keyboard/wiki">Documentation</a>
+		<a class="git" href="https://github.com/Mottie/Keyboard/archive/master.zip">Download</a>
+		<a class="issue" href="https://github.com/Mottie/Keyboard/issues">Issues</a><br>
+	</div>
+	<!-- End Links -->
+
+	<h1><a href="https://github.com/Mottie/Keyboard">Virtual Keyboard Language Layouts</a></h1>
+	<h4>This is a work in progress.</h4>
+
+	<div id="switcher"></div>
+	<br>
+	<div class="block2">
+		<select id="lang"></select>
+		<div style="height: 50px;"></div>
+
+		<h2></h2>
+		<input id="multi" type="text" />
+	</div>
+	<br class="clear" />
+
+	<div id="footer2">
+		<div>
+			If you find any errors, please submit an <a href="https://github.com/Mottie/Keyboard/issues">issue</a>.<br>
+			Or if you would like to contribute a layout, please email me at <a href="%6D%61%69%6C%74%6F%3Aw%6Fwm%6Ftty%40g%6Dail%2Ec%6Fm">wowmotty a&#116; &#103;&#109;&#97;&#105;&#108; d&#111;t c&#111;m</a>
+		</div>
+	</div>
+
+</div>
+
+</body>
+</html>

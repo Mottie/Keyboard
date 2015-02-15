@@ -1,7 +1,7 @@
 ﻿{
 	"name": "keyboard",
 	"title": "Keyboard",
-	"version": "1.19.3",
+	"version": "1.20.0",
 	"description": "Virtual Keyboard using jQuery UI",
 	"author": {
 		"name": "Jeremy Satterfield",
@@ -30,13 +30,6 @@
 		"accessibility"
 	],
 	"files": [
-		"css/keyboard.css",
-		"js/jquery.keyboard.js",
-		"js/jquery.keyboard.min.js",
-		"js/jquery.keyboard.extension-autocomplete.js",
-		"js/jquery.keyboard.extension-mobile.js",
-		"js/jquery.keyboard.extension-navigation.js",
-		"js/jquery.keyboard.extension-typing.js",
-		"js/jquery.mousewheel.js"
+		"dist/**/*"
 	]
 }

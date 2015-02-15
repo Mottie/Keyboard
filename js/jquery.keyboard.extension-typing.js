@@ -1,5 +1,5 @@
-/*
- * jQuery UI Virtual Keyboard Typing Simulator v1.6 for Keyboard v1.18+ only (1/3/2015)
+/*! jQuery UI Virtual Keyboard Typing Simulator v1.7 *//*
+ * for Keyboard v1.18+ only (2/15/2015)
  *
  * By Rob Garrison (aka Mottie & Fudgey)
  * Licensed under the MIT License
@@ -78,7 +78,8 @@
 				var el = (base.$preview) ? base.$preview : base.$el;
 
 				el
-				.bind('keyup.keyboard', function(e){
+				.unbind('keyup.keyboard-typing keydown.keyboard-typing keypress.keyboard-typing')
+				.bind('keyup.keyboard-typing', function(e){
 					if (o.init && o.lockTypeIn) { return false; }
 					if (e.which >= 37 && e.which <=40) { return; } // ignore arrow keys
 					if (e.which === 16) { base.shiftActive = false; }
@@ -90,7 +91,7 @@
 					}
 				})
 				// change keyset when either shift or alt is held down
-				.bind('keydown.keyboard', function(e){
+				.bind('keydown.keyboard-typing', function(e){
 					if (o.init && o.lockTypeIn) { return false; }
 					e.temp = false; // prevent repetitive calls while keydown repeats.
 					if (e.which === 16) { e.temp = !base.shiftActive; base.shiftActive = true; }
@@ -107,7 +108,7 @@
 					}
 
 				})
-				.bind('keypress.keyboard', function(e){
+				.bind('keypress.keyboard-typing', function(e){
 					if (o.init && o.lockTypeIn) { return false; }
 					// Simulate key press on virtual keyboard
 					if (base.typing_event && !base.options.lockInput) {
@@ -152,20 +153,23 @@
 
 			base.typing_findKey = function(txt, e){
 				var tar, m, n, k, key, ks, meta, set,
+					kbcss = $.keyboard.css,
 					mappedKeys = $.keyboard.builtLayouts[base.layout].mappedKeys;
-				ks = base.$keyboard.find('.ui-keyboard-keyset');
+				ks = base.$keyboard.find('.' + kbcss.keySet);
 				k = (base.typing_keymap.hasOwnProperty(txt)) ? base.typing_keymap[txt] : txt;
 
 				// typing_event is true when typing on the actual keyboard - look for actual key
 				// All of this breaks when the CapLock is on... unable to find a cross-browser method that works.
-				tar = '.ui-keyboard-button[data-value="' + k + '"]';
+				tar = '.' + kbcss.keyButton + '[data-value="' + k + '"]';
 				if (base.typing_event && e) {
 					if (base.typing_xref.hasOwnProperty(e.keyCode || e.which)) {
 						// special named keys: bksp, tab and enter
-						tar = '.ui-keyboard-' + base.typing_xref[e.keyCode || e.which];
+						tar = '.' + kbcss.keyPrefix + base.typing_xref[e.keyCode || e.which];
 					} else {
 						m = String.fromCharCode(e.charCode || e.which);
-						tar = (mappedKeys.hasOwnProperty(m)) ? '.ui-keyboard-button[data-value="' + mappedKeys[m]  + '"]' : '.ui-keyboard-' + (e.charCode || e.which);
+						tar = (mappedKeys.hasOwnProperty(m)) ?
+							'.' + kbcss.keyButton + '[data-value="' + mappedKeys[m]  + '"]' :
+							'.' + kbcss.keyPrefix + (e.charCode || e.which);
 					}
 				}
 				// find key
@@ -182,11 +186,11 @@
 						n = (base.typing_keymap.hasOwnProperty(txt)) ? base.typing_keymap[txt] : txt.charCodeAt(0);
 						if (n === 'bksp') { txt = n; }
 						// find actual key on keyboard
-						key = ks.find('.ui-keyboard-' + n);
+						key = ks.find('.' + kbcss.keyPrefix + n);
 					}
 
 					// find the keyset
-					set = key.closest('.ui-keyboard-keyset');
+					set = key.closest('.' + kbcss.keySet);
 
 					// figure out which keyset the key is in then simulate clicking on that meta key, then on the key
 					if (set.attr('name')) {

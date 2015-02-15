@@ -1,10 +1,7 @@
 {
   "name": "keyboard",
-  "version": "1.19.3",
-  "main": ["./js/jquery.keyboard.js", "./css/keyboard.css"],
-  "ignore": [
-      "**/.*"
-  ],
+  "version": "1.20.0",
+  "main": ["./dist/**/*"],
   "dependencies": {
     "jquery": ">= 1.9.2",
     "jquery-ui": ">=1.9.2"

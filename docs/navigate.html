@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+
+	<title>Virtual Keyboard Navigation Demo</title>
+
+	<!-- demo -->
+	<link href="css/demo.css" rel="stylesheet">
+
+	<!-- jQuery & jQuery UI + theme (required) -->
+	<link href="css/jquery-ui.min.css" rel="stylesheet">
+	<script src="js/jquery.min.js"></script>
+	<script src="js/jquery-ui.min.js"></script>
+
+	<!-- keyboard widget css & script (required) -->
+	<link rel="stylesheet" href="../css/keyboard.css">
+	<script src="../js/jquery.keyboard.js"></script>
+
+	<!-- keyboard extensions (optional) -->
+	<script src="../js/jquery.mousewheel.js"></script>
+	<!-- <script src="../js/jquery.keyboard.extension-typing.js"></script> -->
+	<!-- <script src="../js/jquery.keyboard.extension-autocomplete.js"></script> -->
+	<script src="../js/jquery.keyboard.extension-navigation.js"></script>
+
+	<style>
+	/* Add this css so we can see when the action (orange) keys are highlighted */
+	.ui-keyboard-button.ui-state-active.ui-state-hover {
+		border: 1px solid #fff;
+		-moz-box-shadow: 1px 1em 1px #ffba2b inset;
+		-webkit-box-shadow: 1px 1em 1px #ffba2b inset;
+		box-shadow: 1px 1em 1px #ffba2b inset;
+	}
+	/* Class added to indicate the virtual keyboard has navigation focus */
+	.hasFocus { border-color: #59b4d4; }
+	</style>
+
+	<!-- initialize keyboard (required) -->
+	<script>
+	$(function(){
+
+		// change default navigation keys
+		$.extend($.keyboard.navigationKeys, {
+			// all keys
+			toggle     : 112, // toggle key; F1 = 112 (event.which value for function 1 key)
+			enter      : 13,
+			pageup     : 33,
+			pagedown   : 34,
+			end        : 35,
+			home       : 36,
+			left       : 37,
+			up         : 38,
+			right      : 39,
+			down       : 40,
+			// move caret WITH navigate toggle active
+			caretrt    : 45, // Insert key
+			caretlt    : 46, // delete key
+
+			/* Custom Navigation Functions
+			 * move caret without navigate toggle active
+			 * Note: the keyaction caret left/right keyaction functions
+			 * move the caret's last position, but doesn't actually set it;
+			 * so that's why there is extra code here
+			*/
+			caretrgt : function(kb){
+				$.keyboard.keyaction.right(kb);
+				kb.$preview.focus().caret( kb.last );
+			},
+			caretlft : function(kb){
+				$.keyboard.keyaction.left(kb);
+				kb.$preview.focus().caret( kb.last );
+			}
+
+		});
+
+		// External trigger using any of the $.keyboard.navigationKeys keys (key:value)
+		// no need to toggle first
+		// $('#keyboard').trigger('navigate', 'home');
+
+		// or, navigate to a specific key [ row, index ] (both use zero-based indexes)
+		// $('#keyboard').trigger('navigateTo', [2,3]);
+
+		// mini navigation block
+		$('#info button').click(function(){
+
+			var $button = $(this),
+				action = $button.attr('data-action');
+			if (action === 'toggle') {
+				// cruddy code to highlight the toggle button while active
+				var toggleMode = $('textarea').data('keyboard').navigation_options.toggleMode;
+				$button.toggleClass('active', !toggleMode);
+			}
+			$('textarea').trigger('navigate', action);
+		});
+
+		$('#keyboard')
+			.keyboard({
+				alwaysOpen: true
+			})
+			.addNavigation({
+				position   : [0,0],     // set start position [row-number, key-index]
+				toggleMode : false,     // true = navigate the virtual keyboard, false = navigate in input/textarea
+				focusClass : 'hasFocus' // css class added when toggle mode is on
+			});
+
+	});
+	</script>
+
+</head>
+
+<body>
+
+	<!-- Links to other demo pages & docs -->
+	<div id="nav">
+		<a href="../index.html">Main Demo</a>
+		<a href="basic.html">Basic</a>
+		<a href="mobile.html">Mobile</a>
+		<a href="layouts.html">Layouts</a>
+		<a href="layouts2.html">Layouts2</a>
+		<a href="scramble.html">Scramble</a>
+		<a class="current" href="navigate.html">Navigate</a>
+		<a href="preview-keyset.html">Keyset</a>
+		<a href="calculator.html">Calculator</a>
+		<br>
+		<a class="play" href="http://jsfiddle.net/Mottie/MK947/">Playground</a>
+		<a class="git" href="https://github.com/Mottie/Keyboard/wiki">Documentation</a>
+		<a class="git" href="https://github.com/Mottie/Keyboard/archive/master.zip">Download</a>
+		<a class="issue" href="https://github.com/Mottie/Keyboard/issues">Issues</a><br>
+	</div>
+	<!-- End Links -->
+
+	<h1><a href="https://github.com/Mottie/Keyboard">Virtual Keyboard Navigate Demo</a></h1>
+	<h4>Note: Navigation inside of the input/textarea is <strong>disabled</strong> while the toggle is active.<br>This includes the <span class="underline">autocomplete</span> extension navigation.</h4>
+
+	<div id="wrap"> <!-- wrapper only needed to center the input -->
+
+		<!-- keyboard input -->
+		<textarea id="keyboard"></textarea>
+
+	</div> <!-- End wrapper -->
+
+	<div id="info">
+		<ul>
+			<li><strong>Always active:</strong>
+				<ul>
+					<li><strong>Clear</strong> - Clear content.</li>
+					<li><strong>&larr;</strong> - Move caret left.</li>
+					<li><strong>&rarr;</strong> - Move caret right.</li>
+					<li><strong>Backspace</strong> - Delete character to the left.<p></p></li>
+				</ul>
+			</li>
+			<li><strong>Toggle must be active to use:</strong>
+				<ul>
+					<li><strong>Home</strong> - Move to the first key in the row.</li>
+					<li><strong>Up</strong> - Move up one row.</li>
+					<li><strong>Page Up</strong> - Move to the first row.</li>
+					<li><strong>Left</strong> - Move one key left.</li>
+					<li><strong>Shift-F1</strong> - Toggle navigation (textarea and keyboard).</li>
+					<li><strong>Right</strong> - Move one key right.</li>
+					<li><strong>End</strong> - Move to the last key in the row.</li>
+					<li><strong>Down</strong> - Move down one row.</li>
+					<li><strong>Page Down</strong> - Move to the last row.</li>
+					<li><strong>Delete</strong> (&larr; Caret) - Move caret left.</li>
+					<li><strong>Enter</strong> - Add the highlighted key.</li>
+					<li><strong>Insert</strong> (Caret &rarr;) - Move caret right.</li>
+				</ul>
+			</li>
+		</ul>
+
+		<div class="nav">
+			<button data-action="clear">Clear</button><button class="half" data-action="caretLft" title="Move caret left">&larr;</button><button class="half" data-action="caretRgt" title="Move caret right">&rarr;</button><button data-action="bksp">backspace</button>
+			<hr>
+			<button data-action="home">Home</button><button class="nav" data-action="up">Up</button><button data-action="pageUp">PageUp</button><br>
+			<button class="nav" data-action="left">Left</button><button data-action="toggle">Toggle</button><button class="nav" data-action="right">Right</button><br>
+			<button data-action="end">End</button><button class="nav" data-action="down">Down</button><button data-action="pageDown">PageDown</button><br>
+			<button data-action="caretLt">&larr; Caret</button><button class="active" data-action="enter">Enter</button><button data-action="caretRt">Caret &rarr;</button>
+		</div>
+
+	</div>
+
+</body>
+
+</html>

@@ -1,90 +1,12 @@
-/*! Copyright (c) 2011 Brandon Aaron (http://brandonaaron.net)
- * Licensed under the MIT License (LICENSE.txt).
- *
- * Thanks to: http://adomas.org/javascript-mouse-wheel/ for some pointers.
- * Thanks to: Mathias Bank(http://www.mathias-bank.de) for a scope bug fix.
- * Thanks to: Seamus Leahy for adding deltaX and deltaY
- *
- * Version: 3.0.6
- *
- * Requires: 1.2.2+
- */
-
-(function($) {
-
-var types = ['DOMMouseScroll', 'mousewheel'];
-
-if ($.event.fixHooks) {
-    for ( var i=types.length; i; ) {
-        $.event.fixHooks[ types[--i] ] = $.event.mouseHooks;
-    }
-}
-
-$.event.special.mousewheel = {
-    setup: function() {
-        if ( this.addEventListener ) {
-            for ( var i=types.length; i; ) {
-                this.addEventListener( types[--i], handler, false );
-            }
-        } else {
-            this.onmousewheel = handler;
-        }
-    },
-
-    teardown: function() {
-        if ( this.removeEventListener ) {
-            for ( var i=types.length; i; ) {
-                this.removeEventListener( types[--i], handler, false );
-            }
-        } else {
-            this.onmousewheel = null;
-        }
-    }
-};
-
-$.fn.extend({
-    mousewheel: function(fn) {
-        return fn ? this.bind("mousewheel", fn) : this.trigger("mousewheel");
-    },
-
-    unmousewheel: function(fn) {
-        return this.unbind("mousewheel", fn);
-    }
-});
-
-
-function handler(event) {
-    var orgEvent = event || window.event, args = [].slice.call( arguments, 1 ), delta = 0, returnValue = true, deltaX = 0, deltaY = 0;
-    event = $.event.fix(orgEvent);
-    event.type = "mousewheel";
-
-    // Old school scrollwheel delta
-    if ( orgEvent.wheelDelta ) { delta = orgEvent.wheelDelta/120; }
-    if ( orgEvent.detail     ) { delta = -orgEvent.detail/3; }
-
-    // New school multidimensional scroll (touchpads) deltas
-    deltaY = delta;
-
-    // Gecko
-    if ( orgEvent.axis !== undefined && orgEvent.axis === orgEvent.HORIZONTAL_AXIS ) {
-        deltaY = 0;
-        deltaX = -1*delta;
-    }
-
-    // Webkit
-    if ( orgEvent.wheelDeltaY !== undefined ) { deltaY = orgEvent.wheelDeltaY/120; }
-    if ( orgEvent.wheelDeltaX !== undefined ) { deltaX = -1*orgEvent.wheelDeltaX/120; }
-
-    // Add event and delta to the front of the arguments
-    args.unshift(event, delta, deltaX, deltaY);
-
-    return ($.event.dispatch || $.event.handle).apply(this, args);
-}
-
-})(jQuery);
-
-/*
- * jQuery UI Virtual Keyboard Autocomplete v1.6 for Keyboard v1.18+ only (11/19/2014)
+/*** This file is dynamically generated ***
+█████▄ ▄████▄   █████▄ ▄████▄ ██████   ███████▄ ▄████▄ █████▄ ██ ██████ ██  ██
+██  ██ ██  ██   ██  ██ ██  ██   ██     ██ ██ ██ ██  ██ ██  ██ ██ ██     ██  ██
+██  ██ ██  ██   ██  ██ ██  ██   ██     ██ ██ ██ ██  ██ ██  ██ ██ ██▀▀   ▀▀▀▀██
+█████▀ ▀████▀   ██  ██ ▀████▀   ██     ██ ██ ██ ▀████▀ █████▀ ██ ██     █████▀
+*/
+/*! jQuery UI Virtual Keyboard - ALL Extensions + Mousewheel */
+/*! jQuery UI Virtual Keyboard Autocomplete v1.7 *//*
+ * for Keyboard v1.18+ only (2/15/2015)
  *
  * By Rob Garrison (aka Mottie & Fudgey)
  * Licensed under the MIT License
@@ -134,20 +56,21 @@ $.fn.addAutocomplete = function(){
 			}
 
 			base.$el
-				.bind('visible.keyboard',function(){
+				.unbind('visible hidden autocompleteopen autocompleteselect '.split(' ').join('.keyboard-autocomplete '))
+				.bind('visible.keyboard-autocomplete',function(){
 					base.autocomplete_setup();
 				})
-				.bind('change.keyboard',function(){
+				.bind('change.keyboard-autocomplete',function(e){
 					if (base.hasAutocomplete && base.isVisible()) {
 						base.$el
 							.val(base.$preview.val())
 							.trigger('keydown.autocomplete');
 					}
 				})
-				.bind('hidden.keyboard', function(){
+				.bind('hidden.keyboard-autocomplete', function(){
 					base.$el.autocomplete('close');
 				})
-				.bind('autocompleteopen', function() {
+				.bind('autocompleteopen.keyboard-autocomplete', function() {
 					if (base.hasAutocomplete){
 						// reposition autocomplete window next to the keyboard
 						base.$autocomplete.menu.element.position({
@@ -158,7 +81,7 @@ $.fn.addAutocomplete = function(){
 						});
 					}
 				})
-				.bind('autocompleteselect', function(e, ui){
+				.bind('autocompleteselect.keyboard-autocomplete', function(e, ui){
 					var v = ui.item && ui.item.value || '';
 					if (base.hasAutocomplete && v !== ''){
 						base.$preview
@@ -210,8 +133,8 @@ $.fn.addAutocomplete = function(){
 };
 })(jQuery);
 
-/*
- * jQuery UI Virtual Keyboard for jQuery Mobile Themes v1.2 for Keyboard v1.18+ (updated 6/1/2014)
+/*! jQuery UI Virtual Keyboard for jQuery Mobile Themes v1.3 *//*
+ * for Keyboard v1.18+ (updated 2/15/2015)
  *
  * By Rob Garrison (aka Mottie & Fudgey)
  * Licensed under the MIT License
@@ -254,7 +177,9 @@ $.fn.addMobile = function(options){
 		buttonAction : { theme:'b', cssClass:'ui-btn-active' },
 		// theme added to button when it is active (e.g. shift is down)
 		// All extra parameters will be ignored
-		buttonActive : { theme:'b', cssClass:'ui-btn-active' }
+		buttonActive : { theme:'b', cssClass:'ui-btn-active' },
+		// if more than 3 mobile themes are used, add them here
+		allThemes : 'a b c'
 	};
 
 	return this.each(function(){
@@ -264,12 +189,23 @@ $.fn.addMobile = function(options){
 		if (!base || typeof($.fn.textinput) === 'undefined') { return; }
 
 		base.mobile_options = o = $.extend(true, {}, defaults, options);
+		// create a list of theme class names to remove
+		base.mobile_themes = $.trim(
+			(' ' + o.allThemes).split(' ').join(' ' + o.buttonMarkup.cssClass + '-') +
+			(' ' + o.allThemes).split(' ').join(' ' + o.buttonAction.cssClass + '-') +
+			(' ' + o.allThemes).split(' ').join(' ' + o.buttonActive.cssClass + '-')
+		);
+
+		// save original action class because it gets removed when this theme switches swatches
+		if (typeof base.options.mobile_savedActiveClass === 'undefined') {
+			base.options.mobile_savedActiveClass = '' + base.options.css.buttonActive;
+		}
 
 		// Setup
-		base.mobile_init = function(){
+		base.mobile_init = function() {
 
 			// Add theme to input - if not already done through the markup
-			$('.ui-keyboard-input').textinput();
+			$('.' + $.keyboard.css.input).textinput();
 
 			// visible event is fired before this extension is initialized, so check!
 			if (base.options.alwaysOpen && base.isVisible) {
@@ -281,49 +217,56 @@ $.fn.addMobile = function(options){
 			// Since we are restyling here, the user will experience FlashOfUnstyledContent (FOUC).
 			// This is avoided by first setting the visibility to hidden, then after the mobile styles are applied we
 			// set it visible.
-			//
 			base.$el
-			.on('beforeVisible.keyboard', function () {
-				base.$keyboard.css("visibility", "hidden");
-			})
-			.on('visible.keyboard', function () {
-				base.mobile_setup();
-				base.$keyboard.css("visibility", "visible");
-				base.$preview.focus();
-			});
+				.unbind('beforeVisible.keyboard-mobile visible.keyboard-mobile')
+				.bind('beforeVisible.keyboard-mobile', function() {
+					base.$keyboard.css('visibility', 'hidden');
+				})
+				.bind('visible.keyboard-mobile', function() {
+					base.mobile_setup();
+					base.$keyboard.css('visibility', 'visible');
+					base.$preview.focus();
+				});
 
 		};
 
 		base.mobile_setup = function(){
 			var p,
+				kbcss = $.keyboard.css,
 				opts = base.options,
-				markup = o.buttonMarkup.cssClass || '',
-				actions = opts.css.buttonAction;
+				themes = base.mobile_themes;
 
-			opts.css.buttonAction += ' ' + o.buttonAction.cssClass;
+			base.mobile_$actionKeys = base.$keyboard.find('.' + base.options.css.buttonAction);
+
+			opts.css.buttonActive = opts.mobile_savedActiveClass + ' ' + base.modOptions(o.buttonActive, o.buttonMarkup);
 
 			base.$keyboard
-				// 'ui-bar ui-bar-a' classes to apply swatch theme
+				// 'ui-body ui-body-a' classes to apply swatch theme
 				.addClass( base.modOptions(o.container, o.container) )
 				// preview input
-				.find('.ui-keyboard-preview').addClass( base.modOptions(o.input, o.input) ).end()
+				.find('.' + kbcss.preview)
 				// removing 'ui-widget-content' will prevent jQuery UI theme from applying to the keyboard
 				.removeClass('ui-widget ui-widget-content')
-				.find('.' + actions).addClass( base.modOptions(o.buttonAction, o.buttonMarkup) ).end()
+				.addClass( base.modOptions(o.input, o.input) ).end()
 				// apply jQuery Mobile button markup
 				// removed call to jQuery Mobile buttonMarkup function; replaced with base.modOptions
 				.find('button')
-				.removeClass('ui-corner-all ui-state-default')
-				.addClass( base.modOptions(o.buttonMarkup) )
+				.removeClass( $.trim('ui-corner-all ui-state-default ' + themes) )
+				.addClass( base.modOptions(o.buttonMarkup, o.buttonMarkup) )
+				.not( base.mobile_$actionKeys )
 				.hover(function(){
 					$(this)
-						.removeClass( markup ? markup + '-' + o.buttonMarkup.theme : '' )
+						.removeClass( themes )
 						.addClass( base.modOptions(o.buttonHover, o.buttonMarkup) );
 				},function(){
 					$(this)
-						.removeClass( markup ? markup + '-' + o.buttonHover.theme : '' )
+						.removeClass( themes + ' ' + o.buttonHover.cssClass )
 						.addClass( base.modOptions(o.buttonMarkup, o.buttonMarkup) );
 				});
+
+				base.mobile_$actionKeys
+					.removeClass( themes )
+					.addClass( base.modOptions(o.buttonAction, o.buttonMarkup) );
 
 			// update keyboard width if preview is showing... after applying mobile theme
 			if (base.msie && base.$preview[0] !== base.el) {
@@ -361,8 +304,8 @@ $.fn.addMobile = function(options){
 };
 })(jQuery);
 
-/*
- * jQuery UI Virtual Keyboard Navigation v1.4 for Keyboard v1.18+ only (updated 3/1/2014)
+/*! jQuery UI Virtual Keyboard Navigation v1.5 *//*
+ * for Keyboard v1.18+ only (updated 2/15/2015)
  *
  * By Rob Garrison (aka Mottie & Fudgey)
  * Licensed under the MIT License
@@ -404,14 +347,30 @@ $.keyboard.navigationKeys = {
 	up         : 38,
 	right      : 39,
 	down       : 40,
+	// move caret WITH navigate toggle active
 	caretrt    : 45, // Insert key
-	caretlt    : 46  // delete key
+	caretlt    : 46, // delete key
+
+	// ** custom navigationKeys functions **
+	// move caret without navigate toggle active
+	caretrgt   : function(kb){
+		// keyaction right does not actually set the caret, so we need to do it here
+		$.keyboard.keyaction.right(kb);
+		kb.$preview.focus().caret( kb.last );
+	},
+	caretlft   : function(kb){
+		// keyaction left does not actually set the caret, so we need to do it here
+		$.keyboard.keyaction.left(kb);
+		kb.$preview.focus().caret( kb.last );
+	}
 };
 
 $.fn.addNavigation = function(options){
 	return this.each(function(){
 		// make sure a keyboard is attached
-		var o, k, base = $(this).data('keyboard'),
+		var o, k,
+			base = $(this).data('keyboard'),
+			opts = base.options,
 			defaults = {
 				position   : [0,0],     // set start position [row-number, key-index]
 				toggleMode : false,     // true = navigate the virtual keyboard, false = navigate in input/textarea
@@ -428,17 +387,17 @@ $.fn.addNavigation = function(options){
 
 		// Setup
 		base.navigation_init = function(){
-
+			var kbcss = $.keyboard.css;
 			base.$keyboard.toggleClass(o.focusClass, o.toggleMode)
-				.find('.ui-keyboard-keyset:visible')
-				.find('.ui-keyboard-button[data-pos="' + o.position[0] + ',' + o.position[1] + '"]')
-				.addClass('ui-state-hover');
+				.find('.' + kbcss.keySet + ':visible')
+				.find('.' + kbcss.keyButton + '[data-pos="' + o.position[0] + ',' + o.position[1] + '"]')
+				.addClass(opts.css.buttonHover);
 
 			base.$preview
-			.unbind('keydown.keyboardNav')
-			.bind('keydown.keyboardNav',function(e){
-				return base.checkKeys(e.which);
-			});
+				.unbind('keydown.keyboardNav')
+				.bind('keydown.keyboardNav',function(e){
+					return base.checkKeys(e.which);
+				});
 
 		};
 
@@ -446,7 +405,8 @@ $.fn.addNavigation = function(options){
 			if (typeof(key) === "undefined") {
 				return;
 			}
-			var k = base.navigation_keys;
+			var k = base.navigation_keys,
+				kbcss = $.keyboard.css;
 			if (key === k.toggle || disable) {
 				o.toggleMode = (disable) ? false : !o.toggleMode;
 				base.options.tabNavigation = (o.toggleMode) ? false : base.saveNav[0];
@@ -455,8 +415,8 @@ $.fn.addNavigation = function(options){
 			base.$keyboard.toggleClass(o.focusClass, o.toggleMode);
 			if ( o.toggleMode && key === k.enter ) {
 				base.$keyboard
-					.find('.ui-keyboard-keyset:visible')
-					.find('.ui-keyboard-button[data-pos="' + o.position[0] + ',' + o.position[1] + '"]')
+					.find('.' + kbcss.keySet + ':visible')
+					.find('.' + kbcss.keyButton + '[data-pos="' + o.position[0] + ',' + o.position[1] + '"]')
 					.trigger('repeater.keyboard');
 				return false;
 			}
@@ -469,10 +429,12 @@ $.fn.addNavigation = function(options){
 		base.navigateKeys = function(key, row, indx){
 			indx = indx || o.position[1];
 			row = row || o.position[0];
-			var vis = base.$keyboard.find('.ui-keyboard-keyset:visible'),
-				maxRow = vis.find('.ui-keyboard-button-endrow').length - 1,
-				maxIndx = vis.find('.ui-keyboard-button[data-pos^="' + row + ',"]').length - 1,
-				p = base.lastCaret,
+			var kbcss = $.keyboard.css,
+				kbevents = $.keyboard.events,
+				vis = base.$keyboard.find('.' + kbcss.keySet + ':visible'),
+				maxRow = vis.find('.' + kbcss.endRow).length - 1,
+				maxIndx = vis.find('.' + kbcss.keyButton + '[data-pos^="' + row + ',"]').length - 1,
+				p = base.last,
 				l = base.$preview.val().length,
 				k = base.navigation_keys;
 
@@ -485,46 +447,62 @@ $.fn.addNavigation = function(options){
 				case k.up       : row += (row > 0) ? -1 : 0; break; // Up
 				case k.right    : indx += 1; break; // Right
 				case k.down     : row += (row + 1 > maxRow) ? 0 : 1; break; // Down
-				case k.caretRt  : p.start++; break; // caret right
-				case k.caretLt  : p.start--; break; // caret right
+				case k.caretrt  : p.start++; break; // caret right
+				case k.caretlt  : p.start--; break; // caret left
 			}
 
 			// move caret
-			if (key === k.caretRt || key === k.caretLt) {
+			if (key === k.caretrt || key === k.caretlt) {
 				p.start = p.start < 0 ? 0 : p.start > l ? l : p.start;
-				p.end = p.start;
-				base.lastCaret = p;
-				base.$preview.focus().caret( p.start, p.start );
+				base.last.start = base.last.end = p.end = p.start;
+				base.$preview.focus().caret( base.last );
 			}
 
 			// get max index of new row
-			maxIndx = vis.find('.ui-keyboard-button[data-pos^="' + row + ',"]').length - 1;
+			maxIndx = vis.find('.' + kbcss.keyButton + '[data-pos^="' + row + ',"]').length - 1;
 			if (indx > maxIndx) { indx = maxIndx; }
 
-			vis.find('.ui-state-hover').removeClass('ui-state-hover');
-			vis.find('.ui-keyboard-button[data-pos="' + row + ',' + indx + '"]').addClass('ui-state-hover');
+			vis.find('.' + opts.css.buttonHover).removeClass(opts.css.buttonHover);
+			vis.find('.' + kbcss.keyButton + '[data-pos="' + row + ',' + indx + '"]').addClass(opts.css.buttonHover);
 			o.position = [ row, indx ];
 		};
 
 		// visible event is fired before this extension is initialized, so check!
 		if (base.options.alwaysOpen && base.isVisible) {
-			base.$keyboard.find('.ui-state-hover').removeClass('ui-state-hover');
+			base.$keyboard.find('.' + opts.css.buttonHover).removeClass(opts.css.buttonHover);
 			base.navigation_init();
 		}
 		// capture and simulate typing
 		base.$el
-			.bind('visible.keyboard', function(e){
-				base.$keyboard.find('.ui-state-hover').removeClass('ui-state-hover');
+			.bind(kbevents.kbVisible + '.keyboardNav', function(e){
+				base.$keyboard.find('.' + opts.css.buttonHover).removeClass(opts.css.buttonHover);
 				base.navigation_init();
 			})
-			.bind('inactive.keyboard hidden.keyboard', function(e){
+			.bind(kbevents.kbInactive + ' ' + kbevents.kbHidden, function(e){
 				base.checkKeys(e.which, true); // disable toggle mode & revert navigation options
 			})
+			.bind(kbevents.kbKeysetChange, function(){
+				base.navigateKeys(null);
+			})
 			.bind('navigate navigateTo', function(e, row, indx){
-				// no row given, check if it's a key name
+				var key;
+				// no row given, check if it's a navigation key or keyaction
 				row = isNaN(row) ? row.toLowerCase() : row;
-				if (base.navigation_keys.hasOwnProperty(row)) {
-					base.checkKeys( base.navigation_keys[row] );
+				if (row in base.navigation_keys) {
+					key = base.navigation_keys[row];
+					if (isNaN(key) && key in $.keyboard.keyaction) {
+						// defined navigation_keys string name is a defined keyaction
+						$.keyboard.keyaction[key]( base, this, e );
+					} else if ($.isFunction(key)) {
+						// custom function defined in navigation_keys
+						key(base);
+					} else {
+						// key (e.which value) is defined in navigation_keys
+						base.checkKeys(key);
+					}
+				} else if ( typeof row === 'string' && row in $.keyboard.keyaction ) {
+					// navigate called directly with a keyaction name
+					$.keyboard.keyaction[row]( base, this, e );
 				} else {
 					base.navigateKeys(null, row, indx);
 				}
@@ -534,8 +512,81 @@ $.fn.addNavigation = function(options){
 };
 })(jQuery);
 
+/*! jQuery UI Virtual Keyboard previewKeyset v1.0 *//*
+ * for Keyboard v1.18+ only (updated 2/15/2015)
+ *
+ * By Rob Garrison (aka Mottie & Fudgey)
+ * Licensed under the MIT License
+ *
+ * Use this extension with the Virtual Keyboard to add a preview
+ * of other keysets to the main keyboard.
+ *
+ * Requires:
+ *  jQuery
+ *  Keyboard plugin : https://github.com/Mottie/Keyboard
+ *
+ * Setup:
+ *  $('.ui-keyboard-input')
+ *   .keyboard(options)
+ *   .previewKeyset();
+ *
+ *  // or if targeting a specific keyboard
+ *  $('#keyboard1')
+ *   .keyboard(options)     // keyboard plugin
+ *   .previewKeyset();    // this keyboard extension
+ *
+ */
+/*jshint browser:true, jquery:true, unused:false */
+(function($){
+'use strict';
+$.keyboard = $.keyboard || {};
+
+$.fn.previewKeyset = function( options ) {
+	return this.each( function() {
+		// make sure a keyboard is attached
+		var base = $( this ).data( 'keyboard' ),
+			defaults = {
+				sets : [ 'normal', 'shift', 'alt', 'alt-shift' ]
+			};
+
+		if ( !base ) { return; }
+
+		base.previewKeyset_options = $.extend( {}, defaults, options );
+
+		base.previewKeyset = function() {
+			var kbcss = $.keyboard.css,
+				sets = base.previewKeyset_options.sets,
+				// only target option defined sets
+				$sets = base.$keyboard.find( '.' + kbcss.keySet ).filter( '[name="' + sets.join('"],[name="') + '"]' );
+			if ( $sets.length > 1 ) {
+				// start with normal keyset & find all non-action buttons
+				$sets.eq( 0 ).find( '.' + kbcss.keyButton ).not( '.' + kbcss.keyAction ).each(function(){
+					var indx, nam,
+						data = {},
+						len = sets.length,
+						// find all keys with the same position
+						$sibs = $sets.find( 'button[data-pos="' + $(this).attr('data-pos') + '"]' );
+					for ( indx = 0; indx < len; indx++ ) {
+						nam = $sibs.eq( indx ).parent().attr( 'name' );
+						if ( $.inArray( nam, sets ) >= 0 ) {
+							data[ 'data-' + nam ] = $sibs.eq( indx ).find( '.' + kbcss.keyText ).text();
+						}
+					}
+					$sibs.attr( data );
+				});
+			}
+		};
+
+		base.$el.bind($.keyboard.events.kbBeforeVisible, function() {
+			base.previewKeyset();
+		});
+
+	});
+};
+})( jQuery );
+
 /*
- * jQuery UI Virtual Keyboard Scramble Extension v1.4 for Keyboard v1.18+ (updated 11/19/2014)
+ * jQuery UI Virtual Keyboard Scramble Extension v1.5 for Keyboard v1.18+ (updated 2/15/2015)
  *
  * By Rob Garrison (aka Mottie & Fudgey)
  * Licensed under the MIT License
@@ -582,7 +633,7 @@ $.keyboard = $.keyboard || {};
 			base.scramble_setup = function($keyboard) {
 				var $sets, set, $keys, key, index, tmp,
 					rowIndex, keyboardmap, map, keyboard, row;
-				$sets = $keyboard.find('.ui-keyboard-keyset');
+				$sets = $keyboard.find('.' + $.keyboard.css.keySet);
 				if ($keyboard.length) {
 					if (o.byKeySet) {
 						$sets = $sets.eq(0);
@@ -624,7 +675,7 @@ $.keyboard = $.keyboard || {};
 							}
 						});
 						// remove original <br> elements
-						$keys.find('.ui-keyboard-button-endrow').remove();
+						$keys.find('.' + $.keyboard.css.endRow).remove();
 						// re-map keys
 						if (!o.byRow) {
 							row = base.shuffle( keyboard, keyboardmap );
@@ -674,7 +725,7 @@ $.keyboard = $.keyboard || {};
 			// make other keysets "line-up" with scrambled keyset
 			base.realign = function($keyboard) {
 				var selector, typ, pos,
-					$sets = $keyboard.find('.ui-keyboard-keyset'),
+					$sets = $keyboard.find('.' + $.keyboard.css.keySet),
 					$orig = $sets.eq(0);
 				$sets = $sets.filter(':gt(0)');
 				$orig.children().each(function(i, cell){
@@ -710,7 +761,7 @@ $.keyboard = $.keyboard || {};
 				}
 				base.$keyboard = $.keyboard.builtLayouts[layout].$keyboard;
 				if ( !o.randomizeOnce ) {
-					base.$el.bind('beforeVisible.keyboard', function(e, kb) {
+					base.$el.bind($.keyboard.events.kbBeforeVisible, function(e, kb) {
 						kb.$keyboard = kb.scramble_setup(kb.$keyboard);
 					});
 				}
@@ -733,8 +784,8 @@ $.keyboard = $.keyboard || {};
 	};
 })(jQuery);
 
-/*
- * jQuery UI Virtual Keyboard Typing Simulator v1.6 for Keyboard v1.18+ only (1/3/2015)
+/*! jQuery UI Virtual Keyboard Typing Simulator v1.7 *//*
+ * for Keyboard v1.18+ only (2/15/2015)
  *
  * By Rob Garrison (aka Mottie & Fudgey)
  * Licensed under the MIT License
@@ -813,7 +864,8 @@ $.keyboard = $.keyboard || {};
 				var el = (base.$preview) ? base.$preview : base.$el;
 
 				el
-				.bind('keyup.keyboard', function(e){
+				.unbind('keyup.keyboard-typing keydown.keyboard-typing keypress.keyboard-typing')
+				.bind('keyup.keyboard-typing', function(e){
 					if (o.init && o.lockTypeIn) { return false; }
 					if (e.which >= 37 && e.which <=40) { return; } // ignore arrow keys
 					if (e.which === 16) { base.shiftActive = false; }
@@ -825,7 +877,7 @@ $.keyboard = $.keyboard || {};
 					}
 				})
 				// change keyset when either shift or alt is held down
-				.bind('keydown.keyboard', function(e){
+				.bind('keydown.keyboard-typing', function(e){
 					if (o.init && o.lockTypeIn) { return false; }
 					e.temp = false; // prevent repetitive calls while keydown repeats.
 					if (e.which === 16) { e.temp = !base.shiftActive; base.shiftActive = true; }
@@ -842,7 +894,7 @@ $.keyboard = $.keyboard || {};
 					}
 
 				})
-				.bind('keypress.keyboard', function(e){
+				.bind('keypress.keyboard-typing', function(e){
 					if (o.init && o.lockTypeIn) { return false; }
 					// Simulate key press on virtual keyboard
 					if (base.typing_event && !base.options.lockInput) {
@@ -887,20 +939,23 @@ $.keyboard = $.keyboard || {};
 
 			base.typing_findKey = function(txt, e){
 				var tar, m, n, k, key, ks, meta, set,
+					kbcss = $.keyboard.css,
 					mappedKeys = $.keyboard.builtLayouts[base.layout].mappedKeys;
-				ks = base.$keyboard.find('.ui-keyboard-keyset');
+				ks = base.$keyboard.find('.' + kbcss.keySet);
 				k = (base.typing_keymap.hasOwnProperty(txt)) ? base.typing_keymap[txt] : txt;
 
 				// typing_event is true when typing on the actual keyboard - look for actual key
 				// All of this breaks when the CapLock is on... unable to find a cross-browser method that works.
-				tar = '.ui-keyboard-button[data-value="' + k + '"]';
+				tar = '.' + kbcss.keyButton + '[data-value="' + k + '"]';
 				if (base.typing_event && e) {
 					if (base.typing_xref.hasOwnProperty(e.keyCode || e.which)) {
 						// special named keys: bksp, tab and enter
-						tar = '.ui-keyboard-' + base.typing_xref[e.keyCode || e.which];
+						tar = '.' + kbcss.keyPrefix + base.typing_xref[e.keyCode || e.which];
 					} else {
 						m = String.fromCharCode(e.charCode || e.which);
-						tar = (mappedKeys.hasOwnProperty(m)) ? '.ui-keyboard-button[data-value="' + mappedKeys[m]  + '"]' : '.ui-keyboard-' + (e.charCode || e.which);
+						tar = (mappedKeys.hasOwnProperty(m)) ?
+							'.' + kbcss.keyButton + '[data-value="' + mappedKeys[m]  + '"]' :
+							'.' + kbcss.keyPrefix + (e.charCode || e.which);
 					}
 				}
 				// find key
@@ -917,11 +972,11 @@ $.keyboard = $.keyboard || {};
 						n = (base.typing_keymap.hasOwnProperty(txt)) ? base.typing_keymap[txt] : txt.charCodeAt(0);
 						if (n === 'bksp') { txt = n; }
 						// find actual key on keyboard
-						key = ks.find('.ui-keyboard-' + n);
+						key = ks.find('.' + kbcss.keyPrefix + n);
 					}
 
 					// find the keyset
-					set = key.closest('.ui-keyboard-keyset');
+					set = key.closest('.' + kbcss.keySet);
 
 					// figure out which keyset the key is in then simulate clicking on that meta key, then on the key
 					if (set.attr('name')) {
@@ -1003,3 +1058,225 @@ $.keyboard = $.keyboard || {};
 		});
 	};
 })(jQuery);
+
+/* Copyright (c) 2013 Brandon Aaron (http://brandon.aaron.sh)
+ * Licensed under the MIT License (LICENSE.txt).
+ *
+ * Version: 3.1.12
+ *
+ * Requires: jQuery 1.2.2+
+ */
+/*! Mousewheel version: 3.1.12 * (c) 2014 Brandon Aaron * MIT License */
+(function (factory) {
+    if ( typeof define === 'function' && define.amd ) {
+        // AMD. Register as an anonymous module.
+        define(['jquery'], factory);
+    } else if (typeof exports === 'object') {
+        // Node/CommonJS style for Browserify
+        module.exports = factory;
+    } else {
+        // Browser globals
+        factory(jQuery);
+    }
+}(function ($) {
+
+    var toFix  = ['wheel', 'mousewheel', 'DOMMouseScroll', 'MozMousePixelScroll'],
+        toBind = ( 'onwheel' in document || document.documentMode >= 9 ) ?
+                    ['wheel'] : ['mousewheel', 'DomMouseScroll', 'MozMousePixelScroll'],
+        slice  = Array.prototype.slice,
+        nullLowestDeltaTimeout, lowestDelta;
+
+    if ( $.event.fixHooks ) {
+        for ( var i = toFix.length; i; ) {
+            $.event.fixHooks[ toFix[--i] ] = $.event.mouseHooks;
+        }
+    }
+
+    var special = $.event.special.mousewheel = {
+        version: '3.1.12',
+
+        setup: function() {
+            if ( this.addEventListener ) {
+                for ( var i = toBind.length; i; ) {
+                    this.addEventListener( toBind[--i], handler, false );
+                }
+            } else {
+                this.onmousewheel = handler;
+            }
+            // Store the line height and page height for this particular element
+            $.data(this, 'mousewheel-line-height', special.getLineHeight(this));
+            $.data(this, 'mousewheel-page-height', special.getPageHeight(this));
+        },
+
+        teardown: function() {
+            if ( this.removeEventListener ) {
+                for ( var i = toBind.length; i; ) {
+                    this.removeEventListener( toBind[--i], handler, false );
+                }
+            } else {
+                this.onmousewheel = null;
+            }
+            // Clean up the data we added to the element
+            $.removeData(this, 'mousewheel-line-height');
+            $.removeData(this, 'mousewheel-page-height');
+        },
+
+        getLineHeight: function(elem) {
+            var $elem = $(elem),
+                $parent = $elem['offsetParent' in $.fn ? 'offsetParent' : 'parent']();
+            if (!$parent.length) {
+                $parent = $('body');
+            }
+            return parseInt($parent.css('fontSize'), 10) || parseInt($elem.css('fontSize'), 10) || 16;
+        },
+
+        getPageHeight: function(elem) {
+            return $(elem).height();
+        },
+
+        settings: {
+            adjustOldDeltas: true, // see shouldAdjustOldDeltas() below
+            normalizeOffset: true  // calls getBoundingClientRect for each event
+        }
+    };
+
+    $.fn.extend({
+        mousewheel: function(fn) {
+            return fn ? this.bind('mousewheel', fn) : this.trigger('mousewheel');
+        },
+
+        unmousewheel: function(fn) {
+            return this.unbind('mousewheel', fn);
+        }
+    });
+
+
+    function handler(event) {
+        var orgEvent   = event || window.event,
+            args       = slice.call(arguments, 1),
+            delta      = 0,
+            deltaX     = 0,
+            deltaY     = 0,
+            absDelta   = 0,
+            offsetX    = 0,
+            offsetY    = 0;
+        event = $.event.fix(orgEvent);
+        event.type = 'mousewheel';
+
+        // Old school scrollwheel delta
+        if ( 'detail'      in orgEvent ) { deltaY = orgEvent.detail * -1;      }
+        if ( 'wheelDelta'  in orgEvent ) { deltaY = orgEvent.wheelDelta;       }
+        if ( 'wheelDeltaY' in orgEvent ) { deltaY = orgEvent.wheelDeltaY;      }
+        if ( 'wheelDeltaX' in orgEvent ) { deltaX = orgEvent.wheelDeltaX * -1; }
+
+        // Firefox < 17 horizontal scrolling related to DOMMouseScroll event
+        if ( 'axis' in orgEvent && orgEvent.axis === orgEvent.HORIZONTAL_AXIS ) {
+            deltaX = deltaY * -1;
+            deltaY = 0;
+        }
+
+        // Set delta to be deltaY or deltaX if deltaY is 0 for backwards compatabilitiy
+        delta = deltaY === 0 ? deltaX : deltaY;
+
+        // New school wheel delta (wheel event)
+        if ( 'deltaY' in orgEvent ) {
+            deltaY = orgEvent.deltaY * -1;
+            delta  = deltaY;
+        }
+        if ( 'deltaX' in orgEvent ) {
+            deltaX = orgEvent.deltaX;
+            if ( deltaY === 0 ) { delta  = deltaX * -1; }
+        }
+
+        // No change actually happened, no reason to go any further
+        if ( deltaY === 0 && deltaX === 0 ) { return; }
+
+        // Need to convert lines and pages to pixels if we aren't already in pixels
+        // There are three delta modes:
+        //   * deltaMode 0 is by pixels, nothing to do
+        //   * deltaMode 1 is by lines
+        //   * deltaMode 2 is by pages
+        if ( orgEvent.deltaMode === 1 ) {
+            var lineHeight = $.data(this, 'mousewheel-line-height');
+            delta  *= lineHeight;
+            deltaY *= lineHeight;
+            deltaX *= lineHeight;
+        } else if ( orgEvent.deltaMode === 2 ) {
+            var pageHeight = $.data(this, 'mousewheel-page-height');
+            delta  *= pageHeight;
+            deltaY *= pageHeight;
+            deltaX *= pageHeight;
+        }
+
+        // Store lowest absolute delta to normalize the delta values
+        absDelta = Math.max( Math.abs(deltaY), Math.abs(deltaX) );
+
+        if ( !lowestDelta || absDelta < lowestDelta ) {
+            lowestDelta = absDelta;
+
+            // Adjust older deltas if necessary
+            if ( shouldAdjustOldDeltas(orgEvent, absDelta) ) {
+                lowestDelta /= 40;
+            }
+        }
+
+        // Adjust older deltas if necessary
+        if ( shouldAdjustOldDeltas(orgEvent, absDelta) ) {
+            // Divide all the things by 40!
+            delta  /= 40;
+            deltaX /= 40;
+            deltaY /= 40;
+        }
+
+        // Get a whole, normalized value for the deltas
+        delta  = Math[ delta  >= 1 ? 'floor' : 'ceil' ](delta  / lowestDelta);
+        deltaX = Math[ deltaX >= 1 ? 'floor' : 'ceil' ](deltaX / lowestDelta);
+        deltaY = Math[ deltaY >= 1 ? 'floor' : 'ceil' ](deltaY / lowestDelta);
+
+        // Normalise offsetX and offsetY properties
+        if ( special.settings.normalizeOffset && this.getBoundingClientRect ) {
+            var boundingRect = this.getBoundingClientRect();
+            offsetX = event.clientX - boundingRect.left;
+            offsetY = event.clientY - boundingRect.top;
+        }
+
+        // Add information to the event object
+        event.deltaX = deltaX;
+        event.deltaY = deltaY;
+        event.deltaFactor = lowestDelta;
+        event.offsetX = offsetX;
+        event.offsetY = offsetY;
+        // Go ahead and set deltaMode to 0 since we converted to pixels
+        // Although this is a little odd since we overwrite the deltaX/Y
+        // properties with normalized deltas.
+        event.deltaMode = 0;
+
+        // Add event and delta to the front of the arguments
+        args.unshift(event, delta, deltaX, deltaY);
+
+        // Clearout lowestDelta after sometime to better
+        // handle multiple device types that give different
+        // a different lowestDelta
+        // Ex: trackpad = 3 and mouse wheel = 120
+        if (nullLowestDeltaTimeout) { clearTimeout(nullLowestDeltaTimeout); }
+        nullLowestDeltaTimeout = setTimeout(nullLowestDelta, 200);
+
+        return ($.event.dispatch || $.event.handle).apply(this, args);
+    }
+
+    function nullLowestDelta() {
+        lowestDelta = null;
+    }
+
+    function shouldAdjustOldDeltas(orgEvent, absDelta) {
+        // If this is an older event and the delta is divisable by 120,
+        // then we are assuming that the browser is treating this as an
+        // older mouse wheel event and that we should divide the deltas
+        // by 40 to try and get a more usable deltaFactor.
+        // Side note, this actually impacts the reported scroll distance
+        // in older browsers and can cause scrolling to be slower than native.
+        // Turn this off by setting $.event.special.mousewheel.settings.adjustOldDeltas to false.
+        return special.settings.adjustOldDeltas && orgEvent.type === 'mousewheel' && absDelta % 120 === 0;
+    }
+
+}));

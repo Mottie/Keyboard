@@ -29,6 +29,11 @@ local.properties
 # PDT-specific
 .buildpath
 
+#################
+## IntelliJ IDEA
+#################
+.idea/*
+*.iml
 
 #################
 ## Visual Studio
@@ -45,6 +50,7 @@ local.properties
 # Build results
 [Dd]ebug/
 [Rr]elease/
+node_modules/
 *_i.c
 *_p.c
 *.ilk
@@ -60,6 +66,7 @@ local.properties
 *.tli
 *.tlh
 *.tmp
+*.log
 *.vspscc
 .builds
 *.dotCover
@@ -137,7 +144,6 @@ Desktop.ini
 # Packages
 *.egg
 *.egg-info
-dist
 build
 eggs
 parts

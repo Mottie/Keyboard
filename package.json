@@ -2,7 +2,7 @@
   "name": "keyboard",
   "title": "Keyboard",
   "description": "Virtual Keyboard using jQuery UI",
-  "version": "1.19.3",
+  "version": "1.20.0",
   "author": {
     "name": "Jeremy Satterfield",
     "url": "https://github.com/jsatt"
@@ -34,13 +34,20 @@
   "docs": "https://github.com/Mottie/Keyboard/wiki",
   "bugs": "https://github.com/Mottie/Keyboard/issues",
   "files": [
-    "css/keyboard.css",
-    "js/jquery.keyboard.js",
-    "js/jquery.keyboard.min.js",
-    "js/jquery.keyboard.extension-autocomplete.js",
-    "js/jquery.keyboard.extension-mobile.js",
-    "js/jquery.keyboard.extension-navigation.js",
-    "js/jquery.keyboard.extension-typing.js",
-    "js/jquery.mousewheel.js"
-  ]
+    "dist/**/*"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/Mottie/keyboard.git"
+  },
+  "devDependencies": {
+    "grunt": "~0.4.1",
+    "grunt-cli": "~0.1.13",
+    "grunt-contrib-jshint": "~0.9.2",
+    "grunt-contrib-qunit": "~0.4.0",
+    "grunt-contrib-concat": "~0.3.0",
+    "grunt-contrib-uglify": "~0.4.0",
+    "grunt-contrib-clean": "~0.5.0",
+    "grunt-contrib-watch": "~0.6.1"
+  }
 }

@@ -8,7 +8,7 @@
  * license for this file: WTFPL, unless the source layout site has a problem with me using them as a reference
  */
 
-/* based on http://en.wikipedia.org/wiki/Romanian_keyboard_layout for the actual (standard) layout. 
+/* based on http://en.wikipedia.org/wiki/Romanian_keyboard_layout for the actual (standard) layout.
 More details http://www.microsoft.com/resources/msdn/goglobal/keyboards/kbdrost.html  and http://ascii-table.com/keyboard.php/446 (for the actual codes)*/
 
 /* Submitted July 2014 - Alex Florea <alecz.fia@gmail.com>*/
@@ -44,12 +44,11 @@ $.keyboard.layouts['romanian'] = {
 	],
 };
 
-
 // Keyboard Language
 // please update this section to match this language and email me with corrections!
+// ro = ISO 639-1 code for Romanian
 // ***********************
-if (typeof(language) === 'undefined') { var language = {}; };
-language.romanian = {
+jQuery.keyboard.language.ro = {
 	display : {
 		'a'      : '\u2714:Accept (Shift-Enter)', // check mark - same action as accept
 		'accept' : 'Accept:Accept (Shift-Enter)',
@@ -74,7 +73,3 @@ language.romanian = {
 	// Message added to the key title while hovering, if the mousewheel plugin exists
 	wheelMessage : 'Foloseste rotita mouse-ului pentru a vedea si celelalte caractere',
 };
-
-// This will replace all default language options with these language options.
-// it is separated out here so the layout demo will work properly.
-$.extend(true, $.keyboard.defaultOptions, language.romanian);

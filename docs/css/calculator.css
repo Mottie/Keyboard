@@ -1,0 +1,49 @@
+/* making a few keys wider, to include the symbol - use .ui-keyboard-actionkey to affect all (including space)
+.ui-keyboard-accept, .ui-keyboard-cancel, .ui-keyboard-bksp, .ui-keyboard-enter, .ui-keyboard-shift {
+	font-size: .8em;
+	width: 5.2em;
+	height: 2em;
+}
+*/
+.ui-keyboard-input {
+	text-align: right;
+}
+.ui-keyboard-clear {
+	width: 2em !important;
+}
+/* wide keys: pi, 2pi, equal, decimal and % */
+.ui-keyboard-widekey, .ui-keyboard-pi, .ui-keyboard-2pi, .ui-keyboard-equals, .ui-keyboard-37, .ui-keyboard-43 {
+	width: 2.6em !important;
+}
+/* make zero double wide */
+.ui-keyboard-48 {
+	width: 4.5em !important;
+}
+/* make sin, cos and tan buttons wider */
+.ui-keyboard-sinh, .ui-keyboard-cosh, .ui-keyboard-tanh, .ui-keyboard-asinh, .ui-keyboard-acosh, .ui-keyboard-atanh {
+	width: 3.5em !important;
+}
+/* add 1/x image to button */
+.ui-keyboard-invx span {
+	display: block;
+	text-indent: -999em;
+	background: url(images/calc-1overx.png) center center no-repeat;
+}
+/* add y root of x image to button */
+.ui-keyboard-yroot span {
+	display: block;
+	text-indent: -999em;
+	background: url(images/calc-yroot.png) center center no-repeat;
+}
+/* add e^x image to button */
+.ui-keyboard-ex span {
+	display: block;
+	text-indent: -999em;
+	background: url(images/calc-ex.png) center center no-repeat;
+}
+/* add x^y image to button */
+.ui-keyboard-xy span {
+	display: block;
+	text-indent: -999em;
+	background: url(images/calc-xy.png) center center no-repeat;
+}
