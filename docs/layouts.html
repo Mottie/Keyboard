@@ -15,18 +15,19 @@
 
 	<!-- keyboard widget css & script (required) -->
 	<link href="../css/keyboard.css" rel="stylesheet">
+	<link href="../css/keyboard-previewkeyset.css" rel="stylesheet">
 	<script src="../js/jquery.keyboard.js"></script>
 
 	<!-- keyboard extensions (optional) -->
 	<script src="../js/jquery.mousewheel.js"></script>
 	<script src="../js/jquery.keyboard.extension-typing.js"></script>
+	<script src="../js/jquery.keyboard.extension-previewkeyset.js"></script>
 
+	<!-- keyboard layout -->
+	<script src="../layouts/keyboard-layouts-combined.js" charset="utf-8"></script>
 
-	<!-- preloaded keyboard layout -->
-	<script src="../layouts/albanian.js" charset="utf-8"></script>
-
-	<!-- theme switcher
-	<script src="http://jqueryui.com/themeroller/themeswitchertool/"></script> -->
+	<!-- theme switcher -->
+	<script src="http://jqueryui.com/themeroller/themeswitchertool/"></script>
 
 	<script>
 	$(function(){
@@ -83,7 +84,7 @@
 		t, o = '',
 
 		// Change display language, if the definitions are available
-		showKb = function(layout){ console.log('got here');
+		showKb = function(layout){
 			var kb = $('#multi').getkeyboard();
 			kb.options.layout = layout;
 			// true flag causes a keyboard refresh
@@ -103,7 +104,8 @@
 		.addTyping({
 			showTyping: true,
 			delay: 50
-		});
+		})
+		.previewKeyset();
 
 		$('#lang')
 		.html(o)
@@ -111,17 +113,9 @@
 			var kb = $('#multi'),
 				$this = $(this),
 				$opt = $this.find('option:selected'),
-				title = $opt.text(),
-				layout = $this.val(),
-				file = $opt.data('filename');
-			$('h2').text(title);
-			if ( !( layout in $.keyboard.layouts ) ) {
-				$.getScript('../layouts/' + file + '.js', function(){
-					showKb( layout );
-				});
-			} else {
-				showKb( layout );
-			}
+				layout = $this.val();
+			$('h2').text( $opt.text() );
+			showKb( layout );
 		}).trigger('change');
 
 	});
