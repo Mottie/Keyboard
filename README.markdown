@@ -68,7 +68,7 @@ Wiki: [Home](https://github.com/Mottie/Keyboard/wiki/Home) | [FAQ](https://githu
 
 ## Contributing
 
-* Install [node.js]() - this includes `npm` (node package manager).
+* Install [node.js](http://nodejs.org/) - this includes `npm` (node package manager).
 * Run `npm install` in the root directory.
 * Run `npm install -g grunt-cli` to install the grunt command-line interface.
 * Make any changes to the code.
