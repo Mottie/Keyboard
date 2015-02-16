@@ -30,9 +30,10 @@ Originally posted by Jeremy Satterfield in his [blog](http://jsatt.blogspot.com/
 * Autocomplete extension will integrate this keyboard plugin with jQuery UI's autocomplete widget.
 * Multiple region specific keyboard layouts included in a separate directory. This is a work in progress and slowly growing.
 
-## Bower
+## Packages
 
 Install using [bower](https://github.com/bower/bower) via `bower install keyboard`.
+Install using [npm](https://www.npmjs.com/) via `npm install virtual-keyboard`.
 
 ## Documentation
 

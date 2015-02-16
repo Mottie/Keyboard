@@ -1,9 +1,20 @@
 {
-  "name": "virtual-keyboard",
+  "name": "keyboard",
   "version": "1.20.0",
-  "main": ["./dist/**/*"],
+  "main": [
+    "jquery.keyboard.min.js",
+    "keyboard.min.css",
+    "keyboard-layouts-combined.min.js",
+    "keyboard-layouts-greywyvern.min.js"
+  ],
+  "ignore": [
+    "js/*.js",
+    "css/*.css",
+    "layouts/*.js",
+    "docs/*"
+  ],
   "dependencies": {
-    "jquery": ">= 1.9.2",
+    "jquery": ">=1.4.3",
     "jquery-ui": ">=1.9.2"
   }
 }
