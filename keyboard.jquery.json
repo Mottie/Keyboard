@@ -27,7 +27,8 @@
 		"customizable",
 		"keyboard",
 		"ui",
-		"accessibility"
+		"accessibility",
+		"osk"
 	],
 	"files": [
 		"dist/**/*"

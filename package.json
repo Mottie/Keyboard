@@ -1,5 +1,5 @@
 ﻿{
-  "name": "keyboard",
+  "name": "virtual-keyboard",
   "title": "Keyboard",
   "description": "Virtual Keyboard using jQuery UI",
   "version": "1.20.0",
@@ -27,7 +27,8 @@
   "customizable",
   "keyboard",
   "ui",
-  "accessibility"
+  "accessibility",
+  "osk"
   ],
   "homepage": "http://wowmotty.blogspot.com/2010/11/jquery-ui-keyboard-widget.html",
   "demo": "http://mottie.github.com/Keyboard/",
