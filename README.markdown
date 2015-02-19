@@ -32,8 +32,8 @@ Originally posted by Jeremy Satterfield in his [blog](http://jsatt.blogspot.com/
 
 ## Packages
 
-Install using [bower](https://github.com/bower/bower) via `bower install keyboard`.
-Install using [npm](https://www.npmjs.com/) via `npm install virtual-keyboard`.
+* Install using [bower](https://github.com/bower/bower) via `bower install keyboard`.
+* Install using [npm](https://www.npmjs.com/) via `npm install virtual-keyboard`.
 
 ## Documentation
 
