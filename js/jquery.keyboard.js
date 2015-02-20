@@ -326,7 +326,9 @@ $.keyboard = function(el, options){
 			kblang = $.keyboard.language;
 
 		// some languages include a dash, e.g. 'en-gb' or 'fr-ca'
-		lang = lang[0].split('-')[0];
+		// allow o.language to be a string or array...
+		// array is for future expansion where a layout can be set for multiple languages
+		lang = ( $.isArray(lang) ? lang[0] : lang ).split('-')[0];
 
 		// set keyboard language
 		o.display = $.extend( true, {}, kblang.en.display, kblang[ lang ] && kblang[ lang ].display || {}, base.settings.display );
