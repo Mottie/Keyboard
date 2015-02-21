@@ -47,6 +47,8 @@ $.fn.addAutocomplete = function(){
 			return (version[0] > 1) || (version[0] === 1 && parseInt(version[1], 10) >= 9);
 		})($.ui.version.split("."));
 
+		base.autocomplete_namespace = base.namespace + 'Autocomplete';
+
 		// Setup
 		base.autocomplete_init = function(){
 
@@ -56,21 +58,21 @@ $.fn.addAutocomplete = function(){
 			}
 
 			base.$el
-				.unbind('visible hidden autocompleteopen autocompleteselect '.split(' ').join('.keyboard-autocomplete '))
-				.bind('visible.keyboard-autocomplete',function(){
+				.unbind(base.autocomplete_namespace)
+				.bind($.keyboard.events.kbVisible + base.autocomplete_namespace,function(){
 					base.autocomplete_setup();
 				})
-				.bind('change.keyboard-autocomplete',function(e){
+				.bind($.keyboard.events.kbChange + base.autocomplete_namespace,function(){
 					if (base.hasAutocomplete && base.isVisible()) {
 						base.$el
 							.val(base.$preview.val())
 							.trigger('keydown.autocomplete');
 					}
 				})
-				.bind('hidden.keyboard-autocomplete', function(){
+				.bind($.keyboard.events.kbHidden + base.autocomplete_namespace, function(){
 					base.$el.autocomplete('close');
 				})
-				.bind('autocompleteopen.keyboard-autocomplete', function() {
+				.bind('autocompleteopen' + base.autocomplete_namespace, function() {
 					if (base.hasAutocomplete){
 						// reposition autocomplete window next to the keyboard
 						base.$autocomplete.menu.element.position({
@@ -81,7 +83,7 @@ $.fn.addAutocomplete = function(){
 						});
 					}
 				})
-				.bind('autocompleteselect.keyboard-autocomplete', function(e, ui){
+				.bind('autocompleteselect' + base.autocomplete_namespace, function(e, ui){
 					var v = ui.item && ui.item.value || '';
 					if (base.hasAutocomplete && v !== ''){
 						base.$preview
@@ -100,11 +102,11 @@ $.fn.addAutocomplete = function(){
 			base.hasAutocomplete = (typeof(base.$autocomplete) === 'undefined') ? false : (base.$autocomplete.options.disabled) ? false : true;
 			// only bind to keydown once
 			if (base.hasAutocomplete) {
-				base.$preview.bind('keydown', function(e){
+				base.$preview.bind('keydown' + base.autocomplete_namespace, function(e){
 					// send keys to the autocomplete widget (arrow, pageup/down, etc)
 					base.$el.val( base.$preview.val() ).triggerHandler(e);
 				});
-				base.$allKeys.bind('mouseup mousedown mouseleave touchstart touchend touchcancel',function(){
+				base.$allKeys.bind('mouseup mousedown mouseleave touchstart touchend touchcancel '.split(' ').join(base.autocomplete_namespace + ' '),function(){
 					clearTimeout( base.$autocomplete.searching );
 					base.$autocomplete.searching = setTimeout(function() {
 						// only search if the value has changed
@@ -218,11 +220,11 @@ $.fn.addMobile = function(options){
 			// This is avoided by first setting the visibility to hidden, then after the mobile styles are applied we
 			// set it visible.
 			base.$el
-				.unbind('beforeVisible.keyboard-mobile visible.keyboard-mobile')
-				.bind('beforeVisible.keyboard-mobile', function() {
+				.unbind(base.namespace + 'Mobile')
+				.bind($.keyboard.events.kbBeforeVisible + base.namespace + 'Mobile', function() {
 					base.$keyboard.css('visibility', 'hidden');
 				})
-				.bind('visible.keyboard-mobile', function() {
+				.bind($.keyboard.events.kbVisible + base.namespace + 'Mobile', function() {
 					base.mobile_setup();
 					base.$keyboard.css('visibility', 'visible');
 					base.$preview.focus();
@@ -376,11 +378,13 @@ $.fn.addNavigation = function(options){
 				toggleMode : false,     // true = navigate the virtual keyboard, false = navigate in input/textarea
 
 				focusClass : 'hasFocus' // css class added when toggle mode is on
-			};
+			},
+			kbevents = $.keyboard.events;
 		if (!base) { return; }
 
 		base.navigation_options = o = $.extend({}, defaults, options);
 		base.navigation_keys = k = $.extend({}, $.keyboard.navigationKeys);
+		base.navigation_namespace = base.namespace + 'Nav';
 		// save navigation settings - disabled when the toggled
 		base.saveNav = [ base.options.tabNavigation, base.options.enterNavigation ];
 		base.allNavKeys = $.map(k, function(v,i){ return v; });
@@ -394,8 +398,8 @@ $.fn.addNavigation = function(options){
 				.addClass(opts.css.buttonHover);
 
 			base.$preview
-				.unbind('keydown.keyboardNav')
-				.bind('keydown.keyboardNav',function(e){
+				.unbind(base.navigation_namespace)
+				.bind('keydown' + base.navigation_namespace,function(e){
 					return base.checkKeys(e.which);
 				});
 
@@ -417,7 +421,7 @@ $.fn.addNavigation = function(options){
 				base.$keyboard
 					.find('.' + kbcss.keySet + ':visible')
 					.find('.' + kbcss.keyButton + '[data-pos="' + o.position[0] + ',' + o.position[1] + '"]')
-					.trigger('repeater.keyboard');
+					.trigger(kbevents.kbRepeater);
 				return false;
 			}
 			if ( o.toggleMode && $.inArray(key, base.allNavKeys) >= 0 ) {
@@ -430,7 +434,6 @@ $.fn.addNavigation = function(options){
 			indx = indx || o.position[1];
 			row = row || o.position[0];
 			var kbcss = $.keyboard.css,
-				kbevents = $.keyboard.events,
 				vis = base.$keyboard.find('.' + kbcss.keySet + ':visible'),
 				maxRow = vis.find('.' + kbcss.endRow).length - 1,
 				maxIndx = vis.find('.' + kbcss.keyButton + '[data-pos^="' + row + ',"]').length - 1,
@@ -474,17 +477,18 @@ $.fn.addNavigation = function(options){
 		}
 		// capture and simulate typing
 		base.$el
-			.bind(kbevents.kbVisible + '.keyboardNav', function(e){
+			.unbind(base.navigation_namespace)
+			.bind(kbevents.kbVisible + base.navigation_namespace, function(e){
 				base.$keyboard.find('.' + opts.css.buttonHover).removeClass(opts.css.buttonHover);
 				base.navigation_init();
 			})
-			.bind(kbevents.kbInactive + ' ' + kbevents.kbHidden, function(e){
+			.bind(kbevents.kbInactive + base.navigation_namespace + ' ' + kbevents.kbHidden + base.navigation_namespace, function(e){
 				base.checkKeys(e.which, true); // disable toggle mode & revert navigation options
 			})
-			.bind(kbevents.kbKeysetChange, function(){
+			.bind(kbevents.kbKeysetChange + base.navigation_namespace, function(){
 				base.navigateKeys(null);
 			})
-			.bind('navigate navigateTo', function(e, row, indx){
+			.bind('navigate navigateTo '.split(' ').join(base.navigation_namespace + ' '), function(e, row, indx){
 				var key;
 				// no row given, check if it's a navigation key or keyaction
 				row = isNaN(row) ? row.toLowerCase() : row;
@@ -577,7 +581,7 @@ $.fn.previewKeyset = function( options ) {
 			}
 		};
 
-		base.$el.bind($.keyboard.events.kbBeforeVisible, function() {
+		base.$el.bind($.keyboard.events.kbBeforeVisible + base.namespace + 'Preview', function() {
 			base.previewKeyset();
 		});
 
@@ -615,11 +619,14 @@ $.fn.previewKeyset = function( options ) {
 $.keyboard = $.keyboard || {};
 	$.fn.addScramble = function(options) {
 		//Set the default values, use comma to separate the settings, example:
-		var defaults = {
+		var savedLayout,
+		defaults = {
 			targetKeys    : /[a-z\d]/i, // keys to randomize
-			byRow         : true, // randomize by row, otherwise randomize all keys
-			byKeySet      : false,// if true, randomize one keyset & duplicate
-			randomizeOnce : true  // if true, randomize only once on keyboard visible
+			byRow         : true,  // randomize by row, otherwise randomize all keys
+			byKeySet      : false, // if true, randomize one keyset & duplicate
+			randomizeOnce : true,  // if true, randomize only once on keyboard visible
+			sameForAll    : false, // use the same scrambled keyboard for all targetted keyboards
+			init          : null   // function(keyboard){}
 		};
 		return this.each(function() {
 			// make sure a keyboard is attached
@@ -761,23 +768,31 @@ $.keyboard = $.keyboard || {};
 				}
 				base.$keyboard = $.keyboard.builtLayouts[layout].$keyboard;
 				if ( !o.randomizeOnce ) {
-					base.$el.bind($.keyboard.events.kbBeforeVisible, function(e, kb) {
+					base.$el.bind($.keyboard.events.kbBeforeVisible + base.namespace + 'Scramble', function(e, kb) {
 						kb.$keyboard = kb.scramble_setup(kb.$keyboard);
 					});
 				}
 			};
 
 			// scrambled layout already initialized
-			if (!/^scrambled/.test(base.options.layout)) {
-				base.orig_layout = base.options.layout;
-				base.options.layout = "scrambled" + Math.round(Math.random() * 10000);
+			if (!/^scrambled/.test(opts.layout)) {
+				base.orig_layout = opts.layout;
+				savedLayout = savedLayout || 'scrambled' + Math.round(Math.random() * 10000);
+				opts.layout = o.sameForAll ? savedLayout : 'scrambled' + Math.round(Math.random() * 10000);
 			}
 
 			// special case when keyboard is set to always be open
 			if (opts.alwaysOpen && base.$keyboard.length) {
 				setTimeout(function(){
 					base.$keyboard = base.scramble_setup(base.$keyboard);
+					if ($.isFunction(o.init)) {
+						o.init(base);
+					}
 				}, 0);
+			} else {
+				if ($.isFunction(o.init)) {
+					o.init(base);
+				}
 			}
 
 		});
@@ -857,6 +872,7 @@ $.keyboard = $.keyboard || {};
 				32 : 'space'
 			};
 			base.typing_event = false;
+			base.typing_namespace = base.namespace + 'typing';
 			// save lockInput setting
 			o.savedLockInput = base.options.lockInput;
 
@@ -864,8 +880,8 @@ $.keyboard = $.keyboard || {};
 				var el = (base.$preview) ? base.$preview : base.$el;
 
 				el
-				.unbind('keyup.keyboard-typing keydown.keyboard-typing keypress.keyboard-typing')
-				.bind('keyup.keyboard-typing', function(e){
+				.unbind(base.typing_namespace)
+				.bind('keyup' + base.typing_namespace, function(e){
 					if (o.init && o.lockTypeIn) { return false; }
 					if (e.which >= 37 && e.which <=40) { return; } // ignore arrow keys
 					if (e.which === 16) { base.shiftActive = false; }
@@ -877,7 +893,7 @@ $.keyboard = $.keyboard || {};
 					}
 				})
 				// change keyset when either shift or alt is held down
-				.bind('keydown.keyboard-typing', function(e){
+				.bind('keydown' + base.typing_namespace, function(e){
 					if (o.init && o.lockTypeIn) { return false; }
 					e.temp = false; // prevent repetitive calls while keydown repeats.
 					if (e.which === 16) { e.temp = !base.shiftActive; base.shiftActive = true; }
@@ -894,7 +910,7 @@ $.keyboard = $.keyboard || {};
 					}
 
 				})
-				.bind('keypress.keyboard-typing', function(e){
+				.bind('keypress' + base.typing_namespace, function(e){
 					if (o.init && o.lockTypeIn) { return false; }
 					// Simulate key press on virtual keyboard
 					if (base.typing_event && !base.options.lockInput) {
@@ -1032,10 +1048,10 @@ $.keyboard = $.keyboard || {};
 			// mouseover the key, add the text directly, then mouseout on the key
 			base.typing_simulateKey = function(el,txt){
 				var e = el.length;
-				if (e) { el.filter(':visible').trigger('mouseenter.keyboard'); }
+				if (e) { el.filter(':visible').trigger('mouseenter' + base.namespace); }
 				base.typing_timer = setTimeout(function(){
 					var e = el.length;
-					if (e) { setTimeout(function(){ el.trigger('mouseleave.keyboard'); }, o.delay/3); }
+					if (e) { setTimeout(function(){ el.trigger('mouseleave' + base.namespace); }, o.delay/3); }
 					if (!base.isVisible()) { return; }
 					if (!base.typing_event) {
 						base.insertText(txt);
@@ -1050,7 +1066,7 @@ $.keyboard = $.keyboard || {};
 					base.typing_setup();
 				}
 				// capture and simulate typing
-				base.$el.bind('visible.keyboard', function(){
+				base.$el.bind( $.keyboard.events.kbVisible + base.typing_namespace, function(){
 					base.typing_setup();
 				});
 			}
