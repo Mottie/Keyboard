@@ -49,14 +49,10 @@ $.keyboard = function(el, options){
 		base.shiftActive = base.altActive = base.metaActive = base.sets = base.capsLock = false;
 		// Class names of the basic key set - meta keysets are handled by the keyname
 		base.rows = [ '', '-shift', '-alt', '-alt-shift' ];
-		$('<!--[if lte IE 8]><script>jQuery("body").addClass("oldie");</script><![endif]--><!--[if IE]>' +
-			'<script>jQuery("body").addClass("ie");</script><![endif]-->').appendTo('body').remove();
-		base.msie = $('body').hasClass('oldie'); // Old IE flag, used for caret positioning
-		base.allie = $('body').hasClass('ie');
+
 		base.inPlaceholder = base.$el.attr('placeholder') || '';
 		// html 5 placeholder/watermark
-		base.watermark = (typeof(document.createElement('input').placeholder) !== 'undefined' &&
-			base.inPlaceholder !== '');
+		base.watermark = $.keyboard.watermark && base.inPlaceholder !== '';
 		// convert mouse repeater rate (characters per second) into a time in milliseconds.
 		base.repeatTime = 1000/(o.repeatRate || 20);
 		// delay in ms to prevent mousedown & touchstart from both firing events at the same time
@@ -72,17 +68,10 @@ $.keyboard = function(el, options){
 		// make a copy of the original keyboard position
 		o.position.orig_at = o.position.at;
 
-		// Check if caret position is saved when input is hidden or loses focus
-		// (*cough* all versions of IE and I think Opera has/had an issue as well
-		base.temp = $('<div style="height:0px;width:0px;overflow:hidden;"><input type="text" value="testing"></div>')
-			.insertAfter( base.el ); // stop page scrolling, fixes #213
-		base.temp.find('input').caret(3,3);
-		// Also save caret position of the input if it is locked
-		base.checkCaret = ( o.lockInput || base.temp.find('input').hide().show().caret().start !== 3 );
-		base.temp.remove();
+		base.checkCaret = ( o.lockInput || $.keyboard.checkCaret );
+
 		// [shift, alt, meta]
 		base.last = { start:0, end:0, key:'', val:'', keyset: [false, false, false] };
-
 		base.temp = [ '', 0, 0 ]; // used when building the keyboard - [keyset element, row, index]
 
 		// Bind events
@@ -261,7 +250,7 @@ $.keyboard = function(el, options){
 		base.$keyboard.show();
 
 		// adjust keyboard preview window width - save width so IE won't keep expanding (fix issue #6)
-		if (o.usePreview && base.msie) {
+		if (o.usePreview && $.keyboard.msie) {
 			if (typeof base.width === 'undefined') {
 				base.$preview.hide(); // preview is 100% browser width in IE7, so hide the damn thing
 				base.width = Math.ceil(base.$keyboard.width()); // set input width to match the widest keyboard row
@@ -294,7 +283,7 @@ $.keyboard = function(el, options){
 		}
 
 		// IE caret haxx0rs
-		if (base.allie){
+		if ($.keyboard.allie){
 			// sometimes end = 0 while start is > 0
 			if (base.last.end === 0 && base.last.start > 0) {
 				base.last.end = base.last.start;
@@ -754,7 +743,7 @@ $.keyboard = function(el, options){
 
 		if (base.preview.tagName === 'TEXTAREA') {
 			// This makes sure the caret moves to the next line after clicking on enter (manual typing works fine)
-			if (base.msie && val.substr(pos.start, 1) === '\n') { pos.start += 1; pos.end += 1; }
+			if ($.keyboard.msie && val.substr(pos.start, 1) === '\n') { pos.start += 1; pos.end += 1; }
 			// Set scroll top so current text is in view - needed for virtual keyboard typing, not manual typing
 			// this doesn't appear to work correctly in Opera
 			h = (val.split('\n').length - 1);
@@ -874,13 +863,13 @@ $.keyboard = function(el, options){
 		if (pos.end < pos.start) { pos.end = pos.start; }
 		if (pos.start > len) { pos.end = pos.start = len; }
 		// This makes sure the caret moves to the next line after clicking on enter (manual typing works fine)
-		if (base.msie && val.substr(pos.start, 1) === '\n') { pos.start += 1; pos.end += 1; }
+		if ($.keyboard.msie && val.substr(pos.start, 1) === '\n') { pos.start += 1; pos.end += 1; }
 
 		if (o.useCombos) {
 			// keep 'a' and 'o' in the regex for ae and oe ligature (æ,œ)
 			// thanks to KennyTM: http://stackoverflow.com/q/4275077
 			// original regex /([`\'~\^\"ao])([a-z])/mig moved to $.keyboard.comboRegex
-			if (base.msie) {
+			if ($.keyboard.msie) {
 				// old IE may not have the caret positioned correctly, so just check the whole thing
 				val = val.replace(base.regex, function(s, accent, letter){
 					return (o.combos.hasOwnProperty(accent)) ? o.combos[accent][letter] || s : s;
@@ -1086,7 +1075,7 @@ $.keyboard = function(el, options){
 
 		if ( !base.isCurrent() && base.isOpen || base.isOpen && e.target !== base.el && !o.stayOpen) {
 			// stop propogation in IE - an input getting focus doesn't open a keyboard if one is already open
-			if ( base.allie ) {
+			if ( $.keyboard.allie ) {
 				e.preventDefault();
 			}
 			// send "true" instead of a true (boolean), the input won't get a "ui-keyboard-autoaccepted"
@@ -1914,6 +1903,13 @@ $.keyboard = function(el, options){
 	// store current keyboard element; used by base.isCurrent()
 	$.keyboard.currentKeyboard = '';
 
+	$('<!--[if lte IE 8]><script>jQuery("body").addClass("oldie");</script><![endif]--><!--[if IE]>' +
+		'<script>jQuery("body").addClass("ie");</script><![endif]-->').appendTo('body').remove();
+	$.keyboard.msie = $('body').hasClass('oldie'); // Old IE flag, used for caret positioning
+	$.keyboard.allie = $('body').hasClass('ie');
+
+	$.keyboard.watermark = (typeof(document.createElement('input').placeholder) !== 'undefined');
+
 	$.fn.keyboard = function(options){
 		return this.each(function(){
 			if (!$(this).data('keyboard')) {
@@ -2010,4 +2006,14 @@ $.fn.caret = function(options,opt2) {
 		}};
 	}
 };
+
+// Check if caret position is saved when input is hidden or loses focus
+// (*cough* all versions of IE and I think Opera has/had an issue as well
+var $temp = $('<div style="height:0px;width:0px;overflow:hidden;"><input type="text" value="testing"></div>')
+	.prependTo( 'body' ); // stop page scrolling
+$temp.find('input').caret(3,3);
+// Also save caret position of the input if it is locked
+$.keyboard.checkCaret = $temp.find('input').hide().show().caret().start !== 3;
+$temp.remove();
+
 })(jQuery, 'length', 'createRange', 'duplicate');
