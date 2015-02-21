@@ -88,6 +88,27 @@ Wiki: [Home](https://github.com/Mottie/Keyboard/wiki/Home) | [FAQ](https://githu
 
 Only the latest changes will be shown below, see the wiki log to view older versions.
 
+### Version 1.21.0 (2/21/2015)
+
+* Removed namespacing requirements from all event bindings **POSSIBLE BREAKING CHANGE**
+  * When binding to events, the `.keyboard` is no longer a requirement namespace as keyboard events are now contained with the `$.keyboard.events` variable.
+  * See the updated [Methods](https://github.com/Mottie/Keyboard/wiki/Methods#events) wiki page for more details.
+* Moved various checks outside of instanced keyboards. This includes:
+  * Check for older version of IE.
+  * Watermark support.
+  * Caret positioning being saved when input is hidden or loses focus. This fixes [issue #327](https://github.com/Mottie/Keyboard/issues/327).
+* Add `autoAcceptOnEsc` option:
+  * Setting this to `true` will only work if the `autoAccept` option is `true`.
+  * Allows forcing the content to be accepted even if the user presses escape.
+  * Fixes [issue #314](https://github.com/Mottie/Keyboard/issues/314).
+* Changed `language` option:
+  * It can now be set as either a string (`"en"`) or an array (`["en"]`).
+  * As an array, it will allow for future expansion so that a multiple languages can be set for one layout.
+* Changed `position` option:
+  * It can now be set as `false` or even an empty string.
+  * Previously, to avoid using the jQuery UI position utility this option was supposed to be set to an empty object (`{}`); but internal scripting was continuing to update and use this option to activate the jQuery UI position utility. No more!
+* Fixed an issue with meta keys getting broken by the v1.20.0 update. Sorry!
+
 ### Version 1.20.0 (2/15/2015)
 
 * Build
@@ -122,16 +143,3 @@ Only the latest changes will be shown below, see the wiki log to view older vers
 
 * Core: correct problem with typed characters (introduced in 1.19.2). Fixes [issue #324](https://github.com/Mottie/Keyboard/issues/324).
 * Typing extension: Fix issue with callback being called repeatedly.
-
-### Version 1.19.2 (12/26/2014)
-
-* Core
-  * Update keyboard languages before building.
-  * Reset active keysets when switching layouts.
-  * Restore contents of preview when swapping layouts.
-  * Fix clicking on mousewheel altered keys; empty keys are now ignored.
-* Layouts
-  * Fix mislabeled languages.
-  * Make corrections to Hindi layout. See [issue #323](https://github.com/Mottie/Keyboard/issues/323).
-  * Add Persian (Farsi) layout. Thanks to Majid R via email.
-  * Add layouts generated & modified from the [greywyvern virtual keyboard](http://www.greywyvern.com/code/javascript/keyboard).
