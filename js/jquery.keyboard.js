@@ -17,9 +17,10 @@ type and preview their input before Accepting or Canceling.
 As a plugin to jQuery UI styling and theme will automatically
 match that used by jQuery UI with the exception of the required CSS.
 
-Requires:
-	jQuery v1.4.3+
-	jQuery UI (position utility only) & CSS theme
+Requires: jQuery v1.4.3+
+Optional:
+ jQuery UI (position utility only) & CSS theme
+ jQuery mousewheel
 
 Setup/Usage:
 	Please refer to https://github.com/Mottie/Keyboard/wiki
@@ -66,7 +67,9 @@ var $keyboard = $.keyboard = function(el, options){
 		base.alwaysAllowed = [20,33,34,35,36,37,38,39,40,45,46];
 		base.$keyboard = [];
 		// make a copy of the original keyboard position
-		o.position.orig_at = o.position.at;
+		if (!$.isEmptyObject(o.position)) {
+			o.position.orig_at = o.position.at;
+		}
 
 		base.checkCaret = ( o.lockInput || $keyboard.checkCaret );
 
@@ -259,10 +262,10 @@ var $keyboard = $.keyboard = function(el, options){
 			base.$preview.width(base.width);
 		}
 
-		base.position = o.position;
+		base.position = $.isEmptyObject(o.position) ? false : o.position;
 
 		// position after keyboard is visible (required for UI position utility) and appropriately sized
-		if ($.ui && $.ui.position && !$.isEmptyObject(base.position)) {
+		if ($.ui && $.ui.position && base.position) {
 			// get single target position || target stored in element data (multiple targets) || default @ element
 			base.position.of = base.position.of || base.$el.data('keyboardPosition') || base.$el;
 			base.position.collision = base.position.collision || 'flipfit flipfit';
@@ -361,7 +364,9 @@ var $keyboard = $.keyboard = function(el, options){
 			// build preview display
 			if (o.usePreview) {
 				// restore original positioning (in case usePreview option is altered)
-				o.position.at = o.position.orig_at;
+				if (!$.isEmptyObject(o.position)) {
+					o.position.at = o.position.orig_at;
+				}
 				base.$preview = base.$el.clone(false)
 					.removeAttr('id')
 					.removeClass(kbcss.placeholder + ' ' + kbcss.input)
@@ -401,10 +406,11 @@ var $keyboard = $.keyboard = function(el, options){
 
 		base.bindKeys();
 
-		// adjust with window resize
+		// adjust with window resize; don't check base.position
+		// here in case it is changed dynamically
 		if (o.reposition && $.ui && $.ui.position && o.appendTo == 'body') {
 			$(window).bind('resize.keyboard', function(){
-				if (base.isVisible()) {
+				if (base.position && base.isVisible()) {
 					base.$keyboard.position(base.position);
 				}
 			});

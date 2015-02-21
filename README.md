@@ -7,8 +7,8 @@ Originally posted by Jeremy Satterfield in his [blog](http://jsatt.blogspot.com/
 * Add custom keyboard layouts easily.
 * Add up to four standard key sets to each layout that use the shift and alt keys (default, shift, alt and alt-shift).
 * Add any number of optional modifier keys (meta keys) to add more key sets.
-* Each meta key set also includes the shift, alt and alt-shift keysets - New in version 1.8.9.
-* Position the keyboard in any location around the element, or target another element on the page.
+* Each meta key set can also include the shift, alt and alt-shift keysets.
+* Position the keyboard in any location around the element, or target another element on the page (using jQuery UI position utility)
 * Easily modify the key text to any language or symbol.
 * Allow direct input or lock the preview window.
 * Set a maximum length to the inputted content.
@@ -24,7 +24,7 @@ Originally posted by Jeremy Satterfield in his [blog](http://jsatt.blogspot.com/
 * Enable, disable or add more diacritic functionality as desired.
 * Use callbacks and event triggers that occur when the keyboard is open or closed and when the content has changed, been accepted or canceled.
 * ARIA support (may not be fully implemented)
-* As jQuery UI is a dependancy, this plugin's styling will automatically match the selected jQuery UI theme with the exception of the required CSS found in the keyboard.css file.
+* jQuery UI themes are used by default, but Bootstrap themes can also be applied.
 * Built in watermarking. It emulates HTML5's placeholder, if the browser doesn't support it.
 * Typing extension allows you to simulate typing into the keyboard for demo purposes or to assist user input.
 * Autocomplete extension will integrate this keyboard plugin with jQuery UI's autocomplete widget.
@@ -44,6 +44,7 @@ Wiki: [Home](https://github.com/Mottie/Keyboard/wiki/Home) | [FAQ](https://githu
 * Waiting for requests :)
 * Add more regional keyboard layouts.
 * Add an input mask extension. I think I'll try to make it compatible with [this plugin](https://github.com/RobinHerbots/jquery.inputmask).
+* Allow attaching a keyboard to a contenteditable element.
 
 ## Known Problems
 
@@ -60,10 +61,10 @@ Wiki: [Home](https://github.com/Mottie/Keyboard/wiki/Home) | [FAQ](https://githu
 ## Dependencies
 * Required
     * jQuery 1.4.3+
-    * jQuery UI Positioning Utility (optional, if you position the keyboard yourself)
-    * jQuery UI CSS (can be customized)
     * jQuery caret (included with source)
 * Optional
+    * jQuery UI Positioning Utility (optional, if you position the keyboard yourself)
+    * jQuery UI CSS (can be customized) / Bootstrap CSS
     * jQuery mousewheel plugin - allows using mousewheel to scroll through other key sets
     * jQuery UI Autocomplete widget - use with jQuery keyboard autocomplete extension
 
