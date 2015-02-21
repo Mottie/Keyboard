@@ -40,6 +40,8 @@ $.fn.addAutocomplete = function(){
 			return (version[0] > 1) || (version[0] === 1 && parseInt(version[1], 10) >= 9);
 		})($.ui.version.split("."));
 
+		base.autocomplete_namespace = base.namespace + 'Autocomplete';
+
 		// Setup
 		base.autocomplete_init = function(){
 
@@ -49,21 +51,21 @@ $.fn.addAutocomplete = function(){
 			}
 
 			base.$el
-				.unbind('visible hidden autocompleteopen autocompleteselect '.split(' ').join('.keyboard-autocomplete '))
-				.bind('visible.keyboard-autocomplete',function(){
+				.unbind(base.autocomplete_namespace)
+				.bind($.keyboard.events.kbVisible + base.autocomplete_namespace,function(){
 					base.autocomplete_setup();
 				})
-				.bind('change.keyboard-autocomplete',function(e){
+				.bind($.keyboard.events.kbChange + base.autocomplete_namespace,function(){
 					if (base.hasAutocomplete && base.isVisible()) {
 						base.$el
 							.val(base.$preview.val())
 							.trigger('keydown.autocomplete');
 					}
 				})
-				.bind('hidden.keyboard-autocomplete', function(){
+				.bind($.keyboard.events.kbHidden + base.autocomplete_namespace, function(){
 					base.$el.autocomplete('close');
 				})
-				.bind('autocompleteopen.keyboard-autocomplete', function() {
+				.bind('autocompleteopen' + base.autocomplete_namespace, function() {
 					if (base.hasAutocomplete){
 						// reposition autocomplete window next to the keyboard
 						base.$autocomplete.menu.element.position({
@@ -74,7 +76,7 @@ $.fn.addAutocomplete = function(){
 						});
 					}
 				})
-				.bind('autocompleteselect.keyboard-autocomplete', function(e, ui){
+				.bind('autocompleteselect' + base.autocomplete_namespace, function(e, ui){
 					var v = ui.item && ui.item.value || '';
 					if (base.hasAutocomplete && v !== ''){
 						base.$preview
@@ -93,11 +95,11 @@ $.fn.addAutocomplete = function(){
 			base.hasAutocomplete = (typeof(base.$autocomplete) === 'undefined') ? false : (base.$autocomplete.options.disabled) ? false : true;
 			// only bind to keydown once
 			if (base.hasAutocomplete) {
-				base.$preview.bind('keydown', function(e){
+				base.$preview.bind('keydown' + base.autocomplete_namespace, function(e){
 					// send keys to the autocomplete widget (arrow, pageup/down, etc)
 					base.$el.val( base.$preview.val() ).triggerHandler(e);
 				});
-				base.$allKeys.bind('mouseup mousedown mouseleave touchstart touchend touchcancel',function(){
+				base.$allKeys.bind('mouseup mousedown mouseleave touchstart touchend touchcancel '.split(' ').join(base.autocomplete_namespace + ' '),function(){
 					clearTimeout( base.$autocomplete.searching );
 					base.$autocomplete.searching = setTimeout(function() {
 						// only search if the value has changed

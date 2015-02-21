@@ -70,11 +70,13 @@ $.fn.addNavigation = function(options){
 				toggleMode : false,     // true = navigate the virtual keyboard, false = navigate in input/textarea
 
 				focusClass : 'hasFocus' // css class added when toggle mode is on
-			};
+			},
+			kbevents = $.keyboard.events;
 		if (!base) { return; }
 
 		base.navigation_options = o = $.extend({}, defaults, options);
 		base.navigation_keys = k = $.extend({}, $.keyboard.navigationKeys);
+		base.navigation_namespace = base.namespace + 'Nav';
 		// save navigation settings - disabled when the toggled
 		base.saveNav = [ base.options.tabNavigation, base.options.enterNavigation ];
 		base.allNavKeys = $.map(k, function(v,i){ return v; });
@@ -88,8 +90,8 @@ $.fn.addNavigation = function(options){
 				.addClass(opts.css.buttonHover);
 
 			base.$preview
-				.unbind('keydown.keyboardNav')
-				.bind('keydown.keyboardNav',function(e){
+				.unbind(base.navigation_namespace)
+				.bind('keydown' + base.navigation_namespace,function(e){
 					return base.checkKeys(e.which);
 				});
 
@@ -111,7 +113,7 @@ $.fn.addNavigation = function(options){
 				base.$keyboard
 					.find('.' + kbcss.keySet + ':visible')
 					.find('.' + kbcss.keyButton + '[data-pos="' + o.position[0] + ',' + o.position[1] + '"]')
-					.trigger('repeater.keyboard');
+					.trigger(kbevents.kbRepeater);
 				return false;
 			}
 			if ( o.toggleMode && $.inArray(key, base.allNavKeys) >= 0 ) {
@@ -124,7 +126,6 @@ $.fn.addNavigation = function(options){
 			indx = indx || o.position[1];
 			row = row || o.position[0];
 			var kbcss = $.keyboard.css,
-				kbevents = $.keyboard.events,
 				vis = base.$keyboard.find('.' + kbcss.keySet + ':visible'),
 				maxRow = vis.find('.' + kbcss.endRow).length - 1,
 				maxIndx = vis.find('.' + kbcss.keyButton + '[data-pos^="' + row + ',"]').length - 1,
@@ -168,17 +169,18 @@ $.fn.addNavigation = function(options){
 		}
 		// capture and simulate typing
 		base.$el
-			.bind(kbevents.kbVisible + '.keyboardNav', function(e){
+			.unbind(base.navigation_namespace)
+			.bind(kbevents.kbVisible + base.navigation_namespace, function(e){
 				base.$keyboard.find('.' + opts.css.buttonHover).removeClass(opts.css.buttonHover);
 				base.navigation_init();
 			})
-			.bind(kbevents.kbInactive + ' ' + kbevents.kbHidden, function(e){
+			.bind(kbevents.kbInactive + base.navigation_namespace + ' ' + kbevents.kbHidden + base.navigation_namespace, function(e){
 				base.checkKeys(e.which, true); // disable toggle mode & revert navigation options
 			})
-			.bind(kbevents.kbKeysetChange, function(){
+			.bind(kbevents.kbKeysetChange + base.navigation_namespace, function(){
 				base.navigateKeys(null);
 			})
-			.bind('navigate navigateTo', function(e, row, indx){
+			.bind('navigate navigateTo '.split(' ').join(base.navigation_namespace + ' '), function(e, row, indx){
 				var key;
 				// no row given, check if it's a navigation key or keyaction
 				row = isNaN(row) ? row.toLowerCase() : row;

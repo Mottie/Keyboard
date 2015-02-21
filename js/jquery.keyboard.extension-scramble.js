@@ -177,7 +177,7 @@ $.keyboard = $.keyboard || {};
 				}
 				base.$keyboard = $.keyboard.builtLayouts[layout].$keyboard;
 				if ( !o.randomizeOnce ) {
-					base.$el.bind($.keyboard.events.kbBeforeVisible, function(e, kb) {
+					base.$el.bind($.keyboard.events.kbBeforeVisible + base.namespace + 'Scramble', function(e, kb) {
 						kb.$keyboard = kb.scramble_setup(kb.$keyboard);
 					});
 				}

@@ -63,7 +63,7 @@ $.fn.previewKeyset = function( options ) {
 			}
 		};
 
-		base.$el.bind($.keyboard.events.kbBeforeVisible, function() {
+		base.$el.bind($.keyboard.events.kbBeforeVisible + base.namespace + 'Preview', function() {
 			base.previewKeyset();
 		});
 

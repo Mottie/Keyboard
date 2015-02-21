@@ -17,7 +17,7 @@ jQuery(function($) {
 	});
 	// since IE adds an overlay behind the input to prevent clicking in other inputs (the keyboard may not automatically open on focus... silly IE bug)
 	// We can remove the overlay (transparent) if desired using this code:
-	$('.qwerty:eq(1)').bind('visible.keyboard', function(e, keyboard, el){
+	$('.qwerty:eq(1)').bind('visible', function(e, keyboard, el){
 	 $('.ui-keyboard-overlay').remove(); // remove overlay because clicking on it will close the keyboard... we set "openOn" to null to prevent closing.
 	});
 
@@ -356,7 +356,7 @@ jQuery(function($) {
 
 	// Console showing callback messages
 	// ********************
-	$('.ui-keyboard-input').bind('visible.keyboard hidden.keyboard beforeClose.keyboard accepted.keyboard canceled.keyboard restricted.keyboard', function(e, keyboard, el, status){
+	$('.ui-keyboard-input').bind('visible hidden beforeClose accepted canceled restricted', function(e, keyboard, el, status){
 		var c = $('#console'),
 			t = '<li><span class="keyboard">' + $(el).parent().find('h2 .tooltip-tipsy').text() + '</span>';
 			switch (e.type){

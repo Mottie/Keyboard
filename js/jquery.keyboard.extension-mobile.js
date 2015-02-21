@@ -83,11 +83,11 @@ $.fn.addMobile = function(options){
 			// This is avoided by first setting the visibility to hidden, then after the mobile styles are applied we
 			// set it visible.
 			base.$el
-				.unbind('beforeVisible.keyboard-mobile visible.keyboard-mobile')
-				.bind('beforeVisible.keyboard-mobile', function() {
+				.unbind(base.namespace + 'Mobile')
+				.bind($.keyboard.events.kbBeforeVisible + base.namespace + 'Mobile', function() {
 					base.$keyboard.css('visibility', 'hidden');
 				})
-				.bind('visible.keyboard-mobile', function() {
+				.bind($.keyboard.events.kbVisible + base.namespace + 'Mobile', function() {
 					base.mobile_setup();
 					base.$keyboard.css('visibility', 'visible');
 					base.$preview.focus();

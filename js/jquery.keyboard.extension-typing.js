@@ -71,6 +71,7 @@
 				32 : 'space'
 			};
 			base.typing_event = false;
+			base.typing_namespace = base.namespace + 'typing';
 			// save lockInput setting
 			o.savedLockInput = base.options.lockInput;
 
@@ -78,8 +79,8 @@
 				var el = (base.$preview) ? base.$preview : base.$el;
 
 				el
-				.unbind('keyup.keyboard-typing keydown.keyboard-typing keypress.keyboard-typing')
-				.bind('keyup.keyboard-typing', function(e){
+				.unbind(base.typing_namespace)
+				.bind('keyup' + base.typing_namespace, function(e){
 					if (o.init && o.lockTypeIn) { return false; }
 					if (e.which >= 37 && e.which <=40) { return; } // ignore arrow keys
 					if (e.which === 16) { base.shiftActive = false; }
@@ -91,7 +92,7 @@
 					}
 				})
 				// change keyset when either shift or alt is held down
-				.bind('keydown.keyboard-typing', function(e){
+				.bind('keydown' + base.typing_namespace, function(e){
 					if (o.init && o.lockTypeIn) { return false; }
 					e.temp = false; // prevent repetitive calls while keydown repeats.
 					if (e.which === 16) { e.temp = !base.shiftActive; base.shiftActive = true; }
@@ -108,7 +109,7 @@
 					}
 
 				})
-				.bind('keypress.keyboard-typing', function(e){
+				.bind('keypress' + base.typing_namespace, function(e){
 					if (o.init && o.lockTypeIn) { return false; }
 					// Simulate key press on virtual keyboard
 					if (base.typing_event && !base.options.lockInput) {
@@ -246,10 +247,10 @@
 			// mouseover the key, add the text directly, then mouseout on the key
 			base.typing_simulateKey = function(el,txt){
 				var e = el.length;
-				if (e) { el.filter(':visible').trigger('mouseenter.keyboard'); }
+				if (e) { el.filter(':visible').trigger('mouseenter' + base.namespace); }
 				base.typing_timer = setTimeout(function(){
 					var e = el.length;
-					if (e) { setTimeout(function(){ el.trigger('mouseleave.keyboard'); }, o.delay/3); }
+					if (e) { setTimeout(function(){ el.trigger('mouseleave' + base.namespace); }, o.delay/3); }
 					if (!base.isVisible()) { return; }
 					if (!base.typing_event) {
 						base.insertText(txt);
@@ -264,7 +265,7 @@
 					base.typing_setup();
 				}
 				// capture and simulate typing
-				base.$el.bind('visible.keyboard', function(){
+				base.$el.bind( $.keyboard.events.kbVisible + base.typing_namespace, function(){
 					base.typing_setup();
 				});
 			}

@@ -45,6 +45,8 @@ var $keyboard = $.keyboard = function(el, options){
 		base.settings = options || {};
 		base.options = o = $.extend(true, {}, $keyboard.defaultOptions, options);
 
+		// unique keyboard namespace
+		base.namespace = '.keyboard' + Math.random().toString(16).slice(2);
 		// Shift and Alt key toggles, sets is true if a layout has more than one keyset
 		// used for mousewheel message
 		base.shiftActive = base.altActive = base.metaActive = base.sets = base.capsLock = false;
@@ -80,13 +82,13 @@ var $keyboard = $.keyboard = function(el, options){
 		// Bind events
 		$.each('initialized beforeVisible visible hidden canceled accepted beforeClose'.split(' '), function(i,f){
 			if ($.isFunction(o[f])){
-				base.$el.bind(f + '.keyboard', o[f]);
+				base.$el.bind(f + base.namespace, o[f]);
 			}
 		});
 
 		// Close with esc key & clicking outside
 		if (o.alwaysOpen) { o.stayOpen = true; }
-		$(document).bind('mousedown keyup touchstart checkkeyboard '.split(' ').join('.keyboard '), function(e){
+		$(document).bind('mousedown keyup touchstart checkkeyboard '.split(' ').join(base.namespace + ' '), function(e){
 			if (base.opening) { return; }
 			base.escClose(e);
 			// needed for IE to allow switching between keyboards smoothly
@@ -110,7 +112,7 @@ var $keyboard = $.keyboard = function(el, options){
 			base.$el.addClass(kbcss.noKeyboard);
 		}
 		if (o.openOn) {
-			base.$el.bind(o.openOn + '.keyboard', function(){
+			base.$el.bind(o.openOn + base.namespace, function(){
 				base.focusOn();
 			});
 		}
@@ -210,7 +212,7 @@ var $keyboard = $.keyboard = function(el, options){
 
 		// Unbind focus to prevent recursion - openOn may be empty if keyboard is opened externally
 		if (o.openOn) {
-			base.$el.unbind( o.openOn + '.keyboard' );
+			base.$el.unbind( o.openOn + base.namespace );
 		}
 
 		// build keyboard if it doesn't exist; or attach keyboard if it was removed, but not cleared
@@ -409,7 +411,7 @@ var $keyboard = $.keyboard = function(el, options){
 		// adjust with window resize; don't check base.position
 		// here in case it is changed dynamically
 		if (o.reposition && $.ui && $.ui.position && o.appendTo == 'body') {
-			$(window).bind('resize.keyboard', function(){
+			$(window).bind('resize' + base.namespace, function(){
 				if (base.position && base.isVisible()) {
 					base.$keyboard.position(base.position);
 				}
@@ -421,8 +423,8 @@ var $keyboard = $.keyboard = function(el, options){
 	base.bindKeyboard = function(){
 		var evt, layout = $keyboard.builtLayouts[base.layout];
 		base.$preview
-			.unbind('keypress keyup keydown mouseup touchend '.split(' ').join('.keyboard '))
-			.bind('keypress.keyboard', function(e){
+			.unbind('keypress keyup keydown mouseup touchend '.split(' ').join(base.namespace + ' '))
+			.bind('keypress' + base.namespace, function(e){
 				if (o.lockInput) { return false; }
 				var c, k = base.last.key = String.fromCharCode(e.charCode || e.which);
 				base.$lastKey = []; // not a virtual keyboard key
@@ -446,7 +448,7 @@ var $keyboard = $.keyboard = function(el, options){
 						e.preventDefault();
 						// copy event object in case e.preventDefault() breaks when changing the type
 						evt = $.extend({}, e);
-						evt.type = 'restricted';
+						evt.type = $keyboard.events.inputRestricted;
 						base.$el.trigger( evt, [ base, base.el ] );
 						if ( $.isFunction(o.restricted) ) {
 							o.restricted( evt, base, base.el );
@@ -472,7 +474,7 @@ var $keyboard = $.keyboard = function(el, options){
 				base.checkMaxLength();
 
 			})
-			.bind('keyup.keyboard', function(e){
+			.bind('keyup' + base.namespace, function(e){
 				switch (e.which) {
 					// Insert tab key
 					case 9 :
@@ -515,7 +517,7 @@ var $keyboard = $.keyboard = function(el, options){
 					return false;
 				}
 			})
-			.bind('keydown.keyboard', function(e){
+			.bind('keydown' + base.namespace, function(e){
 				switch (e.which) {
 
 					case 8 :
@@ -554,7 +556,7 @@ var $keyboard = $.keyboard = function(el, options){
 						break;
 				}
 			})
-			.bind('mouseup.keyboard touchend.keyboard', function(){
+			.bind('mouseup touchend '.split(' ').join(base.namespace + ' '), function(){
 				if (base.checkCaret) {
 					var c = base.$preview.caret();
 					base.last.start = c.start;
@@ -563,30 +565,27 @@ var $keyboard = $.keyboard = function(el, options){
 			});
 
 		// prevent keyboard event bubbling
-		base.$keyboard.bind('mousedown.keyboard click.keyboard touchstart.keyboard', function(e){
+		base.$keyboard.bind('mousedown click touchstart '.split(' ').join(base.namespace + ' '), function(e){
 			e.stopPropagation();
 			if (!base.isCurrent()) {
 				base.reveal();
-				$(document).trigger('checkkeyboard.keyboard');
+				$(document).trigger('checkkeyboard' + base.namespace);
 			}
 		});
 
 		// If preventing paste, block context menu (right click)
 		if (o.preventPaste){
-			base.$preview.bind('contextmenu.keyboard', function(e){ e.preventDefault(); });
-			base.$el.bind('contextmenu.keyboard', function(e){ e.preventDefault(); });
+			base.$preview.bind('contextmenu' + base.namespace, function(e){ e.preventDefault(); });
+			base.$el.bind('contextmenu' + base.namespace, function(e){ e.preventDefault(); });
 		}
 
 	};
 
 	base.bindKeys = function(){
-		var kbcss = $keyboard.css,
-			allEvents = (o.keyBinding + ' ' + $keyboard.events.kbRepeater + ' mouseenter mouseleave touchstart mousewheel ' +
-				'mouseup click ').split(' ').join('.keyboard ') + ('mouseleave mousedown touchstart ' +
-				'touchend touchmove touchcancel ').split(' ').join('.kb ');
+		var kbcss = $keyboard.css;
 		base.$allKeys = base.$keyboard.find('button.' + kbcss.keyButton)
-			.unbind(allEvents)
-			.bind(o.keyBinding.split(' ').join('.keyboard ') + '.keyboard ' + $keyboard.events.kbRepeater, function(e){
+			.unbind(base.namespace + ' ' + base.namespace + 'kb')
+			.bind(o.keyBinding.split(' ').join(base.namespace + ' ') + base.namespace + ' ' + $keyboard.events.kbRepeater, function(e){
 				e.preventDefault();
 				// prevent errors when external triggers attempt to "type" - see issue #158
 				if (!base.$keyboard.is(":visible")){ return false; }
@@ -619,7 +618,7 @@ var $keyboard = $.keyboard = function(el, options){
 				// Start caret in IE when not focused (happens with each virtual keyboard button click
 				if (base.checkCaret) { base.$preview.caret( base.last ); }
 				if (action.match('meta')) { action = 'meta'; }
-				if ($keyboard.keyaction.hasOwnProperty(action) && $(this).hasClass(kbcss.keyAction)) {
+				if (action in $keyboard.keyaction && $.isFunction($keyboard.keyaction[action])) {
 					// stop processing if action returns false (close & cancel)
 					if ($keyboard.keyaction[action](base,this,e) === false) { return false; }
 				} else if (typeof action !== 'undefined') {
@@ -645,7 +644,7 @@ var $keyboard = $.keyboard = function(el, options){
 
 			})
 			// Change hover class and tooltip
-			.bind('mouseenter.keyboard mouseleave.keyboard touchstart.keyboard', function(e){
+			.bind('mouseenter mouseleave touchstart '.split(' ').join(base.namespace + ' '), function(e){
 				if (!base.isCurrent()) { return; }
 				var $this = $(this),
 					$keys = base.getLayers( $this ),
@@ -675,7 +674,7 @@ var $keyboard = $.keyboard = function(el, options){
 			})
 			// using "kb" namespace for mouse repeat functionality to keep it separate
 			// I need to trigger a "repeater.keyboard" to make it work
-			.bind('mouseup.keyboard mouseleave.kb touchend.kb touchmove.kb touchcancel.kb', function(e){
+			.bind('mouseup' + base.namespace + ' ' + 'mouseleave touchend touchmove touchcancel '.split(' ').join(base.namespace + 'kb '), function(e){
 				if (/(mouseleave|touchend|touchcancel)/i.test(e.type)) {
 					$(this).removeClass(o.css.buttonHover); // needed for touch devices
 				} else {
@@ -687,13 +686,13 @@ var $keyboard = $.keyboard = function(el, options){
 				return false;
 			})
 			// prevent form submits when keyboard is bound locally - issue #64
-			.bind('click.keyboard', function(){
+			.bind('click' + base.namespace, function(){
 				return false;
 			})
 			// no mouse repeat for action keys (shift, ctrl, alt, meta, etc)
 			.not('.' + kbcss.keyAction)
 			// Allow mousewheel to scroll through other keysets of the same (non-action) key
-			.bind('mousewheel.keyboard', function(e, delta){
+			.bind('mousewheel' + base.namespace, function(e, delta){
 				if (base.wheel) {
 					// deltaY used by newer versions of mousewheel plugin
 					delta = delta || e.deltaY;
@@ -719,7 +718,7 @@ var $keyboard = $.keyboard = function(el, options){
 			})
 			// mouse repeated action key exceptions
 			.add('.' + kbcss.keyPrefix + ('tab bksp space enter'.split(' ').join(',.' + kbcss.keyPrefix)), base.$keyboard)
-			.bind('mousedown.kb touchstart.kb', function(){
+			.bind('mousedown touchstart '.split(' ').join(base.namespace + 'kb '), function(){
 				if (o.repeatRate !== 0) {
 					var key = $(this);
 					base.mouseRepeat = [true, key]; // save the key, make sure we are repeating the right one (fast typers)
@@ -938,7 +937,7 @@ var $keyboard = $.keyboard = function(el, options){
 	base.checkValid = function(){
 		var kbcss = $keyboard.css,
 			valid = true;
-		if (o.validate && typeof o.validate === "function") {
+		if ($.isFunction(o.validate)) {
 			valid = o.validate(base, base.$preview.val(), false);
 		}
 		// toggle accept button classes; defined in the css
@@ -978,7 +977,7 @@ var $keyboard = $.keyboard = function(el, options){
 	// goToNext = true, then go to next input; if false go to prev
 	// isAccepted is from autoAccept option or true if user presses shift-enter
 	base.switchInput = function(goToNext, isAccepted){
-		if (typeof o.switchInput === "function") {
+		if ($.isFunction(o.switchInput)) {
 			o.switchInput(base, goToNext, isAccepted);
 		} else {
 			// base.$keyboard may be an empty array - see #275 (apod42)
@@ -1022,7 +1021,7 @@ var $keyboard = $.keyboard = function(el, options){
 				kbevents = $keyboard.events,
 				val = (accepted) ?  base.checkCombos() : base.originalContent;
 			// validate input if accepted
-			if (accepted && o.validate && typeof(o.validate) === "function" && !o.validate(base, val, true)) {
+			if (accepted && $.isFunction(o.validate) && !o.validate(base, val, true)) {
 				val = base.originalContent;
 				accepted = false;
 				if (o.cancelClose) { return; }
@@ -1045,7 +1044,7 @@ var $keyboard = $.keyboard = function(el, options){
 			if (o.openOn) {
 				// rebind input focus - delayed to fix IE issue #72
 				base.timer = setTimeout(function(){
-					base.$el.bind( o.openOn + '.keyboard', function(){ base.focusOn(); });
+					base.$el.bind( o.openOn + base.namespace, function(){ base.focusOn(); });
 					// remove focus from element (needed for IE since blur doesn't seem to work)
 					if ($(':focus')[0] === base.el) { base.$el.blur(); }
 				}, 500);
@@ -1392,16 +1391,15 @@ var $keyboard = $.keyboard = function(el, options){
 	};
 
 	base.destroy = function() {
-		$(document).unbind('mousedown.keyboard keyup.keyboard touchstart.keyboard');
+		$(document).unbind(base.namespace);
+		$(window).unbind(base.namespace);
 		if (base.$keyboard.length) { base.$keyboard.remove(); }
-		var kbcss = $keyboard.css,
-			unb = $.trim(o.openOn + ' accepted beforeClose canceled change contextmenu hidden ' +
-				'initialized keydown keypress keyup visible ').split(' ').join('.keyboard ');
+		var kbcss = $keyboard.css;
 		base.$el
 			.removeClass( [kbcss.input, kbcss.locked, kbcss.placeholder, kbcss.noKeyboard, kbcss.alwaysOpen, o.css.input].join(' ') )
 			.removeAttr('aria-haspopup')
 			.removeAttr('role')
-			.unbind( unb + '.keyboard')
+			.unbind(base.namespace)
 			.removeData('keyboard');
 	};
 
@@ -1439,19 +1437,20 @@ var $keyboard = $.keyboard = function(el, options){
 
 	$keyboard.events = {
 		// keyboard events
-		kbChange: 'change.keyboard',
+		kbChange: 'keyboardChange',
 		kbBeforeClose: 'beforeClose',
 		kbBeforeVisible: 'beforeVisible',
 		kbVisible: 'visible',
-		kbInit: 'initialized.keyboard',
-		kbInactive: 'inactive.keyboard',
-		kbHidden: 'hidden.keyboard',
-		kbRepeater: 'repeater.keyboard',
+		kbInit: 'initialized',
+		kbInactive: 'inactive',
+		kbHidden: 'hidden',
+		kbRepeater: 'repeater',
 		kbKeysetChange: 'keysetChange',
 		// input events
-		inputAccepted: 'accepted.keyboard',
-		inputCanceled: 'canceled.keyboard',
+		inputAccepted: 'accepted',
+		inputCanceled: 'canceled',
 		inputChange: 'change',
+		inputRestricted: 'restricted'
 	};
 
 	// Action key function list
