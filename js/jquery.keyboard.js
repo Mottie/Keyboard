@@ -491,7 +491,7 @@ var $keyboard = $.keyboard = function(el, options){
 
 					// Escape will hide the keyboard
 					case 27:
-						base.close();
+						base.close( o.autoAccept && o.autoAcceptOnEsc ? 'true' : false );
 						return false;
 				}
 
@@ -1072,7 +1072,7 @@ var $keyboard = $.keyboard = function(el, options){
 
 	base.escClose = function(e){
 		if ( e && e.type === 'keyup' ) {
-			return ( e.which === 27 )  ? base.close() : '';
+			return ( e.which === 27 ) ? base.close( o.autoAccept && o.autoAcceptOnEsc ? 'true' : false ) : '';
 		}
 		// keep keyboard open if alwaysOpen or stayOpen is true - fixes mutliple always open keyboards or
 		// single stay open keyboard
@@ -1798,7 +1798,9 @@ var $keyboard = $.keyboard = function(el, options){
 
 		// *** Useability ***
 		// Auto-accept content when clicking outside the keyboard (popup will close)
-		autoAccept   : false,
+		autoAccept      : false,
+		// Auto-accept content even if the user presses escape (only works if `autoAccept` is `true`)
+		autoAcceptOnEsc : false,
 
 		// Prevents direct input in the preview window when true
 		lockInput    : false,
@@ -1843,7 +1845,7 @@ var $keyboard = $.keyboard = function(el, options){
 		// Prevent pasting content into the area
 		preventPaste : false,
 
-		// caret places at the end of any text
+		// caret placed at the end of any text when keyboard becomes visible
 		caretToEnd   : false,
 
 		// Set the max number of characters allowed in the input, setting it to false disables this option
