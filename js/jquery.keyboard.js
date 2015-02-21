@@ -1520,7 +1520,7 @@ var $keyboard = $.keyboard = function(el, options){
 			}
 		},
 		meta : function(base,el){
-			base.metaActive = !$(el).hasClass($keyboard.css.keyHasActive);
+			base.metaActive = !$(el).hasClass(base.options.css.buttonActive);
 			base.showKeySet(el);
 		},
 		next : function(base) {
