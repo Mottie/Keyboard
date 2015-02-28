@@ -28,7 +28,8 @@
     "keyboard",
     "ui",
     "accessibility",
-    "osk"
+    "osk",
+    "jquery-plugin"
   ],
   "homepage": "http://wowmotty.blogspot.com/2010/11/jquery-ui-keyboard-widget.html",
   "demo": "http://mottie.github.com/Keyboard/",
