@@ -83,7 +83,8 @@ $.fn.addAutocomplete = function(){
 							.val( v )
 							.focus();
 						// see issue #95 - thanks banku!
-						base.lastCaret = { start: v.length, end: v.length };
+						base.last.start = v.length;
+						base.last.end = v.length;
 					}
 				});
 		};
@@ -99,13 +100,14 @@ $.fn.addAutocomplete = function(){
 					// send keys to the autocomplete widget (arrow, pageup/down, etc)
 					base.$el.val( base.$preview.val() ).triggerHandler(e);
 				});
-				base.$allKeys.bind('mouseup mousedown mouseleave touchstart touchend touchcancel '.split(' ').join(base.autocomplete_namespace + ' '),function(){
+				base.$allKeys.bind('mouseup mousedown mouseleave touchstart touchend touchcancel '.split(' ').join(base.autocomplete_namespace + ' '),function(event){
 					clearTimeout( base.$autocomplete.searching );
+					var evt = event;
 					base.$autocomplete.searching = setTimeout(function() {
 						// only search if the value has changed
 						if ( base.$autocomplete.term !== base.$autocomplete.element.val() ) {
 							base.$autocomplete.selectedItem = null;
-							base.$autocomplete.search( null, event );
+							base.$autocomplete.search( null, evt );
 						}
 					}, base.$autocomplete.options.delay );
 
