@@ -1,5 +1,5 @@
-/*! jQuery UI Virtual Keyboard Autocomplete v1.7 *//*
- * for Keyboard v1.18+ only (2/15/2015)
+/*! jQuery UI Virtual Keyboard Autocomplete v1.8 *//*
+ * for Keyboard v1.18+ only (2/28/2015)
  *
  * By Rob Garrison (aka Mottie & Fudgey)
  * Licensed under the MIT License

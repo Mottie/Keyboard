@@ -88,6 +88,14 @@ Wiki: [Home](https://github.com/Mottie/Keyboard/wiki/Home) | [FAQ](https://githu
 
 Only the latest changes will be shown below, see the wiki log to view older versions.
 
+### Version 1.21.1 (2/28/2015)
+
+* Add toggle action key
+  * Allows enabling or disabling all keyboard keys & preview input.
+  * Button uses base64 encoded svgs for its icon (included in the css/images directory).
+  * Fulfills [issue #281](https://github.com/Mottie/Keyboard/issues/281).
+* Autocomplete: Fix event error & caret repositioning issue.
+
 ### Version 1.21.0 (2/21/2015)
 
 * Removed namespacing requirements from all event bindings **POSSIBLE BREAKING CHANGE**
@@ -138,8 +146,3 @@ Only the latest changes will be shown below, see the wiki log to view older vers
 * Preview Keyset
   * Add new preview keyset extension.
   * Choose which keysets to preview & use pure css to display it.
-
-### Version 1.19.3 (1/3/2015)
-
-* Core: correct problem with typed characters (introduced in 1.19.2). Fixes [issue #324](https://github.com/Mottie/Keyboard/issues/324).
-* Typing extension: Fix issue with callback being called repeatedly.
