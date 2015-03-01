@@ -14,7 +14,7 @@
 .ui-keyboard-input-current { -moz-box-shadow: 1px 1px 10px #00f; -webkit-box-shadow: 1px 1px 10px #00f; box-shadow: 1px 1px 10px #00f; }
 .ui-keyboard-placeholder { color: #888; }
 .ui-keyboard-nokeyboard { color: #888; border-color: #888; } /* disabled or readonly inputs, or use input[disabled='disabled'] { color: #f00; } */
-.ui-keyboard-spacer { display: inline-block; width: 1px; height: 0; }
+.ui-keyboard-spacer { display: inline-block; width: 1px; height: 0; cursor: default; }
 .ui-keyboard-input.light, .ui-keyboard-preview.light { color: #222; background: #ddd; }
 .ui-keyboard-input.dark, .ui-keyboard-preview.dark { color: #ddd; background: #222; }
 
@@ -43,6 +43,37 @@ div.ui-body.ui-keyboard button.ui-keyboard-button.ui-btn { padding: 0.5em 1em; b
 
 /* override Bootstrap excessive button padding */
 button.ui-keyboard-button.btn { padding: 1px 6px; }
+
+/* enable/disable icons */
+button.ui-keyboard-toggle span {
+	width: 1em;
+	height: 1em;
+	display: inline-block;
+	text-indent: -999em;
+	background-repeat: no-repeat;
+	background-position: center center;
+}
+/* unlocked icon (enabled) */
+button.ui-keyboard-toggle span {
+	/* fill: #eee */
+	background-image: url(data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxMCIgaGVpZ2h0PSIxMCIgZmlsbD0iI2VlZSI+PHBhdGggZD0iTTguNyw0LjRINy41SDUuMHYtMS45YzAtMS40LTEuMS0yLjUtMi41LTIuNWMtMS40LDAtMi41LDEuMS0yLjUsMi41djEuOWgxLjIgdi0xLjljMC0wLjcsMC42LTEuMiwxLjItMS4yczEuMiwwLjYsMS4yLDEuMnYxLjljLTAuNywwLTEuMiwwLjYtMS4yLDEuMlY4LjggYzAsMC43LDAuNiwxLjIsMS4yLDEuMmg1LjBDOS40LDEwLDEwLDkuNCwxMCw4LjhWNS42QzEwLDUuMCw5LjQsNC40LDguOCw0LjR6IE02LjYsNy40djEuMCBjMCwwLjItMC4xLDAuMy0wLjMsMC4zUzYuMCw4LjYsNi4wLDguNFY3LjRjLTAuMi0wLjEtMC4zLTAuMy0wLjMtMC41YzAtMC4zLDAuMy0wLjYsMC42LTAuNiBTNi45LDYuNiw2LjksNi45QzYuOSw3LjEsNi44LDcuMyw2LjYsNy40eiIvPjwvc3ZnPg==);
+	/* fill: #111 */
+	/*
+	background-image: url(data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxMCIgaGVpZ2h0PSIxMCIgZmlsbD0iIzExMSI+PHBhdGggZD0iTTguNyw0LjRINy41SDUuMHYtMS45YzAtMS40LTEuMS0yLjUtMi41LTIuNWMtMS40LDAtMi41LDEuMS0yLjUsMi41djEuOWgxLjIgdi0xLjljMC0wLjcsMC42LTEuMiwxLjItMS4yczEuMiwwLjYsMS4yLDEuMnYxLjljLTAuNywwLTEuMiwwLjYtMS4yLDEuMlY4LjggYzAsMC43LDAuNiwxLjIsMS4yLDEuMmg1LjBDOS40LDEwLDEwLDkuNCwxMCw4LjhWNS42QzEwLDUuMCw5LjQsNC40LDguOCw0LjR6IE02LjYsNy40djEuMCBjMCwwLjItMC4xLDAuMy0wLjMsMC4zUzYuMCw4LjYsNi4wLDguNFY3LjRjLTAuMi0wLjEtMC4zLTAuMy0wLjMtMC41YzAtMC4zLDAuMy0wLjYsMC42LTAuNiBTNi45LDYuNiw2LjksNi45QzYuOSw3LjEsNi44LDcuMyw2LjYsNy40eiIvPjwvc3ZnPg==);
+	*/
+}
+/* locked icon (disabled) */
+button.ui-keyboard-toggle.ui-keyboard-disabled span {
+	/* fill: #eee */
+	background-image: url(data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxMCIgaGVpZ2h0PSIxMCIgZmlsbD0iI2VlZSI+PHBhdGggZD0iTTcuNCA0LjRWMi41YzAtMS40LTEuMS0yLjUtMi41LTIuNWMtMS40IDAtMi41IDEuMS0yLjUgMi41djEuOSBjLTAuNyAwLTEuMiAwLjUtMS4yIDEuMnYzLjFDMS4zIDkuNCAxLjggMTAgMi41IDEwaDQuOWMwLjcgMCAxLjItMC42IDEuMi0xLjJWNS42IEM4LjcgNC45IDguMSA0LjQgNy40IDQuNHogTTUuMyA3LjR2MS4wYzAgMC4yLTAuMSAwLjMtMC4zIDAuM2MtMC4yIDAtMC4zLTAuMS0wLjMtMC4zVjcuNCBjLTAuMi0wLjEtMC4zLTAuMy0wLjMtMC41YzAtMC4zIDAuMy0wLjYgMC42LTAuNmMwLjMgMCAwLjYgMC4zIDAuNiAwLjYgQzUuNiA3LjEgNS41IDcuMyA1LjMgNy40eiBNNi4yIDQuNEgzLjdWMi41YzAtMC43IDAuNS0xLjIgMS4yLTEuMmMwLjcgMCAxLjIgMC42IDEuMiAxLjIgVjQuNHoiLz48L3N2Zz4=);
+	/* fill: #111 */
+	/*
+	background-image: url(data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxMCIgaGVpZ2h0PSIxMCIgZmlsbD0iIzExMSI+PHBhdGggZD0iTTcuNCA0LjRWMi41YzAtMS40LTEuMS0yLjUtMi41LTIuNWMtMS40IDAtMi41IDEuMS0yLjUgMi41djEuOSBjLTAuNyAwLTEuMiAwLjUtMS4yIDEuMnYzLjFDMS4zIDkuNCAxLjggMTAgMi41IDEwaDQuOWMwLjcgMCAxLjItMC42IDEuMi0xLjJWNS42IEM4LjcgNC45IDguMSA0LjQgNy40IDQuNHogTTUuMyA3LjR2MS4wYzAgMC4yLTAuMSAwLjMtMC4zIDAuM2MtMC4yIDAtMC4zLTAuMS0wLjMtMC4zVjcuNCBjLTAuMi0wLjEtMC4zLTAuMy0wLjMtMC41YzAtMC4zIDAuMy0wLjYgMC42LTAuNmMwLjMgMCAwLjYgMC4zIDAuNiAwLjYgQzUuNiA3LjEgNS41IDcuMyA1LjMgNy40eiBNNi4yIDQuNEgzLjdWMi41YzAtMC43IDAuNS0xLjIgMS4yLTEuMmMwLjcgMCAxLjIgMC42IDEuMiAxLjIgVjQuNHoiLz48L3N2Zz4=);
+	*/
+}
+.ui-keyboard.ui-keyboard-disabled button:not(.ui-keyboard-toggle), .ui-keyboard.ui-keyboard-disabled input {
+	opacity: 0.5;
+}
 
 /* Media Queries (optimized for jQuery UI themes; may be slightly off in jQuery Mobile themes) */
 /* 240 x 320 (small phone)  */

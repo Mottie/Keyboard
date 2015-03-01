@@ -445,6 +445,7 @@ meta
 		<small>
 			* Use shift key - see action key sizes.<br>
 			* Use the decimal - only one allowed.<br>
+			* Toggle combo key included.<br>
 			* Type in 'ae' and other combo keys.<br>
 			* Accept content to see the callback.
 		</small>
@@ -661,6 +662,44 @@ $('#hidden')
 });</pre>
 		</div>
 	</div>
+
+	<div class="block">
+		<h2>
+			<span class="tooltip-tipsy" title="Click, then scroll down to see this code">Custom: Lockable</span>
+		</h2>
+		<input id="lockable" type="text">
+		<br>
+		<small>
+			* cursor arrow keys.<br>
+			* keyboard enable/disable toggle.
+		</small>
+		<div class="code ui-corner-all">
+			<h4>HTML</h4>
+			<pre class="prettyprint lang-html">&lt;input id="lockable" type="text"&gt;</pre>
+			<h4>Script</h4>
+			<pre class="prettyprint lang-js">$('#lockable').keyboard({
+	layout: 'custom',
+	customLayout: {
+		'normal': [
+			'` 1 2 3 4 5 6 7 8 9 0 - = {bksp}',
+			'{tab} q w e r t y u i o p [ ] \\',
+			'a s d f g h j k l ; \' {enter}',
+			'{shift} z x c v b n m , . / {shift}',
+			'{accept} {space} {left} {right} {sp:.2} {toggle}'
+		],
+		'shift': [
+			'~ ! @ # $ % ^ & * ( ) _ + {bksp}',
+			'{tab} Q W E R T Y U I O P { } |',
+			'A S D F G H J K L : " {enter}',
+			'{shift} Z X C V B N M < > ? {shift}',
+			'{accept} {space} {left} {right} {sp:.2} {toggle}'
+		]
+	}
+})
+.addTyping();</pre>
+		</div>
+	</div>
+
 
 	<div id="showcode"></div>
 

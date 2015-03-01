@@ -68,6 +68,8 @@ var $keyboard = $.keyboard = function(el, options){
 		// delete keys
 		base.alwaysAllowed = [20,33,34,35,36,37,38,39,40,45,46];
 		base.$keyboard = [];
+		// keyboard enabled
+		base.enabled = true;
 		// make a copy of the original keyboard position
 		if (!$.isEmptyObject(o.position)) {
 			o.position.orig_at = o.position.at;
@@ -132,6 +134,25 @@ var $keyboard = $.keyboard = function(el, options){
 			base.reveal();
 		}
 
+	};
+
+	base.toggle = function(){
+		var $toggle = base.$keyboard.find( '.' + $keyboard.css.keyToggle ),
+			locked = !base.enabled;
+		// prevent physical keyboard from working
+		base.$preview.prop( 'readonly', locked );
+		// disable all buttons
+		base.$keyboard
+			.toggleClass( $keyboard.css.keyDisabled, locked )
+			.find( '.' + $keyboard.css.keyButton )
+			.not( $toggle )
+			.prop( 'disabled', locked )
+			.attr( 'aria-disabled', locked );
+		$toggle.toggleClass( $keyboard.css.keyDisabled, locked );
+		// stop auto typing
+		if ( locked && base.typing_options ) {
+			base.typing_options.text = '';
+		}
 	};
 
 	base.setCurrent = function(){
@@ -250,6 +271,8 @@ var $keyboard = $.keyboard = function(el, options){
 		base.$el.trigger( $keyboard.events.kbBeforeVisible, [ base, base.el ] );
 
 		base.setCurrent();
+		// update keyboard - enabled or disabled?
+		base.toggle();
 
 		// show keyboard
 		base.$keyboard.show();
@@ -590,7 +613,8 @@ var $keyboard = $.keyboard = function(el, options){
 				// prevent errors when external triggers attempt to "type" - see issue #158
 				if (!base.$keyboard.is(":visible")){ return false; }
 				// 'key', { action: doAction, original: n, curtxt : n, curnum: 0 }
-				var indx, action, $key,
+				var action, $key,
+					indx = 0,
 					key = this,
 					$this = $(key),
 					// get keys from other layers/keysets (shift, alt, meta, etc) that line up by data-position
@@ -970,7 +994,7 @@ var $keyboard = $.keyboard = function(el, options){
 		var kbcss = $keyboard.css,
 			key = $el.attr('data-pos'),
 			$keys = $el.closest('.' + kbcss.keyboard).find('button[data-pos="' + key + '"]');
-		return $keys.filter(function(){ return $(this).find('.' + kbcss.keyText).text() !== ''; });
+		return $keys.filter(function(){ return $(this).find('.' + kbcss.keyText).text() !== ''; }).add($el);
 	};
 
 	// Go to next or prev inputs
@@ -1256,7 +1280,7 @@ var $keyboard = $.keyboard = function(el, options){
 									// now Firefox doesn't seem to render 0px dimensions, so now we set the
 									// 1em margin x 2 for the width
 									.width( (action.match(/px/i) ? margin + 'px' : (margin * 2) + 'em') )
-									.addClass( kbcss.keyButton + ' ' + kbcss.keySpacer )
+									.addClass( kbcss.keySpacer )
 									.appendTo(newSet);
 							}
 
@@ -1365,7 +1389,9 @@ var $keyboard = $.keyboard = function(el, options){
 								default:
 									if ($keyboard.keyaction.hasOwnProperty(txt[0])){
 										// acceptedKeys.push(action);
-										base.addKey(txt[0], action).toggleClass( o.css.buttonAction + ' ' + kbcss.keyAction, isAction );
+										base
+											.addKey(txt[0], action)
+											.toggleClass( o.css.buttonAction + ' ' + kbcss.keyAction, isAction );
 									}
 
 							}
@@ -1421,6 +1447,8 @@ var $keyboard = $.keyboard = function(el, options){
 		keyHasActive: 'ui-keyboard-hasactivestate',
 		keyAction: 'ui-keyboard-actionkey',
 		keySpacer: 'ui-keyboard-spacer', // empty keys
+		keyToggle: 'ui-keyboard-toggle',
+		keyDisabled: 'ui-keyboard-disabled',
 		// states
 		locked: 'ui-keyboard-lockedinput',
 		alwaysOpen: 'ui-keyboard-always-open',
@@ -1562,6 +1590,10 @@ var $keyboard = $.keyboard = function(el, options){
 				}
 			}
 			base.insertText('\t');
+		},
+		toggle : function(base){
+			base.enabled = !base.enabled;
+			base.toggle();
 		}
 	};
 
@@ -1714,7 +1746,9 @@ var $keyboard = $.keyboard = function(el, options){
 				// right arrow to bar (used since this virtual keyboard works with one directional tabs)
 				't'      : '\u21e5:Tab',
 				// \u21b9 is the true tab symbol (left & right arrows)
-				'tab'    : '\u21e5 Tab:Tab'
+				'tab'    : '\u21e5 Tab:Tab',
+				// replaced by an image
+				'toggle' : ' '
 			},
 
 			// Message added to the key title while hovering, if the mousewheel plugin exists
