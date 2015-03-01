@@ -38,7 +38,7 @@ var $keyboard = $.keyboard = function(el, options){
 	base.el = el;
 
 	// Add a reverse reference to the DOM object
-	base.$el.data("keyboard", base);
+	base.$el.data('keyboard', base);
 
 	base.init = function(){
 		var kbcss = $keyboard.css;
@@ -178,7 +178,7 @@ var $keyboard = $.keyboard = function(el, options){
 	};
 
 	base.isVisible = function() {
-		return base.$keyboard && base.$keyboard.length ? base.$keyboard.is(":visible") : false;
+		return base.$keyboard && base.$keyboard.length ? base.$keyboard.is(':visible') : false;
 	};
 
 	base.focusOn = function(){
@@ -208,7 +208,7 @@ var $keyboard = $.keyboard = function(el, options){
 	base.reveal = function(refresh){
 		var kbcss = $keyboard.css;
 		base.opening = true;
-		// remove all "extra" keyboards
+		// remove all 'extra' keyboards
 		$('.' + kbcss.keyboard).not('.' + kbcss.alwaysOpen).remove();
 
 		// update keyboard after a layout change
@@ -261,7 +261,7 @@ var $keyboard = $.keyboard = function(el, options){
 
 		// appendLocally && appendTo will now assume the keyboard will be displayed in
 		// its static position; the developer can now position it as desired using the
-		// ".ui-keyboard" class name.
+		// '.ui-keyboard' class name.
 		if (!o.appendLocally && o.appendTo === 'body') {
 			// basic positioning before it is set by position utility
 			base.$keyboard.css({ position: 'absolute', left: 0, top: 0 });
@@ -337,7 +337,7 @@ var $keyboard = $.keyboard = function(el, options){
 	};
 
 	base.updateLanguage = function(){
-		// change language if layout is named something like "french-azerty-1"
+		// change language if layout is named something like 'french-azerty-1'
 		var layouts =  $keyboard.layouts,
 			lang = o.language || layouts[ o.layout ] && layouts[ o.layout ].lang && layouts[ o.layout ].lang || [ o.language || 'en' ],
 			kblang = $keyboard.language;
@@ -357,7 +357,7 @@ var $keyboard = $.keyboard = function(el, options){
 
 		// save default regex (in case loading another layout changes it)
 		base.regex = kblang[ lang ] && kblang[ lang ].comboRegex || $keyboard.comboRegex;
-		// determine if US "." or European "," system being used
+		// determine if US '.' or European ',' system being used
 		base.decimal = /^\./.test(o.display.dec);
 		base.$el
 			.toggleClass('rtl', o.rtl)
@@ -371,8 +371,8 @@ var $keyboard = $.keyboard = function(el, options){
 
 		if ( !(base.$keyboard && base.$keyboard.length) ) {
 			// custom layout - create a unique layout name based on the hash
-			if (o.layout === "custom") { o.layoutHash = 'custom' + base.customHash(); }
-			base.layout = o.layout === "custom" ? o.layoutHash : o.layout;
+			if (o.layout === 'custom') { o.layoutHash = 'custom' + base.customHash(); }
+			base.layout = o.layout === 'custom' ? o.layoutHash : o.layout;
 
 			base.updateLanguage();
 
@@ -420,7 +420,7 @@ var $keyboard = $.keyboard = function(el, options){
 		base.preview = base.$preview[0];
 		base.$decBtn = base.$keyboard.find('.' + kbcss.keyPrefix + 'dec');
 		// add enter to allowed keys; fixes #190
-		if (o.enterNavigation || base.el.tagName === "TEXTAREA") { base.alwaysAllowed.push(13); }
+		if (o.enterNavigation || base.el.tagName === 'TEXTAREA') { base.alwaysAllowed.push(13); }
 		if (o.lockInput) {
 			base.$preview.addClass(kbcss.locked).attr({ 'readonly': 'readonly'});
 		}
@@ -484,8 +484,8 @@ var $keyboard = $.keyboard = function(el, options){
 					return;
 				}
 				// Mapped Keys - allows typing on a regular keyboard and the mapped key is entered
-				// Set up a key in the layout as follows: "m(a):label"; m = key to map, (a) = actual keyboard key
-				// to map to (optional), ":label" = title/tooltip (optional)
+				// Set up a key in the layout as follows: 'm(a):label'; m = key to map, (a) = actual keyboard key
+				// to map to (optional), ':label' = title/tooltip (optional)
 				// example: \u0391 or \u0391(A) or \u0391:alpha or \u0391(A):alpha
 				if (layout.hasMappedKeys) {
 					if (layout.mappedKeys.hasOwnProperty(k)){
@@ -610,8 +610,8 @@ var $keyboard = $.keyboard = function(el, options){
 			.unbind(base.namespace + ' ' + base.namespace + 'kb')
 			.bind(o.keyBinding.split(' ').join(base.namespace + ' ') + base.namespace + ' ' + $keyboard.events.kbRepeater, function(e){
 				e.preventDefault();
-				// prevent errors when external triggers attempt to "type" - see issue #158
-				if (!base.$keyboard.is(":visible")){ return false; }
+				// prevent errors when external triggers attempt to 'type' - see issue #158
+				if (!base.$keyboard.is(':visible')){ return false; }
 				// 'key', { action: doAction, original: n, curtxt : n, curnum: 0 }
 				var action, $key,
 					indx = 0,
@@ -696,8 +696,8 @@ var $keyboard = $.keyboard = function(el, options){
 						.find('.' + kbcss.keyText).html( $this.data('original') ); // restore original button text
 				}
 			})
-			// using "kb" namespace for mouse repeat functionality to keep it separate
-			// I need to trigger a "repeater.keyboard" to make it work
+			// using 'kb' namespace for mouse repeat functionality to keep it separate
+			// I need to trigger a 'repeater.keyboard' to make it work
 			.bind('mouseup' + base.namespace + ' ' + 'mouseleave touchend touchmove touchcancel '.split(' ').join(base.namespace + 'kb '), function(e){
 				if (/(mouseleave|touchend|touchcancel)/i.test(e.type)) {
 					$(this).removeClass(o.css.buttonHover); // needed for touch devices
@@ -836,7 +836,7 @@ var $keyboard = $.keyboard = function(el, options){
 		if (!base.shiftActive) { base.capsLock = false; }
 		// check meta key set
 		if (base.metaActive) {
-			// the name attribute contains the meta set # "meta99"
+			// the name attribute contains the meta set # 'meta99'
 			key = (el && el.name && /meta/i.test(el.name)) ? el.name : '';
 			// save active meta keyset name
 			if (key === '') {
@@ -929,7 +929,7 @@ var $keyboard = $.keyboard = function(el, options){
 				if (val.indexOf(t2) >= 0) {
 					// escape out all special characters
 					if (/[\[|\]|\\|\^|\$|\.|\||\?|\*|\+|\(|\)|\{|\}]/g.test(t2)) { t2 = '\\' + t2; }
-					t = t.replace( (new RegExp(t2, "g")), '');
+					t = t.replace( (new RegExp(t2, 'g')), '');
 				}
 			}
 			// what's left over are keys that aren't in the acceptedKeys array
@@ -973,7 +973,7 @@ var $keyboard = $.keyboard = function(el, options){
 
 	// Decimal button for num pad - only allow one (not used by default)
 	base.checkDecimal = function(){
-		// Check US "." or European "," format
+		// Check US '.' or European ',' format
 		if ( ( base.decimal && /\./g.test(base.preview.value) ) ||
 			( !base.decimal && /\,/g.test(base.preview.value) ) ) {
 			base.$decBtn
@@ -1057,7 +1057,7 @@ var $keyboard = $.keyboard = function(el, options){
 
 			base.$el
 				.removeClass(kbcss.isCurrent + ' ' + kbcss.inputAutoAccepted)
-				// add "ui-keyboard-autoaccepted" to inputs - see issue #66
+				// add 'ui-keyboard-autoaccepted' to inputs - see issue #66
 				.addClass( (accepted || false) ? accepted === true ? '' : kbcss.inputAutoAccepted : '' )
 				.trigger( (o.alwaysOpen) ? '' : kbevents.kbBeforeClose, [ base, base.el, (accepted || false) ] )
 				.val( val )
@@ -1107,7 +1107,7 @@ var $keyboard = $.keyboard = function(el, options){
 			if ( $keyboard.allie ) {
 				e.preventDefault();
 			}
-			// send "true" instead of a true (boolean), the input won't get a "ui-keyboard-autoaccepted"
+			// send 'true' instead of a true (boolean), the input won't get a 'ui-keyboard-autoaccepted'
 			// class name - see issue #66
 			base.close( o.autoAccept ? 'true' : false );
 		}
@@ -1130,28 +1130,28 @@ var $keyboard = $.keyboard = function(el, options){
 			len = txt.length - 1,
 			n = (regKey === true) ? keyName : o.display[txt[0]] || keyName,
 			kn = (regKey === true) ? keyName.charCodeAt(0) : keyName;
-		// map defined keys - format "key(A):Label_for_key"
-		// "key" = key that is seen (can any character; but it might need to be escaped using "\"
-		//  or entered as unicode "\u####"
-		// "(A)" = the actual key on the real keyboard to remap, ":Label_for_key" ends up in the title/tooltip
-		if (/\(.+\)/.test(n)) { // n = "\u0391(A):alpha"
-			map = n.replace(/\(([^()]+)\)/, ''); // remove "(A)", left with "\u0391:alpha"
-			m = n.match(/\(([^()]+)\)/)[1]; // extract "A" from "(A)"
+		// map defined keys - format 'key(A):Label_for_key'
+		// 'key' = key that is seen (can any character; but it might need to be escaped using '\'
+		//  or entered as unicode '\u####'
+		// '(A)' = the actual key on the real keyboard to remap, ':Label_for_key' ends up in the title/tooltip
+		if (/\(.+\)/.test(n)) { // n = '\u0391(A):alpha'
+			map = n.replace(/\(([^()]+)\)/, ''); // remove '(A)', left with '\u0391:alpha'
+			m = n.match(/\(([^()]+)\)/)[1]; // extract 'A' from '(A)'
 			n = map;
 			nm = map.split(':');
-			map = (nm[0] !== '' && nm.length > 1) ? nm[0] : map; // get "\u0391" from "\u0391:alpha"
+			map = (nm[0] !== '' && nm.length > 1) ? nm[0] : map; // get '\u0391' from '\u0391:alpha'
 			$keyboard.builtLayouts[base.layout].mappedKeys[m] = map;
 		}
 
 		// find key label
 		nm = n.split(':');
-		// corner case of ":(:):;" reduced to "::;", split as ["", "", ";"]
+		// corner case of ':(:):;' reduced to '::;', split as ['', '', ';']
 		if (nm[0] === '' && nm[1] === '') { n = ':'; }
 		n = (nm[0] !== '' && nm.length > 1) ? nm[0] : n;
 		// allow alt naming of action keys
 		n = $.trim( regKey ? n : txt[1] || n );
 		// added to title
-		t = (nm.length > 1) ? $.trim(nm[1]).replace(/_/g, " ") || '' : len > 0 ? txt[len] || '' : '';
+		t = (nm.length > 1) ? $.trim(nm[1]).replace(/_/g, ' ') || '' : len > 0 ? txt[len] || '' : '';
 
 		// Action keys will have the 'ui-keyboard-actionkey' class
 		// '\u2190'.length = 1 because the unicode is converted, so if more than one character,
@@ -1170,10 +1170,10 @@ var $keyboard = $.keyboard = function(el, options){
 				'data-curtxt' : n,
 				'data-curnum' : 0
 			})
-			// add "ui-keyboard-" + keyName, if this is an action key
-			//  (e.g. "Bksp" will have 'ui-keyboard-bskp' class)
-			// add "ui-keyboard-" + unicode of 1st character
-			//  (e.g. "~" is a regular key, class = 'ui-keyboard-126'
+			// add 'ui-keyboard-' + keyName, if this is an action key
+			//  (e.g. 'Bksp' will have 'ui-keyboard-bskp' class)
+			// add 'ui-keyboard-' + unicode of 1st character
+			//  (e.g. '~' is a regular key, class = 'ui-keyboard-126'
 			//  (126 is the unicode value - same as typing &#126;)
 			.addClass( (kn === '' ? '' : kbcss.keyPrefix + kn + keyType + ' ') + o.css.buttonDefault)
 			.html('<span class="' + kbcss.keyText + '">' + n + '</span>')
@@ -1205,7 +1205,7 @@ var $keyboard = $.keyboard = function(el, options){
 		return hash;
 	};
 
-	base.buildKeyboard = function(){
+	base.buildKeyboard = function() {
 		// o.display is empty when this is called from the scramble extension (when alwaysOpen:true)
 		if ( $.isEmptyObject(o.display) ) {
 			// set keyboard language
@@ -1232,10 +1232,10 @@ var $keyboard = $.keyboard = function(el, options){
 		}
 
 		// Main keyboard building loop
-		$.each($keyboard.layouts[o.layout], function(set, keySet){
+		$.each($keyboard.layouts[o.layout], function(set, keySet) {
 			var txt;
 			// skip layout name & lang settings
-			if (set !== "" && !/^(name|lang|rtl)$/i.test(set)) {
+			if (set !== '' && !/^(name|lang|rtl)$/i.test(set)) {
 				// keep backwards compatibility for change from default to normal naming
 				if (set === 'default') { set = 'normal'; }
 				sets++;
@@ -1245,7 +1245,7 @@ var $keyboard = $.keyboard = function(el, options){
 					.appendTo(container)
 					.toggle( set === 'normal' );
 
-				for ( row = 0; row < keySet.length; row++ ){
+				for ( row = 0; row < keySet.length; row++ ) {
 
 					// remove extra spaces before spliting (regex probably could be improved)
 					currentSet = $.trim(keySet[row]).replace(/\{(\.?)[\s+]?:[\s+]?(\.?)\}/g,'{$1:$2}');
@@ -1260,11 +1260,11 @@ var $keyboard = $.keyboard = function(el, options){
 						if (keys[key].length === 0) { continue; }
 
 						// process here if it's an action key
-						if( /^\{\S+\}$/.test(keys[key])){
+						if (/^\{\S+\}$/.test(keys[key])) {
 							action = keys[key].match(/^\{(\S+)\}$/)[1];
 							// add active class if there are double exclamation points in the name
 							if (/\!\!/.test(action)) {
-								action = action.replace('!!','');
+								action = action.replace('!!', '');
 								isAction = true;
 							}
 
@@ -1272,7 +1272,7 @@ var $keyboard = $.keyboard = function(el, options){
 							if (/^sp:((\d+)?([\.|,]\d+)?)(em|px)?$/i.test(action)) {
 								// not perfect globalization, but allows you to use {sp:1,1em}, {sp:1.2em} or {sp:15px}
 								margin = parseFloat( action
-									.replace(/,/,'.')
+									.replace(/,/, '.')
 									.match(/^sp:((\d+)?([\.|,]\d+)?)(em|px)?$/i)[1] || 0
 								);
 								$('<span class="' + kbcss.keyText + '">&nbsp;</span>')
@@ -1298,7 +1298,7 @@ var $keyboard = $.keyboard = function(el, options){
 							}
 
 							// meta keys
-							if (/^meta\d+\:?(\w+)?/i.test(action)){
+							if (/^meta\d+\:?(\w+)?/i.test(action)) {
 								base
 									.addKey(action.split(':')[0], action)
 									.addClass( kbcss.keyHasActive );
@@ -1308,7 +1308,7 @@ var $keyboard = $.keyboard = function(el, options){
 							// switch needed for action keys with multiple names/shortcuts or
 							// default will catch all others
 							txt = action.split(':');
-							switch(txt[0].toLowerCase()){
+							switch(txt[0].toLowerCase()) {
 
 								case 'a':
 								case 'accept':
@@ -1492,7 +1492,7 @@ var $keyboard = $.keyboard = function(el, options){
 			base.showKeySet(el);
 		},
 		bksp : function(base){
-			base.insertText('bksp'); // the script looks for the "bksp" string and initiates a backspace
+			base.insertText('bksp'); // the script looks for the 'bksp' string and initiates a backspace
 		},
 		cancel : function(base){
 			base.close();
@@ -1511,7 +1511,7 @@ var $keyboard = $.keyboard = function(el, options){
 		dec : function(base){
 			base.insertText((base.decimal) ? '.' : ',');
 		},
-		"default" : function(base,el){
+		'default' : function(base,el){
 			base.shiftActive = base.altActive = base.metaActive = false;
 			base.showKeySet(el);
 		},
@@ -1757,20 +1757,20 @@ var $keyboard = $.keyboard = function(el, options){
 			comboRegex : /([`\'~\^\"ao])([a-z])/mig,
 			combos    : {
 				// grave
-				'`' : { a:"\u00e0", A:"\u00c0", e:"\u00e8", E:"\u00c8", i:"\u00ec", I:"\u00cc", o:"\u00f2", O:"\u00d2",
-						u:"\u00f9", U:"\u00d9", y:"\u1ef3", Y:"\u1ef2" },
+				'`' : { a:'\u00e0', A:'\u00c0', e:'\u00e8', E:'\u00c8', i:'\u00ec', I:'\u00cc', o:'\u00f2', O:'\u00d2',
+						u:'\u00f9', U:'\u00d9', y:'\u1ef3', Y:'\u1ef2' },
 				// acute & cedilla
-				"'" : { a:"\u00e1", A:"\u00c1", e:"\u00e9", E:"\u00c9", i:"\u00ed", I:"\u00cd", o:"\u00f3", O:"\u00d3",
-						u:"\u00fa", U:"\u00da", y:"\u00fd", Y:"\u00dd" },
+				"'" : { a:'\u00e1', A:'\u00c1', e:'\u00e9', E:'\u00c9', i:'\u00ed', I:'\u00cd', o:'\u00f3', O:'\u00d3',
+						u:'\u00fa', U:'\u00da', y:'\u00fd', Y:'\u00dd' },
 				// umlaut/trema
-				'"' : { a:"\u00e4", A:"\u00c4", e:"\u00eb", E:"\u00cb", i:"\u00ef", I:"\u00cf", o:"\u00f6", O:"\u00d6",
-						u:"\u00fc", U:"\u00dc", y:"\u00ff", Y:"\u0178" },
+				'"' : { a:'\u00e4', A:'\u00c4', e:'\u00eb', E:'\u00cb', i:'\u00ef', I:'\u00cf', o:'\u00f6', O:'\u00d6',
+						u:'\u00fc', U:'\u00dc', y:'\u00ff', Y:'\u0178' },
 				// circumflex
-				'^' : { a:"\u00e2", A:"\u00c2", e:"\u00ea", E:"\u00ca", i:"\u00ee", I:"\u00ce", o:"\u00f4", O:"\u00d4",
-						u:"\u00fb", U:"\u00db", y:"\u0177", Y:"\u0176" },
+				'^' : { a:'\u00e2', A:'\u00c2', e:'\u00ea', E:'\u00ca', i:'\u00ee', I:'\u00ce', o:'\u00f4', O:'\u00d4',
+						u:'\u00fb', U:'\u00db', y:'\u0177', Y:'\u0176' },
 				// tilde
-				'~' : { a:"\u00e3", A:"\u00c3", e:"\u1ebd", E:"\u1ebc", i:"\u0129", I:"\u0128", o:"\u00f5", O:"\u00d5",
-						u:"\u0169", U:"\u0168", y:"\u1ef9", Y:"\u1ef8", n:"\u00f1", N:"\u00d1" }
+				'~' : { a:'\u00e3', A:'\u00c3', e:'\u1ebd', E:'\u1ebc', i:'\u0129', I:'\u0128', o:'\u00f5', O:'\u00d5',
+						u:'\u0169', U:'\u0168', y:'\u1ef9', Y:'\u1ef8', n:'\u00f1', N:'\u00d1' }
 			}
 		}
 	});
@@ -1778,7 +1778,7 @@ var $keyboard = $.keyboard = function(el, options){
 	$keyboard.defaultOptions = {
 		// set this to ISO 639-1 language code to override language set by the layout
 		// http://en.wikipedia.org/wiki/List_of_ISO_639-1_codes
-		// language defaults to "en" if not found
+		// language defaults to 'en' if not found
 		language     : null,
 		rtl          : false,
 
@@ -1791,7 +1791,7 @@ var $keyboard = $.keyboard = function(el, options){
 			of : null,
 			my : 'center top',
 			at : 'center top',
-			// used when "usePreview" is false (centers the keyboard at the bottom of the input/textarea)
+			// used when 'usePreview' is false (centers the keyboard at the bottom of the input/textarea)
 			at2: 'center bottom'
 		},
 
@@ -1820,7 +1820,7 @@ var $keyboard = $.keyboard = function(el, options){
 			buttonDefault  : 'ui-state-default ui-corner-all',
 			// hovered button
 			buttonHover    : 'ui-state-hover',
-			// Action keys (e.g. Accept, Cancel, Tab, etc); this replaces "actionClass" option
+			// Action keys (e.g. Accept, Cancel, Tab, etc); this replaces 'actionClass' option
 			buttonAction   : 'ui-state-active',
 			// Active keys (e.g. shift down, meta keyset active, combo keys active)
 			buttonActive   : 'ui-state-active',
@@ -1842,8 +1842,8 @@ var $keyboard = $.keyboard = function(el, options){
 		restrictInput: false,
 
 		// Check input against validate function, if valid the accept button gets a class name of
-		// "ui-keyboard-valid-input". If invalid, the accept button gets a class name of
-		// "ui-keyboard-invalid-input"
+		// 'ui-keyboard-valid-input'. If invalid, the accept button gets a class name of
+		// 'ui-keyboard-invalid-input'
 		acceptValid  : false,
 
 		// if acceptValid is true & the validate function returns a false, this option will cancel
@@ -1854,7 +1854,7 @@ var $keyboard = $.keyboard = function(el, options){
 		tabNavigation: false,
 
 		// enter for next input; shift-enter accepts content & goes to next
-		// shift + "enterMod" + enter ("enterMod" is the alt as set below) will accept content and go
+		// shift + 'enterMod' + enter ('enterMod' is the alt as set below) will accept content and go
 		// to previous in a textarea
 		enterNavigation : false,
 		// mod key options: 'ctrlKey', 'shiftKey', 'altKey', 'metaKey' (MAC only)
@@ -1865,7 +1865,7 @@ var $keyboard = $.keyboard = function(el, options){
 		stopAtEnd : true,
 
 		// Set this to append the keyboard after the input/textarea (appended to the input/textarea parent).
-		// This option works best when the input container doesn't have a set width & when the "tabNavigation"
+		// This option works best when the input container doesn't have a set width & when the 'tabNavigation'
 		// option is true.
 		appendLocally: false,
 		// When appendLocally is false, the keyboard will be appended to this object
@@ -1928,12 +1928,12 @@ var $keyboard = $.keyboard = function(el, options){
 		create        : function(keyboard) { return keyboard.buildKeyboard(); }
 */
 
-		// this callback is called just before the "beforeClose" to check the value
+		// this callback is called just before the 'beforeClose' to check the value
 		// if the value is valid, return true and the keyboard will continue as it should
 		// (close if not always open, etc). If the value is not value, return false and the clear the keyboard
 		// value ( like this "keyboard.$preview.val('');" ), if desired. The validate function is called after
-		// each input, the "isClosing" value will be false; when the accept button is clicked,
-		// "isClosing" is true
+		// each input, the 'isClosing' value will be false; when the accept button is clicked,
+		// 'isClosing' is true
 		validate    : function(keyboard, value, isClosing) { return true; }
 
 	};
@@ -1961,7 +1961,7 @@ var $keyboard = $.keyboard = function(el, options){
 	};
 
 	$.fn.getkeyboard = function(){
-		return this.data("keyboard");
+		return this.data('keyboard');
 	};
 
 })(jQuery, window, document);
@@ -1972,7 +1972,7 @@ var $keyboard = $.keyboard = function(el, options){
  * Highly modified from the original
  */
 (function($, len, createRange, duplicate){
-"use strict";
+'use strict';
 
 $.fn.caret = function(options,opt2) {
 	if ( typeof this[0] === 'undefined' || this.is(':hidden') || this.css('visibility') === 'hidden' ) {

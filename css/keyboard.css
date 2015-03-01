@@ -46,12 +46,12 @@ button.ui-keyboard-button.btn { padding: 1px 6px; }
 
 /* enable/disable icons */
 button.ui-keyboard-toggle span {
-	width: 1em;
-	height: 1em;
+	width: .8em;
+	height: .8em;
 	display: inline-block;
-	text-indent: -999em;
 	background-repeat: no-repeat;
 	background-position: center center;
+	background-size: contain;
 }
 /* unlocked icon (enabled) */
 button.ui-keyboard-toggle span {
