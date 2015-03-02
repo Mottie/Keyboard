@@ -190,9 +190,7 @@ var $keyboard = $.keyboard = function(el, options){
 				// Number inputs don't support selectionStart and selectionEnd
 				// Number/email inputs don't support selectionStart and selectionEnd
 				if ( !/(number|email)/i.test(base.el.type) ) {
-					var c = base.$el.caret();
-					base.last.start = c.start;
-					base.last.end = c.end;
+					base.saveCaret();
 				}
 			}, 20);
 		}
@@ -331,6 +329,10 @@ var $keyboard = $.keyboard = function(el, options){
 				base.$preview.focus().caret( base.last );
 			}
 			base.$el.trigger( $keyboard.events.kbVisible, [ base, base.el ] );
+			base.timer = setTimeout(function(){
+				// get updated caret information after visible event - fixes #331
+				base.saveCaret();
+			}, 200);
 		}, 10);
 		// return base to allow chaining in typing extension
 		return base;
@@ -443,18 +445,28 @@ var $keyboard = $.keyboard = function(el, options){
 
 	};
 
+	base.saveCaret = function(start, end){
+		var p = base.$preview.focus().caret( start, end );
+		base.last.start = start || p.start;
+		base.last.end = end || p.end;
+	};
+
 	base.bindKeyboard = function(){
 		var evt, layout = $keyboard.builtLayouts[base.layout];
 		base.$preview
 			.unbind('keypress keyup keydown mouseup touchend '.split(' ').join(base.namespace + ' '))
+			.bind('click' + base.namespace, function(){
+				// update last caret position after user click, use at least 150ms or it doesn't work in IE
+				setTimeout(function(){
+					base.saveCaret();
+				}, 150);
+			})
 			.bind('keypress' + base.namespace, function(e){
 				if (o.lockInput) { return false; }
-				var c, k = base.last.key = String.fromCharCode(e.charCode || e.which);
+				var k = base.last.key = String.fromCharCode(e.charCode || e.which);
 				base.$lastKey = []; // not a virtual keyboard key
 				if (base.checkCaret) {
-					c = base.$preview.caret();
-					base.last.start = c.start;
-					base.last.end = c.end;
+					base.saveCaret();
 				}
 
 				// update caps lock - can only do this while typing =(
@@ -581,9 +593,7 @@ var $keyboard = $.keyboard = function(el, options){
 			})
 			.bind('mouseup touchend '.split(' ').join(base.namespace + ' '), function(){
 				if (base.checkCaret) {
-					var c = base.$preview.caret();
-					base.last.start = c.start;
-					base.last.end = c.end;
+					base.saveCaret();
 				}
 			});
 
@@ -810,8 +820,7 @@ var $keyboard = $.keyboard = function(el, options){
 
 			base.$preview.val( val.substring(0, o.maxLength) );
 			// restore caret on change, otherwise it ends up at the end.
-			base.$preview.caret( caret, caret );
-			base.last.start = base.last.end = caret;
+			base.saveCaret( caret, caret );
 		}
 		if (base.$decBtn.length) {
 			base.checkDecimal();
@@ -940,15 +949,11 @@ var $keyboard = $.keyboard = function(el, options){
 		pos.start += val.length - len;
 		pos.end += val.length - len;
 		base.$preview.val(val);
-
-		base.$preview.caret(pos.start, pos.end);
+		base.saveCaret( pos.start, pos.end );
 
 		// calculate current cursor scroll location and set scrolltop to keep it in view
 		// find row, multiply by font-size
 		base.preview.scrollTop = base.lineHeight * (val.substring(0, pos.start).split('\n').length - 1);
-
-		base.last.start = pos.start;
-		base.last.end = pos.end;
 
 		base.checkMaxLength();
 
@@ -1230,7 +1235,6 @@ var $keyboard = $.keyboard = function(el, options){
 			o.layout = 'custom';
 			$keyboard.layouts.custom = o.customLayout || { 'normal' : ['{cancel}'] };
 		}
-
 		// Main keyboard building loop
 		$.each($keyboard.layouts[o.layout], function(set, keySet) {
 			var txt;
@@ -1483,35 +1487,35 @@ var $keyboard = $.keyboard = function(el, options){
 
 	// Action key function list
 	$keyboard.keyaction = {
-		accept : function(base){
+		accept : function(base) {
 			base.close(true); // same as base.accept();
 			return false;     // return false prevents further processing
 		},
-		alt : function(base,el){
+		alt : function(base, el) {
 			base.altActive = !base.altActive;
 			base.showKeySet(el);
 		},
-		bksp : function(base){
+		bksp : function(base) {
 			base.insertText('bksp'); // the script looks for the 'bksp' string and initiates a backspace
 		},
-		cancel : function(base){
+		cancel : function(base) {
 			base.close();
 			return false; // return false prevents further processing
 		},
-		clear : function(base){
+		clear : function(base) {
 			base.$preview.val('');
 		},
-		combo : function(base){
+		combo : function(base) {
 			var c = !base.options.useCombos;
 			base.options.useCombos = c;
 			base.$keyboard.find('.' + $keyboard.css.keyPrefix + 'combo').toggleClass(base.options.css.buttonActive, c);
 			if (c) { base.checkCombos(); }
 			return false;
 		},
-		dec : function(base){
+		dec : function(base) {
 			base.insertText((base.decimal) ? '.' : ',');
 		},
-		'default' : function(base,el){
+		'default' : function(base, el) {
 			base.shiftActive = base.altActive = base.metaActive = false;
 			base.showKeySet(el);
 		},
@@ -1536,18 +1540,18 @@ var $keyboard = $.keyboard = function(el, options){
 			}
 		},
 		// caps lock key
-		lock : function(base,el){
+		lock : function(base,el) {
 			base.last.keyset[0] = base.shiftActive = base.capsLock = !base.capsLock;
 			base.showKeySet(el);
 		},
-		left : function(base){
+		left : function(base) {
 			var p = base.$preview.caret();
 			if (p.start - 1 >= 0) {
 				// move both start and end of caret (prevents text selection) & save caret position
 				base.last.start = base.last.end = p.start - 1;
 			}
 		},
-		meta : function(base,el){
+		meta : function(base, el) {
 			base.metaActive = !$(el).hasClass(base.options.css.buttonActive);
 			base.showKeySet(el);
 		},
@@ -1559,23 +1563,23 @@ var $keyboard = $.keyboard = function(el, options){
 			base.switchInput(false, base.options.autoAccept);
 			return false;
 		},
-		right : function(base){
+		right : function(base) {
 			var p = base.$preview.caret();
 			if (p.start + 1 <= base.$preview.val().length) {
 				// move both start and end of caret (prevents text selection) && save caret position
 				base.last.start = base.last.end = p.start + 1;
 			}
 		},
-		shift : function(base,el){
+		shift : function(base, el) {
 			base.last.keyset[0] = base.shiftActive = !base.shiftActive;
 			base.showKeySet(el);
 		},
-		sign : function(base){
+		sign : function(base) {
 			if(/^\-?\d*\.?\d*$/.test( base.$preview.val() )) {
 				base.$preview.val( (base.$preview.val() * -1) );
 			}
 		},
-		space : function(base){
+		space : function(base) {
 			base.insertText(' ');
 		},
 		tab : function(base) {
@@ -1591,7 +1595,7 @@ var $keyboard = $.keyboard = function(el, options){
 			}
 			base.insertText('\t');
 		},
-		toggle : function(base){
+		toggle : function(base) {
 			base.enabled = !base.enabled;
 			base.toggle();
 		}
