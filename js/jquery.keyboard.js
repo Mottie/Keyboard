@@ -383,7 +383,7 @@ var $keyboard = $.keyboard = function(el, options){
 					o.create(base);
 				}
 				if (!base.$keyboard.length) {
-					base.buildKeyboard();
+					base.buildKeyboard(base.layout, true);
 				}
 			}
 			base.$keyboard = $keyboard.builtLayouts[base.layout].$keyboard.clone();
@@ -1210,7 +1210,7 @@ var $keyboard = $.keyboard = function(el, options){
 		return hash;
 	};
 
-	base.buildKeyboard = function() {
+	base.buildKeyboard = function(name, internal) {
 		// o.display is empty when this is called from the scramble extension (when alwaysOpen:true)
 		if ( $.isEmptyObject(o.display) ) {
 			// set keyboard language
@@ -1220,7 +1220,7 @@ var $keyboard = $.keyboard = function(el, options){
 			currentSet, key, keys, margin,
 			kbcss = $keyboard.css,
 			sets = 0,
-			layout = $keyboard.builtLayouts[base.layout] = {
+			layout = $keyboard.builtLayouts[name || base.layout] = {
 				mappedKeys   : {},
 				acceptedKeys : []
 			},
@@ -1231,12 +1231,12 @@ var $keyboard = $.keyboard = function(el, options){
 			.attr({ 'role': 'textbox' })
 			.hide();
 		// verify layout or setup custom keyboard
-		if (o.layout === 'custom' || !$keyboard.layouts.hasOwnProperty(o.layout)) {
+		if ( ( internal && o.layout === 'custom' ) || !$keyboard.layouts.hasOwnProperty(o.layout) ) {
 			o.layout = 'custom';
 			$keyboard.layouts.custom = o.customLayout || { 'normal' : ['{cancel}'] };
 		}
 		// Main keyboard building loop
-		$.each($keyboard.layouts[o.layout], function(set, keySet) {
+		$.each($keyboard.layouts[ internal ? o.layout : name ], function(set, keySet) {
 			var txt;
 			// skip layout name & lang settings
 			if (set !== '' && !/^(name|lang|rtl)$/i.test(set)) {
