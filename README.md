@@ -88,6 +88,19 @@ Wiki: [Home](https://github.com/Mottie/Keyboard/wiki/Home) | [FAQ](https://githu
 
 Only the latest changes will be shown below, see the wiki log to view older versions.
 
+### Version 1.21.2 (3/3/2015)
+
+* Toggle action key icon css tweaks
+* Core:
+  * Add save caret position function - used to save caret position, especially after the visible event. Fixes [issue #331](https://github.com/Mottie/Keyboard/issues/331).
+  * General code cleanup.
+* Extender extension
+  * Added to allow toggling an extra layout.
+  * The main example allows toggling of a 'numpad' (new layout with extension).
+  * Any layout can be used, but only the "normal" keyset will be added.
+  * See [the demo here](http://mottie.github.io/Keyboard/docs/extender.html).
+  * The [documentation can be found here](https://github.com/Mottie/Keyboard/wiki/Setup#wiki-extender).
+
 ### Version 1.21.1 (2/28/2015)
 
 * Add toggle action key
@@ -116,33 +129,3 @@ Only the latest changes will be shown below, see the wiki log to view older vers
   * It can now be set as `false` or even an empty string.
   * Previously, to avoid using the jQuery UI position utility this option was supposed to be set to an empty object (`{}`); but internal scripting was continuing to update and use this option to activate the jQuery UI position utility. No more!
 * Fixed an issue with meta keys getting broken by the v1.20.0 update. Sorry!
-
-### Version 1.20.0 (2/15/2015)
-
-* Build
-  * Add build process.
-  * Rename "all.js" to "keyboard-layouts-greywyvern.js"
-  * Combine all other layouts into a "keyboard-layouts-combined.js" file.
-  * Combine all extensions into "jquery.keyboard.extension-all.js" file.
-  * Create a minimized version of all files (css & js) in a 'dist' folder.
-  * Removed all `.min.js` files from the `js` folder; this might break some external demos.
-* Core
-  * Add "keysetChange" event; fired when the visible keyset changes.
-  * Moved internal class names to `$.keyboard.css`.
-  * Moved internal event names to `$.keyboard.events`.
-  * Perform max length check before validating.
-* Docs
-  * Add jQuery & jQuery UI files.
-  * Replace tooltip plugin.
-  * Add keyboard svg icon.
-  * Layout demo now uses combined layouts file instead of loading each layout separately.
-  * Navigation demo now includes external caret navigation buttons that work without the toggle engaged.
-* Mobile
-  * Fix mobile css styles.
-  * Fix issues with mobile theming.
-* Navigate
-  * Fixed broken extension code.
-  * Add navigation functions that work in untoggle mode.
-* Preview Keyset
-  * Add new preview keyset extension.
-  * Choose which keysets to preview & use pure css to display it.
