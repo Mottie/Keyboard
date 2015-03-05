@@ -212,7 +212,7 @@ var $keyboard = $.keyboard = function(el, options){
 		// update keyboard after a layout change
 		if (refresh) {
 			base.isOpen = false;
-			base.last.value = base.$preview && base.$preview.val() || '';
+			base.last.val = base.$preview && base.$preview.val() || '';
 			if (base.$keyboard.length) {
 				base.$keyboard.remove();
 				base.$keyboard = [];
@@ -247,7 +247,7 @@ var $keyboard = $.keyboard = function(el, options){
 		}
 		// save starting content, in case we cancel
 		base.originalContent = base.$el.val();
-		base.$preview.val( refresh ? base.last.value : base.originalContent );
+		base.$preview.val( refresh ? base.last.val : base.originalContent );
 
 		// disable/enable accept button
 		if (o.acceptValid) { base.checkValid(); }
@@ -464,7 +464,8 @@ var $keyboard = $.keyboard = function(el, options){
 			.bind('keypress' + base.namespace, function(e){
 				if (o.lockInput) { return false; }
 				var k = base.last.key = String.fromCharCode(e.charCode || e.which);
-				base.$lastKey = []; // not a virtual keyboard key
+				base.last.event = e;
+				base.last.$key = []; // not a virtual keyboard key
 				if (base.checkCaret) {
 					base.saveCaret();
 				}
@@ -646,8 +647,9 @@ var $keyboard = $.keyboard = function(el, options){
 				action = action === ':' ? ':' : (action || '').split(':')[0];
 				if (timer - (base.last.eventTime || 0) < o.preventDoubleEventTime) { return; }
 				base.last.eventTime = timer;
+				base.last.event = e;
 				base.$preview.focus();
-				base.$lastKey = $key;
+				base.last.$key = $key;
 				base.last.key = $key.attr('data-curtxt');
 				// Start caret in IE when not focused (happens with each virtual keyboard button click
 				if (base.checkCaret) { base.$preview.caret( base.last ); }
