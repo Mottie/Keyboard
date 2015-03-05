@@ -7,10 +7,10 @@
 *
 * license for this file: WTFPL, unless the source layout site has a problem with me using them as a reference
 */
-$.keyboard.layouts['mongolian'] = {
+jQuery.keyboard.layouts['mongolian'] = {
 	'name' : 'mongolian',
 	'lang' : ['mn'],
-	'default' : [
+	'normal' : [
 		'= \u2116 - " \u20AE : . _ , % ? \u0435 \u0449 {bksp}',
 		'{tab} \u0444 \u0446 \u0443 \u0436 \u044d \u043D \u0433 \u0448 \u04af \u0437 \u043A \u044A \\',
 		'\u0439 \u044B \u0431 \u04e9 \u0430 \u0445 \u0440 \u043e \u043B \u0434 \u043f {enter}',
@@ -45,6 +45,7 @@ $.keyboard.layouts['mongolian'] = {
 // mn = ISO 639-1 code for Mongolian
 // ***********************
 jQuery.keyboard.language.mn = {
+	language: 'Mongolian',
 	display : {
 		'a'      : '\u2714:Accept (Shift-Enter)', // check mark - same action as accept
 		'accept' : 'Accept:Accept (Shift-Enter)',

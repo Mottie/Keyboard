@@ -14,11 +14,10 @@
 /* qwertz-albanian
  combined from http://en.wikipedia.org/wiki/File:Albanian_keyboard_layout.jpg,
  http://ascii-table.com/keyboard.php/448 & http://www.google.com/webelements/ */
-
 jQuery.keyboard.layouts['albanian-qwertz'] = {
 	'name' : 'Albanian-qwertz',
 	'lang' : ['sq'],
-	'default' : [
+	'normal' : [
 		"\\ 1 2 3 4 5 6 7 8 9 0 - = {bksp}",
 		"{tab} q w e r t z u i o p \u00e7 '",
 		"a s d f g h j k l \u00eb [ ] {enter}",
@@ -45,7 +44,7 @@ jQuery.keyboard.layouts['albanian-qwertz'] = {
 jQuery.keyboard.layouts['albanian-qwerty'] = {
 	'name' : 'Albanian-qwerty',
 	'lang' : ['sq'],
-	'default' : [
+	'normal' : [
 		"` 1 2 3 4 5 6 7 8 9 0 - = {bksp}",
 		"{tab} q w e r t y u i o p \u00eb '",
 		"a s d f g h j k l ; \u00e7 # {enter}",
@@ -79,6 +78,7 @@ jQuery.keyboard.layouts['albanian-qwerty'] = {
 // sq = ISO 639-1 code for Albanian
 // ***********************
 jQuery.keyboard.language.sq = {
+	language : 'Albanian',
 	display : {
 		'a'      : '\u2714:Prano (Shift-Enter)', // check mark - same action as accept
 		'accept' : 'Prano:Prano (Shift-Enter)',
@@ -93,6 +93,8 @@ jQuery.keyboard.language.sq = {
 		'e'      : '\u21b5:Shkruani',        // down, then left arrow - enter symbol
 		'enter'  : 'Shkruani:Shkruani',
 		'lock'   : '\u21ea Bllokoj:Caps Lock', // caps lock
+		'next'   : 'Next \u21e8',
+		'prev'   : '\u21e6 Prev',
 		's'      : '\u21e7:Ndryshim',        // thick hollow up arrow
 		'shift'  : 'Ndryshim:Ndryshim',
 		'sign'   : '\u00b1:Ndryshimi Regjistrohu',  // +/- sign for num pad
@@ -105,13 +107,9 @@ jQuery.keyboard.language.sq = {
 
 	// New combos using specific accents
 	// Not sure what to do with these accents:  ˇ ˘ ˙ ° ˛ ˝
-	comboRegex : /([`\'~\^\"ao\/\u00a8\u00b8])([a-z])/gim,
+	comboRegex : /([`\'~\^\"ao\/])([a-z])/gim,
 	combos : {
-		// duplicated from regular combos, used specific accents here instead ("); \u00a8 = ¨
-		'\u00a8' : { a:"\u00e4", A:"\u00c4", e:"\u00eb", E:"\u00cb", i:"\u00ef", I:"\u00cf", o:"\u00f6", O:"\u00d6", u:"\u00fc", U:"\u00dc", y:"\u00ff", Y:"\u0178" }, // umlaut/trema
-		'\u00b8' : { c:"\u00e7", C:"\u00c7" }, // cedilla ç Ç
-
 		// new combos below ( forward slash + d, forward slash + l )
-		'/'      : { d:"\u0111", D:"\u0110", l:"\u0142", L:"\u0141" } // stroke đ Đ ł Ł
+		'/' : { d:"\u0111", D:"\u0110", l:"\u0142", L:"\u0141" } // stroke đ Đ ł Ł
 	}
 };

@@ -12,7 +12,7 @@
 jQuery.keyboard.layouts['arabic-azerty'] = {
 	'name': 'Arabic-azerty',
 	'lang': ['ar'],
-	'default' : [
+	'normal' : [
 		'\u00b2 & \u00e9 " \' ( - \u00e8 _ \u00e7 \u00e0 ) = {bksp}',
 		"{tab} a z e r t y u i o p ` $",
 		"q s d f g h j k l m \u00f9 \u066d {enter}",
@@ -46,7 +46,7 @@ jQuery.keyboard.layouts['arabic-azerty'] = {
 jQuery.keyboard.layouts['arabic-qwerty-1'] = {
 	'name': 'Arabic-qwerty-1',
 	'lang': ['ar'],
-	'default' : [
+	'normal' : [
 		'` 1 2 3 4 5 6 7 8 9 0 - = {bksp}',
 		"{tab} q w e r t y u i o p [ ] \\",
 		"a s d f g h j k l ; ' {enter}",
@@ -80,7 +80,7 @@ jQuery.keyboard.layouts['arabic-qwerty-1'] = {
 jQuery.keyboard.layouts['arabic-qwerty-2'] = {
 	'name': 'Arabic-qwerty-2',
 	'lang': ['ar'],
-	'default' : [
+	'normal' : [
 		'< 1 2 3 4 5 6 7 8 9 0 - = {bksp}',
 		"{tab} q w e r t y u i o p [ ]",
 		"a s d f g h j k l ; ' ` {enter}",
@@ -114,7 +114,7 @@ jQuery.keyboard.layouts['arabic-qwerty-2'] = {
 jQuery.keyboard.layouts['arabic-qwerty-3'] = {
 	'name': 'Arabic-qwerty-3',
 	'lang': ['ar'],
-	'default' : [
+	'normal' : [
 		'< 1 2 3 4 5 6 7 8 9 0 - = {bksp}',
 		"{tab} q w e r t y u i o p \u00a2 |",
 		"a s d f g h j k l ; ' ` {enter}",
@@ -148,7 +148,7 @@ jQuery.keyboard.layouts['arabic-qwerty-3'] = {
 jQuery.keyboard.layouts['arabic-qwerty-4'] = {
 	'name': 'Arabic-qwerty-4',
 	'lang': ['ar'],
-	'default' : [
+	'normal' : [
 		'< 1 2 3 4 5 6 7 8 9 0 - = {bksp}',
 		"{tab} q w e r t y u i o p [ ]",
 		"a s d f g h j k l ; ' ` {enter}",
@@ -183,6 +183,7 @@ jQuery.keyboard.layouts['arabic-qwerty-4'] = {
 // ar = ISO 639-1 code for Arabic
 // ***********************
 jQuery.keyboard.language.ar = {
+	language: 'Arabic',
 	display : {
 		'a'      : '\u2714:Accept (Shift-Enter)', // check mark - same action as accept
 		'accept' : 'Accept:Accept (Shift-Enter)',

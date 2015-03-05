@@ -16,7 +16,7 @@
 jQuery.keyboard.layouts['japanese-kana'] = {
 	'name' : 'japanese-kana',
 	'lang' : ['ja'],
-	'default' : [
+	'normal' : [
 		'0 1 2 3 4 5 6 7 8 9',
 		'\u3042 \u3044 \u3046 \u3048 \u304a \u306f \u3072 \u3075 \u3078 \u307b',
 		'\u304b \u304d \u304f \u3051 \u3053 \u307e \u307f \u3080 \u3081 \u3082',
@@ -57,7 +57,7 @@ jQuery.keyboard.layouts['japanese-kana'] = {
 jQuery.keyboard.layouts['japanese-qwerty'] = {
 	'name' : 'japanese-qwerty',
 	'lang' : ['ja'],
-	'default' : [
+	'normal' : [
 		"1 2 3 4 5 6 7 8 9 0 - ^ \u00a5 {bksp}",
 		"{tab} q w e r t y u i o p \u0040 [",
 		"a s d f g h j k l ; : ] {enter}",
@@ -92,6 +92,7 @@ jQuery.keyboard.layouts['japanese-qwerty'] = {
 // ja = ISO 639-1 code for Japanese
 // ***********************
 jQuery.keyboard.language.ja = {
+	language: 'Japanese',
 	display : {
 		'a'      : '\u2714:Accept (Shift-Enter)', // check mark - same action as accept
 		'accept' : 'Accept:Accept (Shift-Enter)',

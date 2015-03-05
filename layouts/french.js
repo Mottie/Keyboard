@@ -12,7 +12,7 @@
 jQuery.keyboard.layouts['french-azerty-1'] = {
 	'name' : 'french-azerty-1',
 	'lang' : ['fr'],
-	'default' : [
+	'normal' : [
 		"\u00b2 & \u00e9 \" ' ( - \u00e8 _ \u00e7 \u00e0 ) = {bksp}",
 		"{tab} a z e r t y u i o p ^ $",
 		"q s d f g h j k l m  \u00f9 * {enter}",
@@ -45,7 +45,7 @@ jQuery.keyboard.layouts['french-azerty-1'] = {
 jQuery.keyboard.layouts['french-azerty-2'] = {
 	'name' : 'french-azerty-2',
 	'lang' : ['fr'],
-	'default' : [
+	'normal' : [
 		"\u00b2 & \u00e9 \" ' ( - \u00e8 _ \u00e7 \u00e0 ) = {b}",
 		"{t} a z e r t y u i o p ^ $",
 		"q s d f g h j k l m  \u00f9 * {e}",
@@ -78,7 +78,7 @@ jQuery.keyboard.layouts['french-azerty-2'] = {
 jQuery.keyboard.layouts['french-bepo-V1.0rc2'] = {
 	'name' : 'french-bepo-V1.0rc2',
 	'lang' : ['fr'],
-	'default' : [
+	'normal' : [
 		"$ \" \u00AB \u00BB ( ) @ + - / * = % {b}",
 		"{t} b \u00e9 p o \u00e8 \u02c6 v d l j z w",
 		"a u i e , c t s r n m \u00E7 {enter}",
@@ -113,6 +113,7 @@ jQuery.keyboard.layouts['french-bepo-V1.0rc2'] = {
 // fr = ISO 639-1 code for French
 // ***********************
 jQuery.keyboard.language.fr = {
+	language: 'French',
 	display : {
 		'a'      : '\u2714:Valider (Shift-Enter)', // check mark - same action as accept
 		'accept' : 'Valider:Valider (Shift-Enter)',

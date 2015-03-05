@@ -12,7 +12,7 @@
 jQuery.keyboard.layouts['german-qwertz-1'] = {
 	'name' : 'german-qwertz-1',
 	'lang' : ['de'],
-	'default' : [
+	'normal' : [
 		"\u0302 1 2 3 4 5 6 7 8 9 0 \u00df \u0301 {bksp}",
 		"{tab} q w e r t z u i o p \u00fc +",
 		"a s d f g h j k l \u00f6 \u00e4 # {enter}",
@@ -39,7 +39,7 @@ jQuery.keyboard.layouts['german-qwertz-1'] = {
 jQuery.keyboard.layouts['german-qwertz-2'] = {
 	'name' : 'german-qwertz-2',
 	'lang' : ['de'],
-	'default' : [
+	'normal' : [
 		"\u00a7 1 2 3 4 5 6 7 8 9 0 ' \u0302 {bksp}",
 		"{tab} q w e r t z u i o p \u00fc \u0308",
 		"a s d f g h j k l \u00f6 \u00e4 $ {enter}",
@@ -67,6 +67,7 @@ jQuery.keyboard.layouts['german-qwertz-2'] = {
 // de = ISO 639-1 code for German
 // ***********************
 jQuery.keyboard.language.de = {
+	language: 'German',
 	display : {
 		'a'      : '\u2714:Accept (Shift-Enter)', // check mark - same action as accept
 		'accept' : 'Accept:Accept (Shift-Enter)',

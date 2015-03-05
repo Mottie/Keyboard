@@ -20,7 +20,7 @@
 jQuery.keyboard.layouts['tamil-tamil99-mod'] = {
 	'name' : 'tamil-tamil99-mod',
 	'lang' : ['ta'],
-	'default' : [
+	'normal' : [
         /* ா	ி	ீ	ு	ூ	ெ	ே	ை	ொ	ோ	ௌ	ஃ  */
 		"\u0BBE \u0BBF \u0BC0 \u0BC1 \u0BC2 \u0BC6 \u0BC7 \u0BC8 \u0BCA \u0BCB \u0BCC \u0B83 {bksp}",
         /*      ஆ     ஈ      ஊ     ஐ    ஏ      ள      ற     ன     ட      ண   ச      ஞ   \   */
@@ -64,6 +64,7 @@ jQuery.keyboard.layouts['tamil-tamil99-mod'] = {
 // ta = ISO 639-1 code for Tamil
 // ***********************
 jQuery.keyboard.language.ta = {
+	language: 'Tamil',
 	display : {
 		'a'      : '\u2714:Validate (Shift-Enter)', // check mark - same action as accept
 		'accept' : 'accept (Shift-Enter)',

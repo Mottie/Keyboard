@@ -12,7 +12,7 @@
 jQuery.keyboard.layouts['swedish-qwerty'] = {
 	'name' : 'swedish-qwerty',
 	'lang' : ['sv'],
-	'default' : [
+	'normal' : [
 		"\u00a7 1 2 3 4 5 6 7 8 9 0 + \u0301 {bksp}",
 		"{tab} q w e r t y u i o p \u00e5 \u0308",
 		"a s d f g h j k l \u00f6 \u00e4 ' {enter}",
@@ -39,7 +39,7 @@ jQuery.keyboard.layouts['swedish-qwerty'] = {
 jQuery.keyboard.layouts['swedish-dvorak'] = {
 	'name' : 'swedish-qwerty',
 	'lang' : ['sv'],
-	'default' : [
+	'normal' : [
 		"\u00a7 1 2 3 4 5 6 7 8 9 0 + \u0301 {bksp}",
 		"{tab} \u00f6 \u00e5 \u00e4 p y f g c r l q \u00a8",
 		"a o e u i d h t n s - < {enter}",
@@ -67,6 +67,7 @@ jQuery.keyboard.layouts['swedish-dvorak'] = {
 // sv = ISO 639-1 code for Swedish
 // ***********************
 jQuery.keyboard.language.sv = {
+	language: 'Swedish',
 	display : {
 		'a'      : '\u2714:Accept (Shift-Enter)', // check mark - same action as accept
 		'accept' : 'Accept:Accept (Shift-Enter)',

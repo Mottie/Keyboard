@@ -9,7 +9,7 @@
  */
 
 /* Serbian Cyrillic Keyboard Layout (српски) * generated from http://www.greywyvern.com/code/javascript/keyboard layouts */
-$.keyboard.layouts["sr-Cyrl"] = {
+jQuery.keyboard.layouts["sr-Cyrl"] = {
 	'name' : "Serbian Cyrillic (sr-Cyrl)",
 	'lang' : ['sr'],
 	"default" : [
@@ -36,7 +36,7 @@ $.keyboard.layouts["sr-Cyrl"] = {
 };
 
 /* Serbian Latin Keyboard Layout (Srpski) * generated from http://www.greywyvern.com/code/javascript/keyboard layouts */
-$.keyboard.layouts.sr = {
+jQuery.keyboard.layouts.sr = {
 	'name' : "Serbian Latin (sr)",
 	'lang' : ['sr'],
 	"default" : [
@@ -63,7 +63,7 @@ $.keyboard.layouts.sr = {
 };
 
 /* Serbian Cyrillic Keyboard Layout (српски) for Mac */
-$.keyboard.layouts["sr-Cyrl-mac"] = {
+jQuery.keyboard.layouts["sr-Cyrl-mac"] = {
 	'name' : "Serbian Cyrillic for Mac (sr-Cyrl)",
 	'lang' : ['sr'],
 	"default" : [
@@ -97,7 +97,7 @@ $.keyboard.layouts["sr-Cyrl-mac"] = {
 };
 
 /* Serbian Latin Keyboard Layout (Srpski) for Mac */
-$.keyboard.layouts["sr-mac"] = {
+jQuery.keyboard.layouts["sr-mac"] = {
 	'name' : "Serbian Latin for Mac (sr)",
 	'lang' : ['sr'],
 	"default" : [
@@ -135,6 +135,7 @@ $.keyboard.layouts["sr-mac"] = {
 // sr = ISO 639-1 code for Serbian
 // ***********************
 jQuery.keyboard.language.sr = {
+	language: 'Serbian',
 	display : {
 		'a'      : '\u2714:Accept (Shift-Enter)', // check mark - same action as accept
 		'accept' : 'Accept:Accept (Shift-Enter)',

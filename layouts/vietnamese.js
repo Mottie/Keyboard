@@ -13,7 +13,7 @@
 jQuery.keyboard.layouts['vietnamese-qwerty'] = {
 	'name' : 'vietnamese-qwerty',
 	'lang' : ['vi'],
-	'default' : [
+	'normal' : [
 		"` 1 2 3 4 5 6 7 8 9 0 - = {bksp}",
 		"{tab} q w e r t y u i o p [ ] \\",
 		"a s d f g h j k l ; ' {enter}",
@@ -48,6 +48,7 @@ jQuery.keyboard.layouts['vietnamese-qwerty'] = {
 // vi = ISO 639-1 code for Vietnamese
 // ***********************
 jQuery.keyboard.language.vi = {
+	language: 'Vietnamese',
 	display : {
 		'a'      : '\u2714:Validate (Shift-Enter)', // check mark - same action as accept
 		'accept' : 'accept (Shift-Enter)',

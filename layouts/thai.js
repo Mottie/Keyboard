@@ -12,7 +12,7 @@
 jQuery.keyboard.layouts['thai-qwerty'] = {
 	'name' : 'thai-qwerty',
 	'lang' : ['th'],
-	'default' : [
+	'normal' : [
 		"\u005F \u0E45 \u002F \u002D \u0E20 \u0E16 \u0E38 \u0E36 \u0E04 \u0E05 \u0E08 \u0E02 \u0E0A {bksp}",
 		"{tab} \u0E46 \u0E44 \u0E33 \u0E1E \u0E30 \u0E31 \u0E35 \u0E23 \u0E19 \u0E22 \u0E1A \u0E25 \u0E03 ",
 		"\u0E1F \u0E2B \u0E01 \u0E14 \u0E40 \u0E49 \u0E48 \u0E32 \u0E2A \u0E27 \u0E07 {enter}",
@@ -47,6 +47,7 @@ jQuery.keyboard.layouts['thai-qwerty'] = {
 // th = ISO 639-1 code for Thai
 // ***********************
 jQuery.keyboard.language.th = {
+	language: 'Thai',
 	display : {
 		'a'      : '\u2714:Validate (Shift-Enter)', // check mark - same action as accept
 		'accept' : 'accept (Shift-Enter)',

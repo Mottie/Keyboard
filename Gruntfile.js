@@ -2,6 +2,12 @@
 module.exports = function(grunt) {
 	'use strict';
 
+	var nomod = '/*** This file is dynamically generated ***\n' +
+		'█████▄ ▄████▄   █████▄ ▄████▄ ██████   ███████▄ ▄████▄ █████▄ ██ ██████ ██  ██\n' +
+		'██  ██ ██  ██   ██  ██ ██  ██   ██     ██ ██ ██ ██  ██ ██  ██ ██ ██     ██  ██\n' +
+		'██  ██ ██  ██   ██  ██ ██  ██   ██     ██ ██ ██ ██  ██ ██  ██ ██ ██▀▀   ▀▀▀▀██\n' +
+		'█████▀ ▀████▀   ██  ██ ▀████▀   ██     ██ ██ ██ ▀████▀ █████▀ ██ ██     █████▀\n*/\n';
+
 	// Project configuration.
 	grunt.initConfig({
 
@@ -16,28 +22,26 @@ module.exports = function(grunt) {
 		concat: {
 			exts: {
 				options: {
-					banner: '/*** This file is dynamically generated ***\n' +
-						'█████▄ ▄████▄   █████▄ ▄████▄ ██████   ███████▄ ▄████▄ █████▄ ██ ██████ ██  ██\n' +
-						'██  ██ ██  ██   ██  ██ ██  ██   ██     ██ ██ ██ ██  ██ ██  ██ ██ ██     ██  ██\n' +
-						'██  ██ ██  ██   ██  ██ ██  ██   ██     ██ ██ ██ ██  ██ ██  ██ ██ ██▀▀   ▀▀▀▀██\n' +
-						'█████▀ ▀████▀   ██  ██ ▀████▀   ██     ██ ██ ██ ▀████▀ █████▀ ██ ██     █████▀\n*/\n' +
- 						'/*! jQuery UI Virtual Keyboard - ALL Extensions + Mousewheel */\n'
+					banner: nomod + '/*! jQuery UI Virtual Keyboard - ALL Extensions + Mousewheel */\n'
 				},
 				files: {
 					'js/jquery.keyboard.extension-all.js': [ 'js/jquery.keyboard.extension-*.js', 'js/jquery.mousewheel.js' ]
 				}
 			},
-			layouts: {
+			origLayouts: {
 				options: {
-					banner: '/*** This file is dynamically generated ***\n' +
-						'█████▄ ▄████▄   █████▄ ▄████▄ ██████   ███████▄ ▄████▄ █████▄ ██ ██████ ██  ██\n' +
-						'██  ██ ██  ██   ██  ██ ██  ██   ██     ██ ██ ██ ██  ██ ██  ██ ██ ██     ██  ██\n' +
-						'██  ██ ██  ██   ██  ██ ██  ██   ██     ██ ██ ██ ██  ██ ██  ██ ██ ██▀▀   ▀▀▀▀██\n' +
-						'█████▀ ▀████▀   ██  ██ ▀████▀   ██     ██ ██ ██ ▀████▀ █████▀ ██ ██     █████▀\n*/\n' +
-						'/*! jQuery UI Virtual Keyboard - ALL Layouts (except greywyvern layouts) */\n'
+					banner: nomod + '/*! jQuery UI Virtual Keyboard - Original Layouts */\n'
 				},
 				files: {
-					'layouts/keyboard-layouts-combined.js': [ 'layouts/*', '!layouts/_template.js', '!layouts/keyboard-layouts-greywyvern.js' ]
+					'layouts/keyboard-layouts-combined.js': [ 'layouts/*', '!layouts/_template.js', '!layouts/ms-*.js', '!layouts/keyboard-layouts-greywyvern.js' ]
+				}
+			},
+			msLayouts: {
+				options: {
+					banner: nomod + '/*! jQuery UI Virtual Keyboard - Microsoft Generated Layouts */\n'
+				},
+				files: {
+					'layouts/keyboard-layouts-microsoft.js': [ 'layouts/ms-*.js' ]
 				}
 			}
 		},

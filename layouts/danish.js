@@ -12,7 +12,7 @@
 jQuery.keyboard.layouts['danish-qwerty'] = {
 	'name' : 'danish-qwerty',
 	'lang' : ['da'],
-	'default' : [
+	'normal' : [
 		"\u00a7 1 2 3 4 5 6 7 8 9 0 + \u0301 {b}",
 		"{tab} q w e r t y u i o p \u00e5 \u00a8",
 		"a s d f g h j k l \u00e6 \u00f8 ' {enter}",
@@ -40,6 +40,7 @@ jQuery.keyboard.layouts['danish-qwerty'] = {
 // da = ISO 639-1 code for Danish
 // ***********************
 jQuery.keyboard.language.da = {
+	language: 'Danish',
 	display : {
 		'a'      : '\u2714:Accept (Shift-Enter)', // check mark - same action as accept
 		'accept' : 'Accept:Accept (Shift-Enter)',

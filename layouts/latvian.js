@@ -10,7 +10,7 @@
 jQuery.keyboard.layouts['latvian-qwerty'] = {
 	'name' : 'latvian-qwerty',
 	'lang' : ['lv'],
-	'default' : [
+	'normal' : [
 		"` 1 2 3 4 5 6 7 8 9 0 - = {bksp}",
 		"{tab} q w e r t y u i o p [ ] \u00B0",
 		"a s d f g h j k l ; ' {enter}",
@@ -45,6 +45,7 @@ jQuery.keyboard.layouts['latvian-qwerty'] = {
 // lv = ISO 639-1 code for Latvian
 // ***********************
 jQuery.keyboard.language.lv = {
+	language: 'Latvian',
 	display : {
 		'a'      : '\u2714:Pie\u0146emt (Shift-Enter)', // check mark - same action as accept
 		'accept' : 'Pie\u0146emt:Pie\u0146emt (Shift-Enter)',

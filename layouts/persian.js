@@ -12,7 +12,7 @@
 jQuery.keyboard.layouts['Persian'] = {
 	'name': 'Persian (Farsi)',
 	'lang': ['fa'],
-	'default': [
+	'normal': [
 		'~ \u06f1 \u06f2 \u06f3 \u06f4 \u06f5 \u06f6 \u06f7 \u06f8 \u06f9 \u06f0 - = {bksp}',
 		'{tab} \u0636 \u0635 \u062b \u0642 \u0641 \u063a \u0639 \u0647 \u062e \u062d \u062c \u0686 \u067e',
 		'{lock} \u0634 \u0633 \u06cc \u0628 \u0644 \u0627 \u062a \u0646 \u0645 \u0643 \u06af {enter}',
@@ -43,6 +43,7 @@ jQuery.keyboard.layouts['Persian'] = {
 };
 
 jQuery.keyboard.language.fa = {
+	language: 'Farsi',
 	display: {
 		'a': '\u2714:\u062a\u0623\u06cc\u06cc\u062f (Shift-Enter)',
 		'accept': '\u062a\u0623\u06cc\u06cc\u062f:\u062a\u0623\u06cc\u06cc\u062f (Shift-Enter)',

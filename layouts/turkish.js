@@ -14,7 +14,7 @@
 jQuery.keyboard.layouts['turkish-q'] = {
 	'name' : 'turkish-q',
 	'lang' : ['tr'],
-	'default' : [
+	'normal' : [
 		"\u0022 1 2 3 4 5 6 7 8 9 0 \u002a \u002d {bksp}",
 		"{tab} q w e r t y u \u0131 o p \u011f \u00fc",
 		"{lock} a s d f g h j k l \u015f \u0069 , {enter}",
@@ -41,7 +41,7 @@ jQuery.keyboard.layouts['turkish-q'] = {
 jQuery.keyboard.layouts['turkish-f'] = {
 	'name' : 'turkish-f',
 	'lang' : ['tr'],
-	'default' : [
+	'normal' : [
 		"\u002B \u0031 \u0032 \u0033 \u0034 \u0035 \u0036 \u0037 \u0038 \u0039 \u0030 \u002F \u002D {bksp}",
 		"{tab} \u0066 \u0067 \u011F \u0131 \u006F \u0064 \u0072 \u006E \u0068 \u0070 \u0071 \u0077",
 		"{lock} \u0075 \u0069 \u0065 \u0061 \u00FC \u0074 \u006B \u006D \u006C \u0079 \u015F \u0078 {enter}",
@@ -69,6 +69,7 @@ jQuery.keyboard.layouts['turkish-f'] = {
 // tr = ISO 639-1 code for Turkish
 // ***********************
 jQuery.keyboard.language.tr = {
+	language: 'Turkish',
 	display : {
 		'a'      : '\u2714:Accept (Shift-Enter)', // check mark - same action as accept
 		'accept' : 'Accept:Accept (Shift-Enter)',

@@ -67,6 +67,7 @@ jQuery.keyboard.layouts['hungarian-qwertz-2'] = {
 // hu = ISO 639-1 code for Hungarian
 // ***********************
 jQuery.keyboard.language.hu = {
+	language: 'Hungarian',
 	display : {
 		'a'      : '\u2714:Accept (Shift-Enter)', // check mark - same action as accept
 		'accept' : 'Rendben:Accept (Shift-Enter)',

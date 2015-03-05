@@ -1,10 +1,9 @@
 /* keyboard layout template (copy of "international" from the core plugin)
  */
-
 jQuery.keyboard.layouts['international'] = {
 	'name' : 'international',
 	'lang' : ['all'], // this setting must match the "all" language definition below
-	'default': [
+	'normal': [
 		'` 1 2 3 4 5 6 7 8 9 0 - = {bksp}',
 		'{tab} q w e r t y u i o p [ ] \\',
 		'a s d f g h j k l ; \' {enter}',
@@ -39,6 +38,7 @@ jQuery.keyboard.layouts['international'] = {
 // "all" is used here for example purposes, by convention it should be the ISO 639-1 code for the specified language
 // ***********************
 jQuery.keyboard.language.all = {
+	language: 'All',
 	display : {
 		'a'      : '\u2714:Accept (Shift-Enter)', // check mark - same action as accept
 		'accept' : 'Accept:Accept (Shift-Enter)',

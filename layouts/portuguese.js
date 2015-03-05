@@ -17,7 +17,7 @@
 jQuery.keyboard.layouts['portuguese-qwerty'] = {
 	'name' : 'portuguese-qwerty',
 	'lang' : ['pt'],
-	'default' : [
+	'normal' : [
 		"\u005C 1 2 3 4 5 6 7 8 9 0 \u0027 \u00ab {bksp}",
 		"{tab} q w e r t y u i o p \u002b \u00b4",
 		"a s d f g h j k l \u00e7 \u00ba \u007e {enter}",
@@ -55,6 +55,7 @@ jQuery.keyboard.layouts['portuguese-qwerty'] = {
 // ***********************
 // "{a} {accept} {alt} {b} {bksp} {c} {cancel} {clear} {combo} {dec} {e} {enter} {lock} {s} {shift} {sign} {space} {t} {tab}"
 jQuery.keyboard.language.pt = {
+	language: 'Portuguese',
 	display : {
 		'a'      : '\u2714:Aceitar (Shift-Enter)',           // ALTERNATE accept button - unicode for check mark symbol
 		'accept' : 'Aceitar:Concluir (Shift-Enter)',         // Accept button text

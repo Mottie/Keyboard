@@ -13,7 +13,7 @@ More details http://www.microsoft.com/resources/msdn/goglobal/keyboards/kbdrost.
 
 /* Submitted July 2014 - Alex Florea <alecz.fia@gmail.com>*/
 
-$.keyboard.layouts['romanian'] = {
+jQuery.keyboard.layouts['romanian'] = {
 	'normal' : [
 		"\u201e 1 2 3 4 5 6 7 8 9 0 \u002d \u003d {bksp}",
 		"{tab} q w e r t y u i o p \u0103 \u00ee \u00e2",
@@ -49,6 +49,7 @@ $.keyboard.layouts['romanian'] = {
 // ro = ISO 639-1 code for Romanian
 // ***********************
 jQuery.keyboard.language.ro = {
+	language: 'Romanian',
 	display : {
 		'a'      : '\u2714:Accept (Shift-Enter)', // check mark - same action as accept
 		'accept' : 'Accept:Accept (Shift-Enter)',

@@ -7,10 +7,10 @@
 *
 * license for this file: WTFPL, unless the source layout site has a problem with me using them as a reference
 */
-$.keyboard.layouts['chinese'] = {
+jQuery.keyboard.layouts['chinese'] = {
 	'name' : 'chinese',
 	'lang' : ['zh'],
-	'default' : [
+	'normal' : [
 		'\u20AC 1 2 3 4 5 6 7 8 9 0 - = {bksp}',
 		'{tab} \u624B \u7530 \u6C34 \u53E3 \u5EFF \u535C \u5C71 \u6208 \u4EBA \u5FC3 [ ] \\',
 		'\u65E5 \u5C38 \u6728 \u706B \u571F \u7AF9 \u5341 \u5927 \u4E2D ; \' {enter}',
@@ -44,6 +44,7 @@ $.keyboard.layouts['chinese'] = {
 // zh = ISO 639-1 code for Chinese
 // ***********************
 jQuery.keyboard.language.zh = {
+	language: 'Chinese',
 	display : {
 		'a'      : '\u2714:Accept (Shift-Enter)', // check mark - same action as accept
 		'accept' : 'Accept:Accept (Shift-Enter)',

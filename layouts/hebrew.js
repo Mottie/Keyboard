@@ -12,7 +12,7 @@
 jQuery.keyboard.layouts['hebrew-qwerty'] = {
 	'name' : 'hebrew-qwerty',
 	'lang' : ['he'],
-	'default' : [
+	'normal' : [
 		'; 1 2 3 4 5 6 7 8 9 0 - = {bksp}',
 		"{tab} / ' \u05e7 \u05e8 \u05d0 \u05d8 \u05d5 \u05df \u05dd \u05e4 [ ] \\",
 		"\u05e9 \u05d3 \u05d2 \u05db \u05e2 \u05d9 \u05d7 \u05dc \u05da \u05e3 , {enter}",
@@ -40,6 +40,7 @@ jQuery.keyboard.layouts['hebrew-qwerty'] = {
 // he = ISO 639-1 code for Hebrew
 // ***********************
 jQuery.keyboard.language.he = {
+	language: 'Hebrew',
 	display : {
 		'a'      : '\u2714:אישור (Shift-Enter)', // check mark - same action as accept
 		'accept' : 'אישור:אישור (Shift-Enter)',

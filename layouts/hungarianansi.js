@@ -9,11 +9,11 @@
  * license for this file: WTFPL, unless the source layout site has a problem with me using them as a reference
  */
 
-/* qwertz by Tóth Gergely (https://github.com/tgely) -  helped :http://www.fileformat.info/info/unicode/char/search.htm */
+/* qwertz by TÃ³th Gergely (https://github.com/tgely) -  helped :http://www.fileformat.info/info/unicode/char/search.htm */
 jQuery.keyboard.layouts['hungarianansi-qwertz-1'] = {
 	'name' : 'hungarianansi-qwertz-1',
 	'lang' : ['hu'],
-	'default' : [
+	'normal' : [
 		"0 1 2 3 4 5 6 7 8 9 \u00f6 \u00fc \u00f3 \u0171 {bksp}",
 		"{tab} q w e r t z u i o p \u0151 \u00fa",
 		"a s d f g h j k l \u00e9 \u00e1 {enter}",
@@ -39,7 +39,7 @@ jQuery.keyboard.layouts['hungarianansi-qwertz-1'] = {
 jQuery.keyboard.layouts['hungarianansi-qwertz-2'] = {
 	'name' : 'hungarianansi-qwertz-2',
 	'lang' : ['hu'],
-	'default' : [
+	'normal' : [
 		"0 1 2 3 4 5 6 7 8 9 \u00f6 \u00fc \u00f3 {bksp}",
 		"{tab} q w e r t z u i o p \u0151 \u00fa",
 		"a s d f g h j k l \u00e9 \u00e1 \u0171 {enter}",
@@ -67,6 +67,7 @@ jQuery.keyboard.layouts['hungarianansi-qwertz-2'] = {
 // hu = ISO 639-1 code for Hungarian
 // ***********************
 jQuery.keyboard.language.hu = {
+	language: 'Hungarian',
 	display : {
 		'a'      : '\u2714:Accept (Shift-Enter)', // check mark - same action as accept
 		'accept' : 'Rendben:Accept (Shift-Enter)',

@@ -9,10 +9,10 @@
  */
 
 /* Thanks to Yury Kotlyarov (https://github.com/yura) */
-$.keyboard.layouts['russian-qwerty'] = {
+jQuery.keyboard.layouts['russian-qwerty'] = {
 	'name' : 'Russian-qwerty',
 	'lang' : ['ru'],
-	'default' : [
+	'normal' : [
 		"` 1 2 3 4 5 6 7 8 9 0 - = {bksp}",
 		"{tab} q w e r t y u i o p [ ] \\",
 		"a s d f g h j k l ; ' {enter}",
@@ -42,7 +42,7 @@ $.keyboard.layouts['russian-qwerty'] = {
 	]
 };
 
-$.keyboard.layouts["russian-mac"] = {
+jQuery.keyboard.layouts["russian-mac"] = {
 	'name' : 'Russian-mac',
 	'lang' : ['ru'],
 	"default": [
@@ -80,6 +80,7 @@ $.keyboard.layouts["russian-mac"] = {
 // ru = ISO 639-1 code for Russian
 // ***********************
 jQuery.keyboard.language.ru = {
+	language: 'Russian',
 	display : {
 		'a'      : '\u2714:Accept (Shift-Enter)', // check mark - same action as accept
 		'accept' : 'Accept:Accept (Shift-Enter)',
