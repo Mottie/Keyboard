@@ -88,6 +88,16 @@ Wiki: [Home](https://github.com/Mottie/Keyboard/wiki/Home) | [FAQ](https://githu
 
 Only the latest changes will be shown below, see the wiki log to view older versions.
 
+### Version 1.21.3 (3/5/2015)
+
+* Add Extender extension.
+  * It allows toggling an extra layout (e.g. numpad) next to the keysets ([demo](http://mottie.github.io/Keyboard/docs/extender.html)).
+  * Any layout can be used, but only the "normal" (previously "default") keyset will be visible.
+  * See [the documentation](https://github.com/Mottie/Keyboard/wiki/Setup#extender) for more details.
+* Add 93 more layouts.
+  * All generated from [Microsoft Windows Keyboard Layouts](https://msdn.microsoft.com/en-us/goglobal/bb964651).
+  * [Demo provided](http://mottie.github.io/Keyboard/docs/layouts3.html).
+
 ### Version 1.21.2 (3/3/2015)
 
 * Toggle action key icon css tweaks
@@ -108,24 +118,3 @@ Only the latest changes will be shown below, see the wiki log to view older vers
   * Button uses base64 encoded svgs for its icon (included in the css/images directory).
   * Fulfills [issue #281](https://github.com/Mottie/Keyboard/issues/281).
 * Autocomplete: Fix event error & caret repositioning issue.
-
-### Version 1.21.0 (2/21/2015)
-
-* Removed namespacing requirements from all event bindings **POSSIBLE BREAKING CHANGE**
-  * When binding to events, the `.keyboard` is no longer a requirement namespace as keyboard events are now contained with the `$.keyboard.events` variable.
-  * See the updated [Methods](https://github.com/Mottie/Keyboard/wiki/Methods#events) wiki page for more details.
-* Moved various checks outside of instanced keyboards. This includes:
-  * Check for older version of IE.
-  * Watermark support.
-  * Caret positioning being saved when input is hidden or loses focus. This fixes [issue #327](https://github.com/Mottie/Keyboard/issues/327).
-* Add `autoAcceptOnEsc` option:
-  * Setting this to `true` will only work if the `autoAccept` option is `true`.
-  * Allows forcing the content to be accepted even if the user presses escape.
-  * Fixes [issue #314](https://github.com/Mottie/Keyboard/issues/314).
-* Changed `language` option:
-  * It can now be set as either a string (`"en"`) or an array (`["en"]`).
-  * As an array, it will allow for future expansion so that a multiple languages can be set for one layout.
-* Changed `position` option:
-  * It can now be set as `false` or even an empty string.
-  * Previously, to avoid using the jQuery UI position utility this option was supposed to be set to an empty object (`{}`); but internal scripting was continuing to update and use this option to activate the jQuery UI position utility. No more!
-* Fixed an issue with meta keys getting broken by the v1.20.0 update. Sorry!
