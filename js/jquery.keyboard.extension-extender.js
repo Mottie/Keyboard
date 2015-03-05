@@ -69,7 +69,7 @@
 					.toggle( o.showing )
 					.children('button')
 					.removeAttr('data-pos');
-				base.$keyboard.append( $kb )
+				base.$keyboard.append( $kb );
 				base.extender_toggle( base.extender_options.showing );
 				base.bindKeys();
 			};

@@ -208,13 +208,8 @@ $.fn.addAutocomplete = function(){
 					.toggle( o.showing )
 					.children('button')
 					.removeAttr('data-pos');
-				base.$keyboard
-					.find( '.' + $keyboard.css.keySet )
-					.css('float', 'left')
-					.end()
-					.append( $kb )
-					.find( 'button.' + $keyboard.css.extender )
-					.toggleClass( base.options.css.buttonActive, base.extender_options.showing );
+				base.$keyboard.append( $kb );
+				base.extender_toggle( base.extender_options.showing );
 				base.bindKeys();
 			};
 
@@ -223,6 +218,9 @@ $.fn.addAutocomplete = function(){
 				base.$keyboard
 					.find( 'div.' + $keyboard.css.extender )
 					.toggle( base.extender_options.showing )
+					.end()
+					.find( '.' + $keyboard.css.keySet )
+					.css('float', base.extender_options.showing ? 'left' : 'none')
 					.end()
 					.find( 'button.' + $keyboard.css.extender )
 					.toggleClass( base.options.css.buttonActive, base.extender_options.showing );
