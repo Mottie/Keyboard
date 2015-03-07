@@ -414,7 +414,7 @@ var $keyboard = $.keyboard = function(el, options){
 		base.preview = base.$preview[0];
 		base.$decBtn = base.$keyboard.find('.' + kbcss.keyPrefix + 'dec');
 		// add enter to allowed keys; fixes #190
-		if (o.enterNavigation || base.el.tagName === 'TEXTAREA') { base.alwaysAllowed.push(13); }
+		if (o.enterNavigation || base.el.nodeName === 'TEXTAREA') { base.alwaysAllowed.push(13); }
 		if (o.lockInput) {
 			base.$preview.addClass(kbcss.locked).attr({ 'readonly': 'readonly'});
 		}
@@ -765,6 +765,7 @@ var $keyboard = $.keyboard = function(el, options){
 	// Insert text at caret/selection - thanks to Derek Wickwire for fixing this up!
 	base.insertText = function(txt){
 		var bksp, t, h,
+			isBksp = txt === '\b',
 			// use base.$preview.val() instead of base.preview.value (val.length includes carriage returns in IE).
 			val = base.$preview.val(),
 			pos = $keyboard.caret( base.$preview ),
@@ -778,23 +779,28 @@ var $keyboard = $.keyboard = function(el, options){
 		if (pos.end < pos.start) { pos.end = pos.start; }
 		if (pos.start > len) { pos.end = pos.start = len; }
 
-		if (base.preview.tagName === 'TEXTAREA') {
+		if (base.preview.nodeName === 'TEXTAREA') {
 			// This makes sure the caret moves to the next line after clicking on enter (manual typing works fine)
 			if ($keyboard.msie && val.substr(pos.start, 1) === '\n') { pos.start += 1; pos.end += 1; }
 			// Set scroll top so current text is in view - needed for virtual keyboard typing, not manual typing
 			// this doesn't appear to work correctly in Opera
-			h = (val.split('\n').length - 1);
-			base.preview.scrollTop = (h>0) ? base.lineHeight * h : scrT;
+			h = val.split('\n').length - 1;
+			base.preview.scrollTop = h > 0 ? base.lineHeight * h : scrT;
 		}
 
-		bksp = (txt === 'bksp' && pos.start === pos.end) ? true : false;
-		txt = (txt === 'bksp') ? '' : txt;
+		bksp = isBksp && pos.start === pos.end;
+		txt = isBksp ? '' : txt;
 		t = pos.start + (bksp ? -1 : txt.length);
-		scrL += parseInt(base.$preview.css('fontSize'),10) * (txt === 'bksp' ? -1 : 1);
+		scrL += parseInt(base.$preview.css('fontSize'),10) * (isBksp ? -1 : 1);
+
+		if (txt === '\\d') {
+			txt = '';
+			t = pos.start;
+			pos.end += 1;
+		}
 
 		base.$preview
-			.val( base.$preview.val().substr(0, pos.start - (bksp ? 1 : 0)) + txt +
-				base.$preview.val().substr(pos.end) )
+			.val( val.substr(0, pos.start - (bksp ? 1 : 0)) + txt + val.substr(pos.end) )
 			.scrollLeft(scrL);
 		$keyboard.caret( base.$preview, t, t );
 
@@ -1494,7 +1500,8 @@ var $keyboard = $.keyboard = function(el, options){
 			base.showKeySet(el);
 		},
 		bksp : function(base) {
-			base.insertText('bksp'); // the script looks for the 'bksp' string and initiates a backspace
+			// the script looks for the '\b' string and initiates a backspace
+			base.insertText('\b');
 		},
 		cancel : function(base) {
 			base.close();
@@ -1513,13 +1520,17 @@ var $keyboard = $.keyboard = function(el, options){
 		dec : function(base) {
 			base.insertText((base.decimal) ? '.' : ',');
 		},
+		del : function(base) {
+			// the script looks for the '\\d' string and initiates a delete
+			base.insertText('\\d');
+		},
 		'default' : function(base, el) {
 			base.shiftActive = base.altActive = base.metaActive = false;
 			base.showKeySet(el);
 		},
 		// el is the pressed key (button) object; it is null when the real keyboard enter is pressed
 		enter : function(base, el, e) {
-			var tag = base.el.tagName, o = base.options;
+			var tag = base.el.nodeName, o = base.options;
 			// shift-enter in textareas
 			if (e.shiftKey) {
 				// textarea & input - enterMod + shift + enter = accept, then go to prev;
@@ -1581,7 +1592,7 @@ var $keyboard = $.keyboard = function(el, options){
 			base.insertText(' ');
 		},
 		tab : function(base) {
-			var tag = base.el.tagName,
+			var tag = base.el.nodeName,
 				o = base.options;
 			if (tag === 'INPUT') {
 				if (o.tabNavigation) {
@@ -1962,7 +1973,7 @@ var $keyboard = $.keyboard = function(el, options){
 		// Also save caret position of the input if it is locked
 		$keyboard.checkCaret = $keyboard.caret( $temp.find('input').hide().show() ).start !== 3;
 		$temp.remove();
-	}
+	};
 
 	$keyboard.caret = function($el, param1, param2) {
 		if ( !$el.length || $el.is(':hidden') || $el.css('visibility') === 'hidden' ) {

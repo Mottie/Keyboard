@@ -60,6 +60,7 @@
 				"'"  : '39',
 				'&nbsp;' : 'space',
 				'\b' : 'bksp',
+				'\\d': 'del', // made up definition (jsHint doesn't like '\d')
 				'\n' : 'Enter',
 				'\r' : 'Enter',
 				'\t' : 'tab'
@@ -68,7 +69,8 @@
 				8  : 'bksp',
 				9  : 'tab',
 				13 : 'enter',
-				32 : 'space'
+				32 : 'space',
+				46 : 'del'
 			};
 			base.typing_event = false;
 			base.typing_namespace = base.namespace + 'typing';
@@ -185,7 +187,6 @@
 					} else {
 						// key not found, check if it is in the keymap (tab, space, enter, etc)
 						n = (base.typing_keymap.hasOwnProperty(txt)) ? base.typing_keymap[txt] : txt.charCodeAt(0);
-						if (n === 'bksp') { txt = n; }
 						// find actual key on keyboard
 						key = ks.find('.' + kbcss.keyPrefix + n);
 					}
