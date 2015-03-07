@@ -257,14 +257,6 @@ var $keyboard = $.keyboard = function(el, options){
 			base.showKeySet();
 		}
 
-		// appendLocally && appendTo will now assume the keyboard will be displayed in
-		// its static position; the developer can now position it as desired using the
-		// '.ui-keyboard' class name.
-		if (!o.appendLocally && o.appendTo === 'body') {
-			// basic positioning before it is set by position utility
-			base.$keyboard.css({ position: 'absolute', left: 0, top: 0 });
-		}
-
 		// beforeVisible event
 		base.$el.trigger( $keyboard.events.kbBeforeVisible, [ base, base.el ] );
 
