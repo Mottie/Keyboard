@@ -2109,8 +2109,7 @@ $.fn.caret = function( start, end ) {
 			}
 		} else {
 			// caret positioning not supported
-			start = 0;
-			end = (el.value || '').length;
+			start = end = (el.value || '').length;
 		}
 		txt = (el.value || '');
 		return {
