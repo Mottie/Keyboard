@@ -6,7 +6,14 @@ module.exports = function(grunt) {
 		'█████▄ ▄████▄   █████▄ ▄████▄ ██████   ███████▄ ▄████▄ █████▄ ██ ██████ ██  ██\n' +
 		'██  ██ ██  ██   ██  ██ ██  ██   ██     ██ ██ ██ ██  ██ ██  ██ ██ ██     ██  ██\n' +
 		'██  ██ ██  ██   ██  ██ ██  ██   ██     ██ ██ ██ ██  ██ ██  ██ ██ ██▀▀   ▀▀▀▀██\n' +
-		'█████▀ ▀████▀   ██  ██ ▀████▀   ██     ██ ██ ██ ▀████▀ █████▀ ██ ██     █████▀\n*/\n';
+		'█████▀ ▀████▀   ██  ██ ▀████▀   ██     ██ ██ ██ ▀████▀ █████▀ ██ ██     █████▀\n*/\n',
+
+	hintOpts = {
+		"jquery": true,
+		"browser": true,
+		"sub": true, // used by layouts
+		"-W100": true // ignore "This character may get silently deleted by one or more browsers."
+	};
 
 	// Project configuration.
 	grunt.initConfig({
@@ -14,8 +21,20 @@ module.exports = function(grunt) {
 		pkg: grunt.file.readJSON( 'package.json' ),
 
 		clean: {
-			build: {
-				src: [ 'dist/*', 'js/jquery.keyboard.extension-all.js', 'layouts/keyboard-layouts-combined.js' ]
+			core: {
+				src: [
+					'dist/css/*',
+					'dist/js/*',
+					'js/jquery.keyboard.extension-all.js'
+				]
+			},
+			layouts: {
+				src: [
+					'dist/*',
+					'js/jquery.keyboard.extension-all.js',
+					'layouts/keyboard-layouts-combined.js',
+					'layouts/keyboard-layouts-microsoft.js'
+				]
 			}
 		},
 
@@ -47,14 +66,25 @@ module.exports = function(grunt) {
 		},
 
 		jshint: {
-			files: {
-				src: [ 'js/jquery.*.js', 'layouts/*' ]
+			core: {
+				options: hintOpts,
+				src: [ 'js/jquery.*.js' ]
 			},
-			options: {
-				"jquery": true,
-				"browser": true,
-				"sub": true, // used by layouts
-				"-W100": true // ignore "This character may get silently deleted by one or more browsers."
+			layouts: {
+				options: hintOpts,
+				src: [ 'js/jquery.*.js', 'layouts/*' ]
+			}
+		},
+
+		cssmin: {
+			target: {
+				files: [{
+					expand: true,
+					flatten: true,
+					src: ['css/*.css'],
+					dest: 'dist/css/',
+					ext: '.min.css'
+				}]
 			}
 		},
 
@@ -87,19 +117,6 @@ module.exports = function(grunt) {
 			}
 		},
 
-		cssmin: {
-			target: {
-				files: [{
-					expand: true,
-					flatten: true,
-					src: ['css/*.css'],
-					dest: 'dist/css/',
-					ext: '.min.css'
-				}]
-			}
-		},
-
-
 //		qunit: {
 //			files: ['test/index.html']
 //		},
@@ -113,7 +130,7 @@ module.exports = function(grunt) {
 
 	});
 
-	grunt.loadNpmTasks('grunt-contrib-clean' );
+	grunt.loadNpmTasks('grunt-contrib-clean');
 	grunt.loadNpmTasks('grunt-contrib-jshint');
 	// grunt.loadNpmTasks('grunt-contrib-qunit');
 	grunt.loadNpmTasks('grunt-contrib-concat');
@@ -122,6 +139,8 @@ module.exports = function(grunt) {
 	grunt.loadNpmTasks('grunt-contrib-watch');
 
 	// Default task.
-	grunt.registerTask('default', ['clean', 'jshint', 'concat', 'uglify', 'cssmin']);
+	grunt.registerTask('default', ['clean:core', 'jshint:core', 'concat:exts', 'cssmin', 'uglify:core']);
+	// layout build takes a lot longer to uglify
+	grunt.registerTask('layouts', ['clean:layouts', 'jshint:layouts', 'concat', 'cssmin', 'uglify']);
 
 };
