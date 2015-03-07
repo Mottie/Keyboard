@@ -1,5 +1,5 @@
-/*! jQuery UI Virtual Keyboard previewKeyset v1.0 *//*
- * for Keyboard v1.18+ only (updated 2/15/2015)
+/*! jQuery UI Virtual Keyboard previewKeyset v1.1 *//*
+ * for Keyboard v1.18+ only (updated 3/7/2015)
  *
  * By Rob Garrison (aka Mottie & Fudgey)
  * Licensed under the MIT License

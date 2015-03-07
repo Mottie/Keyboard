@@ -88,6 +88,36 @@ Wiki: [Home](https://github.com/Mottie/Keyboard/wiki/Home) | [FAQ](https://githu
 
 Only the latest changes will be shown below, see the wiki log to view older versions.
 
+### Version 1.22.0 (3/7/2015)
+
+* Add AMD/browserify support.
+* Add `{del}` key & modify `{bksp}` key.
+  * The delete key allows deleting content to the right of the caret.
+  * The backspace key still allows deleting content to the left of the caret, it's code was only tweaked internally to not use plain text to indicate a backspace.
+* Add `{normal}` key & deprecate `{default}` key:
+  * The `{normal}` key is a duplicate of the `{default}` key.
+  * Since "default" is a reserved javascript word, this key is being deprecated to prevent future issues.
+* `last` variable changes:
+  * Rename `last.value` to `last.val` - it was inconsistent internally. This contains the current preview input value.
+  * Add `last.event` - contains last DOM event object; saved by `keypress`, `repeater` and events set by the `keyBinding` option.
+  * Add `last.$key` - jQuery object of the last virtual key used; it is set to an empty array when the physical keyboard is used.
+  * Add `last.layout` - contains the name of the layout last used by the keyboard.
+  * Update `last.eventTime` upon closing the keyboard. See [issue #333](https://github.com/Mottie/Keyboard/issues/333) on how this can be useful.
+* Remove internal keyboard position setting
+  * Absolute positioning is already defined in the css
+  * The inline setting was interfering with alternative positioning.
+* Caret
+  * Started centralizing caret positioning code.
+  * Anticipating the possibility of swapping out caret positioning plugins, or using an input mask plugin.
+  * A suitable alternatives has yet to be found; either way, more code adjustment will be necessary to make this work.
+  * Set caret position to end when caret positioning isn't supported; it was previously returning a full selection.
+* Demo
+  * Add jQuery UI theme switcher to the [combined layouts demo](http://mottie.github.io/Keyboard/docs/layouts.html).
+  * Also added some missing layouts to the combined layouts demo.
+* Grunt build
+  * Add a "grunt layout" build to build everything.
+  * The default "grunt" build now ignores layout files as uglifying & concatenating layout files takes more time.
+
 ### Version 1.21.3 (3/5/2015)
 
 * Add Extender extension.
@@ -110,11 +140,3 @@ Only the latest changes will be shown below, see the wiki log to view older vers
   * Any layout can be used, but only the "normal" keyset will be added.
   * See [the demo here](http://mottie.github.io/Keyboard/docs/extender.html).
   * The [documentation can be found here](https://github.com/Mottie/Keyboard/wiki/Setup#wiki-extender).
-
-### Version 1.21.1 (2/28/2015)
-
-* Add toggle action key
-  * Allows enabling or disabling all keyboard keys & preview input.
-  * Button uses base64 encoded svgs for its icon (included in the css/images directory).
-  * Fulfills [issue #281](https://github.com/Mottie/Keyboard/issues/281).
-* Autocomplete: Fix event error & caret repositioning issue.
