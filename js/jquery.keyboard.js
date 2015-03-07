@@ -318,7 +318,7 @@ var $keyboard = $.keyboard = function(el, options){
 		setTimeout(function(){
 			base.opening = false;
 			if (o.initialFocus) {
-				base.$preview.focus().caret( base.last );
+				$keyboard.caret( base.$preview, base.last );
 			}
 			base.$el.trigger( $keyboard.events.kbVisible, [ base, base.el ] );
 			base.timer = setTimeout(function(){
@@ -438,7 +438,7 @@ var $keyboard = $.keyboard = function(el, options){
 	};
 
 	base.saveCaret = function(start, end){
-		var p = base.$preview.focus().caret( start, end );
+		var p = $keyboard.caret( base.$preview, start, end );
 		base.last.start = start || p.start;
 		base.last.end = end || p.end;
 	};
@@ -644,7 +644,9 @@ var $keyboard = $.keyboard = function(el, options){
 				base.last.$key = $key;
 				base.last.key = $key.attr('data-curtxt');
 				// Start caret in IE when not focused (happens with each virtual keyboard button click
-				if (base.checkCaret) { base.$preview.caret( base.last ); }
+				if (base.checkCaret) {
+					$keyboard.caret( base.$preview, base.last );
+				}
 				if (action.match('meta')) { action = 'meta'; }
 				if (action in $keyboard.keyaction && $.isFunction($keyboard.keyaction[action])) {
 					// stop processing if action returns false (close & cancel)
@@ -659,7 +661,7 @@ var $keyboard = $.keyboard = function(el, options){
 					}
 				}
 				// set caret if caret moved by action function; also, attempt to fix issue #131
-				base.$preview.focus().caret( base.last );
+				$keyboard.caret( base.$preview, base.last );
 				base.checkCombos();
 				base.$el.trigger( $keyboard.events.kbChange, [ base, base.el ] );
 				base.last.val = base.$preview.val();
@@ -707,7 +709,9 @@ var $keyboard = $.keyboard = function(el, options){
 					$(this).removeClass(o.css.buttonHover); // needed for touch devices
 				} else {
 					if (base.isVisible() && base.isCurrent()) { base.$preview.focus(); }
-					if (base.checkCaret) { base.$preview.caret( base.last ); }
+					if (base.checkCaret) {
+						$keyboard.caret( base.$preview, base.last );
+					}
 				}
 				base.mouseRepeat = [false,''];
 				clearTimeout(base.repeater); // make sure key repeat stops!
@@ -763,7 +767,7 @@ var $keyboard = $.keyboard = function(el, options){
 		var bksp, t, h,
 			// use base.$preview.val() instead of base.preview.value (val.length includes carriage returns in IE).
 			val = base.$preview.val(),
-			pos = base.$preview.caret(),
+			pos = $keyboard.caret( base.$preview ),
 			scrL = base.$preview.scrollLeft(),
 			scrT = base.$preview.scrollTop(),
 			len = val.length; // save original content length
@@ -791,8 +795,8 @@ var $keyboard = $.keyboard = function(el, options){
 		base.$preview
 			.val( base.$preview.val().substr(0, pos.start - (bksp ? 1 : 0)) + txt +
 				base.$preview.val().substr(pos.end) )
-			.scrollLeft(scrL)
-			.caret(t, t);
+			.scrollLeft(scrL);
+		$keyboard.caret( base.$preview, t, t );
 
 		base.last.start = base.last.end = t; // save caret in case of bksp
 
@@ -803,7 +807,7 @@ var $keyboard = $.keyboard = function(el, options){
 		var start, caret,
 			val = base.$preview.val();
 		if (o.maxLength !== false && val.length > o.maxLength) {
-			start = base.$preview.caret().start;
+			start = $keyboard.caret( base.$preview ).start;
 			caret = Math.min(start, o.maxLength);
 
 			// prevent inserting new characters when maxed #289
@@ -885,7 +889,7 @@ var $keyboard = $.keyboard = function(el, options){
 		var i, r, t, t2,
 			// use base.$preview.val() instead of base.preview.value (val.length includes carriage returns in IE).
 			val = base.$preview.val(),
-			pos = base.$preview.caret(),
+			pos = $keyboard.caret( base.$preview ),
 			layout = $keyboard.builtLayouts[base.layout],
 			len = val.length; // save original content length
 
@@ -911,13 +915,13 @@ var $keyboard = $.keyboard = function(el, options){
 				// Modern browsers - check for combos from last two characters left of the caret
 				t = pos.start - (pos.start - 2 >= 0 ? 2 : 0);
 				// target last two characters
-				base.$preview.caret(t, pos.end);
+				$keyboard.caret( base.$preview, t, pos.end );
 				// do combo replace
-				t2 = (base.$preview.caret().text || '').replace(base.regex, function(s, accent, letter){
+				t2 = ($keyboard.caret( base.$preview ).text || '').replace(base.regex, function(s, accent, letter){
 					return (o.combos.hasOwnProperty(accent)) ? o.combos[accent][letter] || s : s;
 				});
 				// add combo back
-				base.$preview.val( base.$preview.caret().replace(t2) );
+				base.$preview.val( $keyboard.caret( base.$preview ).replaceStr(t2) );
 				val = base.$preview.val();
 			}
 		}
@@ -1539,7 +1543,7 @@ var $keyboard = $.keyboard = function(el, options){
 			base.showKeySet(el);
 		},
 		left : function(base) {
-			var p = base.$preview.caret();
+			var p = $keyboard.caret( base.$preview );
 			if (p.start - 1 >= 0) {
 				// move both start and end of caret (prevents text selection) & save caret position
 				base.last.start = base.last.end = p.start - 1;
@@ -1558,7 +1562,7 @@ var $keyboard = $.keyboard = function(el, options){
 			return false;
 		},
 		right : function(base) {
-			var p = base.$preview.caret();
+			var p = $keyboard.caret( base.$preview );
 			if (p.start + 1 <= base.$preview.val().length) {
 				// move both start and end of caret (prevents text selection) && save caret position
 				base.last.start = base.last.end = p.start + 1;
@@ -1949,6 +1953,61 @@ var $keyboard = $.keyboard = function(el, options){
 
 	$keyboard.watermark = (typeof(document.createElement('input').placeholder) !== 'undefined');
 
+	$keyboard.checkCaretSupport = function(){
+		// Check if caret position is saved when input is hidden or loses focus
+		// (*cough* all versions of IE and I think Opera has/had an issue as well
+		var $temp = $('<div style="height:0px;width:0px;overflow:hidden;"><input type="text" value="testing"></div>')
+			.prependTo( 'body' ); // stop page scrolling
+		$keyboard.caret( $temp.find('input'), 3, 3 );
+		// Also save caret position of the input if it is locked
+		$keyboard.checkCaret = $keyboard.caret( $temp.find('input').hide().show() ).start !== 3;
+		$temp.remove();
+	}
+
+	$keyboard.caret = function($el, param1, param2) {
+		if ( !$el.length || $el.is(':hidden') || $el.css('visibility') === 'hidden' ) {
+			return {};
+		}
+		var start, end, txt, pos;
+		// set caret position
+		if (typeof param1 !== 'undefined') {
+			// allow setting caret using ( $el, { start: x, end: y } )
+			if (typeof param1 === 'object' && 'start' in param1 && 'end' in param1) {
+				start = param1.start;
+				end = param1.end;
+			// set caret using ( $el, start, end );
+			} else if (typeof param1 === 'number' && typeof param2 === 'number') {
+				start = param1;
+				end = param2;
+			}
+			// *** SET CARET POSITION ***
+			// modify the line below to adapt to other caret plugins
+			return $el.caret( start, end );
+		}
+		// *** GET CARET POSITION ***
+		// modify the line below to adapt to other caret plugins
+		pos = $el.caret();
+		start = pos.start;
+		end = pos.end;
+
+		// *** utilities ***
+		txt = ($el[0].value || $el.text() || '');
+		return {
+			start : start,
+			end : end,
+			// return selected text
+			text : txt.substring( start, end ),
+			// return a replace selected string method
+			replaceStr : function( str ) {
+				return txt.substring( 0, start ) + str + txt.substring( end, txt.length );
+			}
+		};
+	};
+
+	$(function(){
+		$keyboard.checkCaretSupport();
+	});
+
 	$.fn.keyboard = function(options){
 		return this.each(function(){
 			if (!$(this).data('keyboard')) {
@@ -1968,91 +2027,84 @@ var $keyboard = $.keyboard = function(el, options){
  * Licensed under the MIT License:
  * http://www.opensource.org/licenses/mit-license.php
  * Highly modified from the original
- */
+  */
 (function($, len, createRange, duplicate){
 'use strict';
 
-$.fn.caret = function(options,opt2) {
+$.fn.caret = function( start, end ) {
 	if ( typeof this[0] === 'undefined' || this.is(':hidden') || this.css('visibility') === 'hidden' ) {
 		return this;
 	}
-	var s, start, e, end, selRange, range, stored_range, te, val,
-		selection = document.selection, t = this[0], sTop = t.scrollTop,
-		ss = false, supportCaret = true;
+	var selRange, range, stored_range, txt, val,
+		selection = document.selection,
+		$el = this,
+		el = $el[0],
+		sTop = el.scrollTop,
+		ss = false,
+		supportCaret = true;
 	try {
-		ss = 'selectionStart' in t;
+		ss = 'selectionStart' in el;
 	} catch(err){
 		supportCaret = false;
 	}
-	if (typeof options === 'object' && 'start' in options && 'end' in options) {
-		start = options.start;
-		end = options.end;
-	} else if (typeof options === 'number' && typeof opt2 === 'number') {
-		start = options;
-		end = opt2;
-	}
 	if (supportCaret && typeof start !== 'undefined') {
-		if (!/(email|number)/i.test(t.type)) {
+		if (!/(email|number)/i.test(el.type)) {
 			if (ss){
-				t.selectionStart=start;
-				t.selectionEnd=end;
+				el.selectionStart = start;
+				el.selectionEnd = end;
 			} else {
-				selRange = t.createTextRange();
+				selRange = el.createTextRange();
 				selRange.collapse(true);
 				selRange.moveStart('character', start);
-				selRange.moveEnd('character', end-start);
+				selRange.moveEnd('character', end - start);
 				selRange.select();
 			}
 		}
 		// must be visible or IE8 crashes; IE9 in compatibility mode works fine - issue #56
-		if (this.is(':visible') || this.css('visibility') !== 'hidden') { this.focus(); }
-		t.scrollTop = sTop;
+		if ( $el.is(':visible') || $el.css('visibility') !== 'hidden' ) { el.focus(); }
+		el.scrollTop = sTop;
 		return this;
 	} else {
-		if (/(email|number)/i.test(t.type)) {
+		if (/(email|number)/i.test(el.type)) {
 			// fix suggested by raduanastase (https://github.com/Mottie/Keyboard/issues/105#issuecomment-40456535)
-			s = e = this.val().length;
+			start = end = $el.val().length;
 		} else if (ss) {
-			s = t.selectionStart;
-			e = t.selectionEnd;
+			start = el.selectionStart;
+			end = el.selectionEnd;
 		} else if (selection) {
-			if (t.tagName === 'TEXTAREA') {
-				val = this.val();
+			if (el.nodeName === 'TEXTAREA') {
+				val = $el.val();
 				range = selection[createRange]();
 				stored_range = range[duplicate]();
-				stored_range.moveToElementText(t);
+				stored_range.moveToElementText(el);
 				stored_range.setEndPoint('EndToEnd', range);
 				// thanks to the awesome comments in the rangy plugin
-				s = stored_range.text.replace(/\r/g, '\n')[len];
-				e = s + range.text.replace(/\r/g, '\n')[len];
+				start = stored_range.text.replace(/\r/g, '\n')[len];
+				end = start + range.text.replace(/\r/g, '\n')[len];
 			} else {
-				val = this.val().replace(/\r/g, '\n');
+				val = $el.val().replace(/\r/g, '\n');
 				range = selection[createRange]()[duplicate]();
 				range.moveEnd('character', val[len]);
-				s = (range.text === '' ? val[len] : val.lastIndexOf(range.text));
+				start = (range.text === '' ? val[len] : val.lastIndexOf(range.text));
 				range = selection[createRange]()[duplicate]();
 				range.moveStart('character', -val[len]);
-				e = range.text[len];
+				end = range.text[len];
 			}
 		} else {
 			// caret positioning not supported
-			s = 0;
-			e = (t.value || '').length;
+			start = 0;
+			end = (el.value || '').length;
 		}
-		te = (t.value || '').substring(s,e);
-		return { start : s, end : e, text : te, replace : function(st){
-			return t.value.substring(0,s) + st + t.value.substring(e, t.value[len]);
-		}};
+		txt = (el.value || '');
+		return {
+			start : start,
+			end : end,
+			text : txt.substring( start, end ),
+			replace : function(str) {
+				return txt.substring( 0, start ) + str + txt.substring( end, txt[len] );
+			}
+		};
 	}
 };
-
-// Check if caret position is saved when input is hidden or loses focus
-// (*cough* all versions of IE and I think Opera has/had an issue as well
-var $temp = $('<div style="height:0px;width:0px;overflow:hidden;"><input type="text" value="testing"></div>')
-	.prependTo( 'body' ); // stop page scrolling
-$temp.find('input').caret(3,3);
-// Also save caret position of the input if it is locked
-$.keyboard.checkCaret = $temp.find('input').hide().show().caret().start !== 3;
-$temp.remove();
 
 })(jQuery, 'length', 'createRange', 'duplicate');
