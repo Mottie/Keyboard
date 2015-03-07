@@ -9,7 +9,7 @@
 	<link href="css/demo.css" rel="stylesheet">
 
 	<!-- jQuery & jQuery UI + theme (required) -->
-	<link href="css/jquery-ui.min.css" rel="stylesheet">
+	<link href="css/jquery-ui.min.css" id="ui-theme" rel="stylesheet">
 	<script src="js/jquery.min.js"></script>
 	<script src="js/jquery-ui.min.js"></script>
 
@@ -26,11 +26,21 @@
 	<!-- keyboard layout -->
 	<script src="../layouts/keyboard-layouts-combined.js" charset="utf-8"></script>
 
-	<!-- theme switcher -->
-	<script src="http://jqueryui.com/themeroller/themeswitchertool/"></script>
+	<!-- theme switcher: https://github.com/pontikis/jui_theme_switch/ -->
+	<style>
+	.switcher_container { padding: 5px; }
+	.switcher_list { padding: 2px; }
+	.switcher_label { margin-right: 5px; }
+	</style>
+	<script src="js/jquery.jui_theme_switch.min.js"></script>
 
 	<script>
 	$(function(){
+
+		$('#switcher').jui_theme_switch({
+			stylesheet_link_id : 'ui-theme',
+			datasource_url     : 'js/theme_switcher.json'
+		});
 
 		var layouts = [
 			// 'title , file name , layout name'
@@ -66,10 +76,13 @@
 			"Persian (Farsi), persian, Persian",
 			"Polish (qwerty), polish, polish-qwerty",
 			"Portuguese (qwerty), portuguese, portuguese-qwerty",
+			"Romanian (qwerty), romanian, romanian",
 			"Russian (qwerty), russian, russian-qwerty",
 			"Russian (mac), russian, russian-mac",
 			"Serbian Cyrillic (sr-Cyrl), serbian, sr-Cyrl",
 			"Serbian Latin (sr), serbian, sr",
+			"Serbian Cyrillic Keyboard Layout (српски) for Mac, serbian, sr-Cyrl-mac",
+			"Serbian Latin Keyboard Layout (Srpski) for Mac, serbian, sr-mac",
 			"Spanish (qwerty), spanish, spanish-qwerty",
 			"Spanish (qwerty) special, spanish, spanish-qwerty-sp",
 			"Swedish (qwerty), swedish, swedish-qwerty",
@@ -96,27 +109,32 @@
 			o += '<option data-filename="' + t[1] + '" value="' + t[2] + '">' + t[0] + '</option>';
 		});
 
-		$('#multi').keyboard({
-			layout: 'qwerty',
-			stayOpen: true
-		})
-		// activate the typing extension
-		.addTyping({
-			showTyping: true,
-			delay: 50
-		})
-		.previewKeyset();
+		// allow theme selector to set up, otherwise it pushes the page down after the
+		// keyboard has opened and covers up the <h2> layout title
+		setTimeout(function(){
+			$('#multi').keyboard({
+				layout: 'qwerty',
+				stayOpen: true
+			})
+			// activate the typing extension
+			.addTyping({
+				showTyping: true,
+				delay: 50
+			})
+			.previewKeyset();
 
-		$('#lang')
-		.html(o)
-		.change(function(){
-			var kb = $('#multi'),
-				$this = $(this),
-				$opt = $this.find('option:selected'),
-				layout = $this.val();
-			$('h2').text( $opt.text() );
-			showKb( layout );
-		}).trigger('change');
+			$('#lang')
+			.html(o)
+			.change(function(){
+				var kb = $('#multi'),
+					$this = $(this),
+					$opt = $this.find('option:selected'),
+					layout = $this.val();
+				$('h2').text( $opt.text() );
+				showKb( layout );
+			}).trigger('change');
+
+		}, 100);
 
 	});
 	</script>
