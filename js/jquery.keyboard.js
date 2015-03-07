@@ -87,7 +87,7 @@ var $keyboard = $.keyboard = function(el, options){
 		base.checkCaret = ( o.lockInput || $keyboard.checkCaret );
 
 		// [shift, alt, meta]
-		base.last = { start:0, end:0, key:'', val:'', keyset: [false, false, false] };
+		base.last = { start:0, end:0, key:'', val:'', layout:'', keyset: [false, false, false] };
 		base.temp = [ '', 0, 0 ]; // used when building the keyboard - [keyset element, row, index]
 
 		// Bind events
@@ -376,6 +376,7 @@ var $keyboard = $.keyboard = function(el, options){
 			// custom layout - create a unique layout name based on the hash
 			if (o.layout === 'custom') { o.layoutHash = 'custom' + base.customHash(); }
 			base.layout = o.layout === 'custom' ? o.layoutHash : o.layout;
+			base.last.layout = base.layout;
 
 			base.updateLanguage();
 
@@ -1083,6 +1084,8 @@ var $keyboard = $.keyboard = function(el, options){
 				.trigger( ((accepted || false) ? kbevents.inputAccepted : kbevents.inputCanceled), [ base, base.el ] )
 				.trigger( (o.alwaysOpen) ? kbevents.kbInactive : kbevents.kbHidden, [ base, base.el ] )
 				.blur();
+			// add close event time
+			base.last.eventTime = new Date().getTime();
 			if (o.openOn) {
 				// rebind input focus - delayed to fix IE issue #72
 				base.timer = setTimeout(function(){
