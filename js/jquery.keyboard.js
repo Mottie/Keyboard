@@ -1524,6 +1524,7 @@ var $keyboard = $.keyboard = function(el, options){
 			// the script looks for the '\\d' string and initiates a delete
 			base.insertText('\\d');
 		},
+		// resets to base keyset (deprecated because "default" is a reserved word)
 		'default' : function(base, el) {
 			base.shiftActive = base.altActive = base.metaActive = false;
 			base.showKeySet(el);
@@ -1567,6 +1568,11 @@ var $keyboard = $.keyboard = function(el, options){
 		next : function(base) {
 			base.switchInput(true, base.options.autoAccept);
 			return false;
+		},
+		// same as 'default' - resets to base keyset
+		normal : function(base, el) {
+			base.shiftActive = base.altActive = base.metaActive = false;
+			base.showKeySet(el);
 		},
 		prev : function(base) {
 			base.switchInput(false, base.options.autoAccept);
