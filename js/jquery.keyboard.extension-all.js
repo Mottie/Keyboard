@@ -33,8 +33,17 @@
  *
  */
 /*jshint browser:true, jquery:true, unused:false */
-(function($){
-"use strict";
+/*global require:false, define:false, module:false */
+;(function(factory) {
+	if (typeof define === 'function' && define.amd) {
+		define(['jquery'], factory);
+	} else if (typeof module === 'object' && typeof module.exports === 'object') {
+		module.exports = factory(require('jquery'));
+	} else {
+		factory(jQuery);
+	}
+}(function($) {
+'use strict';
 $.fn.addAutocomplete = function(){
 	return this.each(function(){
 		// make sure a keyboard is attached
@@ -135,7 +144,8 @@ $.fn.addAutocomplete = function(){
 
 	});
 };
-})(jQuery);
+
+}));
 
 /*! jQuery UI Virtual Keyboard Extender v1.0 *//*
  * for Keyboard v1.18+ only (3/3/2015)
@@ -271,7 +281,16 @@ $.fn.addAutocomplete = function(){
  *
  */
 /*jshint browser:true, jquery:true, unused:false */
-(function($){
+/*global require:false, define:false, module:false */
+;(function(factory) {
+	if (typeof define === 'function' && define.amd) {
+		define(['jquery'], factory);
+	} else if (typeof module === 'object' && typeof module.exports === 'object') {
+		module.exports = factory(require('jquery'));
+	} else {
+		factory(jQuery);
+	}
+}(function($) {
 $.fn.addMobile = function(options){
 
 	var o, defaults = {
@@ -413,7 +432,8 @@ $.fn.addMobile = function(options){
 
 	});
 };
-})(jQuery);
+
+}));
 
 /*! jQuery UI Virtual Keyboard Navigation v1.5 *//*
  * for Keyboard v1.18+ only (updated 2/15/2015)
@@ -442,8 +462,17 @@ $.fn.addMobile = function(options){
  *
  */
 /*jshint browser:true, jquery:true, unused:false */
-(function($){
-"use strict";
+/*global require:false, define:false, module:false */
+;(function(factory) {
+	if (typeof define === 'function' && define.amd) {
+		define(['jquery'], factory);
+	} else if (typeof module === 'object' && typeof module.exports === 'object') {
+		module.exports = factory(require('jquery'));
+	} else {
+		factory(jQuery);
+	}
+}(function($) {
+'use strict';
 $.keyboard = $.keyboard || {};
 
 $.keyboard.navigationKeys = {
@@ -623,7 +652,8 @@ $.fn.addNavigation = function(options){
 
 	});
 };
-})(jQuery);
+
+}));
 
 /*! jQuery UI Virtual Keyboard previewKeyset v1.0 *//*
  * for Keyboard v1.18+ only (updated 2/15/2015)
@@ -650,7 +680,16 @@ $.fn.addNavigation = function(options){
  *
  */
 /*jshint browser:true, jquery:true, unused:false */
-(function($){
+/*global require:false, define:false, module:false */
+;(function(factory) {
+	if (typeof define === 'function' && define.amd) {
+		define(['jquery'], factory);
+	} else if (typeof module === 'object' && typeof module.exports === 'object') {
+		module.exports = factory(require('jquery'));
+	} else {
+		factory(jQuery);
+	}
+}(function($) {
 'use strict';
 $.keyboard = $.keyboard || {};
 
@@ -696,7 +735,8 @@ $.fn.previewKeyset = function( options ) {
 
 	});
 };
-})( jQuery );
+
+}));
 
 /*
  * jQuery UI Virtual Keyboard Scramble Extension v1.5 for Keyboard v1.18+ (updated 2/15/2015)
@@ -723,9 +763,19 @@ $.fn.previewKeyset = function( options ) {
  *
  */
 /*jshint browser:true, jquery:true, unused:false */
-(function($) {
-"use strict";
+/*global require:false, define:false, module:false */
+;(function(factory) {
+	if (typeof define === 'function' && define.amd) {
+		define(['jquery'], factory);
+	} else if (typeof module === 'object' && typeof module.exports === 'object') {
+		module.exports = factory(require('jquery'));
+	} else {
+		factory(jQuery);
+	}
+}(function($) {
+'use strict';
 $.keyboard = $.keyboard || {};
+
 	$.fn.addScramble = function(options) {
 		//Set the default values, use comma to separate the settings, example:
 		var savedLayout,
@@ -906,7 +956,8 @@ $.keyboard = $.keyboard || {};
 
 		});
 	};
-})(jQuery);
+
+}));
 
 /*! jQuery UI Virtual Keyboard Typing Simulator v1.7 *//*
  * for Keyboard v1.18+ only (2/15/2015)
@@ -949,7 +1000,16 @@ $.keyboard = $.keyboard || {};
 // $('#inter').getkeyboard().reveal().typeIn('\tHello \b\n\tWorld', 500);
 // $('#meta').getkeyboard().reveal().typeIn('abCDd11123\u2648\u2649\u264A\u264B', 700, function(){ alert('all done!'); });
 /*jshint browser:true, jquery:true, unused:false */
-(function($){
+/*global require:false, define:false, module:false */
+;(function(factory) {
+	if (typeof define === 'function' && define.amd) {
+		define(['jquery'], factory);
+	} else if (typeof module === 'object' && typeof module.exports === 'object') {
+		module.exports = factory(require('jquery'));
+	} else {
+		factory(jQuery);
+	}
+}(function($) {
 	$.fn.addTyping = function(options){
 		//Set the default values, use comma to separate the settings, example:
 		var defaults = {
@@ -1183,7 +1243,8 @@ $.keyboard = $.keyboard || {};
 
 		});
 	};
-})(jQuery);
+
+}));
 
 /* Copyright (c) 2013 Brandon Aaron (http://brandon.aaron.sh)
  * Licensed under the MIT License (LICENSE.txt).

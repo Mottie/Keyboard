@@ -39,7 +39,16 @@
 // $('#inter').getkeyboard().reveal().typeIn('\tHello \b\n\tWorld', 500);
 // $('#meta').getkeyboard().reveal().typeIn('abCDd11123\u2648\u2649\u264A\u264B', 700, function(){ alert('all done!'); });
 /*jshint browser:true, jquery:true, unused:false */
-(function($){
+/*global require:false, define:false, module:false */
+;(function(factory) {
+	if (typeof define === 'function' && define.amd) {
+		define(['jquery'], factory);
+	} else if (typeof module === 'object' && typeof module.exports === 'object') {
+		module.exports = factory(require('jquery'));
+	} else {
+		factory(jQuery);
+	}
+}(function($) {
 	$.fn.addTyping = function(options){
 		//Set the default values, use comma to separate the settings, example:
 		var defaults = {
@@ -273,4 +282,5 @@
 
 		});
 	};
-})(jQuery);
+
+}));

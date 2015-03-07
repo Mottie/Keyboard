@@ -26,7 +26,16 @@ Setup/Usage:
 	Please refer to https://github.com/Mottie/Keyboard/wiki
 */
 /*jshint browser:true, jquery:true, unused:false */
-;(function($, window, document){
+/*global require:false, define:false, module:false */
+;(function(factory) {
+	if (typeof define === 'function' && define.amd) {
+		define(['jquery'], factory);
+	} else if (typeof module === 'object' && typeof module.exports === 'object') {
+		module.exports = factory(require('jquery'));
+	} else {
+		factory(jQuery);
+	}
+}(function($) {
 'use strict';
 var $keyboard = $.keyboard = function(el, options){
 	var base = this, o;
@@ -2038,14 +2047,22 @@ var $keyboard = $.keyboard = function(el, options){
 		return this.data('keyboard');
 	};
 
-})(jQuery, window, document);
+}));
 
 /* Copyright (c) 2010 C. F., Wong (<a href="http://cloudgen.w0ng.hk">Cloudgen Examplet Store</a>)
  * Licensed under the MIT License:
  * http://www.opensource.org/licenses/mit-license.php
  * Highly modified from the original
   */
-(function($, len, createRange, duplicate){
+(function(factory) {
+	if (typeof define === 'function' && define.amd) {
+		define(['jquery'], factory);
+	} else if (typeof module === 'object' && typeof module.exports === 'object') {
+		module.exports = factory(require('jquery'));
+	} else {
+		factory(jQuery);
+	}
+}(function($) {
 'use strict';
 
 $.fn.caret = function( start, end ) {
@@ -2091,21 +2108,21 @@ $.fn.caret = function( start, end ) {
 		} else if (selection) {
 			if (el.nodeName === 'TEXTAREA') {
 				val = $el.val();
-				range = selection[createRange]();
-				stored_range = range[duplicate]();
+				range = selection.createRange();
+				stored_range = range.duplicate();
 				stored_range.moveToElementText(el);
 				stored_range.setEndPoint('EndToEnd', range);
 				// thanks to the awesome comments in the rangy plugin
-				start = stored_range.text.replace(/\r/g, '\n')[len];
-				end = start + range.text.replace(/\r/g, '\n')[len];
+				start = stored_range.text.replace(/\r/g, '\n').length;
+				end = start + range.text.replace(/\r/g, '\n').length;
 			} else {
 				val = $el.val().replace(/\r/g, '\n');
-				range = selection[createRange]()[duplicate]();
-				range.moveEnd('character', val[len]);
-				start = (range.text === '' ? val[len] : val.lastIndexOf(range.text));
-				range = selection[createRange]()[duplicate]();
-				range.moveStart('character', -val[len]);
-				end = range.text[len];
+				range = selection.createRange().duplicate();
+				range.moveEnd('character', val.length);
+				start = (range.text === '' ? val.length : val.lastIndexOf(range.text));
+				range = selection.createRange().duplicate();
+				range.moveStart('character', -val.length);
+				end = range.text.length;
 			}
 		} else {
 			// caret positioning not supported
@@ -2117,10 +2134,10 @@ $.fn.caret = function( start, end ) {
 			end : end,
 			text : txt.substring( start, end ),
 			replace : function(str) {
-				return txt.substring( 0, start ) + str + txt.substring( end, txt[len] );
+				return txt.substring( 0, start ) + str + txt.substring( end, txt.length );
 			}
 		};
 	}
 };
 
-})(jQuery, 'length', 'createRange', 'duplicate');
+}));
