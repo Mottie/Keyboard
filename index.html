@@ -56,7 +56,10 @@
 	</div>
 	<!-- End Links -->
 
-	<h1><a href="https://github.com/Mottie/Keyboard">Virtual Keyboard</a></h1>
+	<h1>
+		<a href="https://github.com/Mottie/Keyboard">Virtual Keyboard</a><br>
+		<small class="version"></small>
+	</h1>
 	<iframe class="github-btn" src="http://ghbtns.com/github-btn.html?user=Mottie&amp;repo=keyboard&amp;type=fork&amp;count=true" width="90" height="20" title="Fork on GitHub"></iframe>
 	<iframe class="github-btn" src="http://ghbtns.com/github-btn.html?user=Mottie&amp;repo=keyboard&amp;type=watch&amp;count=true" width="100" height="20" title="Star on GitHub"></iframe>
 	<h5>Original by
@@ -225,9 +228,11 @@ button.ui-keyboard-button.btn {
 	.addTyping();
 
 // Script - typing extension
-// simulate typing into the keyboard (\t = tab, \b = backspace, \r or \n = enter)
+// simulate typing into the keyboard, use:
+// \t or {t} = tab, \b or {b} = backspace, \r or \n or {e} = enter
+// added {l} = caret left, {r} = caret right & {d} = delete
 $('#inter-type').click(function(){
-	$('#inter').getkeyboard().reveal().typeIn("\tHell'o\bo \r\tWorld", 500);
+	$('#inter').getkeyboard().reveal().typeIn("{t}Hal{l}{l}{d}e{r}{r}l'o{b}o {e}{t}World", 500);
 	return false;
 });</pre>
 		</div>

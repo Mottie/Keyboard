@@ -213,6 +213,9 @@ var $keyboard = $.keyboard = function(el, options){
 	};
 
 	base.reveal = function(refresh){
+		if (base.isOpen) {
+			refresh = true;
+		}
 		var kbcss = $keyboard.css;
 		base.opening = true;
 		// remove all 'extra' keyboards
@@ -805,7 +808,7 @@ var $keyboard = $.keyboard = function(el, options){
 		t = pos.start + (bksp ? -1 : txt.length);
 		scrL += parseInt(base.$preview.css('fontSize'),10) * (isBksp ? -1 : 1);
 
-		if (txt === '\\d') {
+		if (txt === '{d}') {
 			txt = '';
 			t = pos.start;
 			pos.end += 1;
@@ -1125,7 +1128,7 @@ var $keyboard = $.keyboard = function(el, options){
 		if ( !base.isOpen ) { return; }
 		// ignore autoaccept if using escape - good idea?
 
-		if ( !base.isCurrent() && base.isOpen || base.isOpen && e.target !== base.el && !o.stayOpen) {
+		if ( !base.isCurrent() && base.isOpen || base.isOpen && e.target !== base.el && !o.stayOpen ) {
 			// stop propogation in IE - an input getting focus doesn't open a keyboard if one is already open
 			if ( $keyboard.allie ) {
 				e.preventDefault();
@@ -1535,8 +1538,8 @@ var $keyboard = $.keyboard = function(el, options){
 			base.insertText((base.decimal) ? '.' : ',');
 		},
 		del : function(base) {
-			// the script looks for the '\\d' string and initiates a delete
-			base.insertText('\\d');
+			// the script looks for the '{d}' string and initiates a delete
+			base.insertText('{d}');
 		},
 		// resets to base keyset (deprecated because "default" is a reserved word)
 		'default' : function(base, el) {
@@ -1573,6 +1576,7 @@ var $keyboard = $.keyboard = function(el, options){
 			if (p.start - 1 >= 0) {
 				// move both start and end of caret (prevents text selection) & save caret position
 				base.last.start = base.last.end = p.start - 1;
+				$keyboard.caret( base.$preview, base.last );
 			}
 		},
 		meta : function(base, el) {
@@ -1597,6 +1601,7 @@ var $keyboard = $.keyboard = function(el, options){
 			if (p.start + 1 <= base.$preview.val().length) {
 				// move both start and end of caret (prevents text selection) && save caret position
 				base.last.start = base.last.end = p.start + 1;
+				$keyboard.caret( base.$preview, base.last );
 			}
 		},
 		shift : function(base, el) {

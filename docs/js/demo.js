@@ -5,6 +5,8 @@ jQuery(function($) {
 	// ********************
 	$('.qwerty:first').keyboard({ layout: 'qwerty' });
 
+	$('.version').html( '(v' + $('.qwerty').getkeyboard().version + ')' );
+
 	// QWERTY Password
 	// ********************
 	$('.qwerty:eq(1)').keyboard({
@@ -432,9 +434,11 @@ jQuery(function($) {
 	// Set up typing simulator extension on ALL keyboards
 	$('.ui-keyboard-input').addTyping();
 
-	// simulate typing into the keyboard (\t = tab, \b = backspace, \r or \n = enter)
+	// simulate typing into the keyboard
+	// \t or {t} = tab, \b or {b} = backspace, \r or \n or {e} = enter
+	// added {l} = caret left, {r} = caret right & {d} = delete
 	$('#inter-type').click(function(){
-		$('#inter').getkeyboard().reveal().typeIn("\tHell'o\bo \r\tWorld", 500);
+		$('#inter').getkeyboard().reveal().typeIn("{t}Hal{l}{l}{d}e{r}{r}l'o{b}o {e}{t}World", 500);
 		return false;
 	});
 	$('#meta-type').click(function(){
