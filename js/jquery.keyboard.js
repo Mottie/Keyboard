@@ -54,6 +54,8 @@ var $keyboard = $.keyboard = function(el, options){
 		base.settings = options || {};
 		base.options = o = $.extend(true, {}, $keyboard.defaultOptions, options);
 
+		// keyboard is active (not destroyed);
+		base.el.active = true;
 		// unique keyboard namespace
 		base.namespace = '.keyboard' + Math.random().toString(16).slice(2);
 		// Shift and Alt key toggles, sets is true if a layout has more than one keyset
@@ -191,6 +193,10 @@ var $keyboard = $.keyboard = function(el, options){
 	};
 
 	base.focusOn = function(){
+		if (!el.active) {
+			// keyboard was destroyed
+			return;
+		}
 		if (base.$el.is(':visible')) {
 			// caret position is always 0,0 in webkit; and nothing is focused at this point... odd
 			// save caret position in the input to transfer it to the preview
@@ -1094,9 +1100,12 @@ var $keyboard = $.keyboard = function(el, options){
 			if (o.openOn) {
 				// rebind input focus - delayed to fix IE issue #72
 				base.timer = setTimeout(function(){
-					base.$el.bind( o.openOn + base.namespace, function(){ base.focusOn(); });
-					// remove focus from element (needed for IE since blur doesn't seem to work)
-					if ($(':focus')[0] === base.el) { base.$el.blur(); }
+					// make sure keyboard isn't destroyed
+					if (el.active) {
+						base.$el.bind( o.openOn + base.namespace, function(){ base.focusOn(); });
+						// remove focus from element (needed for IE since blur doesn't seem to work)
+						if ($(':focus')[0] === base.el) { base.$el.blur(); }
+					}
 				}, 500);
 			}
 			if (!o.alwaysOpen && base.$keyboard) {
@@ -1444,6 +1453,7 @@ var $keyboard = $.keyboard = function(el, options){
 	base.destroy = function() {
 		$(document).unbind(base.namespace);
 		$(window).unbind(base.namespace);
+		base.el.active = false;
 		if (base.$keyboard.length) { base.$keyboard.remove(); }
 		var kbcss = $keyboard.css;
 		base.$el
@@ -1452,6 +1462,7 @@ var $keyboard = $.keyboard = function(el, options){
 			.removeAttr('role')
 			.unbind(base.namespace)
 			.removeData('keyboard');
+		base = null;
 	};
 
 		// Run initializer
