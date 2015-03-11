@@ -13,7 +13,13 @@ jQuery(function($) {
 		layout   : 'qwerty'
 	});
 	$('#passwd').click(function(){
-		$('.qwerty:eq(1)').getkeyboard().reveal();
+		var kb = $('.qwerty:eq(1)').getkeyboard();
+		// close the keyboard if the keyboard is visible and the button is clicked a second time
+		if ( kb.isOpen ) {
+			kb.close();
+		} else {
+			kb.reveal();
+		}
 	});
 	// since IE adds an overlay behind the input to prevent clicking in other inputs (the keyboard may not automatically open on focus... silly IE bug)
 	// We can remove the overlay (transparent) if desired using this code:

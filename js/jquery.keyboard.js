@@ -329,6 +329,8 @@ var $keyboard = $.keyboard = function(el, options){
 			if (o.initialFocus) {
 				$keyboard.caret( base.$preview, base.last );
 			}
+			// save event time for keyboards with stayOpen: true
+			base.last.eventTime = new Date().getTime();
 			base.$el.trigger( $keyboard.events.kbVisible, [ base, base.el ] );
 			base.timer = setTimeout(function(){
 				// get updated caret information after visible event - fixes #331
