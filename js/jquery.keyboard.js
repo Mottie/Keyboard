@@ -1136,8 +1136,11 @@ var $keyboard = $.keyboard = function(el, options){
 		// single stay open keyboard
 		if ( !base.isOpen ) { return; }
 		// ignore autoaccept if using escape - good idea?
-
-		if ( !base.isCurrent() && base.isOpen || base.isOpen && e.target !== base.el && !o.stayOpen ) {
+		if ( !base.isCurrent() && base.isOpen || base.isOpen && e.target !== base.el ) {
+			// don't close if stayOpen is set; but close if a different keyboard is being opened
+			if (o.stayOpen && !$(e.target).hasClass('ui-keyboard-input')) {
+				return;
+			}
 			// stop propogation in IE - an input getting focus doesn't open a keyboard if one is already open
 			if ( $keyboard.allie ) {
 				e.preventDefault();
