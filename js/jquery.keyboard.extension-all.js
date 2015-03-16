@@ -729,9 +729,14 @@ $.fn.previewKeyset = function( options ) {
 			}
 		};
 
-		base.$el.bind($.keyboard.events.kbBeforeVisible + base.namespace + 'Preview', function() {
+		// visible event is fired before this extension is initialized, so check!
+		if (base.options.alwaysOpen && base.isVisible()) {
 			base.previewKeyset();
-		});
+		} else {
+			base.$el.bind($.keyboard.events.kbBeforeVisible + base.namespace + 'Preview', function() {
+				base.previewKeyset();
+			});
+		}
 
 	});
 };
