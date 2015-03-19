@@ -89,7 +89,7 @@ var $keyboard = $.keyboard = function(el, options){
 		base.checkCaret = ( o.lockInput || $keyboard.checkCaret );
 
 		// [shift, alt, meta]
-		base.last = { start:0, end:0, key:'', val:'', layout:'', keyset: [false, false, false] };
+		base.last = { start:0, end:0, key:'', val:'', layout:'', virtual:true, keyset: [false, false, false] };
 		base.temp = [ '', 0, 0 ]; // used when building the keyboard - [keyset element, row, index]
 
 		// Bind events
@@ -464,6 +464,86 @@ var $keyboard = $.keyboard = function(el, options){
 		base.last.end = end || p.end;
 	};
 
+	base.setScroll = function(){
+		// Set scroll so caret & current text is in view
+		// needed for virtual keyboard typing, NOT manual typing - fixes #23
+		if ( base.last.virtual ) {
+
+			var scrollLeft, scrollWidth, clientWidth, adjustment, direction,
+				isTextarea = base.preview.nodeName === 'TEXTAREA',
+				value = base.last.val.substring( 0, Math.max( base.last.start, base.last.end ) );
+
+			if ( !base.$previewCopy ) {
+				// clone preview
+				base.$previewCopy = base.$preview.clone()
+					.css({
+						position : 'absolute',
+						zIndex : -10,
+						visibility : 'hidden'
+					})
+					.addClass('ui-keyboard-preview-clone');
+				if ( !isTextarea ) {
+					// make input zero-width because we need an accurate scrollWidth
+					base.$previewCopy.css({ 'white-space' : 'pre', 'width' : 0 });
+				}
+				if (o.usePreview) {
+					// add clone inside of preview wrapper
+					base.$preview.after( base.$previewCopy );
+				} else {
+					// just slap that thing in there somewhere
+					base.$keyboard.prepend( base.$previewCopy );
+				}
+			}
+
+			if ( isTextarea ) {
+				// need the textarea scrollHeight, so set the clone textarea height to be the line height
+				base.$previewCopy
+					.height( base.lineHeight )
+					.val( value );
+				// set scrollTop for Textarea
+				base.preview.scrollTop = base.lineHeight * ( Math.floor( base.$previewCopy[0].scrollHeight / base.lineHeight ) - 1 );
+			} else {
+				// add non-breaking spaces
+				base.$previewCopy.val( value.replace(/\s/g, '\xa0') );
+
+				// if scrollAdjustment option is set to "c" or "center" then center the caret
+				adjustment = /c/.test( o.scrollAdjustment ) ? base.preview.clientWidth / 2 : o.scrollAdjustment;
+				scrollWidth = base.$previewCopy[0].scrollWidth - 1;
+
+				// set initial state as moving right
+				if ( typeof base.last.scrollWidth === 'undefined' ) {
+					base.last.scrollWidth = scrollWidth;
+					base.last.direction = true;
+				}
+				// if direction = true; we're scrolling to the right
+				direction = base.last.scrollWidth === scrollWidth ? base.last.direction : base.last.scrollWidth < scrollWidth;
+				clientWidth = base.preview.clientWidth - adjustment;
+
+				// set scrollLeft for inputs; try to mimic the inherit caret positioning + scrolling:
+				// hug right while scrolling right...
+				if ( direction ) {
+					if ( scrollWidth < clientWidth ) {
+						base.preview.scrollLeft = 0;
+					} else {
+						base.preview.scrollLeft = scrollWidth - clientWidth;
+					}
+				} else {
+					// hug left while scrolling left...
+					if ( scrollWidth >= base.preview.scrollWidth - clientWidth ) {
+						base.preview.scrollLeft = base.preview.scrollWidth - adjustment;
+					} else if ( scrollWidth - adjustment > 0 ) {
+						base.preview.scrollLeft = scrollWidth - adjustment;
+					} else {
+						base.preview.scrollLeft = 0;
+					}
+				}
+
+				base.last.scrollWidth = scrollWidth;
+				base.last.direction = direction;
+			}
+		}
+	};
+
 	base.bindKeyboard = function(){
 		var evt, layout = $keyboard.builtLayouts[base.layout];
 		base.$preview
@@ -477,6 +557,7 @@ var $keyboard = $.keyboard = function(el, options){
 			.bind('keypress' + base.namespace, function(e){
 				if (o.lockInput) { return false; }
 				var k = base.last.key = String.fromCharCode(e.charCode || e.which);
+				base.last.virtual = false;
 				base.last.event = e;
 				base.last.$key = []; // not a virtual keyboard key
 				if (base.checkCaret) {
@@ -524,6 +605,7 @@ var $keyboard = $.keyboard = function(el, options){
 
 			})
 			.bind('keyup' + base.namespace, function(e){
+				base.last.virtual = false;
 				switch (e.which) {
 					// Insert tab key
 					case 9 :
@@ -567,6 +649,7 @@ var $keyboard = $.keyboard = function(el, options){
 				}
 			})
 			.bind('keydown' + base.namespace, function(e){
+				base.last.virtual = false;
 				switch (e.which) {
 
 					case 8 :
@@ -606,6 +689,7 @@ var $keyboard = $.keyboard = function(el, options){
 				}
 			})
 			.bind('mouseup touchend '.split(' ').join(base.namespace + ' '), function(){
+				base.last.virtual = true;
 				if (base.checkCaret) {
 					base.saveCaret();
 				}
@@ -618,6 +702,7 @@ var $keyboard = $.keyboard = function(el, options){
 				base.reveal();
 				$(document).trigger('checkkeyboard' + base.namespace);
 			}
+			base.$preview.focus();
 		});
 
 		// If preventing paste, block context menu (right click)
@@ -661,6 +746,7 @@ var $keyboard = $.keyboard = function(el, options){
 				if (timer - (base.last.eventTime || 0) < o.preventDoubleEventTime) { return; }
 				base.last.eventTime = timer;
 				base.last.event = e;
+				base.last.virtual = true;
 				base.$preview.focus();
 				base.last.$key = $key;
 				base.last.key = $key.attr('data-curtxt');
@@ -726,6 +812,7 @@ var $keyboard = $.keyboard = function(el, options){
 			// using 'kb' namespace for mouse repeat functionality to keep it separate
 			// I need to trigger a 'repeater.keyboard' to make it work
 			.bind('mouseup' + base.namespace + ' ' + 'mouseleave touchend touchmove touchcancel '.split(' ').join(base.namespace + 'kb '), function(e){
+				base.last.virtual = true;
 				if (/(mouseleave|touchend|touchcancel)/i.test(e.type)) {
 					$(this).removeClass(o.css.buttonHover); // needed for touch devices
 				} else {
@@ -790,8 +877,6 @@ var $keyboard = $.keyboard = function(el, options){
 			// use base.$preview.val() instead of base.preview.value (val.length includes carriage returns in IE).
 			val = base.$preview.val(),
 			pos = $keyboard.caret( base.$preview ),
-			scrL = base.$preview.scrollLeft(),
-			scrT = base.$preview.scrollTop(),
 			len = val.length; // save original content length
 
 		// silly IE caret hacks... it should work correctly, but navigating using arrow keys in a textarea
@@ -803,16 +888,11 @@ var $keyboard = $.keyboard = function(el, options){
 		if (base.preview.nodeName === 'TEXTAREA') {
 			// This makes sure the caret moves to the next line after clicking on enter (manual typing works fine)
 			if ($keyboard.msie && val.substr(pos.start, 1) === '\n') { pos.start += 1; pos.end += 1; }
-			// Set scroll top so current text is in view - needed for virtual keyboard typing, not manual typing
-			// this doesn't appear to work correctly in Opera
-			h = val.split('\n').length - 1;
-			base.preview.scrollTop = h > 0 ? base.lineHeight * h : scrT;
 		}
 
 		bksp = isBksp && pos.start === pos.end;
 		txt = isBksp ? '' : txt;
 		t = pos.start + (bksp ? -1 : txt.length);
-		scrL += parseInt(base.$preview.css('fontSize'),10) * (isBksp ? -1 : 1);
 
 		if (txt === '{d}') {
 			txt = '';
@@ -820,13 +900,11 @@ var $keyboard = $.keyboard = function(el, options){
 			pos.end += 1;
 		}
 
-		base.$preview
-			.val( val.substr(0, pos.start - (bksp ? 1 : 0)) + txt + val.substr(pos.end) )
-			.scrollLeft(scrL);
+		base.$preview.val( val.substr(0, pos.start - (bksp ? 1 : 0)) + txt + val.substr(pos.end) );
 		$keyboard.caret( base.$preview, t, t );
 
 		base.last.start = base.last.end = t; // save caret in case of bksp
-
+		base.setScroll();
 	};
 
 	// check max length
@@ -976,9 +1054,8 @@ var $keyboard = $.keyboard = function(el, options){
 		base.$preview.val(val);
 		base.saveCaret( pos.start, pos.end );
 
-		// calculate current cursor scroll location and set scrolltop to keep it in view
-		// find row, multiply by font-size
-		base.preview.scrollTop = base.lineHeight * (val.substring(0, pos.start).split('\n').length - 1);
+		// set scroll to keep caret in view
+		base.setScroll();
 
 		base.checkMaxLength();
 
@@ -1091,7 +1168,6 @@ var $keyboard = $.keyboard = function(el, options){
 				.addClass( (accepted || false) ? accepted === true ? '' : kbcss.inputAutoAccepted : '' )
 				.trigger( (o.alwaysOpen) ? '' : kbevents.kbBeforeClose, [ base, base.el, (accepted || false) ] )
 				.val( val )
-				.scrollTop( base.el.scrollHeight )
 				.trigger( ((accepted || false) ? kbevents.inputAccepted : kbevents.inputCanceled), [ base, base.el ] )
 				.trigger( (o.alwaysOpen) ? kbevents.kbInactive : kbevents.kbHidden, [ base, base.el ] )
 				.blur();
@@ -1471,7 +1547,6 @@ var $keyboard = $.keyboard = function(el, options){
 		// Run initializer
 		base.init();
 	};
-
 	$keyboard.css = {
 		// element class names
 		input: 'ui-keyboard-input',
@@ -1591,6 +1666,7 @@ var $keyboard = $.keyboard = function(el, options){
 				// move both start and end of caret (prevents text selection) & save caret position
 				base.last.start = base.last.end = p.start - 1;
 				$keyboard.caret( base.$preview, base.last );
+				base.setScroll();
 			}
 		},
 		meta : function(base, el) {
@@ -1616,6 +1692,7 @@ var $keyboard = $.keyboard = function(el, options){
 				// move both start and end of caret (prevents text selection) && save caret position
 				base.last.start = base.last.end = p.start + 1;
 				$keyboard.caret( base.$preview, base.last );
+				base.setScroll();
 			}
 		},
 		shift : function(base, el) {
@@ -1932,6 +2009,10 @@ var $keyboard = $.keyboard = function(el, options){
 
 		// caret placed at the end of any text when keyboard becomes visible
 		caretToEnd   : false,
+
+		// caret stays this many pixels from the edge of the input while scrolling left/right;
+		// use "c" or "center" to center the caret while scrolling
+		scrollAdjustment : 10,
 
 		// Set the max number of characters allowed in the input, setting it to false disables this option
 		maxLength    : false,
