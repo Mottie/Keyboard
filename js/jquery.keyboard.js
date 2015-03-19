@@ -400,6 +400,10 @@ var $keyboard = $.keyboard = function(el, options){
 				}
 			}
 			base.$keyboard = $keyboard.builtLayouts[base.layout].$keyboard.clone();
+			if ( ( base.el.id || '' ) !== '' ) {
+				// add ID to keyboard for styling purposes
+				base.$keyboard.attr( 'id', base.el.id + $keyboard.css.idSuffix );
+			}
 
 			// build preview display
 			if (o.usePreview) {
@@ -507,7 +511,7 @@ var $keyboard = $.keyboard = function(el, options){
 				base.$previewCopy.val( value.replace(/\s/g, '\xa0') );
 
 				// if scrollAdjustment option is set to "c" or "center" then center the caret
-				adjustment = /c/.test( o.scrollAdjustment ) ? base.preview.clientWidth / 2 : o.scrollAdjustment;
+				adjustment = /c/i.test( o.scrollAdjustment ) ? base.preview.clientWidth / 2 : o.scrollAdjustment;
 				scrollWidth = base.$previewCopy[0].scrollWidth - 1;
 
 				// set initial state as moving right
@@ -1548,6 +1552,8 @@ var $keyboard = $.keyboard = function(el, options){
 		base.init();
 	};
 	$keyboard.css = {
+		// keyboard id suffix
+		idSuffix: '_keyboard',
 		// element class names
 		input: 'ui-keyboard-input',
 		wrapper: 'ui-keyboard-preview-wrapper',
