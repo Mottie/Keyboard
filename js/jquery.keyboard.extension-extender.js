@@ -6,7 +6,17 @@
  *
 */
 /*jshint browser:true, jquery:true, unused:false */
-(function($){
+/*global require:false, define:false, module:false */
+;(function(factory) {
+	if (typeof define === 'function' && define.amd) {
+		define(['jquery'], factory);
+	} else if (typeof module === 'object' && typeof module.exports === 'object') {
+		module.exports = factory(require('jquery'));
+	} else {
+		factory(jQuery);
+	}
+}(function($) {
+'use strict';
 
 	var $keyboard = $.keyboard;
 
@@ -103,4 +113,4 @@
 		});
 	};
 
-})(jQuery);
+}));
