@@ -257,6 +257,7 @@
 								base.insertText(txt);
 							}
 							base.checkCombos();
+							base.$el.trigger( $keyboard.events.kbChange, [ base, base.el ] );
 						}
 					}
 
@@ -300,6 +301,7 @@
 							base.insertText(txt);
 						}
 						base.checkCombos();
+						base.$el.trigger( $keyboard.events.kbChange, [ base, base.el ] );
 					}
 				}, o.delay/3);
 			};
