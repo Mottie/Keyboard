@@ -155,7 +155,17 @@ $.fn.addAutocomplete = function(){
  *
 */
 /*jshint browser:true, jquery:true, unused:false */
-(function($){
+/*global require:false, define:false, module:false */
+;(function(factory) {
+	if (typeof define === 'function' && define.amd) {
+		define(['jquery'], factory);
+	} else if (typeof module === 'object' && typeof module.exports === 'object') {
+		module.exports = factory(require('jquery'));
+	} else {
+		factory(jQuery);
+	}
+}(function($) {
+'use strict';
 
 	var $keyboard = $.keyboard;
 
@@ -252,7 +262,7 @@ $.fn.addAutocomplete = function(){
 		});
 	};
 
-})(jQuery);
+}));
 
 /*! jQuery UI Virtual Keyboard for jQuery Mobile Themes v1.4 *//*
  * for Keyboard v1.18+ (updated 3/7/2015)
@@ -922,7 +932,7 @@ $.keyboard = $.keyboard || {};
 				if ( typeof $.keyboard.builtLayouts[base.orig_layout] === 'undefined' ) {
 					base.layout = opts.layout = base.orig_layout;
 					// build original layout, if not already built, e.g. "qwerty"
-					base.buildKeyboard();
+					base.buildKeyboard( base.layout, true );
 					base.layout = opts.layout = layout;
 				}
 				// clone, scramble then save layout
@@ -1223,6 +1233,7 @@ $.keyboard = $.keyboard || {};
 								base.insertText(txt);
 							}
 							base.checkCombos();
+							base.$el.trigger( $keyboard.events.kbChange, [ base, base.el ] );
 						}
 					}
 
@@ -1266,6 +1277,7 @@ $.keyboard = $.keyboard || {};
 							base.insertText(txt);
 						}
 						base.checkCombos();
+						base.$el.trigger( $keyboard.events.kbChange, [ base, base.el ] );
 					}
 				}, o.delay/3);
 			};

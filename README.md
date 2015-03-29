@@ -88,6 +88,18 @@ Wiki: [Home](https://github.com/Mottie/Keyboard/wiki/Home) | [FAQ](https://githu
 
 Only the latest changes will be shown below, see the wiki log to view older versions.
 
+### Version 1.22.2 (3/29/2015)
+
+* Core
+  * Add `setScroll` function to accurately set the scroll position so the caret is visible. Fixes [issue #23](https://github.com/Mottie/Keyboard/issues/23).
+  * Add element id to keyboard + `$.keyboard.css.idSuffix` to allow specific keyboard styling with css.
+* Docs: Update to jQuery v1.11.2.
+* Extender: Wrap with UMD code.
+* Preview Keyset: Now works when `alwaysOpen` is `true`.
+* Scramble: Fix javascript error preventing keyboard from appearing ( broken in v1.21.2 :/ ).
+* Typing: Trigger "keyboardChange" event while simulating typing.
+* Misc: Remove byte-order mark from `package.json`. Thanks [kant312](https://github.com/kant312)!
+
 ### Version 1.22.1 (3/13/2015)
 
 * Core
@@ -96,7 +108,7 @@ Only the latest changes will be shown below, see the wiki log to view older vers
   * Close function is now called when `stayOpen` is `true` and clicking to open another keyboard.
 * Docs
   * Update password demo to close on second click. Fixes [issue #336](https://github.com/Mottie/Keyboard/issues/336).
-  * Update to use jQuery v1.11.4.
+  * Update to use jQuery UI v1.11.4.
 * Typing Extension
   * Stop typing simulation on user interaction.
   * Add new and additional typeIn support for simulated keys:
@@ -138,13 +150,3 @@ Only the latest changes will be shown below, see the wiki log to view older vers
 * Grunt build
   * Add a "grunt layout" build to build everything.
   * The default "grunt" build now ignores layout files as uglifying & concatenating layout files takes more time.
-
-### Version 1.21.3 (3/5/2015)
-
-* Add Extender extension.
-  * It allows toggling an extra layout (e.g. numpad) next to the keysets ([demo](http://mottie.github.io/Keyboard/docs/extender.html)).
-  * Any layout can be used, but only the "normal" (previously "default") keyset will be visible.
-  * See [the documentation](https://github.com/Mottie/Keyboard/wiki/Setup#extender) for more details.
-* Add 93 more layouts.
-  * All generated from [Microsoft Windows Keyboard Layouts](https://msdn.microsoft.com/en-us/goglobal/bb964651).
-  * [Demo provided](http://mottie.github.io/Keyboard/docs/layouts3.html).
