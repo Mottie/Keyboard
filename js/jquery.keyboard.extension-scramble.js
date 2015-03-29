@@ -177,7 +177,7 @@ $.keyboard = $.keyboard || {};
 				if ( typeof $.keyboard.builtLayouts[base.orig_layout] === 'undefined' ) {
 					base.layout = opts.layout = base.orig_layout;
 					// build original layout, if not already built, e.g. "qwerty"
-					base.buildKeyboard();
+					base.buildKeyboard( base.layout, true );
 					base.layout = opts.layout = layout;
 				}
 				// clone, scramble then save layout
