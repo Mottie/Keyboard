@@ -343,7 +343,9 @@ var $keyboard = $.keyboard = function(el, options){
 			base.$el.trigger( $keyboard.events.kbVisible, [ base, base.el ] );
 			base.timer = setTimeout(function(){
 				// get updated caret information after visible event - fixes #331
-				base.saveCaret();
+				if (base) { //Check if base exists, this is a case when destroy is called, before timers have fired
+					base.saveCaret();
+				}
 			}, 200);
 		}, 10);
 		// return base to allow chaining in typing extension
@@ -1181,7 +1183,7 @@ var $keyboard = $.keyboard = function(el, options){
 				// rebind input focus - delayed to fix IE issue #72
 				base.timer = setTimeout(function(){
 					// make sure keyboard isn't destroyed
-					if (el.active) {
+					if (el.active && base) { //Check if base exists, this is a case when destroy is called, before timers have fired
 						base.$el.bind( o.openOn + base.namespace, function(){ base.focusOn(); });
 						// remove focus from element (needed for IE since blur doesn't seem to work)
 						if ($(':focus')[0] === base.el) { base.$el.blur(); }
