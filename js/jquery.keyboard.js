@@ -202,10 +202,11 @@ var $keyboard = $.keyboard = function(el, options){
 			// save caret position in the input to transfer it to the preview
 			// add delay to get correct caret position
 			base.timer2 = setTimeout(function(){
+				var undef;
 				// Number inputs don't support selectionStart and selectionEnd
 				// Number/email inputs don't support selectionStart and selectionEnd
-				if ( !/(number|email)/i.test(base.el.type) ) {
-					base.saveCaret();
+				if ( !/(number|email)/i.test(base.el.type) && !o.caretToEnd ) {
+					base.saveCaret( undef, undef, base.$el );
 				}
 			}, 20);
 		}
@@ -315,7 +316,7 @@ var $keyboard = $.keyboard = function(el, options){
 			parseInt(base.$preview.css('font-size') ,10) + 4;
 
 		if (o.caretToEnd) {
-			base.last.start = base.last.end = base.originalContent.length;
+			base.saveCaret( base.originalContent.length, base.originalContent.length );
 		}
 
 		// IE caret haxx0rs
@@ -343,7 +344,7 @@ var $keyboard = $.keyboard = function(el, options){
 			base.$el.trigger( $keyboard.events.kbVisible, [ base, base.el ] );
 			base.timer = setTimeout(function(){
 				// get updated caret information after visible event - fixes #331
-				if (base) { //Check if base exists, this is a case when destroy is called, before timers have fired
+				if (base) { // Check if base exists, this is a case when destroy is called, before timers have fired
 					base.saveCaret();
 				}
 			}, 200);
@@ -464,8 +465,8 @@ var $keyboard = $.keyboard = function(el, options){
 
 	};
 
-	base.saveCaret = function(start, end){
-		var p = $keyboard.caret( base.$preview, start, end );
+	base.saveCaret = function(start, end, $el){
+		var p = $keyboard.caret( $el || base.$preview, start, end );
 		base.last.start = start || p.start;
 		base.last.end = end || p.end;
 	};
@@ -907,9 +908,7 @@ var $keyboard = $.keyboard = function(el, options){
 		}
 
 		base.$preview.val( val.substr(0, pos.start - (bksp ? 1 : 0)) + txt + val.substr(pos.end) );
-		$keyboard.caret( base.$preview, t, t );
-
-		base.last.start = base.last.end = t; // save caret in case of bksp
+		base.saveCaret( t, t ); // save caret in case of bksp
 		base.setScroll();
 	};
 
