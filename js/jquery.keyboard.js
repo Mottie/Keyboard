@@ -201,7 +201,7 @@ var $keyboard = $.keyboard = function(el, options){
 			// caret position is always 0,0 in webkit; and nothing is focused at this point... odd
 			// save caret position in the input to transfer it to the preview
 			// add delay to get correct caret position
-			setTimeout(function(){
+			base.timer2 = setTimeout(function(){
 				// Number inputs don't support selectionStart and selectionEnd
 				// Number/email inputs don't support selectionStart and selectionEnd
 				if ( !/(number|email)/i.test(base.el.type) ) {
@@ -333,7 +333,7 @@ var $keyboard = $.keyboard = function(el, options){
 
 		// opening keyboard flag; delay allows switching between keyboards without immediately closing
 		// the keyboard
-		setTimeout(function(){
+		base.timer2 = setTimeout(function(){
 			base.opening = false;
 			if (o.initialFocus) {
 				$keyboard.caret( base.$preview, base.last );
@@ -556,7 +556,7 @@ var $keyboard = $.keyboard = function(el, options){
 			.unbind('keypress keyup keydown mouseup touchend '.split(' ').join(base.namespace + ' '))
 			.bind('click' + base.namespace, function(){
 				// update last caret position after user click, use at least 150ms or it doesn't work in IE
-				setTimeout(function(){
+				base.timer2 = setTimeout(function(){
 					base.saveCaret();
 				}, 150);
 			})
@@ -1536,6 +1536,8 @@ var $keyboard = $.keyboard = function(el, options){
 	};
 
 	base.destroy = function() {
+		clearTimeout(base.timer);
+		clearTimeout(base.timer2);
 		$(document).unbind(base.namespace);
 		$(window).unbind(base.namespace);
 		base.el.active = false;
