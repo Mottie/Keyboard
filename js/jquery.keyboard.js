@@ -1090,7 +1090,7 @@ var $keyboard = $.keyboard = function(el, options){
 			( !base.decimal && /\,/g.test(base.preview.value) ) ) {
 			base.$decBtn
 				.attr({ 'disabled': 'disabled', 'aria-disabled': 'true' })
-				.removeClass(o.css.buttonDefault + ' ' + o.css.buttonHover)
+				.removeClass(o.css.buttonHover)
 				.addClass(o.css.buttonDisabled);
 		} else {
 			base.$decBtn
