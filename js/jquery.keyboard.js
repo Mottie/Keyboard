@@ -476,7 +476,7 @@ var $keyboard = $.keyboard = function(el, options){
 		// needed for virtual keyboard typing, NOT manual typing - fixes #23
 		if ( base.last.virtual ) {
 
-			var scrollLeft, scrollWidth, clientWidth, adjustment, direction,
+			var scrollWidth, clientWidth, adjustment, direction,
 				isTextarea = base.preview.nodeName === 'TEXTAREA',
 				value = base.last.val.substring( 0, Math.max( base.last.start, base.last.end ) );
 
@@ -879,7 +879,7 @@ var $keyboard = $.keyboard = function(el, options){
 
 	// Insert text at caret/selection - thanks to Derek Wickwire for fixing this up!
 	base.insertText = function(txt){
-		var bksp, t, h,
+		var bksp, t,
 			isBksp = txt === '\b',
 			// use base.$preview.val() instead of base.preview.value (val.length includes carriage returns in IE).
 			val = base.$preview.val(),
@@ -1240,7 +1240,7 @@ var $keyboard = $.keyboard = function(el, options){
 	// Add key function
 	// keyName = the name of the function called in $.keyboard.keyaction when the button is clicked
 	// name = name added to key, or cross-referenced in the display options
-	// newSet = keyset to attach the new button
+	// base.temp[0] = keyset to attach the new button
 	// regKey = true when it is not an action key
 	base.addKey = function(keyName, name, regKey){
 		var t, keyType, m, map, nm,
@@ -1330,8 +1330,7 @@ var $keyboard = $.keyboard = function(el, options){
 			// set keyboard language
 			base.updateLanguage();
 		}
-		var t, action, row, newSet, isAction,
-			currentSet, key, keys, margin,
+		var row, $row, currentSet,
 			kbcss = $keyboard.css,
 			sets = 0,
 			layout = $keyboard.builtLayouts[name || base.layout] = {
@@ -1351,178 +1350,22 @@ var $keyboard = $.keyboard = function(el, options){
 		}
 		// Main keyboard building loop
 		$.each($keyboard.layouts[ internal ? o.layout : name ], function(set, keySet) {
-			var txt;
 			// skip layout name & lang settings
 			if (set !== '' && !/^(name|lang|rtl)$/i.test(set)) {
 				// keep backwards compatibility for change from default to normal naming
 				if (set === 'default') { set = 'normal'; }
 				sets++;
-				newSet = $('<div />')
+				$row = $('<div />')
 					.attr('name', set) // added for typing extension
 					.addClass( kbcss.keySet + ' ' + kbcss.keySet + '-' + set)
 					.appendTo(container)
 					.toggle( set === 'normal' );
 
 				for ( row = 0; row < keySet.length; row++ ) {
-
 					// remove extra spaces before spliting (regex probably could be improved)
 					currentSet = $.trim(keySet[row]).replace(/\{(\.?)[\s+]?:[\s+]?(\.?)\}/g,'{$1:$2}');
-					keys = currentSet.split(/\s+/);
-
-					for ( key = 0; key < keys.length; key++ ) {
-						// used by addKey function
-						base.temp = [ newSet, row, key ];
-						isAction = false;
-
-						// ignore empty keys
-						if (keys[key].length === 0) { continue; }
-
-						// process here if it's an action key
-						if (/^\{\S+\}$/.test(keys[key])) {
-							action = keys[key].match(/^\{(\S+)\}$/)[1];
-							// add active class if there are double exclamation points in the name
-							if (/\!\!/.test(action)) {
-								action = action.replace('!!', '');
-								isAction = true;
-							}
-
-							// add empty space
-							if (/^sp:((\d+)?([\.|,]\d+)?)(em|px)?$/i.test(action)) {
-								// not perfect globalization, but allows you to use {sp:1,1em}, {sp:1.2em} or {sp:15px}
-								margin = parseFloat( action
-									.replace(/,/, '.')
-									.match(/^sp:((\d+)?([\.|,]\d+)?)(em|px)?$/i)[1] || 0
-								);
-								$('<span class="' + kbcss.keyText + '">&nbsp;</span>')
-									// previously {sp:1} would add 1em margin to each side of a 0 width span
-									// now Firefox doesn't seem to render 0px dimensions, so now we set the
-									// 1em margin x 2 for the width
-									.width( (action.match(/px/i) ? margin + 'px' : (margin * 2) + 'em') )
-									.addClass( kbcss.keySpacer )
-									.appendTo(newSet);
-							}
-
-							// add empty button
-							if (/^empty(:((\d+)?([\.|,]\d+)?)(em|px)?)?$/i.test(action)) {
-								margin = (/:/.test(action)) ? parseFloat( action
-									.replace(/,/,'.')
-									.match(/^empty:((\d+)?([\.|,]\d+)?)(em|px)?$/i)[1] || 0
-								) : '';
-								base
-									.addKey('', ' ')
-									.addClass(o.css.buttonDisabled + ' ' + o.css.buttonEmpty)
-									.attr('aria-disabled', true)
-									.width( margin ? (action.match('px') ? margin + 'px' : (margin * 2) + 'em') : '' );
-							}
-
-							// meta keys
-							if (/^meta\d+\:?(\w+)?/i.test(action)) {
-								base
-									.addKey(action.split(':')[0], action)
-									.addClass( kbcss.keyHasActive );
-								continue;
-							}
-
-							// switch needed for action keys with multiple names/shortcuts or
-							// default will catch all others
-							txt = action.split(':');
-							switch(txt[0].toLowerCase()) {
-
-								case 'a':
-								case 'accept':
-									base
-										.addKey('accept', action)
-										.addClass(o.css.buttonAction + ' ' + kbcss.keyAction);
-									break;
-
-								case 'alt':
-								case 'altgr':
-									base
-										.addKey('alt', action)
-										.addClass( kbcss.keyHasActive );
-									break;
-
-								case 'b':
-								case 'bksp':
-									base.addKey('bksp', action);
-									break;
-
-								case 'c':
-								case 'cancel':
-									base
-										.addKey('cancel', action)
-										.addClass(o.css.buttonAction + ' ' + kbcss.keyAction);
-									break;
-
-								// toggle combo/diacritic key
-								case 'combo':
-									base
-										.addKey('combo', action)
-										.addClass( kbcss.keyHasActive )
-										.toggleClass(o.css.buttonActive, o.useCombos);
-									break;
-
-								// Decimal - unique decimal point (num pad layout)
-								case 'dec':
-									acceptedKeys.push((base.decimal) ? '.' : ',');
-									base.addKey('dec', action);
-									break;
-
-								case 'e':
-								case 'enter':
-									base
-										.addKey('enter', action)
-										.addClass(o.css.buttonAction + ' ' + kbcss.keyAction);
-									break;
-
-								case 'lock':
-									base
-										.addKey('lock', action)
-										.addClass( kbcss.keyHasActive );
-									break;
-
-								case 's':
-								case 'shift':
-									base
-										.addKey('shift', action)
-										.addClass( kbcss.keyHasActive );
-									break;
-
-								// Change sign (for num pad layout)
-								case 'sign':
-									acceptedKeys.push('-');
-									base.addKey('sign', action);
-									break;
-
-								case 'space':
-									acceptedKeys.push(' ');
-									base.addKey('space', action);
-									break;
-
-								case 't':
-								case 'tab':
-									base.addKey('tab', action);
-									break;
-
-								default:
-									if ($keyboard.keyaction.hasOwnProperty(txt[0])){
-										// acceptedKeys.push(action);
-										base
-											.addKey(txt[0], action)
-											.toggleClass( o.css.buttonAction + ' ' + kbcss.keyAction, isAction );
-									}
-
-							}
-
-						} else {
-
-							// regular button (not an action key)
-							t = keys[key];
-							acceptedKeys.push( t === ':' ? t : t.split(':')[0] );
-							base.addKey(t, t, true);
-						}
-					}
-					newSet.find('.' + kbcss.keyButton + ':last').after('<br class="' + kbcss.endRow + '">');
+					base.buildRow( $row, row, currentSet.split(/\s+/), acceptedKeys );
+					$row.find('.' + kbcss.keyButton + ':last').after('<br class="' + kbcss.endRow + '">');
 				}
 			}
 		});
@@ -1532,6 +1375,164 @@ var $keyboard = $.keyboard = function(el, options){
 		layout.$keyboard = container;
 
 		return container;
+	};
+
+	base.buildRow = function( $row, row, keys, acceptedKeys ) {
+		var t, txt, key, isAction, action, margin,
+			kbcss = $keyboard.css;
+		for ( key = 0; key < keys.length; key++ ) {
+			// used by addKey function
+			base.temp = [ $row, row, key ];
+			isAction = false;
+
+			// ignore empty keys
+			if (keys[key].length === 0) { continue; }
+
+			// process here if it's an action key
+			if (/^\{\S+\}$/.test(keys[key])) {
+				action = keys[key].match(/^\{(\S+)\}$/)[1];
+				// add active class if there are double exclamation points in the name
+				if (/\!\!/.test(action)) {
+					action = action.replace('!!', '');
+					isAction = true;
+				}
+
+				// add empty space
+				if (/^sp:((\d+)?([\.|,]\d+)?)(em|px)?$/i.test(action)) {
+					// not perfect globalization, but allows you to use {sp:1,1em}, {sp:1.2em} or {sp:15px}
+					margin = parseFloat( action
+						.replace(/,/, '.')
+						.match(/^sp:((\d+)?([\.|,]\d+)?)(em|px)?$/i)[1] || 0
+					);
+					$('<span class="' + kbcss.keyText + '">&nbsp;</span>')
+						// previously {sp:1} would add 1em margin to each side of a 0 width span
+						// now Firefox doesn't seem to render 0px dimensions, so now we set the
+						// 1em margin x 2 for the width
+						.width( (action.match(/px/i) ? margin + 'px' : (margin * 2) + 'em') )
+						.addClass( kbcss.keySpacer )
+						.appendTo($row);
+				}
+
+				// add empty button
+				if (/^empty(:((\d+)?([\.|,]\d+)?)(em|px)?)?$/i.test(action)) {
+					margin = (/:/.test(action)) ? parseFloat( action
+						.replace(/,/,'.')
+						.match(/^empty:((\d+)?([\.|,]\d+)?)(em|px)?$/i)[1] || 0
+					) : '';
+					base
+						.addKey('', ' ')
+						.addClass(o.css.buttonDisabled + ' ' + o.css.buttonEmpty)
+						.attr('aria-disabled', true)
+						.width( margin ? (action.match('px') ? margin + 'px' : (margin * 2) + 'em') : '' );
+				}
+
+				// meta keys
+				if (/^meta\d+\:?(\w+)?/i.test(action)) {
+					base
+						.addKey(action.split(':')[0], action)
+						.addClass( kbcss.keyHasActive );
+					continue;
+				}
+
+				// switch needed for action keys with multiple names/shortcuts or
+				// default will catch all others
+				txt = action.split(':');
+				switch(txt[0].toLowerCase()) {
+
+					case 'a':
+					case 'accept':
+						base
+							.addKey('accept', action)
+							.addClass(o.css.buttonAction + ' ' + kbcss.keyAction);
+						break;
+
+					case 'alt':
+					case 'altgr':
+						base
+							.addKey('alt', action)
+							.addClass( kbcss.keyHasActive );
+						break;
+
+					case 'b':
+					case 'bksp':
+						base.addKey('bksp', action);
+						break;
+
+					case 'c':
+					case 'cancel':
+						base
+							.addKey('cancel', action)
+							.addClass(o.css.buttonAction + ' ' + kbcss.keyAction);
+						break;
+
+					// toggle combo/diacritic key
+					case 'combo':
+						base
+							.addKey('combo', action)
+							.addClass( kbcss.keyHasActive )
+							.toggleClass(o.css.buttonActive, o.useCombos);
+						break;
+
+					// Decimal - unique decimal point (num pad layout)
+					case 'dec':
+						acceptedKeys.push((base.decimal) ? '.' : ',');
+						base.addKey('dec', action);
+						break;
+
+					case 'e':
+					case 'enter':
+						base
+							.addKey('enter', action)
+							.addClass(o.css.buttonAction + ' ' + kbcss.keyAction);
+						break;
+
+					case 'lock':
+						base
+							.addKey('lock', action)
+							.addClass( kbcss.keyHasActive );
+						break;
+
+					case 's':
+					case 'shift':
+						base
+							.addKey('shift', action)
+							.addClass( kbcss.keyHasActive );
+						break;
+
+					// Change sign (for num pad layout)
+					case 'sign':
+						acceptedKeys.push('-');
+						base.addKey('sign', action);
+						break;
+
+					case 'space':
+						acceptedKeys.push(' ');
+						base.addKey('space', action);
+						break;
+
+					case 't':
+					case 'tab':
+						base.addKey('tab', action);
+						break;
+
+					default:
+						if ($keyboard.keyaction.hasOwnProperty(txt[0])){
+							// acceptedKeys.push(action);
+							base
+								.addKey(txt[0], action)
+								.toggleClass( o.css.buttonAction + ' ' + kbcss.keyAction, isAction );
+						}
+
+				}
+
+			} else {
+
+				// regular button (not an action key)
+				t = keys[key];
+				acceptedKeys.push( t === ':' ? t : t.split(':')[0] );
+				base.addKey(t, t, true);
+			}
+		}
 	};
 
 	base.destroy = function() {
