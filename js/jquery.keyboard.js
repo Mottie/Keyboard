@@ -86,7 +86,7 @@ var $keyboard = $.keyboard = function(el, options){
 			o.position.orig_at = o.position.at;
 		}
 
-		base.checkCaret = ( o.lockInput || $keyboard.checkCaret );
+		base.checkCaret = ( o.lockInput || $keyboard.checkCaretSupport() );
 
 		// [shift, alt, meta]
 		base.last = { start:0, end:0, key:'', val:'', layout:'', virtual:true, keyset: [false, false, false] };
@@ -2094,15 +2094,18 @@ var $keyboard = $.keyboard = function(el, options){
 
 	$keyboard.watermark = (typeof(document.createElement('input').placeholder) !== 'undefined');
 
-	$keyboard.checkCaretSupport = function(){
-		// Check if caret position is saved when input is hidden or loses focus
-		// (*cough* all versions of IE and I think Opera has/had an issue as well
-		var $temp = $('<div style="height:0px;width:0px;overflow:hidden;"><input type="text" value="testing"></div>')
-			.prependTo( 'body' ); // stop page scrolling
-		$keyboard.caret( $temp.find('input'), 3, 3 );
-		// Also save caret position of the input if it is locked
-		$keyboard.checkCaret = $keyboard.caret( $temp.find('input').hide().show() ).start !== 3;
-		$temp.remove();
+	$keyboard.checkCaretSupport = function() {
+		if ( typeof $keyboard.checkCaret !== 'boolean' ) {
+			// Check if caret position is saved when input is hidden or loses focus
+			// (*cough* all versions of IE and I think Opera has/had an issue as well
+			var $temp = $('<div style="height:0px;width:0px;overflow:hidden;"><input type="text" value="testing"></div>')
+				.prependTo( 'body' ); // stop page scrolling
+			$keyboard.caret( $temp.find('input'), 3, 3 );
+			// Also save caret position of the input if it is locked
+			$keyboard.checkCaret = $keyboard.caret( $temp.find('input').hide().show() ).start !== 3;
+			$temp.remove();
+		}
+		return $keyboard.checkCaret;
 	};
 
 	$keyboard.caret = function($el, param1, param2) {
@@ -2144,10 +2147,6 @@ var $keyboard = $.keyboard = function(el, options){
 			}
 		};
 	};
-
-	$(function(){
-		$keyboard.checkCaretSupport();
-	});
 
 	$.fn.keyboard = function(options){
 		return this.each(function(){
