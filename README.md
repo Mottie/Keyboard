@@ -111,24 +111,3 @@ Only the latest changes will be shown below, see the wiki log to view older vers
 * Scramble: Fix javascript error preventing keyboard from appearing ( broken in v1.21.2 :/ ).
 * Typing: Trigger "keyboardChange" event while simulating typing.
 * Misc: Remove byte-order mark from `package.json`. Thanks [kant312](https://github.com/kant312)!
-
-### Version 1.22.1 (3/13/2015)
-
-* Core
-  * Update `keyboard.last.eventTime` on keyboard visible.
-  * Destroy method now removes all references. Fixes [issue #337](https://github.com/Mottie/Keyboard/issues/337).
-  * Close function is now called when `stayOpen` is `true` and clicking to open another keyboard.
-* Docs
-  * Update password demo to close on second click. Fixes [issue #336](https://github.com/Mottie/Keyboard/issues/336).
-  * Update to use jQuery UI v1.11.4.
-* Typing Extension
-  * Stop typing simulation on user interaction.
-  * Add new and additional typeIn support for simulated keys:
-      * caret left = `{l}`
-      * caret right = `{r}`
-      * delete = `{d}` (`\\d` removed)
-      * tab = `\t` or `{t}`
-      * backspace = `\b` or `{b}`
-      * enter = `\n` or `\r` or `{e}`
-  * Find virtual key using `data-action` attribute as it's value doesn't change with other languages.
-  * Use keyaction functions instead of just inserting the text.

@@ -1,4 +1,4 @@
-/*! jQuery UI Virtual Keyboard v1.22.3 *//*
+/*! jQuery UI Virtual Keyboard v1.22.4 *//*
 
 Author: Jeremy Satterfield
 Modified: Rob Garrison (Mottie on github)
@@ -40,7 +40,7 @@ Setup/Usage:
 var $keyboard = $.keyboard = function(el, options){
 	var base = this, o;
 
-	base.version = '1.22.3';
+	base.version = '1.22.4';
 
 	// Access to jQuery and DOM versions of element
 	base.$el = $(el);
@@ -2162,25 +2162,11 @@ var $keyboard = $.keyboard = function(el, options){
 		return this.data('keyboard');
 	};
 
-	return $keyboard;
-
-}));
-
 /* Copyright (c) 2010 C. F., Wong (<a href="http://cloudgen.w0ng.hk">Cloudgen Examplet Store</a>)
  * Licensed under the MIT License:
  * http://www.opensource.org/licenses/mit-license.php
  * Highly modified from the original
   */
-(function(factory) {
-	if (typeof define === 'function' && define.amd) {
-		define(['jquery'], factory);
-	} else if (typeof module === 'object' && typeof module.exports === 'object') {
-		module.exports = factory(require('jquery'));
-	} else {
-		factory(jQuery);
-	}
-}(function($) {
-'use strict';
 
 $.fn.caret = function( start, end ) {
 	if ( typeof this[0] === 'undefined' || this.is(':hidden') || this.css('visibility') === 'hidden' ) {
@@ -2256,5 +2242,7 @@ $.fn.caret = function( start, end ) {
 		};
 	}
 };
+
+return $keyboard;
 
 }));
