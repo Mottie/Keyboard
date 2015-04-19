@@ -88,6 +88,11 @@ Wiki: [Home](https://github.com/Mottie/Keyboard/wiki/Home) | [FAQ](https://githu
 
 Only the latest changes will be shown below, see the wiki log to view older versions.
 
+### Version 1.22.4 (4/18/2015)
+
+* Core: move build row code into a separate function (so the new extension can use it).
+* AltKeyPopup extension: show alternate keys popup after clicking/pressing and holding on set keys. Fixes [issue #346](https://github.com/Mottie/Keyboard/issues/346).
+
 ### Version 1.22.3 (4/9/2015)
 
 * Bug fix undefined error, if destroy is called before times have fired. [Pull #345](https://github.com/Mottie/Keyboard/pull/345), thanks [raido](https://github.com/raido)!
