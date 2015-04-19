@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+
+	<title>Virtual Keyboard Basic Demo</title>
+
+	<!-- demo -->
+	<link href="css/demo.css" rel="stylesheet">
+
+	<!-- jQuery & jQuery UI + theme (required) -->
+	<link href="css/jquery-ui.min.css" rel="stylesheet">
+	<script src="js/jquery.min.js"></script>
+	<script src="js/jquery-ui.min.js"></script>
+
+	<!-- keyboard widget css & script (required) -->
+	<link href="../css/keyboard.css" rel="stylesheet">
+	<style>
+	code { background: #333; padding: 2px 4px; }
+	#footer2 div { text-align: left; }
+	</style>
+	<script src="../js/jquery.keyboard.js"></script>
+
+	<!-- keyboard extensions (optional) -->
+	<script src="../js/jquery.mousewheel.js"></script>
+	<script src="../js/jquery.keyboard.extension-altkeyspopup.js"></script>
+
+	<!-- initialize keyboard (required) -->
+	<script>
+	/* add some custom popups */
+	$.extend( $.keyboard.altKeys, {
+		1   : '\u2460 \u2474 \u2488 \u2776 \u278a \u2780',
+		'!' : '\u00a1 \u2762 \u2763', // adding two more exclamation points!
+		2   : '\u2461 \u2475 \u2489 \u2777 \u278b \u2781',
+		3   : '\u2462 \u2476 \u248a \u2778 \u278c \u2782',
+		4   : '\u2463 \u2477 \u248b \u2779 \u278d \u2783',
+		5   : '\u2464 \u2478 \u248c \u277a \u278e \u2784',
+		6   : '\u2465 \u2479 \u248d \u277b \u278f \u2785',
+		7   : '\u2466 \u247a \u248e \u277c \u2790 \u2786',
+		8   : '\u2467 \u247b \u248f \u277d \u2791 \u2787',
+		9   : '\u2468 \u247c \u2490 \u277e \u2792 \u2788',
+		0   : '\u2469 \u247d \u2491 \u277f \u2793 \u2789',
+		'[' : '\u25c0 \u25c1 \u25c2 \u25c3 \u25c4 \u25c5 \u261a \u261c', // left arrows
+		']' : '\u25b6 \u25b7 \u25b8 \u25b9 \u25ba \u25bb \u261b \u261e', // right arrows
+		// action keys the "!!" makes the button get the "ui-state-active" (set by the css.buttonActive option)
+		'enter' : '{!!clear} {!!a} {!!c}',
+		// smileys, card suits, & other symbols
+		'\u263a' : '\u2639 \u263b \u2660 \u2661 \u2662 \u2663 \u2664 \u2665 \u2666 \u2667 \u2766 \u2767 \u263c \u263d \u263e \u2605 \u2606',
+		// symbols with 4+ arms
+		'\u2719' : '\u271a \u271b \u271c \u271d \u271e \u271f \u2720 \u2721 \u2722 \u2723 \u2724 \u2725 \u2726 \u2727 \u2729 \u272a \u272b \u272c \u272d \u272e \u272f \u2730 \u2731 \u2732 \u2733 \u2734 \u2735 \u2736 \u2737 \u2738 \u2739 \u273a \u273b \u273c \u273d \u273e \u273f \u2740 \u2741 \u2742 \u2743 \u2744 \u2745 \u2746 \u2747 \u2748 \u2749 \u274a \u274b \u2756'
+	});
+
+	$(function(){
+		$('#keyboard').keyboard({
+			layout: 'custom',
+			customLayout: {
+				'normal': [
+					'` 1 2 3 4 5 6 7 8 9 0 - = {bksp}',
+					'{t} q w e r t y u i o p [ ] \\',
+					'a s d f g h j k l ; \' {enter}',
+					'{shift} z x c v b n m , . / {shift}',
+					'{accept} {space} {cancel} \u263a \u2719'
+				],
+				'shift': [
+					'~ ! @ # $ % ^ & * ( ) _ + {bksp}',
+					'{t} Q W E R T Y U I O P { } |',
+					'A S D F G H J K L : " {enter}',
+					'{shift} Z X C V B N M < > ? {shift}',
+					'{accept} {space} {cancel} \u263a \u2719'
+				]
+			},
+			repeatRate : 0
+		}).addAltKeyPopup({
+			// time to hold down a button in ms to trigger a popup
+			holdTime : 500,
+			// event triggered when popup is visible
+			// access the overlay from keyboard.altKeyPopup_$overlay
+			// or the keys container from keyboard.altKeyPopup_$overlay.find('.ui-keyboard-popup')
+			// or the keys from keyboard.altKeyPopup_$overlay.find('.ui-keyboard-button')
+			popupVisible : 'popup-visible'
+		});
+	});
+	</script>
+
+</head>
+
+<body>
+
+	<!-- Links to other demo pages & docs -->
+	<div id="nav">
+		<a href="../index.html">Main Demo</a>
+		<a href="basic.html">Basic</a>
+		<a href="mobile.html">Mobile</a>
+		<a href="layouts.html">Layouts</a>
+		<a href="layouts2.html">Layouts2</a>
+		<a href="layouts3.html">Layouts3</a>
+		<a href="scramble.html">Scramble</a>
+		<a href="navigate.html">Navigate</a>
+		<a href="preview-keyset.html">Keyset</a>
+		<a href="extender.html">Extender</a>
+		<a class="current" href="altkeys-popup.html">AltKeys</a>
+		<a href="calculator.html">Calculator</a>
+		<br>
+		<a class="play" href="http://jsfiddle.net/Mottie/egb3a1sk/">Playground</a>
+		<a class="git" href="https://github.com/Mottie/Keyboard/wiki">Documentation</a>
+		<a class="git" href="https://github.com/Mottie/Keyboard/archive/master.zip">Download</a>
+		<a class="issue" href="https://github.com/Mottie/Keyboard/issues">Issues</a>
+	</div>
+	<!-- End Links -->
+
+	<h1><a href="https://github.com/Mottie/Keyboard">Virtual Keyboard Alt-Keys Popup Demo</a></h1>
+	<h4>Note: Look at this demo source or refer to the <a href="https://github.com/Mottie/Keyboard/wiki/Setup#wiki-alt-key-popup">documentation</a> on how to set up this extension.</h4>
+
+	<div class="block2"> <!-- wrapper only needed to center the input -->
+
+		<!-- keyboard input -->
+		<input id="keyboard" type="text">
+
+	</div> <!-- End wrapper -->
+
+	<br class="clear" />
+
+	<div id="footer2">
+		<div>
+			<ul>
+				<li>Click or press and hold any of the following keys to see a popup:
+					<ul>
+						<li>Extension defaults: <code>1234567890acdeghijklnorstuwyz'ACDEGHIJKLNORSTUWYZ!$()"?</code></li>
+						<li>Demo extras: <code>[</code>, <code>]</code>, <code>enter</code>, <code>&#x263a;</code> &amp; <code>&#x2719;</code> (examine the source code of this page to see how these were added).</li>
+					</ul> </li>
+				<li>The keys within the popup are completely customizable. In fact they can include any action key (click or press and hold the enter key).</li>
+			</ul>
+		</div>
+	</div>
+
+</body>
+</html>

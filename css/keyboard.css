@@ -6,14 +6,17 @@
 .ui-keyboard-button span { padding: 0; margin: 0; white-space:nowrap; display: inline-block; }
 .ui-keyboard-button-endrow { clear: left; }
 .ui-keyboard-space { width: 15em; }
-.ui-keyboard-space span, .ui-keyboard-empty span { font: 0/0 a; text-shadow: none; color: transparent; } /* see http://nicolasgallagher.com/another-css-image-replacement-technique/ */
+/* see http://nicolasgallagher.com/another-css-image-replacement-technique/ */
+.ui-keyboard-space span, .ui-keyboard-empty span { font: 0/0 a; text-shadow: none; color: transparent; }
 .ui-keyboard-preview-wrapper { text-align: center; }
-.ui-keyboard-preview { text-align: left; margin: 0 0 3px 0; display: inline; width: 99%;} /* width is calculated in IE, since 99% = 99% full browser width =( */
+/* width is calculated in IE, since 99% = 99% full browser width =( */
+.ui-keyboard-preview { text-align: left; margin: 0 0 3px 0; display: inline; width: 99%;}
 .ui-keyboard-keyset { text-align: center; white-space: nowrap; }
 .ui-keyboard-input { text-align: left; }
-.ui-keyboard-input-current { -moz-box-shadow: 1px 1px 10px #00f; -webkit-box-shadow: 1px 1px 10px #00f; box-shadow: 1px 1px 10px #00f; }
+.ui-keyboard-input-current { -moz-box-shadow: 0 0 5px #4d90fe; -webkit-box-shadow: 0 0 5px #4d90fe; box-shadow: 0 0 5px #4d90fe; }
 .ui-keyboard-placeholder { color: #888; }
-.ui-keyboard-nokeyboard { color: #888; border-color: #888; } /* disabled or readonly inputs, or use input[disabled='disabled'] { color: #f00; } */
+/* disabled or readonly inputs, or use input[disabled='disabled'] { color: #f00; } */
+.ui-keyboard-nokeyboard { color: #888; border-color: #888; }
 .ui-keyboard-spacer { display: inline-block; width: 1px; height: 0; cursor: default; }
 .ui-keyboard-input.light, .ui-keyboard-preview.light { color: #222; background: #ddd; }
 .ui-keyboard-input.dark, .ui-keyboard-preview.dark { color: #ddd; background: #222; }
@@ -71,8 +74,28 @@ button.ui-keyboard-toggle.ui-keyboard-disabled span {
 	background-image: url(data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxMCIgaGVpZ2h0PSIxMCIgZmlsbD0iIzExMSI+PHBhdGggZD0iTTcuNCA0LjRWMi41YzAtMS40LTEuMS0yLjUtMi41LTIuNWMtMS40IDAtMi41IDEuMS0yLjUgMi41djEuOSBjLTAuNyAwLTEuMiAwLjUtMS4yIDEuMnYzLjFDMS4zIDkuNCAxLjggMTAgMi41IDEwaDQuOWMwLjcgMCAxLjItMC42IDEuMi0xLjJWNS42IEM4LjcgNC45IDguMSA0LjQgNy40IDQuNHogTTUuMyA3LjR2MS4wYzAgMC4yLTAuMSAwLjMtMC4zIDAuM2MtMC4yIDAtMC4zLTAuMS0wLjMtMC4zVjcuNCBjLTAuMi0wLjEtMC4zLTAuMy0wLjMtMC41YzAtMC4zIDAuMy0wLjYgMC42LTAuNmMwLjMgMCAwLjYgMC4zIDAuNiAwLjYgQzUuNiA3LjEgNS41IDcuMyA1LjMgNy40eiBNNi4yIDQuNEgzLjdWMi41YzAtMC43IDAuNS0xLjIgMS4yLTEuMmMwLjcgMCAxLjIgMC42IDEuMiAxLjIgVjQuNHoiLz48L3N2Zz4=);
 	*/
 }
-.ui-keyboard.ui-keyboard-disabled button:not(.ui-keyboard-toggle), .ui-keyboard.ui-keyboard-disabled input {
+.ui-keyboard.ui-keyboard-disabled button:not(.ui-keyboard-toggle),
+.ui-keyboard.ui-keyboard-disabled input {
 	opacity: 0.5;
+}
+
+/*** Alt-Keys Popup extension ***/
+/* clickable overlay on top of keyboard to hide the popup */
+.ui-keyboard-overlay {
+	position: absolute;
+	top: 0;
+	left: 0;
+	bottom: 0;
+	right: 0;
+	background: rgba(0, 0, 0, 0.5);
+}
+/* the actual popup styling, class names from the css.container option are also added */
+.ui-keyboard-popup {
+	display: inline-block;
+	/* default buttons are 2em wide + .1em margin on either side (set in .ui-keyboard-button definition);
+	so use multiples of 2.2em	for a max-width if you don't want any extra white space on the sides,
+	e.g. 5 buttons * 2.2em = 11em, 6 buttons * 2.2em = 13.2em, etc */
+	max-width: 22em; /* 10 buttons */
 }
 
 /*** Extender keyboard extension ***/
