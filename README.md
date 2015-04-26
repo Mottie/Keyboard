@@ -88,6 +88,14 @@ Wiki: [Home](https://github.com/Mottie/Keyboard/wiki/Home) | [FAQ](https://githu
 
 Only the latest changes will be shown below, see the wiki log to view older versions.
 
+### Version 1.22.5 (4/26/2015)
+
+* Caret
+  * Include code inside of keyboard AMD wrapper.
+  * Remove need for document ready to check for caret support.
+  * Fixes [issue #348](https://github.com/Mottie/Keyboard/issues/348).
+* Remove id from preview clone. See [issue #334](https://github.com/Mottie/Keyboard/issues/334).
+
 ### Version 1.22.4 (4/18/2015)
 
 * Core: move build row code into a separate function (so the new extension can use it).
@@ -99,15 +107,3 @@ Only the latest changes will be shown below, see the wiki log to view older vers
 * Destroy method now clears timers.
 * Caret position on open & `caretToEnd` working. Fixes issues [#343](https://github.com/Mottie/Keyboard/issues/343) & [#262](https://github.com/Mottie/Keyboard/issues/262).
 * Disabled button now maintain default appearance (rounded corners were disappearing).
-
-### Version 1.22.2 (3/29/2015)
-
-* Core
-  * Add `setScroll` function to accurately set the scroll position so the caret is visible. Fixes [issue #23](https://github.com/Mottie/Keyboard/issues/23).
-  * Add element id to keyboard + `$.keyboard.css.idSuffix` to allow specific keyboard styling with css.
-* Docs: Update to jQuery v1.11.2.
-* Extender: Wrap with UMD code.
-* Preview Keyset: Now works when `alwaysOpen` is `true`.
-* Scramble: Fix javascript error preventing keyboard from appearing ( broken in v1.21.2 :/ ).
-* Typing: Trigger "keyboardChange" event while simulating typing.
-* Misc: Remove byte-order mark from `package.json`. Thanks [kant312](https://github.com/kant312)!
