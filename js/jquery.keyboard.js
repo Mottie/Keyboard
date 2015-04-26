@@ -483,6 +483,7 @@ var $keyboard = $.keyboard = function(el, options){
 			if ( !base.$previewCopy ) {
 				// clone preview
 				base.$previewCopy = base.$preview.clone()
+					.removeAttr('id') // fixes #334
 					.css({
 						position : 'absolute',
 						zIndex : -10,
