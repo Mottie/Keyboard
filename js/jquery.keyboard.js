@@ -2099,7 +2099,7 @@ var $keyboard = $.keyboard = function(el, options){
 		if ( typeof $keyboard.checkCaret !== 'boolean' ) {
 			// Check if caret position is saved when input is hidden or loses focus
 			// (*cough* all versions of IE and I think Opera has/had an issue as well
-			var $temp = $('<div style="height:0px;width:0px;overflow:hidden;"><input type="text" value="testing"></div>')
+			var $temp = $('<div style="height:0px;width:0px;overflow:hidden;"><input type="text" value="testing"/></div>')
 				.prependTo( 'body' ); // stop page scrolling
 			$keyboard.caret( $temp.find('input'), 3, 3 );
 			// Also save caret position of the input if it is locked
