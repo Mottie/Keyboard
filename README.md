@@ -88,6 +88,12 @@ Wiki: [Home](https://github.com/Mottie/Keyboard/wiki/Home) | [FAQ](https://githu
 
 Only the latest changes will be shown below, see the wiki log to view older versions.
 
+### Version 1.22.6 (5/2/2015)
+
+* Fixed grunt build issues. [Pull #350](https://github.com/Mottie/Keyboard/pull/350), thanks [abovethewater](https://github.com/abovethewater)!
+* Fixed missing tag terminator. Now XHTML compatible. [Pull #353](https://github.com/Mottie/Keyboard/pull/353), thanks [ptwz](https://github.com/ptwz)!
+* Backspace now properly removes all characters. Fixes [issue #352](https://github.com/Mottie/Keyboard/issues/352).
+
 ### Version 1.22.5 (4/26/2015)
 
 * Caret
@@ -100,10 +106,3 @@ Only the latest changes will be shown below, see the wiki log to view older vers
 
 * Core: move build row code into a separate function (so the new extension can use it).
 * AltKeyPopup extension: show alternate keys popup after clicking/pressing and holding on set keys. Fixes [issue #346](https://github.com/Mottie/Keyboard/issues/346).
-
-### Version 1.22.3 (4/9/2015)
-
-* Bug fix undefined error, if destroy is called before times have fired. [Pull #345](https://github.com/Mottie/Keyboard/pull/345), thanks [raido](https://github.com/raido)!
-* Destroy method now clears timers.
-* Caret position on open & `caretToEnd` working. Fixes issues [#343](https://github.com/Mottie/Keyboard/issues/343) & [#262](https://github.com/Mottie/Keyboard/issues/262).
-* Disabled button now maintain default appearance (rounded corners were disappearing).
