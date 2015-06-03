@@ -486,6 +486,7 @@ var $keyboard = $.keyboard = function(el, options){
 					.removeAttr('id') // fixes #334
 					.css({
 						position : 'absolute',
+						left: 0,
 						zIndex : -10,
 						visibility : 'hidden'
 					})
