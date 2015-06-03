@@ -88,7 +88,7 @@ Wiki: [Home](https://github.com/Mottie/Keyboard/wiki/Home) | [FAQ](https://githu
 
 Only the latest changes will be shown below, see the wiki log to view older versions.
 
-### Version 1.22.6 (5/2/2015)
+### Version 1.22.6 (6/2/2015)
 
 * Fixed grunt build issues. [Pull #350](https://github.com/Mottie/Keyboard/pull/350), thanks [abovethewater](https://github.com/abovethewater)!
 * Fixed missing tag terminator. Now XHTML compatible. [Pull #353](https://github.com/Mottie/Keyboard/pull/353), thanks [ptwz](https://github.com/ptwz)!
