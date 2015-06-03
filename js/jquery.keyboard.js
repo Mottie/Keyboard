@@ -467,8 +467,8 @@ var $keyboard = $.keyboard = function(el, options){
 
 	base.saveCaret = function(start, end, $el){
 		var p = $keyboard.caret( $el || base.$preview, start, end );
-		base.last.start = start || p.start;
-		base.last.end = end || p.end;
+		base.last.start = typeof start === 'undefined' ? p.start : start;
+		base.last.end = typeof end === 'undefined' ? p.end : end;
 	};
 
 	base.setScroll = function(){
@@ -898,17 +898,18 @@ var $keyboard = $.keyboard = function(el, options){
 			if ($keyboard.msie && val.substr(pos.start, 1) === '\n') { pos.start += 1; pos.end += 1; }
 		}
 
-		bksp = isBksp && pos.start === pos.end;
-		txt = isBksp ? '' : txt;
-		t = pos.start + (bksp ? -1 : txt.length);
-
 		if (txt === '{d}') {
 			txt = '';
 			t = pos.start;
 			pos.end += 1;
 		}
 
-		base.$preview.val( val.substr(0, pos.start - (bksp ? 1 : 0)) + txt + val.substr(pos.end) );
+		bksp = isBksp && pos.start === pos.end;
+		txt = isBksp ? '' : txt;
+		val = val.substr(0, pos.start - (bksp ? 1 : 0)) + txt + val.substr(pos.end);
+		t = pos.start + (bksp ? -1 : val.length);
+
+		base.$preview.val( val );
 		base.saveCaret( t, t ); // save caret in case of bksp
 		base.setScroll();
 	};
@@ -1003,6 +1004,9 @@ var $keyboard = $.keyboard = function(el, options){
 			pos = $keyboard.caret( base.$preview ),
 			layout = $keyboard.builtLayouts[base.layout],
 			len = val.length; // save original content length
+
+		// return if val is empty; fixes #352
+		if (val === '') { return val; }
 
 		// silly IE caret hacks... it should work correctly, but navigating using arrow keys in a textarea
 		// is still difficult
