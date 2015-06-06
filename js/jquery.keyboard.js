@@ -565,14 +565,14 @@ var $keyboard = $.keyboard = function(el, options){
 			})
 			.bind('keypress' + base.namespace, function(e){
 				if (o.lockInput) { return false; }
-				var k = base.last.key = String.fromCharCode(e.charCode || e.which);
+				var k = e.charCode || e.which,
+					str = base.last.key = String.fromCharCode(k);
 				base.last.virtual = false;
 				base.last.event = e;
 				base.last.$key = []; // not a virtual keyboard key
 				if (base.checkCaret) {
 					base.saveCaret();
 				}
-
 				// update caps lock - can only do this while typing =(
 				base.capsLock = (((k >= 65 && k <= 90) && !e.shiftKey) ||
 					((k >= 97 && k <= 122) && e.shiftKey)) ? true : false;
@@ -603,12 +603,10 @@ var $keyboard = $.keyboard = function(el, options){
 				// Set up a key in the layout as follows: 'm(a):label'; m = key to map, (a) = actual keyboard key
 				// to map to (optional), ':label' = title/tooltip (optional)
 				// example: \u0391 or \u0391(A) or \u0391:alpha or \u0391(A):alpha
-				if (layout.hasMappedKeys) {
-					if (layout.mappedKeys.hasOwnProperty(k)){
-						base.last.key = layout.mappedKeys[k];
-						base.insertText( base.last.key );
-						e.preventDefault();
-					}
+				if (layout.hasMappedKeys && layout.mappedKeys.hasOwnProperty(str)){
+					base.last.key = layout.mappedKeys[str];
+					base.insertText( base.last.key );
+					e.preventDefault();
 				}
 				base.checkMaxLength();
 
@@ -1284,8 +1282,8 @@ var $keyboard = $.keyboard = function(el, options){
 		keyType = (n.length > 2) ? ' ' + kbcss.keyWide : '';
 		keyType += (regKey) ? '' : ' ' + kbcss.keyAction;
 		var entity  = n.replace(/[\u00A0-\u9999<>\&]/gim, function(i) {
-		   return '&#'+i.charCodeAt(0)+';';
-		   });
+			return '&#'+i.charCodeAt(0)+';';
+		});
 		return base.keyBtn
 			.clone()
 			.attr({
