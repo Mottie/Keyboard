@@ -79,6 +79,19 @@ module.exports = function(grunt) {
 						'!languages/*.untranslated.js'
 					]
 				}
+			},
+			greyLayouts: {
+				options: {
+					banner: nomod + '/*! jQuery UI Virtual Keyboard - Microsoft Generated Layouts */\n'
+				},
+				files: {
+					'dist/layouts/keyboard-layouts-greywyvern.min.js': [
+						'layouts/keyboard-layouts-greywyvern.js',
+						'languages/*.js',
+						'!languages/_language_template.js',
+						'!languages/*.untranslated.js'
+					]
+				}
 			}
 		},
 
@@ -125,13 +138,24 @@ module.exports = function(grunt) {
 					flatten: true
 				}]
 			},
-			layouts: {
+			splitLayouts: {
 				files: [{
 					expand: true,
 					cwd: '',
-					src: [ 'layouts/*.js', '!layouts/_layout_template.js' ],
+					src: [ 'layouts/*.js', '!layouts/_layout_template.js', '!layouts/keyboard-layouts-greywyvern.js' ],
 					dest: 'dist/layouts/',
 					ext: '.min.js',
+					extDot: 'last',
+					flatten: true
+				}]
+			},
+			greyLayout: {
+				files: [{
+					expand: true,
+					cwd: '',
+					src: [ 'dist/layouts/keyboard-layouts-greywyvern.min.js' ],
+					dest: 'dist/layouts/',
+					ext: '.js',
 					extDot: 'last',
 					flatten: true
 				}]

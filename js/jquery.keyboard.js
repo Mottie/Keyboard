@@ -906,7 +906,7 @@ var $keyboard = $.keyboard = function(el, options){
 		bksp = isBksp && pos.start === pos.end;
 		txt = isBksp ? '' : txt;
 		val = val.substr(0, pos.start - (bksp ? 1 : 0)) + txt + val.substr(pos.end);
-		t = pos.start + (bksp ? -1 : val.length);
+		t = pos.start + (bksp ? -1 : txt.length);
 
 		base.$preview.val( val );
 		base.saveCaret( t, t ); // save caret in case of bksp
@@ -1003,7 +1003,6 @@ var $keyboard = $.keyboard = function(el, options){
 			pos = $keyboard.caret( base.$preview ),
 			layout = $keyboard.builtLayouts[base.layout],
 			len = val.length; // save original content length
-
 		// return if val is empty; fixes #352
 		if (val === '') { return val; }
 
@@ -1062,7 +1061,6 @@ var $keyboard = $.keyboard = function(el, options){
 		pos.end += val.length - len;
 		base.$preview.val(val);
 		base.saveCaret( pos.start, pos.end );
-
 		// set scroll to keep caret in view
 		base.setScroll();
 
