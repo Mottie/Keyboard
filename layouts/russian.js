@@ -79,17 +79,17 @@ jQuery.keyboard.layouts["russian-mac"] = {
 // please update this section to match this language and email me with corrections!
 // ru = ISO 639-1 code for Russian
 // ***********************
-jQuery.keyboard.language.ru = {
+jQuery.keyboard.language['ru'] = {
 	language: 'Russian',
 	display : {
-		'a'      : '\u2714:Accept (Shift-Enter)', // check mark - same action as accept
-		'accept' : 'Accept:Accept (Shift-Enter)',
-		'alt'    : 'AltGr:Alternate Graphemes',
+		'a'      : '\u2714:Сохранить (Shift-Enter)', // check mark - same action as accept
+		'accept' : 'Сохранить:Сохранить (Shift-Enter)',
+		'alt'    : 'РУС:Русская клавиатура',
 		'b'      : '\u2190:Backspace',    // Left arrow (same as &larr;)
 		'bksp'   : 'Bksp:Backspace',
-		'c'      : '\u2716:Cancel (Esc)', // big X, close - same action as cancel
-		'cancel' : 'Cancel:Cancel (Esc)',
-		'clear'  : 'C:Clear',             // clear num pad
+		'c'      : '\u2716:Отмена (Esc)', // big X, close - same action as cancel
+		'cancel' : 'Отмена:Отмена (Esc)',
+		'clear'  : 'C:Очистить',             // clear num pad
 		'combo'  : '\u00f6:Toggle Combo Keys',
 		'dec'    : ',:Decimal',           // decimal point for num pad (optional), change '.' to ',' for European format
 		'e'      : '\u21b5:Enter',        // down, then left arrow - enter symbol
@@ -97,8 +97,8 @@ jQuery.keyboard.language.ru = {
 		'lock'   : '\u21ea Lock:Caps Lock', // caps lock
 		's'      : '\u21e7:Shift',        // thick hollow up arrow
 		'shift'  : 'Shift:Shift',
-		'sign'   : '\u00b1:Change Sign',  // +/- sign for num pad
-		'space'  : '&nbsp;:Space',
+		'sign'   : '\u00b1:Сменить знак',  // +/- sign for num pad
+		'space'  : '&nbsp;:Пробел',
 		't'      : '\u21e5:Tab',          // right arrow to bar (used since this virtual keyboard works with one directional tabs)
 		'tab'    : '\u21e5 Tab:Tab'       // \u21b9 is the true tab symbol (left & right arrows)
 	},
