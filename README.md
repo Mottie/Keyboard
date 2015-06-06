@@ -88,6 +88,26 @@ Wiki: [Home](https://github.com/Mottie/Keyboard/wiki/Home) | [FAQ](https://githu
 
 Only the latest changes will be shown below, see the wiki log to view older versions.
 
+### Version 1.23.0 (6/6/2015)
+
+* Core:
+  * Fix caps lock detection.
+  * Fix hidden input overflow on page.
+  * Fix caret jumping to end while inserting text.
+* Update XHTML compatibility. [Pull #354](https://github.com/Mottie/Keyboard/pull/354), thanks [ptwz](https://github.com/ptwz)!
+* Add russian language translations. [Pull #356](https://github.com/Mottie/Keyboard/pull/356), thanks [https://github.com/ihsoft](ihsoft)!
+* Language definitions
+  * Removed language definitions from layout files.
+  * Add `languages` folder with files named using the ISO 639 language code. See [issue #355](https://github.com/Mottie/Keyboard/issues/355).
+  * Existing language definitions without a translation were moved to files with "untranslated" in the file name, e.g. `"mn.untranslated.js"`.
+  * [Language definition readme added](https://github.com/Mottie/Keyboard/tree/master/languages/README.md).
+  * Language files (not "untranslated" files) are now included in:
+    * "layouts/keyboard-layouts-combined.js"
+    * "layouts/keyboard-layouts-microsoft.js"
+    * "dist/layouts/keyboard-layouts-combined.min.js"
+    * "dist/layouts/keyboard-layouts-greywyvern.min.js"
+    * "dist/layouts/keyboard-layouts-microsoft.min.js"
+
 ### Version 1.22.6 (6/2/2015)
 
 * Fixed grunt build issues. [Pull #350](https://github.com/Mottie/Keyboard/pull/350), thanks [abovethewater](https://github.com/abovethewater)!
@@ -101,8 +121,3 @@ Only the latest changes will be shown below, see the wiki log to view older vers
   * Remove need for document ready to check for caret support.
   * Fixes [issue #348](https://github.com/Mottie/Keyboard/issues/348).
 * Remove id from preview clone. See [issue #334](https://github.com/Mottie/Keyboard/issues/334).
-
-### Version 1.22.4 (4/18/2015)
-
-* Core: move build row code into a separate function (so the new extension can use it).
-* AltKeyPopup extension: show alternate keys popup after clicking/pressing and holding on set keys. Fixes [issue #346](https://github.com/Mottie/Keyboard/issues/346).
