@@ -40,8 +40,8 @@ jQuery.keyboard.layouts['ms-Kannada'] = {
 // ***********************
 jQuery.keyboard.language.kn = {
 	display : {
-		'a'      : '\u2714:Accept (Shift-Enter)', // check mark - same action as accept
-		'accept' : 'Accept:Accept (Shift-Enter)',
+		'a'      : '\u2714:Accept (Shift+Enter)', // check mark - same action as accept
+		'accept' : 'Accept:Accept (Shift+Enter)',
 		'alt'    : 'AltGr:Alternate Graphemes',
 		'b'      : '\u2190:Backspace',    // Left arrow (same as &larr;)
 		'bksp'   : 'Bksp:Backspace',

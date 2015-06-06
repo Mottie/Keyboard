@@ -89,8 +89,8 @@ jQuery.keyboard.layouts["ms-Japanese Hiragana"] = {
 // ***********************
 jQuery.keyboard.language.ja = {
 	display : {
-		'a'      : '\u2714:Accept (Shift-Enter)', // check mark - same action as accept
-		'accept' : 'Accept:Accept (Shift-Enter)',
+		'a'      : '\u2714:Accept (Shift+Enter)', // check mark - same action as accept
+		'accept' : 'Accept:Accept (Shift+Enter)',
 		'alt'    : 'AltGr:Alternate Graphemes',
 		'b'      : '\u2190:Backspace',    // Left arrow (same as &larr;)
 		'bksp'   : 'Bksp:Backspace',

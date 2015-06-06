@@ -35,6 +35,9 @@ module.exports = function(grunt) {
 					'layouts/keyboard-layouts-combined.js',
 					'layouts/keyboard-layouts-microsoft.js'
 				]
+			},
+			languages: {
+				src: [ 'dist/languages/*' ]
 			}
 		},
 
@@ -52,7 +55,15 @@ module.exports = function(grunt) {
 					banner: nomod + '/*! jQuery UI Virtual Keyboard - Original Layouts */\n'
 				},
 				files: {
-					'layouts/keyboard-layouts-combined.js': [ 'layouts/*', '!layouts/_template.js', '!layouts/ms-*.js', '!layouts/keyboard-layouts-greywyvern.js' ]
+					'layouts/keyboard-layouts-combined.js': [
+						'layouts/*',
+						'!layouts/_layout_template.js',
+						'!layouts/ms-*.js',
+						'!layouts/keyboard-layouts-greywyvern.js',
+						'languages/*.js',
+						'!languages/_language_template.js',
+						'!languages/*.untranslated.js'
+					]
 				}
 			},
 			msLayouts: {
@@ -60,7 +71,13 @@ module.exports = function(grunt) {
 					banner: nomod + '/*! jQuery UI Virtual Keyboard - Microsoft Generated Layouts */\n'
 				},
 				files: {
-					'layouts/keyboard-layouts-microsoft.js': [ 'layouts/ms-*.js' ]
+					'layouts/keyboard-layouts-microsoft.js': [
+						'layouts/ms-*.js',
+						'!layouts/_layout_template.js',
+						'languages/*.js',
+						'!languages/_language_template.js',
+						'!languages/*.untranslated.js'
+					]
 				}
 			}
 		},
@@ -73,6 +90,10 @@ module.exports = function(grunt) {
 			layouts: {
 				options: hintOpts,
 				src: [ 'js/jquery.*.js', 'layouts/*' ]
+			},
+			languages: {
+				option: hintOpts,
+				src: [ 'languages/*' ]
 			}
 		},
 
@@ -108,8 +129,19 @@ module.exports = function(grunt) {
 				files: [{
 					expand: true,
 					cwd: '',
-					src: [ 'layouts/*.js', '!layouts/_template.js' ],
+					src: [ 'layouts/*.js', '!layouts/_layout_template.js' ],
 					dest: 'dist/layouts/',
+					ext: '.min.js',
+					extDot: 'last',
+					flatten: true
+				}]
+			},
+			languages: {
+				files: [{
+					expand: true,
+					cwd: '',
+					src: [ 'languages/*.js', '!languages/_language_template.js', '!languages/*.untranslated.js' ],
+					dest: 'dist/languages/',
 					ext: '.min.js',
 					extDot: 'last',
 					flatten: true

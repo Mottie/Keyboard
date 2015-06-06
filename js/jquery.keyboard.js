@@ -1115,7 +1115,7 @@ var $keyboard = $.keyboard = function(el, options){
 
 	// Go to next or prev inputs
 	// goToNext = true, then go to next input; if false go to prev
-	// isAccepted is from autoAccept option or true if user presses shift-enter
+	// isAccepted is from autoAccept option or true if user presses shift+enter
 	base.switchInput = function(goToNext, isAccepted){
 		if ($.isFunction(o.switchInput)) {
 			o.switchInput(base, goToNext, isAccepted);
@@ -1655,7 +1655,7 @@ var $keyboard = $.keyboard = function(el, options){
 		// el is the pressed key (button) object; it is null when the real keyboard enter is pressed
 		enter : function(base, el, e) {
 			var tag = base.el.nodeName, o = base.options;
-			// shift-enter in textareas
+			// shift+enter in textareas
 			if (e.shiftKey) {
 				// textarea & input - enterMod + shift + enter = accept, then go to prev;
 				//  base.switchInput(goToNext, autoAccept)
@@ -1856,8 +1856,8 @@ var $keyboard = $.keyboard = function(el, options){
 		en : {
 			display : {
 				// check mark - same action as accept
-				'a'      : '\u2714:Accept (Shift-Enter)',
-				'accept' : 'Accept:Accept (Shift-Enter)',
+				'a'      : '\u2714:Accept (Shift+Enter)',
+				'accept' : 'Accept:Accept (Shift+Enter)',
 				// other alternatives \u2311
 				'alt'    : 'Alt:\u2325 AltGr',
 				// Left arrow (same as &larr;)
@@ -1999,7 +1999,7 @@ var $keyboard = $.keyboard = function(el, options){
 		// tab to go to next, shift-tab for previous (default behavior)
 		tabNavigation: false,
 
-		// enter for next input; shift-enter accepts content & goes to next
+		// enter for next input; shift+enter accepts content & goes to next
 		// shift + 'enterMod' + enter ('enterMod' is the alt as set below) will accept content and go
 		// to previous in a textarea
 		enterNavigation : false,
