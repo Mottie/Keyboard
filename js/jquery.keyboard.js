@@ -193,7 +193,7 @@ var $keyboard = $.keyboard = function(el, options){
 	};
 
 	base.focusOn = function(){
-		if (!el.active) {
+		if ( !base && base.el.active ) {
 			// keyboard was destroyed
 			return;
 		}
@@ -1173,36 +1173,44 @@ var $keyboard = $.keyboard = function(el, options){
 				.removeClass(kbcss.isCurrent + ' ' + kbcss.inputAutoAccepted)
 				// add 'ui-keyboard-autoaccepted' to inputs - see issue #66
 				.addClass( (accepted || false) ? accepted === true ? '' : kbcss.inputAutoAccepted : '' )
-				.trigger( (o.alwaysOpen) ? '' : kbevents.kbBeforeClose, [ base, base.el, (accepted || false) ] )
 				.val( val )
+				// trigger default change event - see issue #146
+				.trigger(kbevents.inputChange)
+				// don't trigger beforeClose if keyboard is always open
+				.trigger( (o.alwaysOpen) ? '' : kbevents.kbBeforeClose, [ base, base.el, (accepted || false) ] )
+
 				.trigger( ((accepted || false) ? kbevents.inputAccepted : kbevents.inputCanceled), [ base, base.el ] )
 				.trigger( (o.alwaysOpen) ? kbevents.kbInactive : kbevents.kbHidden, [ base, base.el ] )
 				.blur();
-			// add close event time
-			base.last.eventTime = new Date().getTime();
-			if (o.openOn) {
-				// rebind input focus - delayed to fix IE issue #72
-				base.timer = setTimeout(function(){
-					// make sure keyboard isn't destroyed
-					if (el.active && base) { //Check if base exists, this is a case when destroy is called, before timers have fired
-						base.$el.bind( o.openOn + base.namespace, function(){ base.focusOn(); });
-						// remove focus from element (needed for IE since blur doesn't seem to work)
-						if ($(':focus')[0] === base.el) { base.$el.blur(); }
-					}
-				}, 500);
+
+			// base is undefined if keyboard was destroyed - fixes #358
+			if ( base ) {
+				// add close event time
+				base.last.eventTime = new Date().getTime();
+
+				if (o.openOn) {
+					// rebind input focus - delayed to fix IE issue #72
+					base.timer = setTimeout(function(){
+						// make sure keyboard isn't destroyed
+						// Check if base exists, this is a case when destroy is called, before timers have fired
+						if ( base && base.el.active ) {
+							base.$el.bind( o.openOn + base.namespace, function(){ base.focusOn(); });
+							// remove focus from element (needed for IE since blur doesn't seem to work)
+							if ($(':focus')[0] === base.el) { base.$el.blur(); }
+						}
+					}, 500);
+				}
+				if (!o.alwaysOpen && base.$keyboard) {
+					// free up memory
+					base.$keyboard.remove();
+					base.$keyboard = [];
+				}
+				if (!base.watermark && base.el.value === '' && base.inPlaceholder !== '') {
+					base.$el
+						.addClass(kbcss.placeholder)
+						.val(base.inPlaceholder);
+				}
 			}
-			if (!o.alwaysOpen && base.$keyboard) {
-				// free up memory
-				base.$keyboard.remove();
-				base.$keyboard = [];
-			}
-			if (!base.watermark && base.el.value === '' && base.inPlaceholder !== '') {
-				base.$el
-					.addClass(kbcss.placeholder)
-					.val(base.inPlaceholder);
-			}
-			// trigger default change event - see issue #146
-			base.$el.trigger(kbevents.inputChange);
 		}
 		return !!accepted;
 	};
