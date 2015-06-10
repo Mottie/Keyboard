@@ -104,11 +104,12 @@ var $keyboard = $.keyboard = function(el, options){
 		$(document).bind('mousedown keyup touchstart checkkeyboard '.split(' ').join(base.namespace + ' '), function(e){
 			if (base.opening) { return; }
 			base.escClose(e);
+			var $target = $(e.target);
 			// needed for IE to allow switching between keyboards smoothly
-			if ( e.target && $(e.target).hasClass( kbcss.input ) ) {
-				var kb = $(e.target).data('keyboard');
+			if ( $target.hasClass( kbcss.input ) ) {
+				var kb = $target.data('keyboard');
 				// only trigger on self
-				if (kb === base && kb.options.openOn) {
+				if ( kb === base && !kb.$el.hasClass( kbcss.isCurrent ) ) {
 					kb.focusOn();
 				}
 			}
