@@ -88,6 +88,15 @@ Wiki: [Home](https://github.com/Mottie/Keyboard/wiki/Home) | [FAQ](https://githu
 
 Only the latest changes will be shown below, see the wiki log to view older versions.
 
+### Version 1.23.1 (6/23/2015)
+
+* Prevent js error if destroyed in "hidden" callback. See [issue #358](https://github.com/Mottie/Keyboard/issues/358).
+* Stop focusOn execution while typing on physical keyboard.
+* Navigation extension
+  * `navigateTo` now accepts `[0,0]` properly. Fixes [issue #361](https://github.com/Mottie/Keyboard/issues/361).
+  * "ui-state-hover" class now applied when switching key sets. Fixes [issue #362](https://github.com/Mottie/Keyboard/issues/362).
+  * Thanks to [gkubisa](https://github.com/gkubisa) for [pull #363](https://github.com/Mottie/Keyboard/pull/363).
+
 ### Version 1.23.0 (6/6/2015)
 
 * Core:
@@ -113,11 +122,3 @@ Only the latest changes will be shown below, see the wiki log to view older vers
 * Fixed grunt build issues. [Pull #350](https://github.com/Mottie/Keyboard/pull/350), thanks [abovethewater](https://github.com/abovethewater)!
 * Fixed missing tag terminator. Now XHTML compatible. [Pull #353](https://github.com/Mottie/Keyboard/pull/353), thanks [ptwz](https://github.com/ptwz)!
 * Backspace now properly removes all characters. Fixes [issue #352](https://github.com/Mottie/Keyboard/issues/352).
-
-### Version 1.22.5 (4/26/2015)
-
-* Caret
-  * Include code inside of keyboard AMD wrapper.
-  * Remove need for document ready to check for caret support.
-  * Fixes [issue #348](https://github.com/Mottie/Keyboard/issues/348).
-* Remove id from preview clone. See [issue #334](https://github.com/Mottie/Keyboard/issues/334).

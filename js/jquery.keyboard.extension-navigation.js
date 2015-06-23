@@ -179,7 +179,7 @@ $.fn.addNavigation = function(options){
 		// capture and simulate typing
 		base.$el
 			.unbind(base.navigation_namespace)
-			.bind(kbevents.kbVisible, function(e){
+			.bind(kbevents.kbVisible, function(){
 				base.$keyboard.find('.' + opts.css.buttonHover).removeClass(opts.css.buttonHover);
 				base.navigation_init();
 			})
