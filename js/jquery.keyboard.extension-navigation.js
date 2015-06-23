@@ -132,8 +132,8 @@ $.fn.addNavigation = function(options){
 		};
 
 		base.navigateKeys = function(key, row, indx){
-			indx = indx || o.position[1];
-			row = row || o.position[0];
+			indx = typeof indx === 'number' ? indx : o.position[1];
+			row = typeof row === 'number' ? row : o.position[0];
 			var kbcss = $.keyboard.css,
 				vis = base.$keyboard.find('.' + kbcss.keySet + ':visible'),
 				maxRow = vis.find('.' + kbcss.endRow).length - 1,
@@ -179,17 +179,17 @@ $.fn.addNavigation = function(options){
 		// capture and simulate typing
 		base.$el
 			.unbind(base.navigation_namespace)
-			.bind(kbevents.kbVisible + base.navigation_namespace, function(e){
+			.bind(kbevents.kbVisible, function(e){
 				base.$keyboard.find('.' + opts.css.buttonHover).removeClass(opts.css.buttonHover);
 				base.navigation_init();
 			})
-			.bind(kbevents.kbInactive + base.navigation_namespace + ' ' + kbevents.kbHidden + base.navigation_namespace, function(e){
+			.bind(kbevents.kbInactive + ' ' + kbevents.kbHidden, function(e){
 				base.checkKeys(e.which, true); // disable toggle mode & revert navigation options
 			})
-			.bind(kbevents.kbKeysetChange + base.navigation_namespace, function(){
+			.bind(kbevents.kbKeysetChange, function(){
 				base.navigateKeys(null);
 			})
-			.bind('navigate navigateTo '.split(' ').join(base.navigation_namespace + ' '), function(e, row, indx){
+			.bind('navigate navigateTo', function(e, row, indx){
 				var key;
 				// no row given, check if it's a navigation key or keyaction
 				row = isNaN(row) ? row.toLowerCase() : row;
