@@ -109,7 +109,7 @@ var $keyboard = $.keyboard = function(el, options){
 			if ( $target.hasClass( kbcss.input ) ) {
 				var kb = $target.data('keyboard');
 				// only trigger on self
-				if ( kb === base && !kb.$el.hasClass( kbcss.isCurrent ) ) {
+				if ( kb === base && !kb.$el.hasClass( kbcss.isCurrent ) && e.type === kb.options.openOn ) {
 					kb.focusOn();
 				}
 			}
