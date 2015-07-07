@@ -19,43 +19,79 @@
 	<script src="js/jquery.mousewheel.js"></script>
 	<script src="js/jquery.keyboard.extension-typing.js"></script>
 	<script src="js/jquery.keyboard.extension-autocomplete.js"></script>
+	<script src="js/jquery.keyboard.extension-caret.js"></script>
 
 	<!-- demo only -->
 	<link rel="stylesheet" href="docs/css/bootstrap.min.css">
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.3.0/css/font-awesome.min.css">
 	<link href="docs/css/demo.css" rel="stylesheet">
 	<link href="docs/css/tipsy.css" rel="stylesheet">
 	<link href="docs/css/prettify.css" rel="stylesheet">
+	<script src="docs/js/bootstrap.min.js"></script>
 	<script src="docs/js/demo.js"></script>
 	<script src="docs/js/jquery.tipsy.min.js"></script>
 	<script src="docs/js/prettify.js"></script> <!-- syntax highlighting -->
-
 </head>
 
 <body>
 
-<div id="page-wrap">
+<nav class="navbar navbar-default">
+	<div class="container-fluid">
+		<div class="navbar-header">
+			<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+				<span class="sr-only">Toggle navigation</span>
+				<span class="icon-bar"></span>
+				<span class="icon-bar"></span>
+				<span class="icon-bar"></span>
+			</button>
+			<a class="navbar-brand" name="top">
+				<span class="fa fa-keyboard-o fa-lg"></span>
+			</a>
+		</div>
 
-	<!-- Links to other demo pages & docs -->
-	<div id="nav">
-		<a class="current" href="index.html">Main Demo</a>
-		<a href="docs/basic.html">Basic</a>
-		<a href="docs/mobile.html">Mobile</a>
-		<a href="docs/layouts.html">Layouts</a>
-		<a href="docs/layouts2.html">Layouts2</a>
-		<a href="docs/layouts3.html">Layouts3</a>
-		<a href="docs/scramble.html">Scramble</a>
-		<a href="docs/navigate.html">Navigate</a>
-		<a href="docs/preview-keyset.html">Keyset</a>
-		<a href="docs/extender.html">Extender</a>
-		<a href="docs/altkeys-popup.html">AltKeys</a>
-		<a href="docs/calculator.html">Calculator</a>
-		<br>
-		<a class="play" href="http://jsfiddle.net/Mottie/egb3a1sk/">Playground</a>
-		<a class="git" href="https://github.com/Mottie/Keyboard/wiki">Documentation</a>
-		<a class="git" href="https://github.com/Mottie/Keyboard/archive/master.zip">Download</a>
-		<a class="issue" href="https://github.com/Mottie/Keyboard/issues">Issues</a><br>
-	</div>
-	<!-- End Links -->
+		<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+			<ul class="nav navbar-nav">
+				<li class="active"><a href="#">Home <span class="sr-only">(current)</span></a></li>
+				<li><a href="docs/basic.html">Basic</a></li>
+				<li class="dropdown">
+					<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Layouts <span class="caret"></span></a>
+					<ul class="dropdown-menu">
+						<li><a href="docs/layouts.html">Standard</a></li>
+						<li><a href="docs/layouts2.html">Greywyvern</a></li>
+						<li><a href="docs/layouts3.html">Microsoft Keyboard</a></li>
+						<li><a href="docs/calculator.html"><span class="fa fa-calculator fa-lg"></span> Calculator</a></li>
+					</ul>
+				</li>
+				<li class="dropdown">
+					<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Extensions <span class="caret"></span></a>
+					<ul class="dropdown-menu">
+						<li><a href="docs/altkeys-popup.html">Alt-keys</a></li>
+						<li><a href="#autocomplete">Autocomplete</a></li>
+						<li><a href="#caret">Caret</a></li>
+						<li><a href="docs/extender.html">Extender</a></li>
+						<li><a href="docs/preview-keyset.html">Keyset</a></li>
+						<li><a href="docs/mobile.html">Mobile</a></li>
+						<li><a href="docs/jquery-mobile-1.4.html">Mobile v1.4</a></li>
+						<li><a href="docs/navigate.html">Navigate</a></li>
+						<li><a href="docs/scramble.html">Scramble</a></li>
+						<li><a href="#typing">Typing</a></li>
+					</ul>
+				</li>
+				<li><a href="http://jsfiddle.net/Mottie/egb3a1sk/"><span class="fa fa-flask fa-lg"></span> Playground</a></li>
+			</ul>
+
+			<ul class="nav navbar-nav navbar-right">
+				<li><a href="https://github.com/Mottie/Keyboard"><span class="fa fa-github fa-lg" title="GitHub"></span></a></li>
+				<li><a href="https://github.com/Mottie/Keyboard/archive/master.zip"><span class="fa fa-download fa-lg" title="Download"></span></a></li>
+				<li><a href="https://github.com/Mottie/Keyboard/wiki"><span class="fa fa-file-text-o fa-lg" title="Documentation"></span></a></li>
+				<li><a href="https://github.com/Mottie/Keyboard/issues"><span class="fa fa-bug fa-lg" title="Issues"></span></a></li>
+			</ul>
+
+		</div><!-- /.navbar-collapse -->
+	</div><!-- /.container-fluid -->
+</nav>
+
+<div id="page-wrap">
 
 	<h1>
 		<a href="https://github.com/Mottie/Keyboard">Virtual Keyboard</a><br>
@@ -81,7 +117,7 @@
 		Click on the keyboard title, then scroll down to see its code
 	</h5>
 
-	<div class="block">
+	<div class="block" id="autocomplete">
 		<h2>
 			<span class="tooltip-tipsy" title="Click, then scroll down to see this code">QWERTY Text</span>
 		</h2>
@@ -89,7 +125,7 @@
 		<br>
 		<small>
 			* Placeholder (watermark).<br>
-			* Autocomplete.
+			* <a href="https://github.com/Mottie/Keyboard/wiki/Setup#autocomplete">Autocomplete</a> extension.
 		</small>
 		<div class="code ui-corner-all">
 			<h4>HTML</h4>
@@ -119,15 +155,15 @@ $('.qwerty:eq(0)')
 		<br>
 		<small>
 			* Click icon to open keyboard.<br>
-			* Stay open until accept/cancel.<br>
+			* Stay open until accept/cancel/esc.<br>
 			* Key hover disabled in this type.
 		</small>
 		<div class="code ui-corner-all">
 			<h4>HTML</h4>
 			<pre class="prettyprint lang-html">&lt;img id="passwd" class="tooltip-tipsy" title="Click to open the virtual keyboard" src="css/images/keyboard.svg"&gt;
-&lt;input class="qwerty" type="password"&gt;</pre>
+&lt;input id="password" class="qwerty" type="password"&gt;</pre>
 			<h4>Script</h4>
-			<pre class="prettyprint lang-js">$('.qwerty:eq(1)')
+			<pre class="prettyprint lang-js">$('#password')
 	.keyboard({
 		openOn : null,
 		stayOpen : true,
@@ -147,31 +183,66 @@ $('#passwd').click(function(){
 		</div>
 	</div>
 
-	<div class="block">
+	<div class="block" id="caret">
 		<h2>
-			<span class="tooltip-tipsy" title="Click, then scroll down to see this code">QWERTY Text Area</span>
+			<span class="tooltip-tipsy" title="Click, then scroll down to see this code">QWERTY (mod) Text Area</span>
 		</h2>
-		<textarea id="textarea" class="qwerty"></textarea>
+		<textarea id="qwerty" class="qwerty"></textarea>
 		<br>
 		<small>
 			* Locked input (no manual input).<br>
-			* Position the hidden caret!<br>
-			* Known readonly bug in Safari.
+			* Known readonly bug in Safari.<br>
+			* <a href="https://github.com/Mottie/Keyboard/wiki/Setup#caret">Caret</a> extension.
 		</small>
 		<div class="code ui-corner-all">
 			<h4>HTML</h4>
-			<pre class="prettyprint lang-html">&lt;textarea class="qwerty"&gt;&lt;/textarea&gt;</pre>
+			<pre class="prettyprint lang-html">&lt;textarea id="qwerty" class="qwerty"&gt;&lt;/textarea&gt;</pre>
 			<h4>Script</h4>
-			<pre class="prettyprint lang-js">$('.qwerty:eq(2)')
+			<pre class="prettyprint lang-js">$('#qwerty')
 	.keyboard({
-		layout   : 'qwerty',
-		lockInput: true // prevent manual keyboard entry
+		lockInput: true, // prevent manual keyboard entry
+		layout: 'custom',
+		customLayout: {
+			'normal': [
+				'` 1 2 3 4 5 6 7 8 9 0 - = {bksp}',
+				'{tab} q w e r t y u i o p [ ] \\',
+				'a s d f g h j k l ; \' {enter}',
+				'{shift} z x c v b n m , . / {shift}',
+				'{accept} {space} {left} {right}'
+			],
+			'shift': [
+				'~ ! @ # $ % ^ & * ( ) _ + {bksp}',
+				'{tab} Q W E R T Y U I O P { } |',
+				'A S D F G H J K L : " {enter}',
+				'{shift} Z X C V B N M < > ? {shift}',
+				'{accept} {space} {left} {right}'
+			]
+		}
+	})
+	.addCaret({
+		// extra class name added to the caret
+		// "ui-keyboard-caret" class is always added
+		caretClass : '',
+		// *** for future use ***
+		// data-attribute containing the character(s) next to the caret
+		charAttr   : 'data-character',
+		// # character(s) next to the caret (can be negative for RTL)
+		charIndex  : 1,
+		// caret position adjustments
+		offsetX    : 0,
+		offsetY    : 0
 	})
 	.addTyping();</pre>
+		<h4>CSS</h4>
+		<pre class="prettyprint lang-css">.ui-keyboard-caret {
+	background: #c00;
+	width: 1px;
+	margin-top: 3px;
+}</pre>
 		</div>
 	</div>
 
-	<div class="block">
+	<div class="block" id="typing">
 		<h2>
 			<span class="tooltip-tipsy" title="Click, then scroll down to see this code">International</span>
 			<img id="inter-type" class="tooltip-tipsy" title="Try out the typing extension!" src="css/images/keyboard.svg">
@@ -179,7 +250,8 @@ $('#passwd').click(function(){
 		<textarea id="inter"></textarea>
 		<br>
 		<small>
-			* <a href="http://bootswatch.com/darkly/">Bootswatch Darkly</a> theme.
+			* <a href="http://bootswatch.com/darkly/">Bootswatch Darkly</a> theme.<br>
+			* <a href="https://github.com/Mottie/Keyboard/wiki/Setup#typing">Typing</a> extension.
 		</small>
 		<div class="code ui-corner-all">
 			<h4>HTML</h4>
@@ -358,6 +430,10 @@ $('#inter-type').click(function(){
 			<img id="meta-type" class="tooltip-tipsy" title="Try out the typing extension!" src="css/images/keyboard.svg">
 		</h2>
 		<textarea id="meta"></textarea>
+		<br>
+		<small>
+			* <a href="https://github.com/Mottie/Keyboard/wiki/Setup#typing">Typing</a> extension.
+		</small>
 		<div class="code ui-corner-all">
 			<h4>HTML</h4>
 			<pre class="prettyprint lang-html">&lt;textarea id="meta"&gt;&lt;/textarea&gt;</pre>

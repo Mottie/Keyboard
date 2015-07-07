@@ -9,13 +9,13 @@ jQuery(function($) {
 
 	// QWERTY Password
 	// ********************
-	$('.qwerty:eq(1)').keyboard({
+	$('#password').keyboard({
 		openOn   : null,
 		stayOpen : true,
 		layout   : 'qwerty'
 	});
 	$('#passwd').click(function(){
-		var kb = $('.qwerty:eq(1)').getkeyboard();
+		var kb = $('#password').getkeyboard();
 		// close the keyboard if the keyboard is visible and the button is clicked a second time
 		if ( kb.isOpen ) {
 			kb.close();
@@ -25,16 +25,33 @@ jQuery(function($) {
 	});
 	// since IE adds an overlay behind the input to prevent clicking in other inputs (the keyboard may not automatically open on focus... silly IE bug)
 	// We can remove the overlay (transparent) if desired using this code:
-	$('.qwerty:eq(1)').bind('visible', function(e, keyboard, el){
+	$('#password').bind('visible', function(e, keyboard, el){
 	 $('.ui-keyboard-overlay').remove(); // remove overlay because clicking on it will close the keyboard... we set "openOn" to null to prevent closing.
 	});
 
 	// QWERTY Text Area
 	// ********************
-	$('.qwerty:last').keyboard({
-		layout   : 'qwerty',
-		lockInput: true // prevent manual keyboard entry
-	});
+	$('#qwerty').keyboard({
+		lockInput: true, // prevent manual keyboard entry
+		layout: 'custom',
+		customLayout: {
+			'normal': [
+				'` 1 2 3 4 5 6 7 8 9 0 - = {bksp}',
+				'{tab} q w e r t y u i o p [ ] \\',
+				'a s d f g h j k l ; \' {enter}',
+				'{shift} z x c v b n m , . / {shift}',
+				'{accept} {space} {left} {right}'
+			],
+			'shift': [
+				'~ ! @ # $ % ^ & * ( ) _ + {bksp}',
+				'{tab} Q W E R T Y U I O P { } |',
+				'A S D F G H J K L : " {enter}',
+				'{shift} Z X C V B N M < > ? {shift}',
+				'{accept} {space} {left} {right}'
+			]
+		}
+	})
+	.addCaret();
 
 	// International Text Area
 	// ********************
@@ -426,6 +443,7 @@ jQuery(function($) {
 	// add tooltips
 	// ********************
 	$('.tooltip-tipsy').tipsy({ gravity: 's' });
+	$('.navbar [title]').tipsy({ gravity: 'n' });
 
 // ********************
 // Extension demos

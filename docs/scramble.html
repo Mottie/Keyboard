@@ -6,6 +6,8 @@
 	<title>Virtual Keyboard Scramble Keyset Demo</title>
 
 	<!-- demo -->
+	<link href="css/bootstrap.min.css" rel="stylesheet">
+	<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
 	<link href="css/demo.css" rel="stylesheet">
 	<style>
 	.spacer { height: 100px; }
@@ -15,6 +17,7 @@
 	<link href="css/jquery-ui.min.css" rel="stylesheet">
 	<script src="js/jquery.min.js"></script>
 	<script src="js/jquery-ui.min.js"></script>
+	<script src="js/bootstrap.min.js"></script>
 
 	<!-- keyboard widget css & script (required) -->
 	<link href="../css/keyboard.css" rel="stylesheet">
@@ -71,27 +74,61 @@
 
 <body>
 
-	<!-- Links to other demo pages & docs -->
-	<div id="nav">
-		<a href="../index.html">Main Demo</a>
-		<a href="basic.html">Basic</a>
-		<a href="mobile.html">Mobile</a>
-		<a href="layouts.html">Layouts</a>
-		<a href="layouts2.html">Layouts2</a>
-		<a href="layouts3.html">Layouts3</a>
-		<a class="current" href="scramble.html">Scramble</a>
-		<a href="navigate.html">Navigate</a>
-		<a href="preview-keyset.html">Keyset</a>
-		<a href="extender.html">Extender</a>
-		<a href="altkeys-popup.html">AltKeys</a>
-		<a href="calculator.html">Calculator</a>
-		<br>
-		<a class="play" href="http://jsfiddle.net/Mottie/egb3a1sk/">Playground</a>
-		<a class="git" href="https://github.com/Mottie/Keyboard/wiki">Documentation</a>
-		<a class="git" href="https://github.com/Mottie/Keyboard/archive/master.zip">Download</a>
-		<a class="issue" href="https://github.com/Mottie/Keyboard/issues">Issues</a><br>
-	</div>
-	<!-- End Links -->
+	<nav class="navbar navbar-default">
+		<div class="container-fluid">
+			<div class="navbar-header">
+				<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+					<span class="sr-only">Toggle navigation</span>
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+				</button>
+				<a class="navbar-brand" name="top">
+					<span class="fa fa-keyboard-o fa-lg"></span>
+				</a>
+			</div>
+
+			<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+				<ul class="nav navbar-nav">
+					<li><a href="../index.html">Home</a></li>
+					<li><a href="basic.html">Basic</a></li>
+					<li class="dropdown">
+						<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Layouts <span class="caret"></span></a>
+						<ul class="dropdown-menu">
+							<li><a href="layouts.html">Standard</a></li>
+							<li><a href="layouts2.html">Greywyvern</a></li>
+							<li><a href="layouts3.html">Microsoft Keyboard</a></li>
+							<li><a href="calculator.html"><span class="fa fa-calculator fa-lg"></span> Calculator</a></li>
+						</ul>
+					</li>
+					<li class="dropdown">
+						<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Extensions <span class="caret"></span></a>
+						<ul class="dropdown-menu active">
+							<li><a href="altkeys-popup.html">Alt-keys</a></li>
+							<li><a href="../index.html#autocomplete">Autocomplete</a></li>
+							<li><a href="../index.html#caret">Caret</a></li>
+							<li><a href="extender.html">Extender</a></li>
+							<li><a href="preview-keyset.html">Keyset</a></li>
+							<li><a href="mobile.html">Mobile</a></li>
+							<li><a href="jquery-mobile-1.4.html">Mobile v1.4</a></li>
+							<li><a href="navigate.html">Navigate</a></li>
+							<li class="active"><a href="scramble.html">Scramble <span class="sr-only">(current)</span></a></li>
+							<li><a href="../index.html#typing">Typing</a></li>
+						</ul>
+					</li>
+					<li><a href="http://jsfiddle.net/Mottie/egb3a1sk/"><span class="fa fa-flask fa-lg"></span> Playground</a></li>
+				</ul>
+
+				<ul class="nav navbar-nav navbar-right">
+					<li><a href="https://github.com/Mottie/Keyboard"><span class="fa fa-github fa-lg" title="GitHub"></span></a></li>
+					<li><a href="https://github.com/Mottie/Keyboard/archive/master.zip"><span class="fa fa-download fa-lg" title="Download"></span></a></li>
+					<li><a href="https://github.com/Mottie/Keyboard/wiki"><span class="fa fa-file-text-o fa-lg" title="Documentation"></span></a></li>
+					<li><a href="https://github.com/Mottie/Keyboard/issues"><span class="fa fa-bug fa-lg" title="Issues"></span></a></li>
+				</ul>
+
+			</div><!-- /.navbar-collapse -->
+		</div><!-- /.container-fluid -->
+	</nav>
 
 	<h1><a href="https://github.com/Mottie/Keyboard">Virtual Keyboard Scramble Demo</a></h1>
 	<h4>Note: Look at this demo source or refer to the <a href="https://github.com/Mottie/Keyboard/wiki/Setup#wiki-scramble">documentation</a> on how to set up this extension.</h4>

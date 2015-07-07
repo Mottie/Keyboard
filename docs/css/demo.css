@@ -23,6 +23,10 @@ h2 img { margin-bottom: 7px; }
 #nav a:hover,#nav a.current{ background: #555; }
 
 .github-btn { border: 0; }
+.navbar-nav > li > a, .navbar-brand { padding-top:4px !important; padding-bottom:0 !important; height: 32px; }
+.navbar { min-height: 32px !important; }
+.navbar-toggle { margin-top: 6px; margin-bottom: 0; padding: 0; }
+.navbar-brand { color: #eee !important; }
 
 #switcher, #wrap { width: 260px; margin: 10px auto; }
 #switcher a { margin: 0 auto; }
