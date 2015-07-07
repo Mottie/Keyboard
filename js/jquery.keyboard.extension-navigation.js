@@ -56,16 +56,13 @@ $.keyboard.navigationKeys = {
 
 	// ** custom navigationKeys functions **
 	// move caret without navigate toggle active
-	caretrgt   : function(kb){
-		// keyaction right does not actually set the caret, so we need to do it here
+	caretright : function(kb){
 		$.keyboard.keyaction.right(kb);
-		kb.$preview.focus().caret( kb.last );
 	},
-	caretlft   : function(kb){
-		// keyaction left does not actually set the caret, so we need to do it here
+	caretleft : function(kb){
 		$.keyboard.keyaction.left(kb);
-		kb.$preview.focus().caret( kb.last );
 	}
+
 };
 
 $.fn.addNavigation = function(options){
@@ -77,8 +74,8 @@ $.fn.addNavigation = function(options){
 			defaults = {
 				position   : [0,0],     // set start position [row-number, key-index]
 				toggleMode : false,     // true = navigate the virtual keyboard, false = navigate in input/textarea
-
-				focusClass : 'hasFocus' // css class added when toggle mode is on
+				focusClass : 'hasFocus',// css class added when toggle mode is on
+				toggleKey  : null       // defaults to $.keyboard.navigationKeys.toggle value
 			},
 			kbevents = $.keyboard.events;
 		if (!base) { return; }
@@ -112,7 +109,7 @@ $.fn.addNavigation = function(options){
 			}
 			var k = base.navigation_keys,
 				kbcss = $.keyboard.css;
-			if (key === k.toggle || disable) {
+			if (key === ( o.toggleKey || k.toggle ) || disable) {
 				o.toggleMode = (disable) ? false : !o.toggleMode;
 				base.options.tabNavigation = (o.toggleMode) ? false : base.saveNav[0];
 				base.options.enterNavigation = (o.toggleMode) ? false : base.saveNav[1];
@@ -159,7 +156,7 @@ $.fn.addNavigation = function(options){
 			if (key === k.caretrt || key === k.caretlt) {
 				p.start = p.start < 0 ? 0 : p.start > l ? l : p.start;
 				base.last.start = base.last.end = p.end = p.start;
-				base.$preview.focus().caret( base.last );
+				$.keyboard.caret( base.$preview, base.last );
 			}
 
 			// get max index of new row
