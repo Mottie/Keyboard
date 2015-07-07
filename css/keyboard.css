@@ -8,7 +8,7 @@
 .ui-keyboard-space { width: 15em; }
 /* see http://nicolasgallagher.com/another-css-image-replacement-technique/ */
 .ui-keyboard-space span, .ui-keyboard-empty span { font: 0/0 a; text-shadow: none; color: transparent; }
-.ui-keyboard-preview-wrapper { text-align: center; }
+.ui-keyboard-preview-wrapper { text-align: center; position: relative; overflow: hidden; }
 /* width is calculated in IE, since 99% = 99% full browser width =( */
 .ui-keyboard-preview { text-align: left; margin: 0 0 3px 0; display: inline; width: 99%;}
 .ui-keyboard-keyset { text-align: center; white-space: nowrap; }
@@ -29,6 +29,10 @@ button.ui-keyboard-accept.ui-keyboard-valid-input { border-color: #0c0; backgrou
 button.ui-keyboard-accept.ui-keyboard-valid-input:hover { background: #0a0; }
 button.ui-keyboard-accept.ui-keyboard-invalid-input { border-color: #c00; background: #800; color: #fff; opacity: 0.5; filter: alpha(opacity=50); }
 button.ui-keyboard-accept.ui-keyboard-invalid-input:hover { background: #a00; }
+
+/*** Caret extension definition ***/
+/* margin-top => is added to the caret height (top & bottom) */
+.ui-keyboard-caret { background: #c00; width: 1px; margin-top: 3px; }
 
 /*** jQuery Mobile definitions ***/
 /* jQuery Mobile styles - need wider buttons because of font size and text-overflow:ellipsis */
