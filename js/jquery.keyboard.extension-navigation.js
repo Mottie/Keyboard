@@ -83,6 +83,8 @@ $.fn.addNavigation = function(options){
 		base.navigation_options = o = $.extend({}, defaults, options);
 		base.navigation_keys = k = $.extend({}, $.keyboard.navigationKeys);
 		base.navigation_namespace = base.namespace + 'Nav';
+		base.extensionNamespace.push( base.navigation_namespace );
+
 		// save navigation settings - disabled when the toggled
 		base.saveNav = [ base.options.tabNavigation, base.options.enterNavigation ];
 		base.allNavKeys = $.map(k, function(v,i){ return v; });
@@ -173,7 +175,7 @@ $.fn.addNavigation = function(options){
 			base.$keyboard.find('.' + opts.css.buttonHover).removeClass(opts.css.buttonHover);
 			base.navigation_init();
 		}
-		// capture and simulate typing
+		// navigation bindings
 		base.$el
 			.unbind(base.navigation_namespace)
 			.bind(kbevents.kbVisible, function(){

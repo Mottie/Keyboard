@@ -51,10 +51,13 @@ $.keyboard = $.keyboard || {};
 			// make sure a keyboard is attached
 			var o,
 				base = $(this).data('keyboard'),
+				namespace = base.namespace + 'Scramble',
 				opts = base.options;
 
 			if (!base || base.scramble_options) { return; }
 			o = base.scramble_options = $.extend({}, defaults, options);
+			base.extensionNamespace.push( namespace );
+
 			// save create callback
 			o.orig_create = opts.create;
 
@@ -189,9 +192,11 @@ $.keyboard = $.keyboard || {};
 				}
 				base.$keyboard = $.keyboard.builtLayouts[layout].$keyboard;
 				if ( !o.randomizeOnce ) {
-					base.$el.bind($.keyboard.events.kbBeforeVisible + base.namespace + 'Scramble', function(e, kb) {
-						kb.$keyboard = kb.scramble_setup(kb.$keyboard);
-					});
+					base.$el
+						.unbind($.keyboard.events.kbBeforeVisible + namespace)
+						.bind($.keyboard.events.kbBeforeVisible + namespace, function(e, kb) {
+							kb.$keyboard = kb.scramble_setup(kb.$keyboard);
+						});
 				}
 				if ( $.isFunction( o.orig_create ) ) {
 					o.orig_create( base );

@@ -68,6 +68,8 @@ var $keyboard = $.keyboard = function(el, options){
 		base.el.active = true;
 		// unique keyboard namespace
 		base.namespace = '.keyboard' + Math.random().toString(16).slice(2);
+		// extension namespaces added here (to unbind listeners on base.$el upon destroy)
+		base.extensionNamespace = [];
 		// Shift and Alt key toggles, sets is true if a layout has more than one keyset
 		// used for mousewheel message
 		base.shiftActive = base.altActive = base.metaActive = base.sets = base.capsLock = false;
@@ -1579,19 +1581,33 @@ var $keyboard = $.keyboard = function(el, options){
 		}
 	};
 
+	base.removeBindings = function( namespace ) {
+		$(document).unbind( namespace );
+		$(window).unbind( namespace );
+		base.$el.unbind( namespace );
+	};
+
 	base.destroy = function() {
+		var index,
+			kbcss = $keyboard.css,
+			len = base.extensionNamespace.length,
+			tmp = [ kbcss.input, kbcss.locked, kbcss.placeholder, kbcss.noKeyboard,
+				kbcss.alwaysOpen, o.css.input].join(' ');
 		clearTimeout(base.timer);
 		clearTimeout(base.timer2);
-		$(document).unbind(base.namespace);
-		$(window).unbind(base.namespace);
+		base.removeBindings( base.namespace );
+		for ( index = 0; index < len; index++ ) {
+			base.removeBindings( base.extensionNamespace[ index ] );
+		}
 		base.el.active = false;
-		if (base.$keyboard.length) { base.$keyboard.remove(); }
-		var kbcss = $keyboard.css;
+		if (base.$keyboard.length) {
+			base.$keyboard.remove();
+		}
+
 		base.$el
-			.removeClass( [kbcss.input, kbcss.locked, kbcss.placeholder, kbcss.noKeyboard, kbcss.alwaysOpen, o.css.input].join(' ') )
+			.removeClass( tmp )
 			.removeAttr('aria-haspopup')
 			.removeAttr('role')
-			.unbind(base.namespace)
 			.removeData('keyboard');
 		base = null;
 	};

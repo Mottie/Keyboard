@@ -50,6 +50,7 @@
 			// variables
 			o = base.caret_options = $.extend( {}, defaults, options );
 			base.caret_namespace = base.namespace + 'caret';
+			base.extensionNamespace.push( base.caret_namespace );
 
 			// modified from https://github.com/component/textarea-caret-position
 			// The properties that we copy into a mirrored div.

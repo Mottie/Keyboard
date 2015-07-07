@@ -89,6 +89,7 @@
 			};
 			base.typing_event = false;
 			base.typing_namespace = base.namespace + 'typing';
+			base.extensionNamespace.push( base.typing_namespace );
 			// save lockInput setting
 			o.savedLockInput = base.options.lockInput;
 
@@ -312,9 +313,11 @@
 					base.typing_setup();
 				}
 				// capture and simulate typing
-				base.$el.bind( $keyboard.events.kbBeforeVisible + base.typing_namespace, function(){
-					base.typing_setup();
-				});
+				base.$el
+					.unbind( $keyboard.events.kbBeforeVisible + base.typing_namespace )
+					.bind( $keyboard.events.kbBeforeVisible + base.typing_namespace, function(){
+						base.typing_setup();
+					});
 			}
 
 		});

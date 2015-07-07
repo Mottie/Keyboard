@@ -44,6 +44,7 @@ $.fn.addAutocomplete = function(){
 		if (!base) { return; }
 
 		base.autocomplete_namespace = base.namespace + 'Autocomplete';
+		base.extensionNamespace.push( base.autocomplete_namespace );
 
 		// Setup
 		base.autocomplete_init = function(){

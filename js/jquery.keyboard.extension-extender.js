@@ -64,6 +64,7 @@
 				}
 			});
 			base.extender_namespace = base.namespace + 'extender';
+			base.extensionNamespace.push( base.extender_namespace );
 
 			base.extender_setup = function() {
 				var $kb,
@@ -105,10 +106,12 @@
 			if (base.options.alwaysOpen && base.isVisible()) {
 				base.extender_setup();
 			}
-			// capture and simulate typing
-			base.$el.bind( $keyboard.events.kbBeforeVisible + base.extender_namespace, function() {
-				base.extender_setup();
-			});
+			// setup extender
+			base.$el
+				.unbind( $keyboard.events.kbBeforeVisible + base.extender_namespace )
+				.bind( $keyboard.events.kbBeforeVisible + base.extender_namespace, function() {
+					base.extender_setup();
+				});
 
 		});
 	};

@@ -83,17 +83,19 @@
 		};
 		return this.each( function() {
 			// make sure a keyboard is attached
-			var base = $( this ).data( 'keyboard' );
+			var namespace,
+				base = $( this ).data( 'keyboard' );
 			if (!base) { return; }
 
 			// variables
 			base.altkeypopup_options = $.extend( {}, defaults, options );
-			base.altkeypopup_namespace = base.namespace + 'AltKeyPopup';
+			namespace = base.altkeypopup_namespace = base.namespace + 'AltKeyPopup';
+			base.extensionNamespace.push( namespace );
 
 			base.altkeypopup_setup = function() {
 				var timer,
-					start = 'mousedown touchstart '.split( ' ' ).join( base.altkeypopup_namespace + ' ' ),
-					end = 'mouseup touchend touchcancel '.split( ' ' ).join( base.altkeypopup_namespace + ' ' );
+					start = 'mousedown touchstart '.split( ' ' ).join( namespace + ' ' ),
+					end = 'mouseup touchend touchcancel '.split( ' ' ).join( namespace + ' ' );
 
 				// force disable repeat keys
 				base.options.repeatRate = 0;
@@ -194,10 +196,12 @@
 			if ( base.options.alwaysOpen && base.isVisible() ) {
 				base.altkeypopup_setup();
 			}
-			// capture and simulate typing
-			base.$el.bind( $keyboard.events.kbBeforeVisible + base.altkeypopup_namespace, function() {
-				base.altkeypopup_setup();
-			});
+			// setup altkey popup
+			base.$el
+				.unbind( $keyboard.events.kbBeforeVisible + namespace )
+				.bind( $keyboard.events.kbBeforeVisible + namespace, function() {
+					base.altkeypopup_setup();
+				});
 
 		});
 	};

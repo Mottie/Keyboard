@@ -90,17 +90,19 @@
 		};
 		return this.each( function() {
 			// make sure a keyboard is attached
-			var base = $( this ).data( 'keyboard' );
+			var namespace,
+				base = $( this ).data( 'keyboard' );
 			if (!base) { return; }
 
 			// variables
 			base.altkeypopup_options = $.extend( {}, defaults, options );
-			base.altkeypopup_namespace = base.namespace + 'AltKeyPopup';
+			namespace = base.altkeypopup_namespace = base.namespace + 'AltKeyPopup';
+			base.extensionNamespace.push( namespace );
 
 			base.altkeypopup_setup = function() {
 				var timer,
-					start = 'mousedown touchstart '.split( ' ' ).join( base.altkeypopup_namespace + ' ' ),
-					end = 'mouseup touchend touchcancel '.split( ' ' ).join( base.altkeypopup_namespace + ' ' );
+					start = 'mousedown touchstart '.split( ' ' ).join( namespace + ' ' ),
+					end = 'mouseup touchend touchcancel '.split( ' ' ).join( namespace + ' ' );
 
 				// force disable repeat keys
 				base.options.repeatRate = 0;
@@ -201,10 +203,12 @@
 			if ( base.options.alwaysOpen && base.isVisible() ) {
 				base.altkeypopup_setup();
 			}
-			// capture and simulate typing
-			base.$el.bind( $keyboard.events.kbBeforeVisible + base.altkeypopup_namespace, function() {
-				base.altkeypopup_setup();
-			});
+			// setup altkey popup
+			base.$el
+				.unbind( $keyboard.events.kbBeforeVisible + namespace )
+				.bind( $keyboard.events.kbBeforeVisible + namespace, function() {
+					base.altkeypopup_setup();
+				});
 
 		});
 	};
@@ -257,6 +261,7 @@ $.fn.addAutocomplete = function(){
 		if (!base) { return; }
 
 		base.autocomplete_namespace = base.namespace + 'Autocomplete';
+		base.extensionNamespace.push( base.autocomplete_namespace );
 
 		// Setup
 		base.autocomplete_init = function(){
@@ -399,6 +404,7 @@ $.fn.addAutocomplete = function(){
 			// variables
 			o = base.caret_options = $.extend( {}, defaults, options );
 			base.caret_namespace = base.namespace + 'caret';
+			base.extensionNamespace.push( base.caret_namespace );
 
 			// modified from https://github.com/component/textarea-caret-position
 			// The properties that we copy into a mirrored div.
@@ -593,6 +599,7 @@ $.fn.addAutocomplete = function(){
 				}
 			});
 			base.extender_namespace = base.namespace + 'extender';
+			base.extensionNamespace.push( base.extender_namespace );
 
 			base.extender_setup = function() {
 				var $kb,
@@ -634,10 +641,12 @@ $.fn.addAutocomplete = function(){
 			if (base.options.alwaysOpen && base.isVisible()) {
 				base.extender_setup();
 			}
-			// capture and simulate typing
-			base.$el.bind( $keyboard.events.kbBeforeVisible + base.extender_namespace, function() {
-				base.extender_setup();
-			});
+			// setup extender
+			base.$el
+				.unbind( $keyboard.events.kbBeforeVisible + base.extender_namespace )
+				.bind( $keyboard.events.kbBeforeVisible + base.extender_namespace, function() {
+					base.extender_setup();
+				});
 
 		});
 	};
@@ -724,6 +733,8 @@ $.fn.addMobile = function(options){
 		// Setup
 		base.mobile_init = function() {
 
+			var namespace = base.namespace + 'Mobile';
+
 			// Add theme to input - if not already done through the markup
 			$('.' + $.keyboard.css.input).textinput();
 
@@ -732,20 +743,26 @@ $.fn.addMobile = function(options){
 				base.mobile_setup();
 			}
 
+			base.extensionNamespace.push( namespace );
+
 			// Setup mobile theme on keyboard once it is visible.
 			// Note: There is a 10ms delay after the keyboard is displayed before it actually fires 'visible.keyboard'.
 			// Since we are restyling here, the user will experience FlashOfUnstyledContent (FOUC).
 			// This is avoided by first setting the visibility to hidden, then after the mobile styles are applied we
 			// set it visible.
 			base.$el
-				.unbind(base.namespace + 'Mobile')
-				.bind($.keyboard.events.kbBeforeVisible + base.namespace + 'Mobile', function() {
-					base.$keyboard.css('visibility', 'hidden');
+				.unbind(namespace)
+				.bind($.keyboard.events.kbBeforeVisible + namespace, function() {
+					if ( base && base.el.active && base.$keyboard.length ) {
+						base.$keyboard.css('visibility', 'hidden');
+					}
 				})
-				.bind($.keyboard.events.kbVisible + base.namespace + 'Mobile', function() {
-					base.mobile_setup();
-					base.$keyboard.css('visibility', 'visible');
-					base.$preview.focus();
+				.bind($.keyboard.events.kbVisible + namespace, function() {
+					if ( base && base.el.active && base.$keyboard.length ) {
+						base.mobile_setup();
+						base.$keyboard.css('visibility', 'visible');
+						base.$preview.focus();
+					}
 				});
 
 		};
@@ -910,6 +927,8 @@ $.fn.addNavigation = function(options){
 		base.navigation_options = o = $.extend({}, defaults, options);
 		base.navigation_keys = k = $.extend({}, $.keyboard.navigationKeys);
 		base.navigation_namespace = base.namespace + 'Nav';
+		base.extensionNamespace.push( base.navigation_namespace );
+
 		// save navigation settings - disabled when the toggled
 		base.saveNav = [ base.options.tabNavigation, base.options.enterNavigation ];
 		base.allNavKeys = $.map(k, function(v,i){ return v; });
@@ -1000,7 +1019,7 @@ $.fn.addNavigation = function(options){
 			base.$keyboard.find('.' + opts.css.buttonHover).removeClass(opts.css.buttonHover);
 			base.navigation_init();
 		}
-		// capture and simulate typing
+		// navigation bindings
 		base.$el
 			.unbind(base.navigation_namespace)
 			.bind(kbevents.kbVisible, function(){
@@ -1084,6 +1103,7 @@ $.fn.previewKeyset = function( options ) {
 	return this.each( function() {
 		// make sure a keyboard is attached
 		var base = $( this ).data( 'keyboard' ),
+			namespace = base.namespace + 'Preview',
 			defaults = {
 				sets : [ 'normal', 'shift', 'alt', 'alt-shift' ]
 			};
@@ -1091,6 +1111,7 @@ $.fn.previewKeyset = function( options ) {
 		if ( !base ) { return; }
 
 		base.previewKeyset_options = $.extend( {}, defaults, options );
+		base.extensionNamespace.push( namespace );
 
 		base.previewKeyset = function() {
 			var kbcss = $.keyboard.css,
@@ -1120,9 +1141,11 @@ $.fn.previewKeyset = function( options ) {
 		if (base.options.alwaysOpen && base.isVisible()) {
 			base.previewKeyset();
 		} else {
-			base.$el.bind($.keyboard.events.kbBeforeVisible + base.namespace + 'Preview', function() {
-				base.previewKeyset();
-			});
+			base.$el
+				.unbind($.keyboard.events.kbBeforeVisible + namespace)
+				.bind($.keyboard.events.kbBeforeVisible + namespace, function() {
+					base.previewKeyset();
+				});
 		}
 
 	});
@@ -1183,10 +1206,13 @@ $.keyboard = $.keyboard || {};
 			// make sure a keyboard is attached
 			var o,
 				base = $(this).data('keyboard'),
+				namespace = base.namespace + 'Scramble',
 				opts = base.options;
 
 			if (!base || base.scramble_options) { return; }
 			o = base.scramble_options = $.extend({}, defaults, options);
+			base.extensionNamespace.push( namespace );
+
 			// save create callback
 			o.orig_create = opts.create;
 
@@ -1321,9 +1347,11 @@ $.keyboard = $.keyboard || {};
 				}
 				base.$keyboard = $.keyboard.builtLayouts[layout].$keyboard;
 				if ( !o.randomizeOnce ) {
-					base.$el.bind($.keyboard.events.kbBeforeVisible + base.namespace + 'Scramble', function(e, kb) {
-						kb.$keyboard = kb.scramble_setup(kb.$keyboard);
-					});
+					base.$el
+						.unbind($.keyboard.events.kbBeforeVisible + namespace)
+						.bind($.keyboard.events.kbBeforeVisible + namespace, function(e, kb) {
+							kb.$keyboard = kb.scramble_setup(kb.$keyboard);
+						});
 				}
 				if ( $.isFunction( o.orig_create ) ) {
 					o.orig_create( base );
@@ -1447,6 +1475,7 @@ $.keyboard = $.keyboard || {};
 			};
 			base.typing_event = false;
 			base.typing_namespace = base.namespace + 'typing';
+			base.extensionNamespace.push( base.typing_namespace );
 			// save lockInput setting
 			o.savedLockInput = base.options.lockInput;
 
@@ -1670,9 +1699,11 @@ $.keyboard = $.keyboard || {};
 					base.typing_setup();
 				}
 				// capture and simulate typing
-				base.$el.bind( $keyboard.events.kbBeforeVisible + base.typing_namespace, function(){
-					base.typing_setup();
-				});
+				base.$el
+					.unbind( $keyboard.events.kbBeforeVisible + base.typing_namespace )
+					.bind( $keyboard.events.kbBeforeVisible + base.typing_namespace, function(){
+						base.typing_setup();
+					});
 			}
 
 		});

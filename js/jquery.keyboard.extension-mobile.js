@@ -78,6 +78,8 @@ $.fn.addMobile = function(options){
 		// Setup
 		base.mobile_init = function() {
 
+			var namespace = base.namespace + 'Mobile';
+
 			// Add theme to input - if not already done through the markup
 			$('.' + $.keyboard.css.input).textinput();
 
@@ -86,20 +88,26 @@ $.fn.addMobile = function(options){
 				base.mobile_setup();
 			}
 
+			base.extensionNamespace.push( namespace );
+
 			// Setup mobile theme on keyboard once it is visible.
 			// Note: There is a 10ms delay after the keyboard is displayed before it actually fires 'visible.keyboard'.
 			// Since we are restyling here, the user will experience FlashOfUnstyledContent (FOUC).
 			// This is avoided by first setting the visibility to hidden, then after the mobile styles are applied we
 			// set it visible.
 			base.$el
-				.unbind(base.namespace + 'Mobile')
-				.bind($.keyboard.events.kbBeforeVisible + base.namespace + 'Mobile', function() {
-					base.$keyboard.css('visibility', 'hidden');
+				.unbind(namespace)
+				.bind($.keyboard.events.kbBeforeVisible + namespace, function() {
+					if ( base && base.el.active && base.$keyboard.length ) {
+						base.$keyboard.css('visibility', 'hidden');
+					}
 				})
-				.bind($.keyboard.events.kbVisible + base.namespace + 'Mobile', function() {
-					base.mobile_setup();
-					base.$keyboard.css('visibility', 'visible');
-					base.$preview.focus();
+				.bind($.keyboard.events.kbVisible + namespace, function() {
+					if ( base && base.el.active && base.$keyboard.length ) {
+						base.mobile_setup();
+						base.$keyboard.css('visibility', 'visible');
+						base.$preview.focus();
+					}
 				});
 
 		};
