@@ -114,7 +114,7 @@
 					if (e.which === 16) { base.shiftActive = false; }
 					if (e.which === 18) { base.altActive = false; }
 					if (e.which === 16 || e.which === 18) {
-						base.showKeySet();
+						base.showSet();
 						// Alt key will shift focus to the menu - doesn't work in Windows
 						setTimeout(function(){ base.$preview.focus(); }, 200);
 						return;
@@ -128,7 +128,7 @@
 					// it should be ok to reset e.temp, since both alt and shift will call this function separately
 					if (e.which === 18) { e.temp = !base.altActive; base.altActive = true; }
 					if (e.temp) {
-						base.showKeySet();
+						base.showSet();
 						base.$preview.focus(); // Alt shift focus to the menu
 					}
 					base.typing_event = true;
@@ -244,7 +244,7 @@
 						base.altActive = /alt/.test(meta);
 						base.metaActive = base.last.keyset[2] = (meta).match(/meta\d+/) || false;
 						// make the plugin think we're passing it a jQuery object with a name
-						base.showKeySet({ name : base.metaActive});
+						base.showSet({ name : base.metaActive });
 
 						// Add the key
 						base.typing_simulateKey(key, txt, e);
