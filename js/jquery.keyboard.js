@@ -50,9 +50,19 @@ var $keyboard = $.keyboard = function(el, options){
 	base.$el.data('keyboard', base);
 
 	base.init = function(){
-		var kbcss = $keyboard.css;
+		var position,
+			kbcss = $keyboard.css;
 		base.settings = options || {};
-		base.options = o = $.extend(true, {}, $keyboard.defaultOptions, options);
+		// shallow copy position to prevent performance issues; see #357
+		if ( options.position ) {
+			position = $.extend( {}, options.position );
+			options.position = null;
+		}
+		base.options = o = $.extend( true, {}, $keyboard.defaultOptions, options );
+		if ( position ) {
+			o.position = position;
+			options.position = position;
+		}
 
 		// keyboard is active (not destroyed);
 		base.el.active = true;
