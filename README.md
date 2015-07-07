@@ -88,6 +88,21 @@ Wiki: [Home](https://github.com/Mottie/Keyboard/wiki/Home) | [FAQ](https://githu
 
 Only the latest changes will be shown below, see the wiki log to view older versions.
 
+### Version 1.23.2 (7/6/2015)
+
+* Core:
+  * Stop document events from opening the keyboard. Fixes [issue #365](https://github.com/Mottie/Keyboard/issues/365).
+  * Fix `create` callback function; mobile 1.4 demo works again.
+  * Simplified the use of `keyboard.showKeySet()` method ([ref](https://github.com/Mottie/Keyboard/wiki/Methods#showkeysetmeta)).
+  * Extend `position` options separately. Fixes [issue #357](https://github.com/Mottie/Keyboard/issues/357).
+* Language: add German language file. Thanks C. Pape!
+* Autocomplete: minor cleanup.
+* Caret: Add new caret extension (beta) which adds a stylable caret to the keyboard.
+* Navigation: fix caret positioning keys.
+* Docs:
+  * Update bootstrap.
+  * Added top navigation.
+
 ### Version 1.23.1 (6/23/2015)
 
 * Prevent js error if destroyed in "hidden" callback. See [issue #358](https://github.com/Mottie/Keyboard/issues/358).
@@ -116,9 +131,3 @@ Only the latest changes will be shown below, see the wiki log to view older vers
     * "dist/layouts/keyboard-layouts-combined.min.js"
     * "dist/layouts/keyboard-layouts-greywyvern.min.js"
     * "dist/layouts/keyboard-layouts-microsoft.min.js"
-
-### Version 1.22.6 (6/2/2015)
-
-* Fixed grunt build issues. [Pull #350](https://github.com/Mottie/Keyboard/pull/350), thanks [abovethewater](https://github.com/abovethewater)!
-* Fixed missing tag terminator. Now XHTML compatible. [Pull #353](https://github.com/Mottie/Keyboard/pull/353), thanks [ptwz](https://github.com/ptwz)!
-* Backspace now properly removes all characters. Fixes [issue #352](https://github.com/Mottie/Keyboard/issues/352).
