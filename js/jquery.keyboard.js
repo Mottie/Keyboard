@@ -54,7 +54,7 @@ var $keyboard = $.keyboard = function(el, options){
 			kbcss = $keyboard.css;
 		base.settings = options || {};
 		// shallow copy position to prevent performance issues; see #357
-		if ( options.position ) {
+		if ( options && options.position ) {
 			position = $.extend( {}, options.position );
 			options.position = null;
 		}
