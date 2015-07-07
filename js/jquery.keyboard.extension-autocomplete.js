@@ -43,12 +43,6 @@ $.fn.addAutocomplete = function(){
 		var base = $(this).data('keyboard');
 		if (!base) { return; }
 
-		// jQuery UI versions 1.9+ are different >= 1.9;
-		base.autocomplete_new_version = (function(version) {
-			version[0] = parseInt(version[0], 10);
-			return (version[0] > 1) || (version[0] === 1 && parseInt(version[1], 10) >= 9);
-		})($.ui.version.split("."));
-
 		base.autocomplete_namespace = base.namespace + 'Autocomplete';
 
 		// Setup
