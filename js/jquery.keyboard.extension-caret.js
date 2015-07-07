@@ -1,5 +1,5 @@
-/*! jQuery UI Virtual Keyboard Virtual Caret v1.0 (beta) *//*
- * for Keyboard v1.18+ only (3/19/2015)
+/*! jQuery UI Virtual Keyboard Virtual Caret v1.0.1 (beta) *//*
+ * for Keyboard v1.18+ only (7/7/2015)
  * modified from https://github.com/component/textarea-caret-position
  *
  * By Rob Garrison (aka Mottie)

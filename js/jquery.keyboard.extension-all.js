@@ -5,8 +5,8 @@
 █████▀ ▀████▀   ██  ██ ▀████▀   ██     ██ ██ ██ ▀████▀ █████▀ ██ ██     █████▀
 */
 /*! jQuery UI Virtual Keyboard - ALL Extensions + Mousewheel */
-/*! jQuery UI Virtual Keyboard Alt Key Popup v1.0 *//*
- * for Keyboard v1.18+ only (4/13/2015)
+/*! jQuery UI Virtual Keyboard Alt Key Popup v1.0.1 *//*
+ * for Keyboard v1.18+ only (7/7/2015)
  *
  * By Rob Garrison (aka Mottie)
  * Licensed under the MIT License
@@ -215,8 +215,8 @@
 
 }));
 
-/*! jQuery UI Virtual Keyboard Autocomplete v1.9 *//*
- * for Keyboard v1.18+ only (3/7/2015)
+/*! jQuery UI Virtual Keyboard Autocomplete v1.9.1 *//*
+ * for Keyboard v1.18+ only (7/7/2015)
  *
  * By Rob Garrison (aka Mottie & Fudgey)
  * Licensed under the MIT License
@@ -352,8 +352,8 @@ $.fn.addAutocomplete = function(){
 
 }));
 
-/*! jQuery UI Virtual Keyboard Virtual Caret v1.0 (beta) *//*
- * for Keyboard v1.18+ only (3/19/2015)
+/*! jQuery UI Virtual Keyboard Virtual Caret v1.0.1 (beta) *//*
+ * for Keyboard v1.18+ only (7/7/2015)
  * modified from https://github.com/component/textarea-caret-position
  *
  * By Rob Garrison (aka Mottie)
@@ -533,8 +533,8 @@ $.fn.addAutocomplete = function(){
 
 }));
 
-/*! jQuery UI Virtual Keyboard Extender v1.0 *//*
- * for Keyboard v1.18+ only (3/3/2015)
+/*! jQuery UI Virtual Keyboard Extender v1.0.1 *//*
+ * for Keyboard v1.18+ only (7/7/2015)
  *
  * By Rob Garrison (aka Mottie)
  * Licensed under the MIT License
@@ -653,8 +653,8 @@ $.fn.addAutocomplete = function(){
 
 }));
 
-/*! jQuery UI Virtual Keyboard for jQuery Mobile Themes v1.4 *//*
- * for Keyboard v1.18+ (updated 3/7/2015)
+/*! jQuery UI Virtual Keyboard for jQuery Mobile Themes v1.4.1 *//*
+ * for Keyboard v1.18+ (updated 7/7/2015)
  *
  * By Rob Garrison (aka Mottie & Fudgey)
  * Licensed under the MIT License
@@ -842,8 +842,8 @@ $.fn.addMobile = function(options){
 
 }));
 
-/*! jQuery UI Virtual Keyboard Navigation v1.6 *//*
- * for Keyboard v1.18+ only (updated 3/7/2015)
+/*! jQuery UI Virtual Keyboard Navigation v1.6.1 *//*
+ * for Keyboard v1.18+ only (updated 7/7/2015)
  *
  * By Rob Garrison (aka Mottie & Fudgey)
  * Licensed under the MIT License
@@ -1061,8 +1061,8 @@ $.fn.addNavigation = function(options){
 
 }));
 
-/*! jQuery UI Virtual Keyboard previewKeyset v1.1 *//*
- * for Keyboard v1.18+ only (updated 3/7/2015)
+/*! jQuery UI Virtual Keyboard previewKeyset v1.1.1 *//*
+ * for Keyboard v1.18+ only (updated 7/7/2015)
  *
  * By Rob Garrison (aka Mottie & Fudgey)
  * Licensed under the MIT License
@@ -1154,7 +1154,7 @@ $.fn.previewKeyset = function( options ) {
 }));
 
 /*
- * jQuery UI Virtual Keyboard Scramble Extension v1.6 for Keyboard v1.18+ (updated 3/7/2015)
+ * jQuery UI Virtual Keyboard Scramble Extension v1.6.1 for Keyboard v1.18+ (updated 7/7/2015)
  *
  * By Rob Garrison (aka Mottie & Fudgey)
  * Licensed under the MIT License
@@ -1384,8 +1384,8 @@ $.keyboard = $.keyboard || {};
 
 }));
 
-/*! jQuery UI Virtual Keyboard Typing Simulator v1.9 *//*
- * for Keyboard v1.18+ only (3/11/2015)
+/*! jQuery UI Virtual Keyboard Typing Simulator v1.9.1 *//*
+ * for Keyboard v1.18+ only (7/7/2015)
  *
  * By Rob Garrison (aka Mottie & Fudgey)
  * Licensed under the MIT License
