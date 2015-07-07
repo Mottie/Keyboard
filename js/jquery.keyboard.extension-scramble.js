@@ -44,7 +44,7 @@ $.keyboard = $.keyboard || {};
 			byRow         : true,  // randomize by row, otherwise randomize all keys
 			byKeySet      : false, // if true, randomize one keyset & duplicate
 			randomizeOnce : true,  // if true, randomize only once on keyboard visible
-			sameForAll    : false, // use the same scrambled keyboard for all targetted keyboards
+			sameForAll    : false, // use the same scrambled keyboard for all targetted keyboards - not fully implemented!
 			init          : null   // function(keyboard){}
 		};
 		return this.each(function() {
@@ -55,6 +55,8 @@ $.keyboard = $.keyboard || {};
 
 			if (!base || base.scramble_options) { return; }
 			o = base.scramble_options = $.extend({}, defaults, options);
+			// save create callback
+			o.orig_create = opts.create;
 
 			base.scramble_setup = function($keyboard) {
 				var $sets, set, $keys, key, index, tmp,
@@ -190,6 +192,9 @@ $.keyboard = $.keyboard || {};
 					base.$el.bind($.keyboard.events.kbBeforeVisible + base.namespace + 'Scramble', function(e, kb) {
 						kb.$keyboard = kb.scramble_setup(kb.$keyboard);
 					});
+				}
+				if ( $.isFunction( o.orig_create ) ) {
+					o.orig_create( base );
 				}
 			};
 

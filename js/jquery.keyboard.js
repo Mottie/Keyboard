@@ -394,12 +394,11 @@ var $keyboard = $.keyboard = function(el, options){
 			base.last.layout = base.layout;
 
 			base.updateLanguage();
-
 			if (typeof $keyboard.builtLayouts[base.layout] === 'undefined') {
 				if ($.isFunction(o.create)) {
-					o.create(base);
-				}
-				if (!base.$keyboard.length) {
+					// create must call buildKeyboard() function; or create it's own keyboard
+					base.$keyboard = o.create(base);
+				} else if (!base.$keyboard.length) {
 					base.buildKeyboard(base.layout, true);
 				}
 			}
@@ -1344,10 +1343,10 @@ var $keyboard = $.keyboard = function(el, options){
 			// set keyboard language
 			base.updateLanguage();
 		}
-		var row, $row, currentSet,
+		var row, $row, currentSet, $layout,
 			kbcss = $keyboard.css,
 			sets = 0,
-			layout = $keyboard.builtLayouts[name || base.layout] = {
+			layout = $keyboard.builtLayouts[name || base.layout || o.layout] = {
 				mappedKeys   : {},
 				acceptedKeys : []
 			},
@@ -1360,10 +1359,13 @@ var $keyboard = $.keyboard = function(el, options){
 		// verify layout or setup custom keyboard
 		if ( ( internal && o.layout === 'custom' ) || !$keyboard.layouts.hasOwnProperty(o.layout) ) {
 			o.layout = 'custom';
-			$keyboard.layouts.custom = o.customLayout || { 'normal' : ['{cancel}'] };
+			$layout = $keyboard.layouts.custom = o.customLayout || { 'normal' : ['{cancel}'] };
+		} else {
+			$layout = $keyboard.layouts[ internal ? o.layout : name || base.layout || o.layout ];
 		}
+
 		// Main keyboard building loop
-		$.each($keyboard.layouts[ internal ? o.layout : name ], function(set, keySet) {
+		$.each($layout, function(set, keySet) {
 			// skip layout name & lang settings
 			if (set !== '' && !/^(name|lang|rtl)$/i.test(set)) {
 				// keep backwards compatibility for change from default to normal naming
@@ -1387,7 +1389,6 @@ var $keyboard = $.keyboard = function(el, options){
 		if (sets > 1) { base.sets = true; }
 		layout.hasMappedKeys = !( $.isEmptyObject(layout.mappedKeys) ); // $.isEmptyObject() requires jQuery 1.4+
 		layout.$keyboard = container;
-
 		return container;
 	};
 
@@ -2127,6 +2128,7 @@ var $keyboard = $.keyboard = function(el, options){
 			return {};
 		}
 		var start, end, txt, pos;
+		$el.focus();
 		// set caret position
 		if (typeof param1 !== 'undefined') {
 			// allow setting caret using ( $el, { start: x, end: y } )
