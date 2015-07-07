@@ -1,6 +1,6 @@
 {
   "name": "keyboard",
-  "version": "1.23.3",
+  "version": "1.23.4",
   "main": [
     "dist/js/jquery.keyboard.min.js",
     "dist/css/keyboard.min.css",
