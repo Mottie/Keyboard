@@ -87,7 +87,6 @@
 				var toggleMode = $('textarea').data('keyboard').navigation_options.toggleMode;
 				$button.toggleClass('active', !toggleMode);
 			}
-			console.log( action );
 			$('textarea').trigger('navigate', action);
 		});
 
