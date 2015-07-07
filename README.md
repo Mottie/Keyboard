@@ -88,6 +88,10 @@ Wiki: [Home](https://github.com/Mottie/Keyboard/wiki/Home) | [FAQ](https://githu
 
 Only the latest changes will be shown below, see the wiki log to view older versions.
 
+### Version 1.23.3 (7/7/2015)
+
+* Fix javascript error when no options set. See [issue #366](https://github.com/Mottie/Keyboard/issues/366).
+
 ### Version 1.23.2 (7/6/2015)
 
 * Core:
