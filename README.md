@@ -88,6 +88,11 @@ Wiki: [Home](https://github.com/Mottie/Keyboard/wiki/Home) | [FAQ](https://githu
 
 Only the latest changes will be shown below, see the wiki log to view older versions.
 
+### Version 1.23.5 (7/8/2015)
+
+* Autocomplete: add autocomplete menu position options.
+* Language: add Spanish translations; [pull #368](https://github.com/Mottie/Keyboard/pull/368). Thanks [adrianfish](https://github.com/adrianfish)!
+
 ### Version 1.23.4 (7/7/2015)
 
 * Destroy method removes extension bindings. Fixes [issue #366](https://github.com/Mottie/Keyboard/issues/366).
@@ -110,32 +115,3 @@ Only the latest changes will be shown below, see the wiki log to view older vers
 * Docs:
   * Update bootstrap.
   * Added top navigation.
-
-### Version 1.23.1 (6/23/2015)
-
-* Prevent js error if destroyed in "hidden" callback. See [issue #358](https://github.com/Mottie/Keyboard/issues/358).
-* Stop focusOn execution while typing on physical keyboard.
-* Navigation extension
-  * `navigateTo` now accepts `[0,0]` properly. Fixes [issue #361](https://github.com/Mottie/Keyboard/issues/361).
-  * "ui-state-hover" class now applied when switching key sets. Fixes [issue #362](https://github.com/Mottie/Keyboard/issues/362).
-  * Thanks to [gkubisa](https://github.com/gkubisa) for [pull #363](https://github.com/Mottie/Keyboard/pull/363).
-
-### Version 1.23.0 (6/6/2015)
-
-* Core:
-  * Fix caps lock detection.
-  * Fix hidden input overflow on page.
-  * Fix caret jumping to end while inserting text.
-* Update XHTML compatibility. [Pull #354](https://github.com/Mottie/Keyboard/pull/354), thanks [ptwz](https://github.com/ptwz)!
-* Add russian language translations. [Pull #356](https://github.com/Mottie/Keyboard/pull/356), thanks [https://github.com/ihsoft](ihsoft)!
-* Language definitions
-  * Removed language definitions from layout files.
-  * Add `languages` folder with files named using the ISO 639 language code. See [issue #355](https://github.com/Mottie/Keyboard/issues/355).
-  * Existing language definitions without a translation were moved to files with "untranslated" in the file name, e.g. `"mn.untranslated.js"`.
-  * [Language definition readme added](https://github.com/Mottie/Keyboard/tree/master/languages/README.md).
-  * Language files (not "untranslated" files) are now included in:
-    * "layouts/keyboard-layouts-combined.js"
-    * "layouts/keyboard-layouts-microsoft.js"
-    * "dist/layouts/keyboard-layouts-combined.min.js"
-    * "dist/layouts/keyboard-layouts-greywyvern.min.js"
-    * "dist/layouts/keyboard-layouts-microsoft.min.js"
