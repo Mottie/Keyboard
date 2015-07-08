@@ -254,10 +254,19 @@
 	}
 }(function($) {
 'use strict';
-$.fn.addAutocomplete = function(){
+$.fn.addAutocomplete = function(options){
+	var defaults = {
+		position : {
+			of : null,
+			my : 'right top',
+			at : 'left top',
+			collision: 'flip'
+		}
+	};
+
 	return this.each(function(){
 		// make sure a keyboard is attached
-		var base = $(this).data('keyboard');
+		var o, base = $(this).data('keyboard');
 		if (!base) { return; }
 
 		base.autocomplete_namespace = base.namespace + 'Autocomplete';
@@ -265,6 +274,9 @@ $.fn.addAutocomplete = function(){
 
 		// Setup
 		base.autocomplete_init = function(){
+
+			// variables
+			o = base.caret_options = $.extend( true, {}, defaults, options );
 
 			// visible event is fired before this extension is initialized, so check!
 			if (base.options.alwaysOpen && base.isVisible()) {
@@ -288,13 +300,10 @@ $.fn.addAutocomplete = function(){
 				})
 				.bind('autocompleteopen' + base.autocomplete_namespace, function() {
 					if (base.hasAutocomplete){
+						// default to $keyboard if no position.of defined
+						o.position.of = o.position.of || base.$keyboard;
 						// reposition autocomplete window next to the keyboard
-						base.$autocomplete.menu.element.position({
-							of : base.$keyboard,
-							my : 'right top',
-							at : 'left top',
-							collision: 'flip'
-						});
+						base.$autocomplete.menu.element.position( o.position );
 					}
 				})
 				.bind('autocompleteselect' + base.autocomplete_namespace, function(e, ui){
