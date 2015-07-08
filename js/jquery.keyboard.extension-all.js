@@ -276,7 +276,7 @@ $.fn.addAutocomplete = function(options){
 		base.autocomplete_init = function(){
 
 			// variables
-			o = base.caret_options = $.extend( true, {}, defaults, options );
+			o = base.autocomplete_options = $.extend( true, {}, defaults, options );
 
 			// visible event is fired before this extension is initialized, so check!
 			if (base.options.alwaysOpen && base.isVisible()) {
