@@ -3,7 +3,7 @@
 // da = ISO 639-1 code for Danish
 // ***********************
 jQuery.keyboard.language.da = {
-	language: 'Danish',
+	language: 'Dansk (Danish)',
 	display : {
 		'a'      : '\u2714:Accept (Shift+Enter)', // check mark - same action as accept
 		'accept' : 'Accept:Accept (Shift+Enter)',

@@ -3,7 +3,7 @@
 // fa = ISO 639-1 code for Farsi
 // ***********************
 jQuery.keyboard.language.fa = {
-	language: 'Farsi',
+	language: '\u0641\u0627\u0631\u0633\u06cc (Farsi)',
 	display: {
 		'a'      : '\u2714:\u062a\u0623\u06cc\u06cc\u062f (Shift+Enter)',
 		'accept' : '\u062a\u0623\u06cc\u06cc\u062f:\u062a\u0623\u06cc\u06cc\u062f (Shift+Enter)',

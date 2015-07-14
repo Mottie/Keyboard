@@ -3,7 +3,7 @@
 // lv = ISO 639-1 code for Latvian
 // ***********************
 jQuery.keyboard.language.lv = {
-	language: 'Latvian',
+	language: 'Latvie\u0161u (Latvian)',
 	display : {
 		'a'      : '\u2714:Pie\u0146emt (Shift+Enter)', // check mark - same action as accept
 		'accept' : 'Pie\u0146emt:Pie\u0146emt (Shift+Enter)',

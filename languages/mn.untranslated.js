@@ -2,7 +2,7 @@
 // mn = ISO 639-1 code for Mongolian
 // ***********************
 jQuery.keyboard.language.mn = {
-	language: 'Mongolian',
+	language: '\u041c\u043e\u043d\u0433\u043e\u043b (Mongolian)',
 	display : {
 		'a'      : '\u2714:Accept (Shift+Enter)', // check mark - same action as accept
 		'accept' : 'Accept:Accept (Shift+Enter)',

@@ -3,7 +3,7 @@
 // es = ISO 639-1 code for Spanish
 // ***********************
 jQuery.keyboard.language.es = {
-	language: 'Spanish',
+	language: 'Espa\u00f1ol (Spanish)',
 	display : {
 		'a'      : '\u2714:Acceptar (Cambio+Inscribir)', // check mark - same action as accept
 		'accept' : 'Acceptar:Acceptar (Cambio+Inscribir)',

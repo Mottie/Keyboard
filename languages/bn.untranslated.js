@@ -3,7 +3,7 @@
 // bn = ISO 639-1 code for Bengali
 // ***********************
 jQuery.keyboard.language.bn = {
-	language: 'Bengali',
+	language: '\u09ac\u09be\u0982\u09b2\u09be (Bengali)',
 	display : {
 		'a'      : '\u2714:Accept (Shift+Enter)', // check mark - same action as accept
 		'accept' : 'Accept:Accept (Shift+Enter)',

@@ -3,7 +3,7 @@
 // sr = ISO 639-1 code for Serbian
 // ***********************
 jQuery.keyboard.language.sr = {
-	language: 'Serbian',
+	language: '\u0441\u0440\u043f\u0441\u043a\u0438 (Serbian)',
 	display : {
 		'a'      : '\u2714:Accept (Shift+Enter)', // check mark - same action as accept
 		'accept' : 'Accept:Accept (Shift+Enter)',

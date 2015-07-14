@@ -3,7 +3,7 @@
 // sq = ISO 639-1 code for Albanian
 // ***********************
 jQuery.keyboard.language.sq = {
-	language : 'Albanian',
+	language : 'Shqip (Albanian)',
 	display : {
 		'a'      : '\u2714:Prano (Shift+Enter)', // check mark - same action as accept
 		'accept' : 'Prano:Prano (Shift+Enter)',

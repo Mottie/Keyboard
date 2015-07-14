@@ -3,7 +3,7 @@
 // th = ISO 639-1 code for Thai
 // ***********************
 jQuery.keyboard.language.th = {
-	language: 'Thai',
+	language: '\u0e44\u0e17\u0e22 (Thai)',
 	display : {
 		'a'      : '\u2714:Validate (Shift+Enter)', // check mark - same action as accept
 		'accept' : 'accept (Shift+Enter)',

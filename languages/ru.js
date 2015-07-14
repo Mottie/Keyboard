@@ -3,7 +3,7 @@
 // ru = ISO 639-1 code for Russian
 // ***********************
 jQuery.keyboard.language.ru = {
-	language: 'Русский',
+	language: '\u0420\u0443\u0441\u0441\u043a\u0438\u0439 (Russian)',
 	display : {
 		'a'      : '\u2714:Сохранить (Shift+Enter)', // check mark - same action as accept
 		'accept' : 'Сохранить:Сохранить (Shift+Enter)',

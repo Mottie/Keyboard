@@ -3,7 +3,7 @@
 // ro = ISO 639-1 code for Romanian
 // ***********************
 jQuery.keyboard.language.ro = {
-	language: 'Romanian',
+	language: 'Rom\u00e2n\u0103 (Romanian)',
 	display : {
 		'a'      : '\u2714:Accept (Shift+Enter)', // check mark - same action as accept
 		'accept' : 'Accept:Accept (Shift+Enter)',

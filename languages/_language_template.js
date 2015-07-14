@@ -3,7 +3,7 @@
 // "all" is used here for example purposes, by convention it should be the ISO 639-1 code for the specified language
 // ***********************
 jQuery.keyboard.language.all = {
-	language: 'All',
+	language: 'All (English translation)', // e.g. 'Русский (Russian)'
 	display : {
 		'a'      : '\u2714:Accept (Shift+Enter)', // check mark - same action as accept
 		'accept' : 'Accept:Accept (Shift+Enter)',

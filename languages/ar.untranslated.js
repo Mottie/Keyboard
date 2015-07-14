@@ -3,7 +3,7 @@
 // ar = ISO 639-1 code for Arabic
 // ***********************
 jQuery.keyboard.language.ar = {
-	language: 'Arabic',
+	language: '\u0627\u0644\u0639\u0631\u0628\u064a\u0629 (Arabic)',
 	display : {
 		'a'      : '\u2714:Accept (Shift+Enter)', // check mark - same action as accept
 		'accept' : 'Accept:Accept (Shift+Enter)',

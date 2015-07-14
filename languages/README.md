@@ -14,13 +14,13 @@ Start with the `_language_template.js` file. I'll try to break down each section
 ### Naming the file
 If you don't know the language ISO 639-1 or ISO 639-2 code, [look it up here](http://www.loc.gov/standards/iso639-2/php/English_list.php). I have been using the two letter code, but if the three letter code is needed, please feel free to use it.
 
-Now save the template file using the language code as the file name (e.g. `"mn.js"`)
+Now save the template file using the language code as the file name (e.g. `"ru.js"`)
 
-Inside the template, change "all" to the language code. In this example, lets say we're working on Mongolian, so the result would look like this:
+Inside the template, change "all" to the language code. Then change the `language` parameter to the native name of the language plus the English name in parentheses. In this example, lets say we're working on Russian, so the result would look like this:
 
 ```js
-jQuery.keyboard.language.mn = {
-	language: 'Mongolian',
+jQuery.keyboard.language.ru = {
+	language: 'Русский (Russian)',
 ```
 
 ### Display text
@@ -187,7 +187,7 @@ To convert a character, or list of characters to its unicode value, use [Google 
 
 ```js
 jQuery.keyboard.language.all = {
-	language: 'All',
+	language: 'All (All)',
 	display : {
 		'a'      : '\u2714:Accept (Shift+Enter)', // check mark - same action as accept
 		'accept' : 'Accept:Accept (Shift+Enter)',

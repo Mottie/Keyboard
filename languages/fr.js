@@ -3,7 +3,7 @@
 // fr = ISO 639-1 code for French
 // ***********************
 jQuery.keyboard.language.fr = {
-	language: 'French',
+	language: 'Fran\u00e7ais (French)',
 	display : {
 		'a'      : '\u2714:Valider (Shift+Enter)', // check mark - same action as accept
 		'accept' : 'Valider:Valider (Shift+Enter)',

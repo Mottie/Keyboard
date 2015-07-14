@@ -3,7 +3,7 @@
 // de = ISO 639-1 code for German
 // ***********************
 jQuery.keyboard.language.de = {
-	language: 'German',
+	language: 'Deutsch (German)',
 	display : {
 		'a'      : '\u2714:\u00dcbernehmen (Umschalt+Enter)', // check mark - same action as accept
 		'accept' : '\u00dcbernehmen:\u00dcbernehmen (Umschalt+Enter)',

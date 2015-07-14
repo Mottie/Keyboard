@@ -3,7 +3,7 @@
 // pt = ISO 639-1 code for Portuguese
 // ***********************
 jQuery.keyboard.language.pt = {
-	language: 'Portuguese',
+	language: 'Portugu\u00eas (Portuguese)',
 	display : {
 		'a'      : '\u2714:Aceitar (Shift+Enter)',           // ALTERNATE accept button - unicode for check mark symbol
 		'accept' : 'Aceitar:Concluir (Shift+Enter)',         // Accept button text

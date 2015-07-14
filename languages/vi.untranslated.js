@@ -3,7 +3,7 @@
 // vi = ISO 639-1 code for Vietnamese
 // ***********************
 jQuery.keyboard.language.vi = {
-	language: 'Vietnamese',
+	language: 'Ti\u1ebfng Vi\u1ec7t (Vietnamese)',
 	display : {
 		'a'      : '\u2714:Validate (Shift+Enter)', // check mark - same action as accept
 		'accept' : 'accept (Shift+Enter)',

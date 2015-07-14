@@ -3,7 +3,7 @@
 // tr = ISO 639-1 code for Turkish
 // ***********************
 jQuery.keyboard.language.tr = {
-	language: 'Turkish',
+	language: 'T\u00fcrk\u00e7e (Turkish)',
 	display : {
 		'a'      : '\u2714:Accept (Shift+Enter)', // check mark - same action as accept
 		'accept' : 'Accept:Accept (Shift+Enter)',

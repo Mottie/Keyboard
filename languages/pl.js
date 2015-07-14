@@ -3,7 +3,7 @@
 // pl = ISO 639-1 code for Polish
 // ***********************
 jQuery.keyboard.language.pl = {
-	language: 'Polish',
+	language: 'Polski (Polish)',
 	display : {
 		'a'      : '\u2714:Akceptuj (Shift+Enter)', // check mark - same action as accept
 		'accept' : 'Accept:Akceptuj (Shift+Enter)',

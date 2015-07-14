@@ -3,7 +3,7 @@
 // ta = ISO 639-1 code for Tamil
 // ***********************
 jQuery.keyboard.language.ta = {
-	language: 'Tamil',
+	language: '\u0ba4\u0bae\u0bbf\u0bb4\u0bcd (Tamil)',
 	display : {
 		'a'      : '\u2714:Validate (Shift+Enter)', // check mark - same action as accept
 		'accept' : 'accept (Shift+Enter)',

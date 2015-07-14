@@ -3,7 +3,7 @@
 // ca = ISO 639-1 code for Catalan
 // ***********************
 jQuery.keyboard.language.ca = {
-	language: 'Catalan',
+	language: 'Catalan (Catalan)',
 	display : {
 		'a'      : '\u2714:Accept (Shift+Enter)', // check mark - same action as accept
 		'accept' : 'Accept:Accept (Shift+Enter)',

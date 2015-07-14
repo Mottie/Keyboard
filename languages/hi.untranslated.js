@@ -3,7 +3,7 @@
 // hi = ISO 639-1 code for Hindi
 // ***********************
 jQuery.keyboard.language.hi = {
-	language: 'Hindi',
+	language: '\u0939\u093f\u0902\u0926\u0940 (Hindi)',
 	display : {
 		'a'      : '\u2714:Accept (Shift+Enter)', // check mark - same action as accept
 		'accept' : 'Accept:Accept (Shift+Enter)',

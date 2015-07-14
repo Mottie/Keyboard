@@ -3,7 +3,7 @@
 // be = ISO 639-1 code for Belarusian
 // ***********************
 jQuery.keyboard.language.be = {
-	language: 'Belarusian',
+	language: '\u0411\u0435\u043b\u0430\u0440\u0443\u0441\u043a\u0430\u044f (Belarusian)',
 	display : {
 		'a'      : '\u2714:Accept (Shift+Enter)', // check mark - same action as accept
 		'accept' : 'Accept:Accept (Shift+Enter)',

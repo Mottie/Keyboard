@@ -3,7 +3,7 @@
 // he = ISO 639-1 code for Hebrew
 // ***********************
 jQuery.keyboard.language.he = {
-	language: 'Hebrew',
+	language: '\u05e2\u05d1\u05e8\u05d9\u05ea (Hebrew)',
 	display : {
 		'a'      : '\u2714:אישור (Shift+Enter)', // check mark - same action as accept
 		'accept' : 'אישור:אישור (Shift+Enter)',

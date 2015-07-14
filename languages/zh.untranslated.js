@@ -2,7 +2,7 @@
 // zh = ISO 639-1 code for Chinese
 // ***********************
 jQuery.keyboard.language.zh = {
-	language: 'Chinese',
+	language: '\u4e2d\u6587\u4ed3\u9889\u8f93\u5165\u6cd5 (Chinese)',
 	display : {
 		'a'      : '\u2714:Accept (Shift+Enter)', // check mark - same action as accept
 		'accept' : 'Accept:Accept (Shift+Enter)',

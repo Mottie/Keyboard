@@ -3,7 +3,7 @@
 // ja = ISO 639-1 code for Japanese
 // ***********************
 jQuery.keyboard.language.ja = {
-	language: 'Japanese',
+	language: '\u65e5\u672c\u8a9e (Japanese)',
 	display : {
 		'a'      : '\u2714:Accept (Shift+Enter)', // check mark - same action as accept
 		'accept' : 'Accept:Accept (Shift+Enter)',

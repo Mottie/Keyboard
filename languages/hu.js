@@ -3,7 +3,7 @@
 // hu = ISO 639-1 code for Hungarian
 // ***********************
 jQuery.keyboard.language.hu = {
-	language: 'Hungarian',
+	language: 'Magyar (Hungarian)',
 	display : {
 		'a'      : '\u2714:Rendben (Shift+Enter)', // check mark - same action as accept
 		'accept' : 'Rendben:Rendben (Shift+Enter)',

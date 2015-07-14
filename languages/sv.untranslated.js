@@ -3,7 +3,7 @@
 // sv = ISO 639-1 code for Swedish
 // ***********************
 jQuery.keyboard.language.sv = {
-	language: 'Swedish',
+	language: 'Svenska (Swedish)',
 	display : {
 		'a'      : '\u2714:Accept (Shift+Enter)', // check mark - same action as accept
 		'accept' : 'Accept:Accept (Shift+Enter)',
