@@ -1685,6 +1685,9 @@ var $keyboard = $.keyboard = function(el, options){
 		},
 		clear : function(base) {
 			base.$preview.val('');
+			if (base.$decBtn.length) {
+				base.checkDecimal();
+			}
 		},
 		combo : function(base) {
 			var c = !base.options.useCombos;
