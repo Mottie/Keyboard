@@ -663,7 +663,7 @@ var $keyboard = $.keyboard = function(el, options){
 				base.last.val = base.$preview.val();
 
 				if ($.isFunction(o.change)){
-					o.change( $.Event('change'), base, base.el );
+					o.change( $.Event( $keyboard.events.inputChange ), base, base.el );
 					return false;
 				}
 			})
@@ -1355,7 +1355,7 @@ var $keyboard = $.keyboard = function(el, options){
 				'title' : t,
 				'data-action' : keyName,
 				'data-curtxt' : n, // changes with mousewheel scroll
-				'data-curnum' : 0  // index of key data-
+				'data-curnum' : 0  // index of key data from other layers
 			})
 			// add 'ui-keyboard-' + keyName, if this is an action key
 			//  (e.g. 'Bksp' will have 'ui-keyboard-bskp' class)
@@ -2207,10 +2207,18 @@ var $keyboard = $.keyboard = function(el, options){
 			if (typeof param1 === 'object' && 'start' in param1 && 'end' in param1) {
 				start = param1.start;
 				end = param1.end;
+			} else if (typeof param2 === 'undefined') {
+				param2 = param1; // set caret using start position
+			}
 			// set caret using ( $el, start, end );
-			} else if (typeof param1 === 'number' && typeof param2 === 'number') {
+			if (typeof param1 === 'number' && typeof param2 === 'number') {
 				start = param1;
 				end = param2;
+			} else if ( param1 === 'start' ) {
+				start = end = 0;
+			} else {
+				// unknown setting, move caret to end
+				start = end = $el.val().length;
 			}
 			// *** SET CARET POSITION ***
 			// modify the line below to adapt to other caret plugins
