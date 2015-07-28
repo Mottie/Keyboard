@@ -668,6 +668,14 @@ var $keyboard = $.keyboard = function(el, options){
 				}
 			})
 			.bind('keydown' + base.namespace, function(e){
+				// prevent tab key from leaving the preview window
+				if ( e.which === 9 ) {
+					// allow tab to pass through - tab to next input/shift-tab for prev
+					base.tab = true;
+					return false;
+				}
+
+				if ( o.lockInput ) { return false; }
 				base.last.virtual = false;
 				switch (e.which) {
 
@@ -675,18 +683,6 @@ var $keyboard = $.keyboard = function(el, options){
 						$keyboard.keyaction.bksp(base, null, e);
 						e.preventDefault();
 						break;
-
-					// prevent tab key from leaving the preview window
-					case 9 :
-						if (o.tabNavigation) {
-							// allow tab to pass through - tab to next input/shift-tab for prev
-							base.tab = true;
-							return false;
-						} else {
-							base.tab = true; // see keyup comment above
-							return false;
-						}
-						break; // adding a break here to make jsHint happy
 
 					case 13:
 						$keyboard.keyaction.enter(base, null, e);
