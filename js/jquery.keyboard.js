@@ -1278,6 +1278,29 @@ var $keyboard = $.keyboard = function(el, options){
 		.attr({ 'role': 'button', 'type': 'button', 'aria-disabled': 'false', 'tabindex' : '-1' })
 		.addClass( $keyboard.css.keyButton );
 
+	base.processName = function( name ) {
+		name = ( name || '' ).replace( /\s/g, '-' );
+		var index, n,
+			process = name.replace( /[^a-z0-9]/gi, '' ),
+			len = process.length,
+			newName = [];
+		if ( len > 1 && name === process ) {
+			// return name if basic text
+			return name;
+		}
+		// return character code sequence
+		len = name.length;
+		if ( len ) {
+			for ( index = 0; index < len; index++ ) {
+				n = name[ index ];
+				newName.push( /[a-z0-9]/.test( n ) ? n : '-' + n.charCodeAt( 0 ) );
+			}
+			return newName.join( '' );
+		} else {
+			return name;
+		}
+	};
+
 	// Add key function
 	// keyName = the name of the function called in $.keyboard.keyaction when the button is clicked
 	// name = name added to key, or cross-referenced in the display options
@@ -1289,7 +1312,7 @@ var $keyboard = $.keyboard = function(el, options){
 			txt = name.split(':'),
 			len = txt.length - 1,
 			n = (regKey === true) ? keyName : o.display[txt[0]] || keyName,
-			kn = (regKey === true) ? keyName.charCodeAt(0) : keyName;
+			kn = (regKey === true) ? base.processName( keyName ) : keyName;
 		// map defined keys - format 'key(A):Label_for_key'
 		// 'key' = key that is seen (can any character; but it might need to be escaped using '\'
 		//  or entered as unicode '\u####'
@@ -1330,8 +1353,8 @@ var $keyboard = $.keyboard = function(el, options){
 				'title' : t,
 				'data-action' : keyName,
 				'data-original' : n,
-				'data-curtxt' : n,
-				'data-curnum' : 0
+				'data-curtxt' : n, // changes with mousewheel scroll
+				'data-curnum' : 0  // index of key data-
 			})
 			// add 'ui-keyboard-' + keyName, if this is an action key
 			//  (e.g. 'Bksp' will have 'ui-keyboard-bskp' class)
