@@ -21,6 +21,12 @@
 .ui-keyboard-input.light, .ui-keyboard-preview.light { color: #222; background: #ddd; }
 .ui-keyboard-input.dark, .ui-keyboard-preview.dark { color: #ddd; background: #222; }
 
+.ui-keyboard-NBSP span, .ui-keyboard-ZWSP span, .ui-keyboard-ZWNJ span, .ui-keyboard-ZWJ span, .ui-keyboard-LRM span, .ui-keyboard-RLM span {
+	font-size: 0.5em;
+	line-height: 1.5em;
+	white-space: normal;
+}
+
 /* combo key styling - toggles diacritics on/off */
 .ui-keyboard-button.ui-keyboard-combo.ui-state-default { border-color: #ffaf0f; }
 

@@ -194,36 +194,6 @@ jQuery.keyboard.layouts['ms-Assamese-INSCRIPT'] = {
 	]
 };
 
-// Keyboard Language
-// please update this section to match this language and email me with corrections!
-// as = ISO 639-1 code for Assamese
-// ***********************
-jQuery.keyboard.language.as = {
-	display : {
-		'a'      : '\u2714:Accept (Shift+Enter)', // check mark - same action as accept
-		'accept' : 'Accept:Accept (Shift+Enter)',
-		'alt'    : 'AltGr:Alternate Graphemes',
-		'b'      : '\u2190:Backspace',    // Left arrow (same as &larr;)
-		'bksp'   : 'Bksp:Backspace',
-		'c'      : '\u2716:Cancel (Esc)', // big X, close - same action as cancel
-		'cancel' : 'Cancel:Cancel (Esc)',
-		'clear'  : 'C:Clear',             // clear num pad
-		'combo'  : '\u00f6:Toggle Combo Keys',
-		'dec'    : '.:Decimal',           // decimal point for num pad (optional), change '.' to ',' for European format
-		'e'      : '\u21b5:Enter',        // down, then left arrow - enter symbol
-		'enter'  : 'Enter:Enter',
-		'lock'   : '\u21ea Lock:Caps Lock', // caps lock
-		's'      : '\u21e7:Shift',        // thick hollow up arrow
-		'shift'  : 'Shift:Shift',
-		'sign'   : '\u00b1:Change Sign',  // +/- sign for num pad
-		'space'  : '&nbsp;:Space',
-		't'      : '\u21e5:Tab',          // right arrow to bar (used since this virtual keyboard works with one directional tabs)
-		'tab'    : '\u21e5 Tab:Tab'       // \u21b9 is the true tab symbol (left & right arrows)
-	},
-	// Message added to the key title while hovering, if the mousewheel plugin exists
-	wheelMessage : 'Use mousewheel to see other keys',
-};
-
 /* Azeri Cyrillic Keyboard Layout
  * generated from http://www.microsoft.com/resources/msdn/goglobal/keyboards/kbdaze.html
  */
@@ -841,36 +811,6 @@ jQuery.keyboard.layouts["ms-Devanagari - INSCRIPT"] = {
 	]
 };
 
-// Keyboard Language
-// please update this section to match this language and email me with corrections!
-// hi = ISO 639-1 code for Hindi
-// ***********************
-jQuery.keyboard.language.hi = {
-	display : {
-		'a'      : '\u2714:Accept (Shift+Enter)', // check mark - same action as accept
-		'accept' : 'Accept:Accept (Shift+Enter)',
-		'alt'    : 'AltGr:Alternate Graphemes',
-		'b'      : '\u2190:Backspace',    // Left arrow (same as &larr;)
-		'bksp'   : 'Bksp:Backspace',
-		'c'      : '\u2716:Cancel (Esc)', // big X, close - same action as cancel
-		'cancel' : 'Cancel:Cancel (Esc)',
-		'clear'  : 'C:Clear',             // clear num pad
-		'combo'  : '\u00f6:Toggle Combo Keys',
-		'dec'    : '.:Decimal',           // decimal point for num pad (optional), change '.' to ',' for European format
-		'e'      : '\u21b5:Enter',        // down, then left arrow - enter symbol
-		'enter'  : 'Enter:Enter',
-		'lock'   : '\u21ea Lock:Caps Lock', // caps lock
-		's'      : '\u21e7:Shift',        // thick hollow up arrow
-		'shift'  : 'Shift:Shift',
-		'sign'   : '\u00b1:Change Sign',  // +/- sign for num pad
-		'space'  : '&nbsp;:Space',
-		't'      : '\u21e5:Tab',          // right arrow to bar (used since this virtual keyboard works with one directional tabs)
-		'tab'    : '\u21e5 Tab:Tab'       // \u21b9 is the true tab symbol (left & right arrows)
-	},
-	// Message added to the key title while hovering, if the mousewheel plugin exists
-	wheelMessage : 'Use mousewheel to see other keys',
-};
-
 /* Divehi Phonetic Keyboard Layout
  * generated from http://www.microsoft.com/resources/msdn/goglobal/keyboards/kbddiv1.html
  */
@@ -895,7 +835,7 @@ jQuery.keyboard.layouts['ms-Divehi Phonetic'] = {
 		"{empty} {empty} {empty} {empty} {empty} {empty} {empty} {empty} {empty} {empty} {empty} {empty} {empty} {bksp}",
 		"{tab} {empty} {empty} {empty} {empty} {empty} {empty} {empty} {empty} {empty} {empty} {empty} {empty} {empty}",
 		"{empty} {empty} {empty} {empty} {empty} {empty} {empty} {empty} {empty} ; {empty} {enter}",
-		"{shift} {empty} {empty} {empty} {empty} \u200d \u200c \u200e \u200f , {empty} {empty} {shift}",
+		"{shift} {empty} {empty} {empty} {empty} {ZWJ} {ZWNJ} {LRM} {RLM} , {empty} {empty} {shift}",
 		"{accept} {alt} {space} {alt} {cancel}"
 	]
 };
@@ -924,7 +864,7 @@ jQuery.keyboard.layouts['ms-Divehi Typewriter'] = {
 		"{empty} {empty} {empty} {empty} {empty} {empty} {empty} {empty} {empty} {empty} {empty} {empty} {empty} {bksp}",
 		"{tab} {empty} {empty} {empty} {empty} {empty} {empty} {empty} {empty} {empty} {empty} {empty} {empty} {empty}",
 		"{empty} {empty} {empty} , {empty} {empty} {empty} {empty} {empty} {empty} ; {enter}",
-		"{shift} {empty} {empty} {empty} {empty} \u200d \u200c \u200e \u200f {empty} {empty} {empty} {shift}",
+		"{shift} {empty} {empty} {empty} {empty} {ZWJ} {ZWNJ} {LRM} {RLM} {empty} {empty} {empty} {shift}",
 		"{accept} {alt} {space} {alt} {cancel}"
 	]
 };
@@ -1653,38 +1593,6 @@ jQuery.keyboard.layouts['ms-Hebrew'] = {
 	]
 };
 
-// Keyboard Language
-// please update this section to match this language and email me with corrections!
-// he = ISO 639-1 code for Hebrew
-// ***********************
-jQuery.keyboard.language.he = {
-	display : {
-		'a'      : '\u2714:Accept (Shift+Enter)', // check mark - same action as accept
-		'accept' : 'Accept:Accept (Shift+Enter)',
-		'alt'    : 'AltGr:Alternate Graphemes',
-		'b'      : '\u2190:Backspace',    // Left arrow (same as &larr;)
-		'bksp'   : 'Bksp:Backspace',
-		'c'      : '\u2716:Cancel (Esc)', // big X, close - same action as cancel
-		'cancel' : 'Cancel:Cancel (Esc)',
-		'clear'  : 'C:Clear',             // clear num pad
-		'combo'  : '\u00f6:Toggle Combo Keys',
-		'dec'    : '.:Decimal',           // decimal point for num pad (optional), change '.' to ',' for European format
-		'e'      : '\u21b5:Enter',        // down, then left arrow - enter symbol
-		'enter'  : 'Enter:Enter',
-		'lock'   : '\u21ea Lock:Caps Lock', // caps lock
-		's'      : '\u21e7:Shift',        // thick hollow up arrow
-		'shift'  : 'Shift:Shift',
-		'sign'   : '\u00b1:Change Sign',  // +/- sign for num pad
-		'space'  : '&nbsp;:Space',
-		't'      : '\u21e5:Tab',          // right arrow to bar (used since this virtual keyboard works with one directional tabs)
-		'tab'    : '\u21e5 Tab:Tab'       // \u21b9 is the true tab symbol (left & right arrows)
-	},
-	// Message added to the key title while hovering, if the mousewheel plugin exists
-	wheelMessage : 'Use mousewheel to see other keys',
-	// language direction
-	rtl : true
-};
-
 /* Hindi Traditional Keyboard Layout
  * generated from http://www.microsoft.com/resources/msdn/goglobal/keyboards/kbdinhin.html
  */
@@ -1719,36 +1627,6 @@ jQuery.keyboard.layouts['ms-Hindi Traditional'] = {
 		"{shift} {empty} \u0950 {empty} {empty} {empty} {empty} {empty} < > {empty} {shift}",
 		"{accept} {alt} {space} {alt} {cancel}"
 	]
-};
-
-// Keyboard Language
-// please update this section to match this language and email me with corrections!
-// hi = ISO 639-1 code for Hindi
-// ***********************
-jQuery.keyboard.language.hi = {
-	display : {
-		'a'      : '\u2714:Accept (Shift+Enter)', // check mark - same action as accept
-		'accept' : 'Accept:Accept (Shift+Enter)',
-		'alt'    : 'AltGr:Alternate Graphemes',
-		'b'      : '\u2190:Backspace',    // Left arrow (same as &larr;)
-		'bksp'   : 'Bksp:Backspace',
-		'c'      : '\u2716:Cancel (Esc)', // big X, close - same action as cancel
-		'cancel' : 'Cancel:Cancel (Esc)',
-		'clear'  : 'C:Clear',             // clear num pad
-		'combo'  : '\u00f6:Toggle Combo Keys',
-		'dec'    : '.:Decimal',           // decimal point for num pad (optional), change '.' to ',' for European format
-		'e'      : '\u21b5:Enter',        // down, then left arrow - enter symbol
-		'enter'  : 'Enter:Enter',
-		'lock'   : '\u21ea Lock:Caps Lock', // caps lock
-		's'      : '\u21e7:Shift',        // thick hollow up arrow
-		'shift'  : 'Shift:Shift',
-		'sign'   : '\u00b1:Change Sign',  // +/- sign for num pad
-		'space'  : '&nbsp;:Space',
-		't'      : '\u21e5:Tab',          // right arrow to bar (used since this virtual keyboard works with one directional tabs)
-		'tab'    : '\u21e5 Tab:Tab'       // \u21b9 is the true tab symbol (left & right arrows)
-	},
-	// Message added to the key title while hovering, if the mousewheel plugin exists
-	wheelMessage : 'Use mousewheel to see other keys',
 };
 
 /* Hungarian Keyboard Layout
@@ -2133,40 +2011,6 @@ jQuery.keyboard.layouts["ms-Japanese Hiragana"] = {
 	]
 };
 
-// Keyboard Language
-// please update this section to match this language and email me with corrections!
-// ***********************
-jQuery.keyboard.language.ja = {
-	display : {
-		'a'      : '\u2714:Accept (Shift+Enter)', // check mark - same action as accept
-		'accept' : 'Accept:Accept (Shift+Enter)',
-		'alt'    : 'AltGr:Alternate Graphemes',
-		'b'      : '\u2190:Backspace',    // Left arrow (same as &larr;)
-		'bksp'   : 'Bksp:Backspace',
-		'c'      : '\u2716:Cancel (Esc)', // big X, close - same action as cancel
-		'cancel' : 'Cancel:Cancel (Esc)',
-		'clear'  : 'C:Clear',             // clear num pad
-		'combo'  : '\u00f6:Toggle Combo Keys',
-		'dec'    : '.:Decimal',           // decimal point for num pad (optional), change '.' to ',' for European format
-		'default': '\u30ab \u30bf:Hiragana', // Harigana active; switch to Katakana
-		'e'      : '\u21b5:Enter',        // down, then left arrow - enter symbol
-		'enter'  : 'Enter:Enter',
-		'full'   : '',
-		'lock'   : '\u21ea Lock:Caps Lock', // caps lock
-		'meta1'  : 'Kana',  // English half (normal) width active
-		'meta2'  : 'Kana', // English full width active
-		'meta3'  : '\u3072 \u3089:Katakana', // Kanakana full width active; switch to Hiragana
-		'meta4'  : '\u534a:full', // Kana half width active		's'      : '\u21e7:Shift',        // thick hollow up arrow
-		'shift'  : 'Shift:Shift',
-		'sign'   : '\u00b1:Change Sign',  // +/- sign for num pad
-		'space'  : '&nbsp;:Space',
-		't'      : '\u21e5:Tab',          // right arrow to bar (used since this virtual keyboard works with one directional tabs)
-		'tab'    : '\u21e5 Tab:Tab'       // \u21b9 is the true tab symbol (left & right arrows)
-	},
-	// Message added to the key title while hovering, if the mousewheel plugin exists
-	wheelMessage : 'Use mousewheel to see other keys'
-};
-
 /* Kannada Keyboard Layout
  * generated from http://www.microsoft.com/resources/msdn/goglobal/keyboards/kbdinkan.html
  */
@@ -2201,36 +2045,6 @@ jQuery.keyboard.layouts['ms-Kannada'] = {
 		"{shift} {empty} {empty} {empty} {empty} {empty} {empty} {empty} {empty} {empty} {empty} {shift}",
 		"{accept} {alt} {space} {alt} {cancel}"
 	]
-};
-
-// Keyboard Language
-// please update this section to match this language and email me with corrections!
-// kn = ISO 639-1 code for Kannada
-// ***********************
-jQuery.keyboard.language.kn = {
-	display : {
-		'a'      : '\u2714:Accept (Shift+Enter)', // check mark - same action as accept
-		'accept' : 'Accept:Accept (Shift+Enter)',
-		'alt'    : 'AltGr:Alternate Graphemes',
-		'b'      : '\u2190:Backspace',    // Left arrow (same as &larr;)
-		'bksp'   : 'Bksp:Backspace',
-		'c'      : '\u2716:Cancel (Esc)', // big X, close - same action as cancel
-		'cancel' : 'Cancel:Cancel (Esc)',
-		'clear'  : 'C:Clear',             // clear num pad
-		'combo'  : '\u00f6:Toggle Combo Keys',
-		'dec'    : '.:Decimal',           // decimal point for num pad (optional), change '.' to ',' for European format
-		'e'      : '\u21b5:Enter',        // down, then left arrow - enter symbol
-		'enter'  : 'Enter:Enter',
-		'lock'   : '\u21ea Lock:Caps Lock', // caps lock
-		's'      : '\u21e7:Shift',        // thick hollow up arrow
-		'shift'  : 'Shift:Shift',
-		'sign'   : '\u00b1:Change Sign',  // +/- sign for num pad
-		'space'  : '&nbsp;:Space',
-		't'      : '\u21e5:Tab',          // right arrow to bar (used since this virtual keyboard works with one directional tabs)
-		'tab'    : '\u21e5 Tab:Tab'       // \u21b9 is the true tab symbol (left & right arrows)
-	},
-	// Message added to the key title while hovering, if the mousewheel plugin exists
-	wheelMessage : 'Use mousewheel to see other keys',
 };
 
 /* Kazakh Keyboard Layout
@@ -2455,46 +2269,6 @@ jQuery.keyboard.layouts['ms-Latvian (QWERTY)'] = {
 		"{shift} {empty} \u017d {empty} \u010c {empty} {empty} \u0145 {empty} {empty} {empty} {empty} {shift}",
 		"{accept} {alt} {space} {alt} {cancel}"
 	]
-};
-
-// Keyboard Language
-// please update this section to match this language and email me with corrections!
-// ***********************
-jQuery.keyboard.language.lv = {
-	display : {
-		'a'      : '\u2714:Accept (Shift+Enter)', // check mark - same action as accept
-		'accept' : 'Accept:Accept (Shift+Enter)',
-		'alt'    : 'AltGr:Alternate Graphemes',
-		'b'      : '\u2190:Backspace',    // Left arrow (same as &larr;)
-		'bksp'   : 'Bksp:Backspace',
-		'c'      : '\u2716:Cancel (Esc)', // big X, close - same action as cancel
-		'cancel' : 'Cancel:Cancel (Esc)',
-		'clear'  : 'C:Clear',             // clear num pad
-		'combo'  : '\u00f6:Toggle Combo Keys',
-		'dec'    : '.:Decimal',           // decimal point for num pad (optional), change '.' to ',' for European format
-		'e'      : '\u21b5:Enter',        // down, then left arrow - enter symbol
-		'enter'  : 'Enter:Enter',
-		'lock'   : '\u21ea Lock:Caps Lock', // caps lock
-		's'      : '\u21e7:Shift',        // thick hollow up arrow
-		'shift'  : 'Shift:Shift',
-		'sign'   : '\u00b1:Change Sign',  // +/- sign for num pad
-		'space'  : '&nbsp;:Space',
-		't'      : '\u21e5:Tab',          // right arrow to bar (used since this virtual keyboard works with one directional tabs)
-		'tab'    : '\u21e5 Tab:Tab'       // \u21b9 is the true tab symbol (left & right arrows)
-	},
-	// Message added to the key title while hovering, if the mousewheel plugin exists
-	wheelMessage : 'Use mousewheel to see other keys',
-	// New combos using specific accents
-	combos : {
-		// duplicated from regular combos, used specific accents here instead
-		// acute & cedilla c C é É n N ó Ó s S z Z
-		"'" : { c:"\u0107", C:"\u0106", e:"\u00e9", E:"\u00c9", n:"\u0144", N:"\u0143", o:"\u00f3", O:"\u00d3", s:"\u015b", S:"\u015a", z:"\u017a", Z:"\u0179" },
-		// diaeresis: ä Ä ö Ö ü Ü
-		'\u00a8' : { a:"\u00e4", A:"\u00c4", o:"\u00f6", O:"\u00d6", u:"\u00fc", U:"\u00dc" },
-		// degree sign å Å ė Ė ġ ż Ż
-		'\u00b0' : { a:"\u00e5", A:"\u00c5", e:"\u0117", E:"\u0116", g:"\u0121", z:"\u017c", Z:"\u017b" },
-	},
-	comboRegex : /([`\'~\^\"ao\u00a8\u00b0])([a-z])/mig
 };
 
 /* Lithuanian Keyboard Layout
@@ -2844,36 +2618,6 @@ jQuery.keyboard.layouts['ms-Marathi'] = {
 	]
 };
 
-// Keyboard Language
-// please update this section to match this language and email me with corrections!
-// mr = ISO 639-1 code for Marathi
-// ***********************
-jQuery.keyboard.language.mr = {
-	display : {
-		'a'      : '\u2714:Accept (Shift+Enter)', // check mark - same action as accept
-		'accept' : 'Accept:Accept (Shift+Enter)',
-		'alt'    : 'AltGr:Alternate Graphemes',
-		'b'      : '\u2190:Backspace',    // Left arrow (same as &larr;)
-		'bksp'   : 'Bksp:Backspace',
-		'c'      : '\u2716:Cancel (Esc)', // big X, close - same action as cancel
-		'cancel' : 'Cancel:Cancel (Esc)',
-		'clear'  : 'C:Clear',             // clear num pad
-		'combo'  : '\u00f6:Toggle Combo Keys',
-		'dec'    : '.:Decimal',           // decimal point for num pad (optional), change '.' to ',' for European format
-		'e'      : '\u21b5:Enter',        // down, then left arrow - enter symbol
-		'enter'  : 'Enter:Enter',
-		'lock'   : '\u21ea Lock:Caps Lock', // caps lock
-		's'      : '\u21e7:Shift',        // thick hollow up arrow
-		'shift'  : 'Shift:Shift',
-		'sign'   : '\u00b1:Change Sign',  // +/- sign for num pad
-		'space'  : '&nbsp;:Space',
-		't'      : '\u21e5:Tab',          // right arrow to bar (used since this virtual keyboard works with one directional tabs)
-		'tab'    : '\u21e5 Tab:Tab'       // \u21b9 is the true tab symbol (left & right arrows)
-	},
-	// Message added to the key title while hovering, if the mousewheel plugin exists
-	wheelMessage : 'Use mousewheel to see other keys',
-};
-
 /* Mongolian Cyrillic Keyboard Layout
  * generated from http://www.microsoft.com/resources/msdn/goglobal/keyboards/kbdmon.html
  */
@@ -2910,7 +2654,7 @@ jQuery.keyboard.layouts['ms-Mongolian (Mongolian Script)'] = {
 		"{accept} {space} {cancel}"
 	],
 	"shift" : [
-		"~ ! \u2048 \u2049 \u2014 % \u200c \u180a \u200d ( ) \u180e + {bksp}",
+		"~ ! \u2048 \u2049 \u2014 % {ZWNJ} \u180a {ZWJ} ( ) \u180e + {bksp}",
 		"{tab} {empty} \u1838 \u1827 \u183f {empty} {empty} {empty} {empty} {empty} {empty} \u3008 \u3009 |",
 		"{empty} {empty} {empty} {empty} {empty} \u183e {empty} \u183b \u1840 \u1804 \u180c {enter}",
 		"{shift} {empty} \u1841 {empty} \u1842 {empty} {empty} \u1829 {empty} \u300a \u300b / {shift}",
@@ -2945,36 +2689,6 @@ jQuery.keyboard.layouts['ms-Nepali'] = {
 		"{shift} {empty} {empty} \u0906 {empty} {empty} {empty} {empty} {empty} {empty} {empty} {shift}",
 		"{accept} {alt} {space} {alt} {cancel}"
 	]
-};
-
-// Keyboard Language
-// please update this section to match this language and email me with corrections!
-// ne = ISO 639-1 code for Nepali
-// ***********************
-jQuery.keyboard.language.ne = {
-	display : {
-		'a'      : '\u2714:Accept (Shift+Enter)', // check mark - same action as accept
-		'accept' : 'Accept:Accept (Shift+Enter)',
-		'alt'    : 'AltGr:Alternate Graphemes',
-		'b'      : '\u2190:Backspace',    // Left arrow (same as &larr;)
-		'bksp'   : 'Bksp:Backspace',
-		'c'      : '\u2716:Cancel (Esc)', // big X, close - same action as cancel
-		'cancel' : 'Cancel:Cancel (Esc)',
-		'clear'  : 'C:Clear',             // clear num pad
-		'combo'  : '\u00f6:Toggle Combo Keys',
-		'dec'    : '.:Decimal',           // decimal point for num pad (optional), change '.' to ',' for European format
-		'e'      : '\u21b5:Enter',        // down, then left arrow - enter symbol
-		'enter'  : 'Enter:Enter',
-		'lock'   : '\u21ea Lock:Caps Lock', // caps lock
-		's'      : '\u21e7:Shift',        // thick hollow up arrow
-		'shift'  : 'Shift:Shift',
-		'sign'   : '\u00b1:Change Sign',  // +/- sign for num pad
-		'space'  : '&nbsp;:Space',
-		't'      : '\u21e5:Tab',          // right arrow to bar (used since this virtual keyboard works with one directional tabs)
-		'tab'    : '\u21e5 Tab:Tab'       // \u21b9 is the true tab symbol (left & right arrows)
-	},
-	// Message added to the key title while hovering, if the mousewheel plugin exists
-	wheelMessage : 'Use mousewheel to see other keys',
 };
 
 /* Norwegian Keyboard Layout
@@ -3085,7 +2799,7 @@ jQuery.keyboard.layouts['ms-Pashto (Afghanistan)'] = {
 	"name" : "ms-Pashto (Afghanistan)",
 	"lang" : ["ps"],
 	"normal" : [
-		"\u200d \u06f1 \u06f2 \u06f3 \u06f4 \u06f5 \u06f6 \u06f7 \u06f8 \u06f9 \u06f0 - = {bksp}",
+		"{ZWJ} \u06f1 \u06f2 \u06f3 \u06f4 \u06f5 \u06f6 \u06f7 \u06f8 \u06f9 \u06f0 - = {bksp}",
 		"{tab} \u0636 \u0635 \u062b \u0642 \u0641 \u063a \u0639 \u0647 \u062e \u062d \u062c \u0686 \\",
 		"\u0634 \u0633 \u06cc \u0628 \u0644 \u0627 \u062a \u0646 \u0645 \u06a9 \u06ab {enter}",
 		"{shift} \u0638 \u0637 \u0632 \u0631 \u0630 \u062f \u0693 \u0648 \u0696 / {shift}",
@@ -3095,12 +2809,12 @@ jQuery.keyboard.layouts['ms-Pashto (Afghanistan)'] = {
 		"\u0654 ! \u066c \u066b \u060b \u066a \u00d7 \u00bb \u00ab ) ( \u0640 + {bksp}",
 		"{tab} \u0652 \u064c \u064d \u064b \u064f \u0650 \u064e \u0651 \u0681 \u0685 ] [ *",
 		"\u069a \u06cd \u064a \u067e \u0623 \u0622 \u067c \u06bc \u0629 : \u061b {enter}",
-		"{shift} \u0626 \u06d0 \u0698 \u0621 \u200c \u0689 \u0624 \u060c . / {shift}",
+		"{shift} \u0626 \u06d0 \u0698 \u0621 {ZWNJ} \u0689 \u0624 \u060c . / {shift}",
 		"{accept} {alt} {space} {alt} {cancel}"
 	],
 	"alt" : [
 		"` ~ @ # $ % ^ & \u066d \u2022 \u00b0 _ \u00f7 {bksp}",
-		"{tab} \u20ac \u0671 \u0649 \u200e \u200f \u0653 \u0659 \u0670 ' \" } { |",
+		"{tab} \u20ac \u0671 \u0649 {LRM} {RLM} \u0653 \u0659 \u0670 ' \" } { |",
 		"{empty} {empty} \u06d2 \u06ba \u06b7 \u0625 \u0679 > < \u0643 \u06af {enter}",
 		"{shift} ? ; {empty} {empty} {empty} \u0688 \u0691 , \u06c7 {empty} {shift}",
 		"{accept} {alt} {space} {alt} {cancel}"
@@ -3286,36 +3000,6 @@ jQuery.keyboard.layouts['ms-Punjabi'] = {
 		"{shift} \u0a74 {empty} {empty} {empty} {empty} {empty} {empty} {empty} {empty} {shift}",
 		"{accept} {alt} {space} {alt} {cancel}"
 	]
-};
-
-// Keyboard Language
-// please update this section to match this language and email me with corrections!
-// pa = ISO 639-1 code for Punjabi
-// ***********************
-jQuery.keyboard.language.pa = {
-	display : {
-		'a'      : '\u2714:Accept (Shift+Enter)', // check mark - same action as accept
-		'accept' : 'Accept:Accept (Shift+Enter)',
-		'alt'    : 'AltGr:Alternate Graphemes',
-		'b'      : '\u2190:Backspace',    // Left arrow (same as &larr;)
-		'bksp'   : 'Bksp:Backspace',
-		'c'      : '\u2716:Cancel (Esc)', // big X, close - same action as cancel
-		'cancel' : 'Cancel:Cancel (Esc)',
-		'clear'  : 'C:Clear',             // clear num pad
-		'combo'  : '\u00f6:Toggle Combo Keys',
-		'dec'    : '.:Decimal',           // decimal point for num pad (optional), change '.' to ',' for European format
-		'e'      : '\u21b5:Enter',        // down, then left arrow - enter symbol
-		'enter'  : 'Enter:Enter',
-		'lock'   : '\u21ea Lock:Caps Lock', // caps lock
-		's'      : '\u21e7:Shift',        // thick hollow up arrow
-		'shift'  : 'Shift:Shift',
-		'sign'   : '\u00b1:Change Sign',  // +/- sign for num pad
-		'space'  : '&nbsp;:Space',
-		't'      : '\u21e5:Tab',          // right arrow to bar (used since this virtual keyboard works with one directional tabs)
-		'tab'    : '\u21e5 Tab:Tab'       // \u21b9 is the true tab symbol (left & right arrows)
-	},
-	// Message added to the key title while hovering, if the mousewheel plugin exists
-	wheelMessage : 'Use mousewheel to see other keys',
 };
 
 /* Romanian (Legacy) Keyboard Layout
@@ -3673,16 +3357,16 @@ jQuery.keyboard.layouts['ms-Sinhala'] = {
 	"name" : "ms-Sinhala",
 	"lang" : ["si"],
 	"normal" : [
-		"\u0dca\u200d\u0dbb 1 2 3 4 5 6 7 8 9 0 - = {bksp}",
-		"{tab} \u0dd4 \u0d85 \u0dd0 \u0dbb \u0d92 \u0dc4 \u0db8 \u0dc3 \u0daf \u0da0 \u0da4 ; \u200d",
+		"\u0dca{ZWJ}\u0dbb 1 2 3 4 5 6 7 8 9 0 - = {bksp}",
+		"{tab} \u0dd4 \u0d85 \u0dd0 \u0dbb \u0d92 \u0dc4 \u0db8 \u0dc3 \u0daf \u0da0 \u0da4 ; {ZWJ}",
 		"\u0dca \u0dd2 \u0dcf \u0dd9 \u0da7 \u0dba \u0dc0 \u0db1 \u0d9a \u0dad . {enter}",
-		"{shift} \u200d ' \u0d82 \u0da2 \u0da9 \u0d89 \u0db6 \u0db4 \u0dbd \u0d9c / {shift}",
+		"{shift} {ZWJ} ' \u0d82 \u0da2 \u0da9 \u0d89 \u0db6 \u0db4 \u0dbd \u0d9c / {shift}",
 		"{accept} {alt} {space} {alt} {cancel}"
 	],
 	"shift" : [
-		"\u0dbb\u0dca\u200d ! @ $ $ % ^ & * ( ) _ + {bksp}",
+		"\u0dbb\u0dca{ZWJ} ! @ $ $ % ^ & * ( ) _ + {bksp}",
 		"{tab} \u0dd6 \u0d8b \u0dd1 \u0d8d \u0d94 \u0dc1 \u0db9 \u0dc2 \u0db0 \u0da1 \u0da5 : {empty}",
-		"\u0ddf \u0dd3 \u0dd8 \u0dc6 \u0da8 \u0dca\u200d\u0dba \u0dc5\u0dd4 \u0dab \u0d9b \u0dae , {enter}",
+		"\u0ddf \u0dd3 \u0dd8 \u0dc6 \u0da8 \u0dca{ZWJ}\u0dba \u0dc5\u0dd4 \u0dab \u0d9b \u0dae , {enter}",
 		"{shift} {empty} \" \u0d83 \u0da3 \u0daa \u0d8a \u0db7 \u0db5 \u0dc5 \u0d9d / {shift}",
 		"{accept} {alt} {space} {alt} {cancel}"
 	],
@@ -3702,24 +3386,24 @@ jQuery.keyboard.layouts['ms-Sinhala - Wij 9'] = {
 	"name" : "ms-Sinhala - Wij 9",
 	"lang" : ["si"],
 	"normal" : [
-		"\u0dca\u200d\u0dbb 1 2 3 4 5 6 7 8 9 0 - = {bksp}",
-		"{tab} \u0dd4 \u0d85 \u0dd0 \u0dbb \u0d91 \u0dc4 \u0db8 \u0dc3 \u0daf \u0da0 \u0da4 ; \u0dca\u200d",
+		"\u0dca{ZWJ}\u0dbb 1 2 3 4 5 6 7 8 9 0 - = {bksp}",
+		"{tab} \u0dd4 \u0d85 \u0dd0 \u0dbb \u0d91 \u0dc4 \u0db8 \u0dc3 \u0daf \u0da0 \u0da4 ; \u0dca{ZWJ}",
 		"\u0dca \u0dd2 \u0dcf \u0dd9 \u0da7 \u0dba \u0dc0 \u0db1 \u0d9a \u0dad . {enter}",
 		"{shift} ' \u0d82 \u0da2 \u0da9 \u0d89 \u0db6 \u0db4 \u0dbd \u0d9c / {shift}",
 		"{accept} {alt} {space} {alt} {cancel}"
 	],
 	"shift" : [
-		"\u0dbb\u0dca\u200d ! @ # $ % ^ & * ( ) _ + {bksp}",
+		"\u0dbb\u0dca{ZWJ} ! @ # $ % ^ & * ( ) _ + {bksp}",
 		"{tab} \u0dd6 \u0d8b \u0dd1 \u0d8d \u0d94 \u0dc1 \u0db9 \u0dc2 \u0db0 \u0da1 \u0da5 : {empty}",
-		"\u0ddf \u0dd3 \u0dd8 \u0dc6 \u0da8 \u0dca\u200d\u0dba \u0dc5\u0dd4 \u0dab \u0d9b \u0dae , {enter}",
+		"\u0ddf \u0dd3 \u0dd8 \u0dc6 \u0da8 \u0dca{ZWJ}\u0dba \u0dc5\u0dd4 \u0dab \u0d9b \u0dae , {enter}",
 		"{shift} \" \u0d83 \u0da3 \u0daa \u0d8a \u0db7 \u0db5 \u0dc5 \u0d9d / {shift}",
 		"{accept} {alt} {space} {alt} {cancel}"
 	],
 	"alt" : [
 		"` \u00a1 \u00b2 \u00b3 \u00a4 \u20ac \u00bc \u00bd \u00be \u2018 \u2019 \u00a5 \u00d7 {bksp}",
 		"{tab} \u0dde \u0ddc \u0ddb \u0dda {empty} {empty} {empty} {empty} \u0db3 {empty} [ ] \\",
-		"\u0df3 \u0ddd {empty} {empty} {empty} {empty} \u200d {empty} {empty} {empty} \u0df4 {enter}",
-		"{shift} {empty} \u0d9e \u0da6 \u0dac {empty} \u200c {empty} \u0d8f \u0d9f {empty} {shift}",
+		"\u0df3 \u0ddd {empty} {empty} {empty} {empty} {ZWJ} {empty} {empty} {empty} \u0df4 {enter}",
+		"{shift} {empty} \u0d9e \u0da6 \u0dac {empty} {ZWNJ} {empty} \u0d8f \u0d9f {empty} {shift}",
 		"{accept} {alt} {space} {alt} {cancel}"
 	],
 	"alt-shift" : [
@@ -4116,7 +3800,7 @@ jQuery.keyboard.layouts['ms-Syriac'] = {
 		"\u0651 \u0701 \u0702 \u0703 \u0704 \u0705 \u0708 \u0709 \u070b \u070c \u070d \u250c \u2510 {bksp}",
 		"{tab} \u064e \u064b \u064f \u064c \u0653 \u0654 \u0747 \u0743 \u0745 \u032d {empty} {empty} {empty}",
 		"\u0650 \u064d {empty} \u0621 \u0655 \u0670 \u0748 \u0744 \u0746 {empty} {empty} {enter}",
-		"{shift} {empty} {empty} \u0652 {empty} \u200d \u200c \u200e \u200f {empty} {empty} {empty} {shift}",
+		"{shift} {empty} {empty} \u0652 {empty} {ZWJ} {ZWNJ} {LRM} {RLM} {empty} {empty} {empty} {shift}",
 		"{accept} {alt} {space} {alt} {cancel}"
 	]
 };
@@ -4145,7 +3829,7 @@ jQuery.keyboard.layouts['ms-Syriac Phonetic'] = {
 		"\u0651 \u0701 \u0702 \u0703 \u0704 \u0705 \u0708 \u0709 \u070b \u070c \u070d \u250c \u2510 {bksp}",
 		"{tab} \u064e \u064b \u064f \u064c \u0653 \u0654 \u0747 \u0743 \u0745 \u032d {empty} {empty} {empty}",
 		"\u0650 \u064d {empty} \u0621 \u0655 \u0670 \u0748 \u0744 \u0746 {empty} {empty} {enter}",
-		"{shift} {empty} {empty} \u0652 {empty} \u200d \u200c \u200e \u200f {empty} {empty} {empty} {shift}",
+		"{shift} {empty} {empty} \u0652 {empty} {ZWJ} {ZWNJ} {LRM} {RLM} {empty} {empty} {empty} {shift}",
 		"{accept} {alt} {space} {alt} {cancel}"
 	]
 };
@@ -4199,36 +3883,6 @@ jQuery.keyboard.layouts['ms-Tamil'] = {
 		"{shift} {empty} {empty} {empty} {empty} {empty} {empty} {empty} {empty} {empty} {empty} {shift}",
 		"{accept} {alt} {space} {alt} {cancel}"
 	]
-};
-
-// Keyboard Language
-// please update this section to match this language and email me with corrections!
-// ta = ISO 639-1 code for Tamil
-// ***********************
-jQuery.keyboard.language.ta = {
-	display : {
-		'a'      : '\u2714:Accept (Shift+Enter)', // check mark - same action as accept
-		'accept' : 'Accept:Accept (Shift+Enter)',
-		'alt'    : 'AltGr:Alternate Graphemes',
-		'b'      : '\u2190:Backspace',    // Left arrow (same as &larr;)
-		'bksp'   : 'Bksp:Backspace',
-		'c'      : '\u2716:Cancel (Esc)', // big X, close - same action as cancel
-		'cancel' : 'Cancel:Cancel (Esc)',
-		'clear'  : 'C:Clear',             // clear num pad
-		'combo'  : '\u00f6:Toggle Combo Keys',
-		'dec'    : '.:Decimal',           // decimal point for num pad (optional), change '.' to ',' for European format
-		'e'      : '\u21b5:Enter',        // down, then left arrow - enter symbol
-		'enter'  : 'Enter:Enter',
-		'lock'   : '\u21ea Lock:Caps Lock', // caps lock
-		's'      : '\u21e7:Shift',        // thick hollow up arrow
-		'shift'  : 'Shift:Shift',
-		'sign'   : '\u00b1:Change Sign',  // +/- sign for num pad
-		'space'  : '&nbsp;:Space',
-		't'      : '\u21e5:Tab',          // right arrow to bar (used since this virtual keyboard works with one directional tabs)
-		'tab'    : '\u21e5 Tab:Tab'       // \u21b9 is the true tab symbol (left & right arrows)
-	},
-	// Message added to the key title while hovering, if the mousewheel plugin exists
-	wheelMessage : 'Use mousewheel to see other keys',
 };
 
 /* Tatar Keyboard Layout
@@ -4301,36 +3955,6 @@ jQuery.keyboard.layouts['ms-Telugu'] = {
 		"{shift} {empty} {empty} {empty} {empty} {empty} {empty} {empty} {empty} {empty} {empty} {shift}",
 		"{accept} {alt} {space} {alt} {cancel}"
 	]
-};
-
-// Keyboard Language
-// please update this section to match this language and email me with corrections!
-// te = ISO 639-1 code for Telugu
-// ***********************
-jQuery.keyboard.language.te = {
-	display : {
-		'a'      : '\u2714:Accept (Shift+Enter)', // check mark - same action as accept
-		'accept' : 'Accept:Accept (Shift+Enter)',
-		'alt'    : 'AltGr:Alternate Graphemes',
-		'b'      : '\u2190:Backspace',    // Left arrow (same as &larr;)
-		'bksp'   : 'Bksp:Backspace',
-		'c'      : '\u2716:Cancel (Esc)', // big X, close - same action as cancel
-		'cancel' : 'Cancel:Cancel (Esc)',
-		'clear'  : 'C:Clear',             // clear num pad
-		'combo'  : '\u00f6:Toggle Combo Keys',
-		'dec'    : '.:Decimal',           // decimal point for num pad (optional), change '.' to ',' for European format
-		'e'      : '\u21b5:Enter',        // down, then left arrow - enter symbol
-		'enter'  : 'Enter:Enter',
-		'lock'   : '\u21ea Lock:Caps Lock', // caps lock
-		's'      : '\u21e7:Shift',        // thick hollow up arrow
-		'shift'  : 'Shift:Shift',
-		'sign'   : '\u00b1:Change Sign',  // +/- sign for num pad
-		'space'  : '&nbsp;:Space',
-		't'      : '\u21e5:Tab',          // right arrow to bar (used since this virtual keyboard works with one directional tabs)
-		'tab'    : '\u21e5 Tab:Tab'       // \u21b9 is the true tab symbol (left & right arrows)
-	},
-	// Message added to the key title while hovering, if the mousewheel plugin exists
-	wheelMessage : 'Use mousewheel to see other keys',
 };
 
 /* Thai Kedmanee Keyboard Layout
@@ -4551,6 +4175,72 @@ jQuery.keyboard.layouts['ms-Turkmen'] = {
 	]
 };
 
+/* US-Dvorak Keyboard Layout
+ * generated from http://www.microsoft.com/resources/msdn/goglobal/keyboards/kbddv.html
+ */
+jQuery.keyboard.layouts['ms-US-Dvorak'] = {
+	"name" : "ms-US-Dvorak",
+	"lang" : ["en"],
+	"normal" : [
+		"` 1 2 3 4 5 6 7 8 9 0 [ ] {bksp}",
+		"{tab} ' , . p y f g c r l / = \u005C",
+		"a o e u i d h t n s - {enter}",
+		"{shift} ; q j k x b m w v z {shift}",
+		"{accept} {space} {cancel}"
+	],
+	"shift" : [
+		"~ ! @ # $ % ^ & * ( ) { } {bksp}",
+		"{tab} \u0022 < > P Y F G C R L ? + |",
+		"A O E U I D H T N S _ {enter}",
+		"{shift} : Q J K X B M W V Z {shift}",
+		"{accept} {space} {cancel}"
+	]
+};
+
+/* US-Dvorak for left hand Keyboard Layout
+ * generated from http://www.microsoft.com/resources/msdn/goglobal/keyboards/kbdusl.html
+ */
+jQuery.keyboard.layouts['ms-US-Dvorak for left hand'] = {
+	"name" : "ms-US-Dvorak for left hand",
+	"lang" : ["en"],
+	"normal" : [
+		"` [ ] / p f m l j 4 3 2 1 {bksp}",
+		"{tab} ; q b y u r s o . 6 5 = \u005C",
+		"- k c d t h e a z 8 7 {enter}",
+		"{shift} ' x g v w n i , 0 9 {shift}",
+		"{accept} {space} {cancel}"
+	],
+	"shift" : [
+		"~ { } ? P F M L J $ # @ ! {bksp}",
+		"{tab} : Q B Y U R S O > ^ % + |",
+		"_ K C D T H E A Z * & {enter}",
+		"{shift} \u0022 X G V W N I < ) ( {shift}",
+		"{accept} {space} {cancel}"
+	]
+};
+
+/* US-Dvorak for right hand Keyboard Layout
+ * generated from http://www.microsoft.com/resources/msdn/goglobal/keyboards/kbdusr.html
+ */
+jQuery.keyboard.layouts['ms-US-Dvorak for right hand'] = {
+	"name" : "ms-US-Dvorak for right hand",
+	"lang" : ["en"],
+	"normal" : [
+		"` 1 2 3 4 j l m f p / [ ] {bksp}",
+		"{tab} 5 6 q . o r s u y b ; = \u005C",
+		"7 8 z a e h t d c k - {enter}",
+		"{shift} 9 0 x , i n w v g ' {shift}",
+		"{accept} {space} {cancel}"
+	],
+	"shift" : [
+		"~ ! @ # $ J L M F P ? { } {bksp}",
+		"{tab} % ^ Q > O R S U Y B : + |",
+		"& * Z A E H T D C K _ {enter}",
+		"{shift} ( ) X < I N W V G \u0022 {shift}",
+		"{accept} {space} {cancel}"
+	]
+};
+
 /* US English (Latin) Keyboard Layout
  * generated from http://www.microsoft.com/resources/msdn/goglobal/keyboards/kbdus.html
  */
@@ -4628,72 +4318,6 @@ jQuery.keyboard.layouts['ms-US-International'] = {
 		"\u00C1 \u00A7 \u00D0 {empty} {empty} {empty} {empty} {empty} \u00D8 \u00B0 \u00A8 \u00A6 {enter}",
 		"{shift} \u00C6 {empty} \u00A2 {empty} {empty} \u00D1 {empty} \u00C7 {empty} {empty} {shift}",
 		"{accept} {alt} {space} {alt} {cancel}"
-	]
-};
-
-/* US-Dvorak Keyboard Layout
- * generated from http://www.microsoft.com/resources/msdn/goglobal/keyboards/kbddv.html
- */
-jQuery.keyboard.layouts['ms-US-Dvorak'] = {
-	"name" : "ms-US-Dvorak",
-	"lang" : ["en"],
-	"normal" : [
-		"` 1 2 3 4 5 6 7 8 9 0 [ ] {bksp}",
-		"{tab} ' , . p y f g c r l / = \u005C",
-		"a o e u i d h t n s - {enter}",
-		"{shift} ; q j k x b m w v z {shift}",
-		"{accept} {space} {cancel}"
-	],
-	"shift" : [
-		"~ ! @ # $ % ^ & * ( ) { } {bksp}",
-		"{tab} \u0022 < > P Y F G C R L ? + |",
-		"A O E U I D H T N S _ {enter}",
-		"{shift} : Q J K X B M W V Z {shift}",
-		"{accept} {space} {cancel}"
-	]
-};
-
-/* US-Dvorak for left hand Keyboard Layout
- * generated from http://www.microsoft.com/resources/msdn/goglobal/keyboards/kbdusl.html
- */
-jQuery.keyboard.layouts['ms-US-Dvorak for left hand'] = {
-	"name" : "ms-US-Dvorak for left hand",
-	"lang" : ["en"],
-	"normal" : [
-		"` [ ] / p f m l j 4 3 2 1 {bksp}",
-		"{tab} ; q b y u r s o . 6 5 = \u005C",
-		"- k c d t h e a z 8 7 {enter}",
-		"{shift} ' x g v w n i , 0 9 {shift}",
-		"{accept} {space} {cancel}"
-	],
-	"shift" : [
-		"~ { } ? P F M L J $ # @ ! {bksp}",
-		"{tab} : Q B Y U R S O > ^ % + |",
-		"_ K C D T H E A Z * & {enter}",
-		"{shift} \u0022 X G V W N I < ) ( {shift}",
-		"{accept} {space} {cancel}"
-	]
-};
-
-/* US-Dvorak for right hand Keyboard Layout
- * generated from http://www.microsoft.com/resources/msdn/goglobal/keyboards/kbdusr.html
- */
-jQuery.keyboard.layouts['ms-US-Dvorak for right hand'] = {
-	"name" : "ms-US-Dvorak for right hand",
-	"lang" : ["en"],
-	"normal" : [
-		"` 1 2 3 4 j l m f p / [ ] {bksp}",
-		"{tab} 5 6 q . o r s u y b ; = \u005C",
-		"7 8 z a e h t d c k - {enter}",
-		"{shift} 9 0 x , i n w v g ' {shift}",
-		"{accept} {space} {cancel}"
-	],
-	"shift" : [
-		"~ ! @ # $ J L M F P ? { } {bksp}",
-		"{tab} % ^ Q > O R S U Y B : + |",
-		"& * Z A E H T D C K _ {enter}",
-		"{shift} ( ) X < I N W V G \u0022 {shift}",
-		"{accept} {space} {cancel}"
 	]
 };
 
@@ -4858,39 +4482,9 @@ jQuery.keyboard.layouts['ms-Urdu'] = {
 		"~ ! @ # $ \u066a ^ \u06d6 \u066d ) ( _ + {bksp}",
 		"{tab} \u0638 \u0636 \u0630 \u0688 \u062b \u0651 \u06c3 \u0640 \u0686 \u062e } { |",
 		"\u0698 \u0632 \u0691 \u06ba \u06c2 \u0621 \u0622 \u06af \u064a : \" {enter}",
-		"{shift} | \u200d \u200c \u06d3 \u200e \u0624 \u0626 \u200f > < / {shift}",
+		"{shift} | {ZWJ} {ZWNJ} \u06d3 {LRM} \u0624 \u0626 {RLM} > < / {shift}",
 		"{accept} {space} {cancel}"
 	]
-};
-
-// Keyboard Language
-// please update this section to match this language and email me with corrections!
-// ur = ISO 639-1 code for Urdu
-// ***********************
-jQuery.keyboard.language.ur = {
-	display : {
-		'a'      : '\u2714:Accept (Shift+Enter)', // check mark - same action as accept
-		'accept' : 'Accept:Accept (Shift+Enter)',
-		'alt'    : 'AltGr:Alternate Graphemes',
-		'b'      : '\u2190:Backspace',    // Left arrow (same as &larr;)
-		'bksp'   : 'Bksp:Backspace',
-		'c'      : '\u2716:Cancel (Esc)', // big X, close - same action as cancel
-		'cancel' : 'Cancel:Cancel (Esc)',
-		'clear'  : 'C:Clear',             // clear num pad
-		'combo'  : '\u00f6:Toggle Combo Keys',
-		'dec'    : '.:Decimal',           // decimal point for num pad (optional), change '.' to ',' for European format
-		'e'      : '\u21b5:Enter',        // down, then left arrow - enter symbol
-		'enter'  : 'Enter:Enter',
-		'lock'   : '\u21ea Lock:Caps Lock', // caps lock
-		's'      : '\u21e7:Shift',        // thick hollow up arrow
-		'shift'  : 'Shift:Shift',
-		'sign'   : '\u00b1:Change Sign',  // +/- sign for num pad
-		'space'  : '&nbsp;:Space',
-		't'      : '\u21e5:Tab',          // right arrow to bar (used since this virtual keyboard works with one directional tabs)
-		'tab'    : '\u21e5 Tab:Tab'       // \u21b9 is the true tab symbol (left & right arrows)
-	},
-	// Message added to the key title while hovering, if the mousewheel plugin exists
-	wheelMessage : 'Use mousewheel to see other keys',
 };
 
 /* Uyghur Keyboard Layout
@@ -5084,10 +4678,71 @@ jQuery.keyboard.layouts['ms-Yoruba'] = {
 
 // Keyboard Language
 // please update this section to match this language and email me with corrections!
+// de = ISO 639-1 code for German
+// ***********************
+jQuery.keyboard.language.de = {
+	language: 'Deutsch (German)',
+	display : {
+		'a'      : '\u2714:\u00dcbernehmen (Umschalt+Enter)', // check mark - same action as accept
+		'accept' : '\u00dcbernehmen:\u00dcbernehmen (Umschalt+Enter)',
+		'alt'    : 'AltGr:Alt Graph',
+		'b'      : '\u2190:R\u00fccktaste', // Left arrow (same as &larr;)
+		'bksp'   : 'R\u00fcck:R\u00fccktaste',
+		'c'      : '\u2716:Abbrechen (Esc)', // big X, close - same action as cancel
+		'cancel' : 'Abbrechen:Abbrechen (Esc)',
+		'clear'  : 'C:L\u00f6schen', // clear num pad
+		'combo'  : '\u00f6:Tottasten umschalten',
+		'dec'    : ',:Dezimal', // decimal point for num pad (optional), change '.' to ',' for European format
+		'e'      : '\u21b5:Eingabe', // down, then left arrow - enter symbol
+		'enter'  : 'Enter:Eingabe',
+		'lock'   : '\u21E9:Feststelltaste', // caps lock
+		's'      : '\u21e7:Umschalttaste', // thick hollow up arrow
+		'shift'  : 'Umschalt:Umschalttaste',
+		'sign'   : '\u00b1:Vorzeichen wechseln', // +/- sign for num pad
+		'space'  : '&nbsp;:Leertaste',
+		't'      : '\u21e5:Tabulatortaste', // right arrow to bar (used since this virtual keyboard works with one directional tabs)
+		'tab'    : '\u21e5 Tab:Tabulatortaste' // \u21b9 is the true tab symbol (left & right arrows)
+	},
+	// Message added to the key title while hovering, if the mousewheel plugin exists
+	wheelMessage : 'Mausrad benutzen, um weitere Tasten zu sehen',
+};
+
+// Keyboard Language
+// please update this section to match this language and email me with corrections!
+// es = ISO 639-1 code for Spanish
+// ***********************
+jQuery.keyboard.language.es = {
+	language: 'Espa\u00f1ol (Spanish)',
+	display : {
+		'a'      : '\u2714:Acceptar (Cambio+Inscribir)', // check mark - same action as accept
+		'accept' : 'Acceptar:Acceptar (Cambio+Inscribir)',
+		'alt'    : 'AltGr:Grafemas Alternativos',
+		'b'      : '\u2190:Retroceso',    // Left arrow (same as &larr;)
+		'bksp'   : 'Bksp:Retroceso',
+		'c'      : '\u2716:Cancelar (Esc)', // big X, close - same action as cancel
+		'cancel' : 'Cancelar:Cancelar (Esc)',
+		'clear'  : 'C:Vaciar',             // clear num pad
+		'combo'  : '\u00f6:Alternar las Teclas Combinados',
+		'dec'    : ',:Decimal',           // decimal point for num pad (optional), change '.' to ',' for European format
+		'e'      : '\u21b5:Inscribir',        // down, then left arrow - enter symbol
+		'enter'  : 'Inscribir:Inscribir',
+		'lock'   : '\u21ea Bloq:Mayús', // caps lock
+		's'      : '\u21e7:Cambio',        // thick hollow up arrow
+		'shift'  : 'Cambio:Cambio',
+		'sign'   : '\u00b1:Cambiar Signo',  // +/- sign for num pad
+		'space'  : '&nbsp;:Espacio',
+		't'      : '\u21e5:Tab',          // right arrow to bar (used since this virtual keyboard works with one directional tabs)
+		'tab'    : '\u21e5 Tab:Tab'       // \u21b9 is the true tab symbol (left & right arrows)
+	},
+	wheelMessage : 'Utilice la rueda del mouse para ver otras teclas'
+};
+
+// Keyboard Language
+// please update this section to match this language and email me with corrections!
 // fa = ISO 639-1 code for Farsi
 // ***********************
 jQuery.keyboard.language.fa = {
-	language: 'Farsi',
+	language: '\u0641\u0627\u0631\u0633\u06cc (Farsi)',
 	display: {
 		'a'      : '\u2714:\u062a\u0623\u06cc\u06cc\u062f (Shift+Enter)',
 		'accept' : '\u062a\u0623\u06cc\u06cc\u062f:\u062a\u0623\u06cc\u06cc\u062f (Shift+Enter)',
@@ -5142,7 +4797,7 @@ jQuery.keyboard.language.fa = {
 // fr = ISO 639-1 code for French
 // ***********************
 jQuery.keyboard.language.fr = {
-	language: 'French',
+	language: 'Fran\u00e7ais (French)',
 	display : {
 		'a'      : '\u2714:Valider (Shift+Enter)', // check mark - same action as accept
 		'accept' : 'Valider:Valider (Shift+Enter)',
@@ -5173,7 +4828,7 @@ jQuery.keyboard.language.fr = {
 // he = ISO 639-1 code for Hebrew
 // ***********************
 jQuery.keyboard.language.he = {
-	language: 'Hebrew',
+	language: '\u05e2\u05d1\u05e8\u05d9\u05ea (Hebrew)',
 	display : {
 		'a'      : '\u2714:אישור (Shift+Enter)', // check mark - same action as accept
 		'accept' : 'אישור:אישור (Shift+Enter)',
@@ -5206,7 +4861,7 @@ jQuery.keyboard.language.he = {
 // hu = ISO 639-1 code for Hungarian
 // ***********************
 jQuery.keyboard.language.hu = {
-	language: 'Hungarian',
+	language: 'Magyar (Hungarian)',
 	display : {
 		'a'      : '\u2714:Rendben (Shift+Enter)', // check mark - same action as accept
 		'accept' : 'Rendben:Rendben (Shift+Enter)',
@@ -5237,7 +4892,7 @@ jQuery.keyboard.language.hu = {
 // lv = ISO 639-1 code for Latvian
 // ***********************
 jQuery.keyboard.language.lv = {
-	language: 'Latvian',
+	language: 'Latvie\u0161u (Latvian)',
 	display : {
 		'a'      : '\u2714:Pie\u0146emt (Shift+Enter)', // check mark - same action as accept
 		'accept' : 'Pie\u0146emt:Pie\u0146emt (Shift+Enter)',
@@ -5261,6 +4916,17 @@ jQuery.keyboard.language.lv = {
 	},
 	// Message added to the key title while hovering, if the mousewheel plugin exists
 	wheelMessage : 'Izmanto peles riten\u012Bti, lai apskat\u012Btu citus tausti\u0146us',
+	// New combos using specific accents
+	combos : {
+		// duplicated from regular combos, used specific accents here instead
+		// acute & cedilla c C � � n N � � s S z Z
+		"'" : { c:"\u0107", C:"\u0106", e:"\u00e9", E:"\u00c9", n:"\u0144", N:"\u0143", o:"\u00f3", O:"\u00d3", s:"\u015b", S:"\u015a", z:"\u017a", Z:"\u0179" },
+		// diaeresis: � � � � � �
+		'\u00a8' : { a:"\u00e4", A:"\u00c4", o:"\u00f6", O:"\u00d6", u:"\u00fc", U:"\u00dc" },
+		// degree sign � � e E g z Z
+		'\u00b0' : { a:"\u00e5", A:"\u00c5", e:"\u0117", E:"\u0116", g:"\u0121", z:"\u017c", Z:"\u017b" },
+	},
+	comboRegex : /([`\'~\^\"ao\u00a8\u00b0])([a-z])/mig
 };
 
 // Keyboard Language
@@ -5268,7 +4934,7 @@ jQuery.keyboard.language.lv = {
 // pl = ISO 639-1 code for Polish
 // ***********************
 jQuery.keyboard.language.pl = {
-	language: 'Polish',
+	language: 'Polski (Polish)',
 	display : {
 		'a'      : '\u2714:Akceptuj (Shift+Enter)', // check mark - same action as accept
 		'accept' : 'Accept:Akceptuj (Shift+Enter)',
@@ -5299,7 +4965,7 @@ jQuery.keyboard.language.pl = {
 // pt = ISO 639-1 code for Portuguese
 // ***********************
 jQuery.keyboard.language.pt = {
-	language: 'Portuguese',
+	language: 'Portugu\u00eas (Portuguese)',
 	display : {
 		'a'      : '\u2714:Aceitar (Shift+Enter)',           // ALTERNATE accept button - unicode for check mark symbol
 		'accept' : 'Aceitar:Concluir (Shift+Enter)',         // Accept button text
@@ -5339,7 +5005,7 @@ jQuery.keyboard.language.pt = {
 // ro = ISO 639-1 code for Romanian
 // ***********************
 jQuery.keyboard.language.ro = {
-	language: 'Romanian',
+	language: 'Rom\u00e2n\u0103 (Romanian)',
 	display : {
 		'a'      : '\u2714:Accept (Shift+Enter)', // check mark - same action as accept
 		'accept' : 'Accept:Accept (Shift+Enter)',
@@ -5370,7 +5036,7 @@ jQuery.keyboard.language.ro = {
 // ru = ISO 639-1 code for Russian
 // ***********************
 jQuery.keyboard.language.ru = {
-	language: 'Русский',
+	language: '\u0420\u0443\u0441\u0441\u043a\u0438\u0439 (Russian)',
 	display : {
 		'a'      : '\u2714:Сохранить (Shift+Enter)', // check mark - same action as accept
 		'accept' : 'Сохранить:Сохранить (Shift+Enter)',
@@ -5401,7 +5067,7 @@ jQuery.keyboard.language.ru = {
 // sq = ISO 639-1 code for Albanian
 // ***********************
 jQuery.keyboard.language.sq = {
-	language : 'Albanian',
+	language : 'Shqip (Albanian)',
 	display : {
 		'a'      : '\u2714:Prano (Shift+Enter)', // check mark - same action as accept
 		'accept' : 'Prano:Prano (Shift+Enter)',

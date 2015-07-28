@@ -22,7 +22,7 @@ jQuery.keyboard.layouts['ms-Syriac'] = {
 		"\u0651 \u0701 \u0702 \u0703 \u0704 \u0705 \u0708 \u0709 \u070b \u070c \u070d \u250c \u2510 {bksp}",
 		"{tab} \u064e \u064b \u064f \u064c \u0653 \u0654 \u0747 \u0743 \u0745 \u032d {empty} {empty} {empty}",
 		"\u0650 \u064d {empty} \u0621 \u0655 \u0670 \u0748 \u0744 \u0746 {empty} {empty} {enter}",
-		"{shift} {empty} {empty} \u0652 {empty} \u200d \u200c \u200e \u200f {empty} {empty} {empty} {shift}",
+		"{shift} {empty} {empty} \u0652 {empty} {ZWJ} {ZWNJ} {LRM} {RLM} {empty} {empty} {empty} {shift}",
 		"{accept} {alt} {space} {alt} {cancel}"
 	]
 };
@@ -51,7 +51,7 @@ jQuery.keyboard.layouts['ms-Syriac Phonetic'] = {
 		"\u0651 \u0701 \u0702 \u0703 \u0704 \u0705 \u0708 \u0709 \u070b \u070c \u070d \u250c \u2510 {bksp}",
 		"{tab} \u064e \u064b \u064f \u064c \u0653 \u0654 \u0747 \u0743 \u0745 \u032d {empty} {empty} {empty}",
 		"\u0650 \u064d {empty} \u0621 \u0655 \u0670 \u0748 \u0744 \u0746 {empty} {empty} {enter}",
-		"{shift} {empty} {empty} \u0652 {empty} \u200d \u200c \u200e \u200f {empty} {empty} {empty} {shift}",
+		"{shift} {empty} {empty} \u0652 {empty} {ZWJ} {ZWNJ} {LRM} {RLM} {empty} {empty} {empty} {shift}",
 		"{accept} {alt} {space} {alt} {cancel}"
 	]
 };

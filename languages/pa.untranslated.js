@@ -1,9 +1,9 @@
 // Keyboard Language
 // please update this section to match this language and email me with corrections!
-// ja = ISO 639-1 code for Japanese
+// pa = ISO 639-1 code for Punjabi
 // ***********************
-jQuery.keyboard.language.ja = {
-	language: '\u65e5\u672c\u8a9e (Japanese)',
+jQuery.keyboard.language.pa = {
+	language : '\u0a2a\u0a70\u0a1c\u0a3e\u0a2c\u0a40 (Punjabi)',
 	display : {
 		'a'      : '\u2714:Accept (Shift+Enter)', // check mark - same action as accept
 		'accept' : 'Accept:Accept (Shift+Enter)',
@@ -23,15 +23,7 @@ jQuery.keyboard.language.ja = {
 		'sign'   : '\u00b1:Change Sign',  // +/- sign for num pad
 		'space'  : '&nbsp;:Space',
 		't'      : '\u21e5:Tab',          // right arrow to bar (used since this virtual keyboard works with one directional tabs)
-		'tab'    : '\u21e5 Tab:Tab',      // \u21b9 is the true tab symbol (left & right arrows)
-
-		// these definitions are specific to the "ms-Japanese Hiragana" layout
-		'default': '\u30ab \u30bf:Hiragana', // Harigana active; switch to Katakana
-		'full'   : '',
-		'meta1'  : 'Kana', // English half (normal) width active
-		'meta2'  : 'Kana', // English full width active
-		'meta3'  : '\u3072 \u3089:Katakana', // Kanakana full width active; switch to Hiragana
-		'meta4'  : '\u534a:full' // Kana half width active
+		'tab'    : '\u21e5 Tab:Tab'       // \u21b9 is the true tab symbol (left & right arrows)
 	},
 	// Message added to the key title while hovering, if the mousewheel plugin exists
 	wheelMessage : 'Use mousewheel to see other keys',

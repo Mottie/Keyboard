@@ -34,7 +34,7 @@ jQuery.keyboard.layouts['ms-Mongolian (Mongolian Script)'] = {
 		"{accept} {space} {cancel}"
 	],
 	"shift" : [
-		"~ ! \u2048 \u2049 \u2014 % \u200c \u180a \u200d ( ) \u180e + {bksp}",
+		"~ ! \u2048 \u2049 \u2014 % {ZWNJ} \u180a {ZWJ} ( ) \u180e + {bksp}",
 		"{tab} {empty} \u1838 \u1827 \u183f {empty} {empty} {empty} {empty} {empty} {empty} \u3008 \u3009 |",
 		"{empty} {empty} {empty} {empty} {empty} \u183e {empty} \u183b \u1840 \u1804 \u180c {enter}",
 		"{shift} {empty} \u1841 {empty} \u1842 {empty} {empty} \u1829 {empty} \u300a \u300b / {shift}",

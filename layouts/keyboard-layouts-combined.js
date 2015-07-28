@@ -1853,10 +1853,71 @@ jQuery.keyboard.layouts['vietnamese-qwerty'] = {
 
 // Keyboard Language
 // please update this section to match this language and email me with corrections!
+// de = ISO 639-1 code for German
+// ***********************
+jQuery.keyboard.language.de = {
+	language: 'Deutsch (German)',
+	display : {
+		'a'      : '\u2714:\u00dcbernehmen (Umschalt+Enter)', // check mark - same action as accept
+		'accept' : '\u00dcbernehmen:\u00dcbernehmen (Umschalt+Enter)',
+		'alt'    : 'AltGr:Alt Graph',
+		'b'      : '\u2190:R\u00fccktaste', // Left arrow (same as &larr;)
+		'bksp'   : 'R\u00fcck:R\u00fccktaste',
+		'c'      : '\u2716:Abbrechen (Esc)', // big X, close - same action as cancel
+		'cancel' : 'Abbrechen:Abbrechen (Esc)',
+		'clear'  : 'C:L\u00f6schen', // clear num pad
+		'combo'  : '\u00f6:Tottasten umschalten',
+		'dec'    : ',:Dezimal', // decimal point for num pad (optional), change '.' to ',' for European format
+		'e'      : '\u21b5:Eingabe', // down, then left arrow - enter symbol
+		'enter'  : 'Enter:Eingabe',
+		'lock'   : '\u21E9:Feststelltaste', // caps lock
+		's'      : '\u21e7:Umschalttaste', // thick hollow up arrow
+		'shift'  : 'Umschalt:Umschalttaste',
+		'sign'   : '\u00b1:Vorzeichen wechseln', // +/- sign for num pad
+		'space'  : '&nbsp;:Leertaste',
+		't'      : '\u21e5:Tabulatortaste', // right arrow to bar (used since this virtual keyboard works with one directional tabs)
+		'tab'    : '\u21e5 Tab:Tabulatortaste' // \u21b9 is the true tab symbol (left & right arrows)
+	},
+	// Message added to the key title while hovering, if the mousewheel plugin exists
+	wheelMessage : 'Mausrad benutzen, um weitere Tasten zu sehen',
+};
+
+// Keyboard Language
+// please update this section to match this language and email me with corrections!
+// es = ISO 639-1 code for Spanish
+// ***********************
+jQuery.keyboard.language.es = {
+	language: 'Espa\u00f1ol (Spanish)',
+	display : {
+		'a'      : '\u2714:Acceptar (Cambio+Inscribir)', // check mark - same action as accept
+		'accept' : 'Acceptar:Acceptar (Cambio+Inscribir)',
+		'alt'    : 'AltGr:Grafemas Alternativos',
+		'b'      : '\u2190:Retroceso',    // Left arrow (same as &larr;)
+		'bksp'   : 'Bksp:Retroceso',
+		'c'      : '\u2716:Cancelar (Esc)', // big X, close - same action as cancel
+		'cancel' : 'Cancelar:Cancelar (Esc)',
+		'clear'  : 'C:Vaciar',             // clear num pad
+		'combo'  : '\u00f6:Alternar las Teclas Combinados',
+		'dec'    : ',:Decimal',           // decimal point for num pad (optional), change '.' to ',' for European format
+		'e'      : '\u21b5:Inscribir',        // down, then left arrow - enter symbol
+		'enter'  : 'Inscribir:Inscribir',
+		'lock'   : '\u21ea Bloq:Mayús', // caps lock
+		's'      : '\u21e7:Cambio',        // thick hollow up arrow
+		'shift'  : 'Cambio:Cambio',
+		'sign'   : '\u00b1:Cambiar Signo',  // +/- sign for num pad
+		'space'  : '&nbsp;:Espacio',
+		't'      : '\u21e5:Tab',          // right arrow to bar (used since this virtual keyboard works with one directional tabs)
+		'tab'    : '\u21e5 Tab:Tab'       // \u21b9 is the true tab symbol (left & right arrows)
+	},
+	wheelMessage : 'Utilice la rueda del mouse para ver otras teclas'
+};
+
+// Keyboard Language
+// please update this section to match this language and email me with corrections!
 // fa = ISO 639-1 code for Farsi
 // ***********************
 jQuery.keyboard.language.fa = {
-	language: 'Farsi',
+	language: '\u0641\u0627\u0631\u0633\u06cc (Farsi)',
 	display: {
 		'a'      : '\u2714:\u062a\u0623\u06cc\u06cc\u062f (Shift+Enter)',
 		'accept' : '\u062a\u0623\u06cc\u06cc\u062f:\u062a\u0623\u06cc\u06cc\u062f (Shift+Enter)',
@@ -1911,7 +1972,7 @@ jQuery.keyboard.language.fa = {
 // fr = ISO 639-1 code for French
 // ***********************
 jQuery.keyboard.language.fr = {
-	language: 'French',
+	language: 'Fran\u00e7ais (French)',
 	display : {
 		'a'      : '\u2714:Valider (Shift+Enter)', // check mark - same action as accept
 		'accept' : 'Valider:Valider (Shift+Enter)',
@@ -1942,7 +2003,7 @@ jQuery.keyboard.language.fr = {
 // he = ISO 639-1 code for Hebrew
 // ***********************
 jQuery.keyboard.language.he = {
-	language: 'Hebrew',
+	language: '\u05e2\u05d1\u05e8\u05d9\u05ea (Hebrew)',
 	display : {
 		'a'      : '\u2714:אישור (Shift+Enter)', // check mark - same action as accept
 		'accept' : 'אישור:אישור (Shift+Enter)',
@@ -1975,7 +2036,7 @@ jQuery.keyboard.language.he = {
 // hu = ISO 639-1 code for Hungarian
 // ***********************
 jQuery.keyboard.language.hu = {
-	language: 'Hungarian',
+	language: 'Magyar (Hungarian)',
 	display : {
 		'a'      : '\u2714:Rendben (Shift+Enter)', // check mark - same action as accept
 		'accept' : 'Rendben:Rendben (Shift+Enter)',
@@ -2006,7 +2067,7 @@ jQuery.keyboard.language.hu = {
 // lv = ISO 639-1 code for Latvian
 // ***********************
 jQuery.keyboard.language.lv = {
-	language: 'Latvian',
+	language: 'Latvie\u0161u (Latvian)',
 	display : {
 		'a'      : '\u2714:Pie\u0146emt (Shift+Enter)', // check mark - same action as accept
 		'accept' : 'Pie\u0146emt:Pie\u0146emt (Shift+Enter)',
@@ -2030,6 +2091,17 @@ jQuery.keyboard.language.lv = {
 	},
 	// Message added to the key title while hovering, if the mousewheel plugin exists
 	wheelMessage : 'Izmanto peles riten\u012Bti, lai apskat\u012Btu citus tausti\u0146us',
+	// New combos using specific accents
+	combos : {
+		// duplicated from regular combos, used specific accents here instead
+		// acute & cedilla c C � � n N � � s S z Z
+		"'" : { c:"\u0107", C:"\u0106", e:"\u00e9", E:"\u00c9", n:"\u0144", N:"\u0143", o:"\u00f3", O:"\u00d3", s:"\u015b", S:"\u015a", z:"\u017a", Z:"\u0179" },
+		// diaeresis: � � � � � �
+		'\u00a8' : { a:"\u00e4", A:"\u00c4", o:"\u00f6", O:"\u00d6", u:"\u00fc", U:"\u00dc" },
+		// degree sign � � e E g z Z
+		'\u00b0' : { a:"\u00e5", A:"\u00c5", e:"\u0117", E:"\u0116", g:"\u0121", z:"\u017c", Z:"\u017b" },
+	},
+	comboRegex : /([`\'~\^\"ao\u00a8\u00b0])([a-z])/mig
 };
 
 // Keyboard Language
@@ -2037,7 +2109,7 @@ jQuery.keyboard.language.lv = {
 // pl = ISO 639-1 code for Polish
 // ***********************
 jQuery.keyboard.language.pl = {
-	language: 'Polish',
+	language: 'Polski (Polish)',
 	display : {
 		'a'      : '\u2714:Akceptuj (Shift+Enter)', // check mark - same action as accept
 		'accept' : 'Accept:Akceptuj (Shift+Enter)',
@@ -2068,7 +2140,7 @@ jQuery.keyboard.language.pl = {
 // pt = ISO 639-1 code for Portuguese
 // ***********************
 jQuery.keyboard.language.pt = {
-	language: 'Portuguese',
+	language: 'Portugu\u00eas (Portuguese)',
 	display : {
 		'a'      : '\u2714:Aceitar (Shift+Enter)',           // ALTERNATE accept button - unicode for check mark symbol
 		'accept' : 'Aceitar:Concluir (Shift+Enter)',         // Accept button text
@@ -2108,7 +2180,7 @@ jQuery.keyboard.language.pt = {
 // ro = ISO 639-1 code for Romanian
 // ***********************
 jQuery.keyboard.language.ro = {
-	language: 'Romanian',
+	language: 'Rom\u00e2n\u0103 (Romanian)',
 	display : {
 		'a'      : '\u2714:Accept (Shift+Enter)', // check mark - same action as accept
 		'accept' : 'Accept:Accept (Shift+Enter)',
@@ -2139,7 +2211,7 @@ jQuery.keyboard.language.ro = {
 // ru = ISO 639-1 code for Russian
 // ***********************
 jQuery.keyboard.language.ru = {
-	language: 'Русский',
+	language: '\u0420\u0443\u0441\u0441\u043a\u0438\u0439 (Russian)',
 	display : {
 		'a'      : '\u2714:Сохранить (Shift+Enter)', // check mark - same action as accept
 		'accept' : 'Сохранить:Сохранить (Shift+Enter)',
@@ -2170,7 +2242,7 @@ jQuery.keyboard.language.ru = {
 // sq = ISO 639-1 code for Albanian
 // ***********************
 jQuery.keyboard.language.sq = {
-	language : 'Albanian',
+	language : 'Shqip (Albanian)',
 	display : {
 		'a'      : '\u2714:Prano (Shift+Enter)', // check mark - same action as accept
 		'accept' : 'Prano:Prano (Shift+Enter)',

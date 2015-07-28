@@ -17,7 +17,7 @@
   Bulgarian BDS keyboard layout by Milen Georgiev
   Bulgarian Phonetic keyboard layout by Samuil Gospodinov
   Burmese keyboard layout by Cetanapa
-  Danish keyboard layout by Verner Kjærsgaard
+  Danish keyboard layout by Verner KjÃ¦rsgaard
   Dari keyboard layout by Saif Fazel
   Dutch and US Int'l keyboard layouts by jerone
   Farsi (Persian) keyboard layout by Kaveh Bakhtiyari (www.bakhtiyari.com)
@@ -35,7 +35,7 @@
   Polish Programmers layout by moose
   Romanian keyboard layout by Aurel
   Slovak keyboard layout by Daniel Lara (www.learningslovak.com)
-  Swedish keyboard layout by Håkan Sandberg
+  Swedish keyboard layout by HÃ¥kan Sandberg
   Turkish keyboard layouts by offcu
   Ukrainian keyboard layout by Dmitry Nikitin
   Urdu Phonetic keyboard layout by Khalid Malik
@@ -43,12 +43,12 @@
   Yiddish keyboard layout by Helmut Wollmersdorfer
 */
 /*
- Zero-width characters (needs something to display)
- \u00A0 NON-BREAKING SPACE
- \u200D ZWJ
- \u200C ZWNJ
- \u200E LEFT-TO-RIGHT MARK
- \u200F RIGHT-TO-LEFT MARK
+ Zero-width characters
+ U+200B ZWSP
+ U+200C ZWNJ
+ U+200D ZWJ
+ U+200E LEFT-TO-RIGHT MARK
+ U+200F RIGHT-TO-LEFT MARK
 */
 
 /* Albanian Keyboard Layout (Shqip) * generated from http://www.greywyvern.com/code/javascript/keyboard layouts */
@@ -539,7 +539,7 @@ jQuery.keyboard.layouts["fa-AF"] = {
 	"name":"Dari (\u062f\u0631\u06cc)",
 	"rtl":true,
 	"normal":[
-		"\u200D \u06F1 \u06F2 \u06F3 \u06F4 \u06F5 \u06F6 \u06F7 \u06F8 \u06F9 \u06F0 - = {b}",
+		"{ZWJ} \u06F1 \u06F2 \u06F3 \u06F4 \u06F5 \u06F6 \u06F7 \u06F8 \u06F9 \u06F0 - = {b}",
 		"{t} \u0636 \u0635 \u062B \u0642 \u0641 \u063A \u0639 \u0647 \u062E \u062D \u062C \u0686 \\",
 		"\u0634 \u0633 \u06CC \u0628 \u0644 \u0627 \u062A \u0646 \u0645 \u06A9 \u06AF {enter}",
 		"{s} \u0638 \u0637 \u0632 \u0631 \u0630 \u062F \u067E \u0648 . / {s}",
@@ -549,11 +549,11 @@ jQuery.keyboard.layouts["fa-AF"] = {
 		"\u00F7 ! \u066C \u066B \u060B \u066A \u00D7 \u060C * ) ( \u0640 + {b}",
 		"{t} \u0652 \u064C \u064D \u064B \u064F \u0650 \u064E \u0651 ] [ } { |",
 		"\u0624 \u0626 \u064A \u0625 \u0623 \u0622 \u0629 \u00BB \u00AB : \u061B {enter}",
-		"{s} \u0643 \u0653 \u0698 \u0670 \u200C \u0654 \u0621 > < \u061F {s}",
+		"{s} \u0643 \u0653 \u0698 \u0670 {ZWNJ} \u0654 \u0621 > < \u061F {s}",
 		"{space} {alt} {accept}"
 	],
 	"alt":[
-		"~ ` @ # $ % ^ & \u2022 \u200E \u200F _ {empty} {b}",
+		"~ ` @ # $ % ^ & \u2022 {LRM} {RLM} _ {empty} {b}",
 		"{t} \u00B0 {empty} \u20AC \uFD3E \uFD3F \u0656 \u0659 \u0655 ' \" \u0681 \u0685 ?",
 		"\u069A \u06CD \u0649 \u06D0 \u06B7 \u0671 \u067C \u06BC \u06BA ; \u06AB {enter}",
 		"{s} \u06D2 \u0691 \u0696 \u0693 \u0688 \u0689 \u0679 , \u06C7 \u06C9 {s}",
@@ -655,7 +655,7 @@ jQuery.keyboard.layouts["dv"] = {
 		"{empty} {empty} {empty} {empty} {empty} {empty} {empty} {empty} {empty} {empty} {empty} {empty} {empty} {b}",
 		"{t} {empty} {empty} {empty} {empty} {empty} {empty} {empty} {empty} {empty} {empty} {empty} {empty} {empty}",
 		"{empty} {empty} , {empty} {empty} {empty} {empty} {empty} {empty} {empty} ; {enter}",
-		"{s} {empty} {empty} {empty} {empty} \u200D \u200C \u200E \u200F {empty} {empty} {empty} {s}",
+		"{s} {empty} {empty} {empty} {empty} {ZWJ} {ZWNJ} {LRM} {RLM} {empty} {empty} {empty} {s}",
 		"{space} {alt} {accept}"
 	],
 	"alt-shift":[
@@ -1074,14 +1074,14 @@ jQuery.keyboard.layouts["he"] = {
 jQuery.keyboard.layouts["hi"] = {
 	"name":"Hindi (\u0939\u093f\u0902\u0926\u0940)",
 	"normal":[
-		"\u200d 1 2 3 4 5 6 7 8 9 0 - \u0943 {b}",
+		"{ZWJ} 1 2 3 4 5 6 7 8 9 0 - \u0943 {b}",
 		"{t} \u094C \u0948 \u093E \u0940 \u0942 \u092C \u0939 \u0917 \u0926 \u091C \u0921 \u093C \u0949",
 		"\u094B \u0947 \u094D \u093F \u0941 \u092A \u0930 \u0915 \u0924 \u091A \u091F {enter}",
 		"{s} {empty} \u0902 \u092E \u0928 \u0935 \u0932 \u0938 , . \u092F {s}",
 		"{space} {alt} {accept}"
 	],
 	"shift":[
-		"\u200c \u090D \u0945 \u094D\u0930 \u0930\u094D \u091C\u094D\u091E \u0924\u094D\u0930 \u0915\u094D\u0937 \u0936\u094D\u0930 ( ) \u0903 \u090B {b}",
+		"{ZWNJ} \u090D \u0945 \u094D\u0930 \u0930\u094D \u091C\u094D\u091E \u0924\u094D\u0930 \u0915\u094D\u0937 \u0936\u094D\u0930 ( ) \u0903 \u090B {b}",
 		"{t} \u0914 \u0910 \u0906 \u0908 \u090A \u092D \u0919 \u0918 \u0927 \u091D \u0922 \u091E \u0911",
 		"\u0913 \u090F \u0905 \u0907 \u0909 \u092B \u0931 \u0916 \u0925 \u091B \u0920 {enter}",
 		"{s} {empty} \u0901 \u0923 {empty} {empty} \u0933 \u0936 \u0937 \u0964 \u095F {s}",
@@ -1328,28 +1328,28 @@ jQuery.keyboard.layouts["km"] = {
 		"{t} \u1786 \u17B9 \u17C1 \u179A \u178F \u1799 \u17BB \u17B7 \u17C4 \u1795 \u17C0 \u17AA \u17AE",
 		"\u17B6 \u179F \u178A \u1790 \u1784 \u17A0 \u17D2 \u1780 \u179B \u17BE \u17CB {enter}",
 		"{s} \u178B \u1781 \u1785 \u179C \u1794 \u1793 \u1798 \u17BB\u17C6 \u17D4 \u17CA {s}",
-		"\u200B {alt} {accept}"
+		"{ZWSP} {space} {alt} {accept}"
 	],
 	"shift":[
 		"\u00BB ! \u17D7 \" \u17DB % \u17CD \u17D0 \u17CF ( ) \u17CC = {b}",
 		"{t} \u1788 \u17BA \u17C2 \u17AC \u1791 \u17BD \u17BC \u17B8 \u17C5 \u1797 \u17BF \u17A7 \u17AD",
 		"\u17B6\u17C6 \u17C3 \u178C \u1792 \u17A2 \u17C7 \u1789 \u1782 \u17A1 \u17C4\u17C7 \u17C9 {enter}",
 		"{s} \u178D \u1783 \u1787 \u17C1\u17C7 \u1796 \u178E \u17C6 \u17BB\u17C7 \u17D5 ? {s}",
-		"{space} {alt} {accept}"
+		"{empty} {space} {alt} {accept}"
 	],
 	"alt":[
-		"\u200D \u200C @ \u17D1 $ \u20AC \u17D9 \u17DA * { } x \u17CE {b}",
+		"{ZWJ} {ZWNJ} @ \u17D1 $ \u20AC \u17D9 \u17DA * { } x \u17CE {b}",
 		"{t} \u17DC \u17DD \u17AF \u17AB \u17A8 \u1799\u17BE\u1784 {empty} \u17A6 \u17B1 \u17B0 \u17A9 \u17B3 \\",
 		"\u17B5 {empty} \u17D3 {empty} \u17A4 \u17A3 \u17B4 \u179D \u17D8 \u17D6 \u17C8 {enter}",
 		"{s} | \u1781\u17D2\u1789\u17BB\u17C6 - + \u179E [ ] , . / {s}",
-		"{space:NB-Space} {alt} {accept}"
+		"{NBSP} {space} {alt} {accept}"
 	],
 	"alt-shift":[
 		"{empty} \u17F1 \u17F2 \u17F3 \u17F4 \u17F5 \u17F6 \u17F7 \u17F8 \u17F9 \u17F0 {empty} {empty} {b}",
 		"{t} \u19E0 \u19E1 \u19E2 \u19E3 \u19E4 \u19E5 \u19E6 \u19E7 \u19E8 \u19E9 \u19EA \u19EB {empty}",
 		"\u19EC \u19ED \u19EE \u19EF \u19F0 \u19F1 \u19F2 \u19F3 \u19F4 \u19F5 \u19F6 {enter}",
 		"{s} \u19F7 \u19F8 \u19F9 \u19FA \u19FB \u19FC \u19FD \u19FE \u19FF {empty} {s}",
-		"{space} {alt} {accept}"
+		"{empty} {space} {alt} {accept}"
 	],
 	"lang":["km"]
 };
@@ -1400,7 +1400,7 @@ jQuery.keyboard.layouts["ku"] = {
 	"shift":[
 		"~ ! @ # $ % ^ & * ( ) _ + {b}",
 		"{t} ` \u0648\u0648 \u064a \u0695 \u0637 \u06ce \u0621 \u0639 \u0624 \u062b { } |",
-		"\u0622 \u0634 \u0630 \u0625 \u063a \u200c \u0623 \u0643 \u06b5 : \" {enter}",
+		"\u0622 \u0634 \u0630 \u0625 \u063a {ZWNJ} \u0623 \u0643 \u06b5 : \" {enter}",
 		"{s} \u0636 \u0635 \u0686 \u0638 \u0649 \u0629 \u0640 < > \u061f {s}",
 		"{space} {accept}"
 	],
@@ -1683,7 +1683,7 @@ jQuery.keyboard.layouts["ps"] = {
 	"name":"Pashto (\u067e\u069a\u062a\u0648)",
 	"rtl":true,
 	"normal":[
-		"\u200d \u06f1 \u06f2 \u06f3 \u06f4 \u06f5 \u06f6 \u06f7 \u06f8 \u06f9 \u06f0 - = {b}",
+		"{ZWJ} \u06f1 \u06f2 \u06f3 \u06f4 \u06f5 \u06f6 \u06f7 \u06f8 \u06f9 \u06f0 - = {b}",
 		"{t} \u0636 \u0635 \u062b \u0642 \u0641 \u063a \u0639 \u0647 \u062e \u062d \u062c \u0686 \\",
 		"\u0634 \u0633 \u06cc \u0628 \u0644 \u0627 \u062a \u0646 \u0645 \u06a9 \u06af {enter}",
 		"{s} \u0638 \u0637 \u0632 \u0631 \u0630 \u062f \u0693 \u0648 \u0696 / {s}",
@@ -1693,7 +1693,7 @@ jQuery.keyboard.layouts["ps"] = {
 		"\u00f7 ! \u066c \u066b \u00a4 \u066a \u00d7 \u00ab \u00bb ( ) \u0640 + {b}",
 		"{t} \u0652 \u064c \u064d \u064b \u064f \u0650 \u064e \u0651 \u0681 \u0685 ] [ \u066d",
 		"\u069a \u06cd \u064a \u067e \u0623 \u0622 \u067c \u06bc \u0629 : \u061b {enter}",
-		"{s} \u0626 \u06d0 \u0698 \u0621 \u200c \u0689 \u0624 \u060c . \u061f {s}",
+		"{s} \u0626 \u06d0 \u0698 \u0621 {ZWNJ} \u0689 \u0624 \u060c . \u061f {s}",
 		"{space} {alt} {accept}"
 	],
 	"alt":[
@@ -2286,7 +2286,7 @@ jQuery.keyboard.layouts["syc"] = {
 		"\u0651 \u0701 \u0702 \u0703 \u0704 \u0705 \u0708 \u0709 \u070B \u070C \u070D \u250C \u2510 {b}",
 		"{t} \u064E \u064B \u064F \u064C \u0653 \u0654 \u0747 \u0743 \u0745 \u032D {empty} {empty} {empty}",
 		"\u0650 \u064d {empty} \u0621 \u0655 \u0670 \u0748 \u0744 \u0746 {empty} {empty} {enter}",
-		"{s} {empty} \u0652 {empty} \u200D \u200C \u200E \u200F {empty} {empty} {empty} {s}",
+		"{s} {empty} \u0652 {empty} {ZWJ} {ZWNJ} {LRM} {RLM} {empty} {empty} {empty} {s}",
 		"{space} {alt} {accept}"
 	],
 	"alt-shift":[
@@ -2568,7 +2568,7 @@ jQuery.keyboard.layouts["ur"] = {
 		"~ ! @ # $ \u066A ^ \u06D6 \u066D ) ( _ + {b}",
 		"{t} \u0638 \u0636 \u0630 \u0688 \u062B \u0651 \u06C3 \u0640 \u0686 \u062E } { |",
 		"\u0698 \u0632 \u0691 \u06BA \u06C2 \u0621 \u0622 \u06AF \u064A : \" {enter}",
-		"{s} \u200D \u200C \u06D3 \u200E \u0624 \u0626 \u200F > < \u061F {s}",
+		"{s} {ZWJ} {ZWNJ} \u06D3 {LRM} \u0624 \u0626 {RLM} > < \u061F {s}",
 		"{space} {accept}"
 	],
 	"lang":["ur"]

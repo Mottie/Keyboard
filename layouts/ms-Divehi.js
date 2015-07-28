@@ -22,7 +22,7 @@ jQuery.keyboard.layouts['ms-Divehi Phonetic'] = {
 		"{empty} {empty} {empty} {empty} {empty} {empty} {empty} {empty} {empty} {empty} {empty} {empty} {empty} {bksp}",
 		"{tab} {empty} {empty} {empty} {empty} {empty} {empty} {empty} {empty} {empty} {empty} {empty} {empty} {empty}",
 		"{empty} {empty} {empty} {empty} {empty} {empty} {empty} {empty} {empty} ; {empty} {enter}",
-		"{shift} {empty} {empty} {empty} {empty} \u200d \u200c \u200e \u200f , {empty} {empty} {shift}",
+		"{shift} {empty} {empty} {empty} {empty} {ZWJ} {ZWNJ} {LRM} {RLM} , {empty} {empty} {shift}",
 		"{accept} {alt} {space} {alt} {cancel}"
 	]
 };
@@ -51,7 +51,7 @@ jQuery.keyboard.layouts['ms-Divehi Typewriter'] = {
 		"{empty} {empty} {empty} {empty} {empty} {empty} {empty} {empty} {empty} {empty} {empty} {empty} {empty} {bksp}",
 		"{tab} {empty} {empty} {empty} {empty} {empty} {empty} {empty} {empty} {empty} {empty} {empty} {empty} {empty}",
 		"{empty} {empty} {empty} , {empty} {empty} {empty} {empty} {empty} {empty} ; {enter}",
-		"{shift} {empty} {empty} {empty} {empty} \u200d \u200c \u200e \u200f {empty} {empty} {empty} {shift}",
+		"{shift} {empty} {empty} {empty} {empty} {ZWJ} {ZWNJ} {LRM} {RLM} {empty} {empty} {empty} {shift}",
 		"{accept} {alt} {space} {alt} {cancel}"
 	]
 };

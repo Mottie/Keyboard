@@ -1815,6 +1815,31 @@ var $keyboard = $.keyboard = function(el, options){
 		toggle : function(base) {
 			base.enabled = !base.enabled;
 			base.toggle();
+		},
+		// *** Special action keys: NBSP & zero-width characters ***
+		// Non-breaking space
+		NBSP : function(base) {
+			base.insertText('\u00a0');
+		},
+		// zero width space
+		ZWSP : function(base) {
+			base.insertText('\u200b');
+		},
+		// Zero width non-joiner
+		ZWNJ : function(base) {
+			base.insertText('\u200c');
+		},
+		// Zero width joiner
+		ZWJ : function(base) {
+			base.insertText('\u200d');
+		},
+		// Left-to-right Mark
+		LRM : function(base) {
+			base.insertText('\u200e');
+		},
+		// Right-to-left Mark
+		RLM : function(base) {
+			base.insertText('\u200f');
 		}
 	};
 
