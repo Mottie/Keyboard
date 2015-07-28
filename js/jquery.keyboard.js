@@ -804,7 +804,8 @@ var $keyboard = $.keyboard = function(el, options){
 				if (!base.isCurrent()) { return; }
 				var $this = $(this),
 					$keys = base.getLayers( $this ),
-					txt = ( $keys.length ? $keys.map(function(){ return $(this).attr('data-curtxt') || ''; }).get() : '' ) || [ $this.find('.' + kbcss.keyText).text() ];
+					txt = ( $keys.length ? $keys.map(function(){ return $(this).attr('data-curtxt') || ''; }).get() : '' ) ||
+						[ $this.find('.' + kbcss.keyText).text() ];
 
 				if ((e.type === 'mouseenter' || e.type === 'touchstart') && base.el.type !== 'password' &&
 					!$this.hasClass(o.css.buttonDisabled) ){
@@ -818,14 +819,14 @@ var $keyboard = $.keyboard = function(el, options){
 				}
 				if (e.type === 'mouseleave'){
 					$this.data({
-						'curtxt' : $this.data('original'),
+						'curtxt' : $this.attr('data-value'),
 						'curnum' : 0
 					});
 					$this
 						// needed or IE flickers really bad
 						.removeClass( (base.el.type === 'password') ? '' : o.css.buttonHover)
 						.attr('title', function(i,t){ return (t === o.wheelMessage) ? '' : t; })
-						.find('.' + kbcss.keyText).html( $this.data('original') ); // restore original button text
+						.find('.' + kbcss.keyText).html( $this.attr('data-value') ); // restore original button text
 				}
 			})
 			// using 'kb' namespace for mouse repeat functionality to keep it separate
@@ -1341,18 +1342,18 @@ var $keyboard = $.keyboard = function(el, options){
 		// add the wide class
 		keyType = (n.length > 2) ? ' ' + kbcss.keyWide : '';
 		keyType += (regKey) ? '' : ' ' + kbcss.keyAction;
+		// this prevents HTML from being added to the key - reconsider?
 		var entity  = n.replace(/[\u00A0-\u9999<>\&]/gim, function(i) {
 			return '&#'+i.charCodeAt(0)+';';
 		});
 		return base.keyBtn
 			.clone()
 			.attr({
-				'data-value' : n,
-				'name': kn,
+				'data-value' : n, // value
+				'data-name': kn,
 				'data-pos': base.temp[1] + ',' + base.temp[2],
 				'title' : t,
 				'data-action' : keyName,
-				'data-original' : n,
 				'data-curtxt' : n, // changes with mousewheel scroll
 				'data-curnum' : 0  // index of key data-
 			})
