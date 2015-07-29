@@ -774,8 +774,7 @@ var $keyboard = $.keyboard = function(el, options){
 					// stop processing if action returns false (close & cancel)
 					if ($keyboard.keyaction[action](base,this,e) === false) { return false; }
 				} else if (typeof action !== 'undefined') {
-					txt = base.last.key = (base.wheel && !$(this).hasClass(kbcss.keyAction)) ?
-						base.last.key : action;
+					txt = base.last.key = $(this).hasClass(kbcss.keyAction) ? action : base.last.key;
 					base.insertText(txt);
 					if (!base.capsLock && !o.stickyShift && !e.shiftKey) {
 						base.shiftActive = false;
