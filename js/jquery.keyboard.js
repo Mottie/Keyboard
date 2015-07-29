@@ -1289,7 +1289,7 @@ var $keyboard = $.keyboard = function(el, options){
 		if ( len ) {
 			for ( index = 0; index < len; index++ ) {
 				n = name[ index ];
-				newName.push( /[a-z0-9]/.test( n ) ? n : '-' + n.charCodeAt( 0 ) );
+				newName.push( /[a-z0-9]/i.test( n ) ? n : ( index === 0 ? '' : '-' ) + n.charCodeAt( 0 ) );
 			}
 			return newName.join( '' );
 		} else {
@@ -1308,7 +1308,7 @@ var $keyboard = $.keyboard = function(el, options){
 			txt = name.split(':'),
 			len = txt.length - 1,
 			n = (regKey === true) ? keyName : o.display[txt[0]] || keyName,
-			kn = (regKey === true) ? base.processName( keyName ) : keyName;
+			kn = (regKey === true) ? base.processName( keyName.split(/[(:]/)[0] ) : keyName;
 		// map defined keys - format 'key(A):Label_for_key'
 		// 'key' = key that is seen (can any character; but it might need to be escaped using '\'
 		//  or entered as unicode '\u####'
