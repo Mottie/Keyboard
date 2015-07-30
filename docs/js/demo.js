@@ -29,7 +29,7 @@ jQuery(function($) {
 	 $('.ui-keyboard-overlay').remove(); // remove overlay because clicking on it will close the keyboard... we set "openOn" to null to prevent closing.
 	});
 
-	// QWERTY Text Area
+	// QWERTY (mod) Text Area
 	// ********************
 	$('#qwerty').keyboard({
 		lockInput: true, // prevent manual keyboard entry

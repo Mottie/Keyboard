@@ -8,6 +8,7 @@ body { background: #181818; color: #ddd; height: 98%; margin: 0 auto; padding: 0
 a:link { color: #9fcdff; text-decoration: none; }
 a:hover { color: #fff; }
 a:visited, a:active, h2.active { color: #53a5ff; }
+a.external {background-image:url(images/external.png);background-position:center right;background-repeat:no-repeat;padding-right:12px;}
 
 #page-wrap { display: block; width: 90%; margin: 0 auto; text-align: center; height: 98%; min-height: 350px; }
 
