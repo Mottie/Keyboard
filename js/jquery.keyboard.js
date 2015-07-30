@@ -2211,10 +2211,11 @@ var $keyboard = $.keyboard = function(el, options){
 				end = param2;
 			} else if ( param1 === 'start' ) {
 				start = end = 0;
-			} else {
-				// unknown setting, move caret to end
+			} else if ( typeof param1 === 'string' ) {
+				// unknown string setting, move caret to end
 				start = end = $el.val().length;
 			}
+
 			// *** SET CARET POSITION ***
 			// modify the line below to adapt to other caret plugins
 			return $el.caret( start, end );
