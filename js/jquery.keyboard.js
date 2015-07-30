@@ -743,7 +743,7 @@ var $keyboard = $.keyboard = function(el, options){
 					$this = $(key),
 					// get keys from other layers/keysets (shift, alt, meta, etc) that line up by data-position
 					$keys = base.getLayers( $this ),
-					txt = $keys.map(function(){ return $(this).attr('data-curtxt'); }).get(),
+					txt = $keys.map(function(){ return $(this).attr('data-value'); }).get(),
 					// prevent mousedown & touchstart from both firing events at the same time - see #184
 					timer = new Date().getTime();
 				// find index of mousewheel selected key
@@ -764,7 +764,7 @@ var $keyboard = $.keyboard = function(el, options){
 				base.last.virtual = true;
 				base.$preview.focus();
 				base.last.$key = $key;
-				base.last.key = $key.attr('data-curtxt');
+				base.last.key = $key.attr('data-value');
 				// Start caret in IE when not focused (happens with each virtual keyboard button click
 				if (base.checkCaret) {
 					$keyboard.caret( base.$preview, base.last );
@@ -772,7 +772,7 @@ var $keyboard = $.keyboard = function(el, options){
 				if (action.match('meta')) { action = 'meta'; }
 				if (action in $keyboard.keyaction && $.isFunction($keyboard.keyaction[action])) {
 					// stop processing if action returns false (close & cancel)
-					if ($keyboard.keyaction[action](base,this,e) === false) { return false; }
+					if ( $keyboard.keyaction[ action ]( base, this, e ) === false ) { return false; }
 				} else if (typeof action !== 'undefined') {
 					txt = base.last.key = $(this).hasClass(kbcss.keyAction) ? action : base.last.key;
 					base.insertText(txt);
@@ -800,7 +800,7 @@ var $keyboard = $.keyboard = function(el, options){
 				var $this = $(this),
 					$keys = base.getLayers( $this ),
 					txt = ( $keys.length ? $keys.map(function(){ return $(this).attr('data-curtxt') || ''; }).get() : '' ) ||
-						[ $this.find('.' + kbcss.keyText).text() ];
+						[ $this.html() ];
 
 				if ((e.type === 'mouseenter' || e.type === 'touchstart') && base.el.type !== 'password' &&
 					!$this.hasClass(o.css.buttonDisabled) ){
@@ -814,14 +814,14 @@ var $keyboard = $.keyboard = function(el, options){
 				}
 				if (e.type === 'mouseleave'){
 					$this.data({
-						'curtxt' : $this.attr('data-value'),
+						'curtxt' : $this.attr('data-html'),
 						'curnum' : 0
 					});
 					$this
 						// needed or IE flickers really bad
 						.removeClass( (base.el.type === 'password') ? '' : o.css.buttonHover)
 						.attr('title', function(i,t){ return (t === o.wheelMessage) ? '' : t; })
-						.find('.' + kbcss.keyText).html( $this.attr('data-value') ); // restore original button text
+						.html( $this.attr('data-html') ); // restore original button text
 				}
 			})
 			// using 'kb' namespace for mouse repeat functionality to keep it separate
@@ -854,7 +854,7 @@ var $keyboard = $.keyboard = function(el, options){
 					var n,
 						$this = $(this),
 						$keys = base.getLayers( $this ),
-						txt = $keys.length && $keys.map(function(){ return $(this).attr('data-curtxt'); }).get() || [ $this.find('.' + kbcss.keyText).text() ];
+						txt = $keys.length && $keys.map(function(){ return $(this).attr('data-curtxt'); }).get() || [ $this.html() ];
 					if (txt.length > 1) {
 						n = $this.data('curnum') + (delta > 0 ? -1 : 1);
 						if (n > txt.length-1) { n = 0; }
@@ -867,7 +867,7 @@ var $keyboard = $.keyboard = function(el, options){
 						'layers' : txt,
 						'curtxt' : txt[n]
 					});
-					$this.find('.' + kbcss.keyText).html( txt[n] );
+					$this.html( txt[n] );
 					return false;
 				}
 			})
@@ -1302,13 +1302,17 @@ var $keyboard = $.keyboard = function(el, options){
 	// name = name added to key, or cross-referenced in the display options
 	// base.temp[0] = keyset to attach the new button
 	// regKey = true when it is not an action key
-	base.addKey = function(keyName, name, regKey){
-		var t, keyType, m, map, nm,
+	base.addKey = function( keyName, name, regKey ) {
+		var t, keyClass, m, map, nm,
 			kbcss = $keyboard.css,
 			txt = name.split(':'),
 			len = txt.length - 1,
 			n = (regKey === true) ? keyName : o.display[txt[0]] || keyName,
-			kn = (regKey === true) ? base.processName( keyName.split(/[(:]/)[0] ) : keyName;
+			data = {
+				isAction : !regKey,
+				action   : keyName,
+				name     : (regKey === true) ? base.processName( keyName.split(/[(:]/)[0] ) : keyName
+			};
 		// map defined keys - format 'key(A):Label_for_key'
 		// 'key' = key that is seen (can any character; but it might need to be escaped using '\'
 		//  or entered as unicode '\u####'
@@ -1328,38 +1332,56 @@ var $keyboard = $.keyboard = function(el, options){
 		if (nm[0] === '' && nm[1] === '') { n = ':'; }
 		n = (nm[0] !== '' && nm.length > 1) ? nm[0] : n;
 		// allow alt naming of action keys
-		n = $.trim( regKey ? n : txt[1] || n );
+		data.value = $.trim( regKey ? n : txt[1] || n );
 		// added to title
-		t = (nm.length > 1) ? $.trim(nm[1]).replace(/_/g, ' ') || '' : len > 0 ? txt[len] || '' : '';
+		data.title = (nm.length > 1) ? $.trim(nm[1]).replace(/_/g, ' ') || '' : len > 0 ? txt[len] || '' : '';
 
 		// Action keys will have the 'ui-keyboard-actionkey' class
 		// '\u2190'.length = 1 because the unicode is converted, so if more than one character,
 		// add the wide class
-		keyType = (n.length > 2) ? ' ' + kbcss.keyWide : '';
-		keyType += (regKey) ? '' : ' ' + kbcss.keyAction;
-		// this prevents HTML from being added to the key - reconsider?
-		var entity  = n.replace(/[\u00A0-\u9999<>\&]/gim, function(i) {
-			return '&#'+i.charCodeAt(0)+';';
-		});
-		return base.keyBtn
+		keyClass = ( data.value.length > 2 ) ? ' ' + kbcss.keyWide : '';
+		keyClass += ( regKey ) ? '' : ' ' + kbcss.keyAction;
+
+		data.html = '<span class="' + kbcss.keyText + '">' +
+			// this prevents HTML from being added to the key
+			data.value.replace(/[\u00A0-\u9999<>\&]/gim, function(i) {
+				return '&#'+i.charCodeAt(0)+';';
+			}) +
+			'</span>';
+
+		data.$key = base.keyBtn
 			.clone()
 			.attr({
-				'data-value' : n, // value
-				'data-name': kn,
-				'data-pos': base.temp[1] + ',' + base.temp[2],
-				'title' : t,
-				'data-action' : keyName,
-				'data-curtxt' : n, // changes with mousewheel scroll
+				'data-value'  : data.value, // value
+				'data-name'   : data.name,
+				'data-pos'    : base.temp[1] + ',' + base.temp[2],
+				'title'       : data.title,
+				'data-action' : data.action,
+				'data-curtxt' : data.html, // changes with mousewheel scroll
+				'data-html'   : data.html,
 				'data-curnum' : 0  // index of key data from other layers
 			})
-			// add 'ui-keyboard-' + keyName, if this is an action key
+			// add 'ui-keyboard-' + data.name for all keys
 			//  (e.g. 'Bksp' will have 'ui-keyboard-bskp' class)
-			// add 'ui-keyboard-' + unicode of 1st character
+			// any non-alphanumeric characters will be replaced with
+			//  their decimal unicode value
 			//  (e.g. '~' is a regular key, class = 'ui-keyboard-126'
-			//  (126 is the unicode value - same as typing &#126;)
-			.addClass( (kn === '' ? '' : kbcss.keyPrefix + kn + keyType + ' ') + o.css.buttonDefault)
-			.html('<span class="' + kbcss.keyText + '">' + entity + '</span>')
-			.appendTo(base.temp[0]);
+			//  (126 is the unicode decimal value - same as &#126;)
+			//  See https://en.wikipedia.org/wiki/List_of_Unicode_characters#Control_codes
+			.addClass( ( data.name === '' ? '' : kbcss.keyPrefix + data.name + keyClass + ' ' ) + o.css.buttonDefault )
+			.html( data.html )
+			.appendTo( base.temp[0] );
+
+		if ( typeof o.buildKey === 'function' ) {
+			data = o.buildKey( base, data );
+			// copy html back to attributes
+			txt = data.$key.html();
+			data.$key.attr({
+				'data-html'   : txt,
+				'data-curtxt' : txt
+			});
+		}
+		return data.$key;
 	};
 
 	base.customHash = function(){
@@ -2178,13 +2200,31 @@ var $keyboard = $.keyboard = function(el, options){
 		create        : function(keyboard) { return keyboard.buildKeyboard(); }
 */
 
+		// build key callback
+		buildKey : function( keyboard, data ) {
+			/*
+			data = {
+				// READ ONLY
+				isAction : [boolean] true if key is an action key
+				name     : [string]  key class name suffix ( prefix = 'ui-keyboard-' ); may include decimal ascii value of character
+				value    : [string]  text inserted (non-action keys)
+				title    : [string]  title attribute of key
+				action   : [string]  keyaction name
+				html     : [string]  HTML of the key; it includes a <span> wrapping the text
+				// use to modify key HTML
+				$key     : [object]  jQuery selector of key which is already appended to keyboard
+			}
+			*/
+			return data;
+		},
+
 		// this callback is called just before the 'beforeClose' to check the value
 		// if the value is valid, return true and the keyboard will continue as it should
 		// (close if not always open, etc). If the value is not value, return false and the clear the keyboard
 		// value ( like this "keyboard.$preview.val('');" ), if desired. The validate function is called after
 		// each input, the 'isClosing' value will be false; when the accept button is clicked,
 		// 'isClosing' is true
-		validate    : function(keyboard, value, isClosing) { return true; }
+		validate : function( keyboard, value, isClosing ) { return true; }
 
 	};
 
