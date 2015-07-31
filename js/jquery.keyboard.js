@@ -691,7 +691,7 @@ var $keyboard = $.keyboard = function(el, options){
 					// Show capsLock
 					case 20:
 						base.shiftActive = base.capsLock = !base.capsLock;
-						base.showSet(this);
+						base.showSet();
 						break;
 
 					case 86:
@@ -772,7 +772,7 @@ var $keyboard = $.keyboard = function(el, options){
 				if (action.match('meta')) { action = 'meta'; }
 				// keyaction is added as a string, override original action & text
 				if (action === base.last.key && typeof $keyboard.keyaction[ action ] === 'string' ) {
- 					base.last.key = action = $keyboard.keyaction[ action ];
+					base.last.key = action = $keyboard.keyaction[ action ];
 				} else if (action in $keyboard.keyaction && $.isFunction($keyboard.keyaction[action])) {
 					// stop processing if action returns false (close & cancel)
 					if ( $keyboard.keyaction[ action ]( base, this, e ) === false ) { return false; }
@@ -783,7 +783,7 @@ var $keyboard = $.keyboard = function(el, options){
 					base.insertText(txt);
 					if (!base.capsLock && !o.stickyShift && !e.shiftKey) {
 						base.shiftActive = false;
-						base.showSet(this);
+						base.showSet( $key.attr('data-name') );
 					}
 				}
 				// set caret if caret moved by action function; also, attempt to fix issue #131
@@ -968,7 +968,7 @@ var $keyboard = $.keyboard = function(el, options){
 			base.altActive = /alt/i.test(str);
 			if (/meta/.test(str)) {
 				base.metaActive = true;
-				base.showSet({ name : str.match(/meta\d+/i)[0] });
+				base.showSet( str.match(/meta\d+/i)[0] );
 			} else {
 				base.metaActive = false;
 				base.showSet();
@@ -978,7 +978,7 @@ var $keyboard = $.keyboard = function(el, options){
 		}
 	};
 
-	base.showSet = function(el){
+	base.showSet = function( name ) {
 		o = base.options; // refresh options
 		var kbcss = $keyboard.css,
 			key = '',
@@ -987,7 +987,7 @@ var $keyboard = $.keyboard = function(el, options){
 		// check meta key set
 		if (base.metaActive) {
 			// the name attribute contains the meta set # 'meta99'
-			key = (el && el.name && /meta/i.test(el.name)) ? el.name : '';
+			key = (/meta/i.test(name)) ? name : '';
 			// save active meta keyset name
 			if (key === '') {
 				key = (base.metaActive === true) ? '' : base.metaActive;
@@ -1719,7 +1719,7 @@ var $keyboard = $.keyboard = function(el, options){
 		},
 		alt : function(base, el) {
 			base.altActive = !base.altActive;
-			base.showSet(el);
+			base.showSet();
 		},
 		bksp : function(base) {
 			// the script looks for the '\b' string and initiates a backspace
@@ -1752,7 +1752,7 @@ var $keyboard = $.keyboard = function(el, options){
 		// resets to base keyset (deprecated because "default" is a reserved word)
 		'default' : function(base, el) {
 			base.shiftActive = base.altActive = base.metaActive = false;
-			base.showSet(el);
+			base.showSet();
 		},
 		// el is the pressed key (button) object; it is null when the real keyboard enter is pressed
 		enter : function(base, el, e) {
@@ -1777,7 +1777,7 @@ var $keyboard = $.keyboard = function(el, options){
 		// caps lock key
 		lock : function(base,el) {
 			base.last.keyset[0] = base.shiftActive = base.capsLock = !base.capsLock;
-			base.showSet(el);
+			base.showSet();
 		},
 		left : function(base) {
 			var p = $keyboard.caret( base.$preview );
@@ -1789,8 +1789,9 @@ var $keyboard = $.keyboard = function(el, options){
 			}
 		},
 		meta : function(base, el) {
-			base.metaActive = !$(el).hasClass(base.options.css.buttonActive);
-			base.showSet(el);
+			var $el = $(el);
+			base.metaActive = !$el.hasClass( base.options.css.buttonActive );
+			base.showSet( $el.attr( 'data-name' ) );
 		},
 		next : function(base) {
 			base.switchInput(true, base.options.autoAccept);
@@ -1799,7 +1800,7 @@ var $keyboard = $.keyboard = function(el, options){
 		// same as 'default' - resets to base keyset
 		normal : function(base, el) {
 			base.shiftActive = base.altActive = base.metaActive = false;
-			base.showSet(el);
+			base.showSet();
 		},
 		prev : function(base) {
 			base.switchInput(false, base.options.autoAccept);
@@ -1816,7 +1817,7 @@ var $keyboard = $.keyboard = function(el, options){
 		},
 		shift : function(base, el) {
 			base.last.keyset[0] = base.shiftActive = !base.shiftActive;
-			base.showSet(el);
+			base.showSet();
 		},
 		sign : function(base) {
 			if(/^\-?\d*\.?\d*$/.test( base.$preview.val() )) {
