@@ -1623,14 +1623,12 @@ $.keyboard = $.keyboard || {};
 						key = ks.find(tar);
 					} else {
 						// key not found, check if it is in the keymap (tab, space, enter, etc)
-						n = txt in base.typing_keymap ? base.typing_keymap[txt] : txt.charCodeAt(0);
+						n = txt in base.typing_keymap ? base.typing_keymap[txt] : base.processName( txt );
 						// find actual key on keyboard
 						key = ks.find('.' + kbcss.keyPrefix + n);
 					}
-
 					// find the keyset
 					set = key.closest('.' + kbcss.keySet);
-
 					// figure out which keyset the key is in then simulate clicking on that meta key, then on the key
 					if (set.attr('name')) {
 						// get meta key name
@@ -1640,8 +1638,7 @@ $.keyboard = $.keyboard || {};
 						base.altActive = /alt/.test(meta);
 						base.metaActive = base.last.keyset[2] = (meta).match(/meta\d+/) || false;
 						// make the plugin think we're passing it a jQuery object with a name
-						base.showSet({ name : base.metaActive });
-
+						base.showSet( base.metaActive );
 						// Add the key
 						base.typing_simulateKey(key, txt, e);
 					} else {
