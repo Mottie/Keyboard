@@ -101,11 +101,22 @@ var $keyboard = $.keyboard = function(el, options){
 		base.checkCaret = ( o.lockInput || $keyboard.checkCaretSupport() );
 
 		// [shift, alt, meta]
-		base.last = { start:0, end:0, key:'', val:'', layout:'', virtual:true, keyset: [false, false, false] };
+		base.last = {
+			start: 0,
+			end: 0,
+			key: '',
+			val: '',
+			layout: '',
+			virtual: true,
+			keyset: [ false, false, false ],
+			wheel_$Keys : null,
+			wheelIndex : 0,
+			wheelLayers: []
+		};
 		base.temp = [ '', 0, 0 ]; // used when building the keyboard - [keyset element, row, index]
 
 		// Bind events
-		$.each('initialized beforeVisible visible hidden canceled accepted beforeClose'.split(' '), function(i,f){
+		$.each('initialized beforeVisible visible hidden canceled accepted beforeClose'.split(' '), function( i, f ) {
 			if ($.isFunction(o[f])){
 				base.$el.bind(f + base.namespace, o[f]);
 			}
@@ -113,7 +124,7 @@ var $keyboard = $.keyboard = function(el, options){
 
 		// Close with esc key & clicking outside
 		if (o.alwaysOpen) { o.stayOpen = true; }
-		$(document).bind('mousedown keyup touchstart checkkeyboard '.split(' ').join(base.namespace + ' '), function(e){
+		$(document).bind('mousedown keyup touchstart checkkeyboard '.split(' ').join(base.namespace + ' '), function( e ) {
 			if (base.opening) { return; }
 			base.escClose(e);
 			var $target = $(e.target);
@@ -736,61 +747,55 @@ var $keyboard = $.keyboard = function(el, options){
 				e.preventDefault();
 				// prevent errors when external triggers attempt to 'type' - see issue #158
 				if (!base.$keyboard.is(':visible')){ return false; }
-				// 'key', { action: doAction, original: n, curtxt : n, curnum: 0 }
-				var action, $key,
-					indx = 0,
+				var action, $keys,
+					last = base.last,
 					key = this,
-					$this = $(key),
-					// get keys from other layers/keysets (shift, alt, meta, etc) that line up by data-position
-					$keys = base.getLayers( $this ),
-					txt = $keys.map(function(){ return $(this).attr('data-value'); }).get(),
+					$key = $(key),
 					// prevent mousedown & touchstart from both firing events at the same time - see #184
 					timer = new Date().getTime();
-				// find index of mousewheel selected key
-				$keys.each(function(i, v){
-					if (v === key) {
-						indx = i;
-						return false;
-					}
-				});
-				// target mousewheel selected key
-				$key = indx < 0 ? $this : $keys.eq(indx + $this.data('curnum'));
-				action = $key.attr('data-action');
+
+				if ( o.useWheel && base.wheel ) {
+					// get keys from other layers/keysets (shift, alt, meta, etc) that line up by data-position
+					$keys = last.wheel_$Keys;
+					// target mousewheel selected key
+					$key = $keys ? $keys.eq( last.wheelIndex ) : $key;
+				}
+				action = $key.attr( 'data-action' );
 				// don't split colon key. Fixes #264
 				action = action === ':' ? ':' : (action || '').split(':')[0];
-				if (timer - (base.last.eventTime || 0) < o.preventDoubleEventTime) { return; }
-				base.last.eventTime = timer;
-				base.last.event = e;
-				base.last.virtual = true;
+				if ( timer - ( last.eventTime || 0 ) < o.preventDoubleEventTime ) { return; }
+				last.eventTime = timer;
+				last.event = e;
+				last.virtual = true;
 				base.$preview.focus();
-				base.last.$key = $key;
-				base.last.key = $key.attr('data-value');
+				last.$key = $key;
+				last.key = $key.attr('data-value');
 				// Start caret in IE when not focused (happens with each virtual keyboard button click
 				if (base.checkCaret) {
-					$keyboard.caret( base.$preview, base.last );
+					$keyboard.caret( base.$preview, last );
 				}
 				if (action.match('meta')) { action = 'meta'; }
 				// keyaction is added as a string, override original action & text
-				if (action === base.last.key && typeof $keyboard.keyaction[ action ] === 'string' ) {
-					base.last.key = action = $keyboard.keyaction[ action ];
+				if (action === last.key && typeof $keyboard.keyaction[ action ] === 'string' ) {
+					last.key = action = $keyboard.keyaction[ action ];
 				} else if (action in $keyboard.keyaction && $.isFunction($keyboard.keyaction[action])) {
 					// stop processing if action returns false (close & cancel)
 					if ( $keyboard.keyaction[ action ]( base, this, e ) === false ) { return false; }
 					action = null; // prevent inserting action name
 				}
 				if (typeof action !== 'undefined' && action !== null) {
-					txt = base.last.key = $(this).hasClass(kbcss.keyAction) ? action : base.last.key;
-					base.insertText(txt);
+					last.key = $(this).hasClass(kbcss.keyAction) ? action : last.key;
+					base.insertText( last.key );
 					if (!base.capsLock && !o.stickyShift && !e.shiftKey) {
 						base.shiftActive = false;
 						base.showSet( $key.attr('data-name') );
 					}
 				}
 				// set caret if caret moved by action function; also, attempt to fix issue #131
-				$keyboard.caret( base.$preview, base.last );
+				$keyboard.caret( base.$preview, last );
 				base.checkCombos();
 				base.$el.trigger( $keyboard.events.kbChange, [ base, base.el ] );
-				base.last.val = base.$preview.val();
+				last.val = base.$preview.val();
 
 				if ($.isFunction(o.change)){
 					o.change( $.Event( $keyboard.events.inputChange ), base, base.el );
@@ -800,33 +805,45 @@ var $keyboard = $.keyboard = function(el, options){
 
 			})
 			// Change hover class and tooltip
-			.bind('mouseenter mouseleave touchstart '.split(' ').join(base.namespace + ' '), function(e){
+			.bind('mouseenter mouseleave touchstart '.split(' ').join(base.namespace + ' '), function( e ) {
 				if (!base.isCurrent()) { return; }
-				var $this = $(this),
-					$keys = base.getLayers( $this ),
-					txt = ( $keys.length ? $keys.map(function(){ return $(this).attr('data-curtxt') || ''; }).get() : '' ) ||
-						[ $this.html() ];
+				var $keys, txt,
+					last = base.last,
+					$this = $(this),
+					type = e.type;
 
-				if ((e.type === 'mouseenter' || e.type === 'touchstart') && base.el.type !== 'password' &&
-					!$this.hasClass(o.css.buttonDisabled) ){
-					$this
-						.addClass(o.css.buttonHover)
-						.attr('title', function(i,t){
+				if ( o.useWheel && base.wheel ) {
+					$keys = base.getLayers( $this );
+					txt = ( $keys.length ? $keys.map( function() {
+						return $( this ).attr( 'data-value' ) || '';
+					}).get() : '' ) || [ $this.text() ];
+					last.wheel_$Keys = $keys;
+					last.wheelLayers = txt;
+					last.wheelIndex = $.inArray( $this.attr( 'data-value' ), txt );
+				}
+
+				if ((type === 'mouseenter' || type === 'touchstart') && base.el.type !== 'password' &&
+					!$this.hasClass(o.css.buttonDisabled) ) {
+					$this.addClass(o.css.buttonHover);
+					if ( o.useWheel && base.wheel ) {
+						$this.attr( 'title', function( i, t ) {
 							// show mouse wheel message
-							return (base.wheel && t === '' && base.sets && txt.length > 1 && e.type !== 'touchstart') ?
+							return ( base.wheel && t === '' && base.sets && txt.length > 1 && type !== 'touchstart' ) ?
 								o.wheelMessage : t;
 						});
+					}
 				}
-				if (e.type === 'mouseleave'){
-					$this.data({
-						'curtxt' : $this.attr('data-html'),
-						'curnum' : 0
-					});
-					$this
-						// needed or IE flickers really bad
-						.removeClass( (base.el.type === 'password') ? '' : o.css.buttonHover)
-						.attr('title', function(i,t){ return (t === o.wheelMessage) ? '' : t; })
-						.html( $this.attr('data-html') ); // restore original button text
+				if ( type === 'mouseleave' ) {
+					// needed or IE flickers really bad
+					$this.removeClass( (base.el.type === 'password') ? '' : o.css.buttonHover);
+					if ( o.useWheel && base.wheel ) {
+						last.wheelIndex = 0;
+						last.wheelLayers = [];
+						last.wheel_$Keys = null;
+						$this
+							.attr( 'title', function( i, t ){ return ( t === o.wheelMessage ) ? '' : t; })
+							.html( $this.attr('data-html') ); // restore original button text
+					}
 				}
 			})
 			// using 'kb' namespace for mouse repeat functionality to keep it separate
@@ -850,29 +867,23 @@ var $keyboard = $.keyboard = function(el, options){
 				return false;
 			})
 			// no mouse repeat for action keys (shift, ctrl, alt, meta, etc)
-			.not('.' + kbcss.keyAction)
+			.not( '.' + kbcss.keyAction )
 			// Allow mousewheel to scroll through other keysets of the same (non-action) key
-			.bind('mousewheel' + base.namespace, function(e, delta){
-				if (base.wheel) {
+			.bind( 'mousewheel' + base.namespace, function( e, delta ) {
+				if ( o.useWheel && base.wheel ) {
 					// deltaY used by newer versions of mousewheel plugin
 					delta = delta || e.deltaY;
 					var n,
-						$this = $(this),
-						$keys = base.getLayers( $this ),
-						txt = $keys.length && $keys.map(function(){ return $(this).attr('data-curtxt'); }).get() || [ $this.html() ];
-					if (txt.length > 1) {
-						n = $this.data('curnum') + (delta > 0 ? -1 : 1);
-						if (n > txt.length-1) { n = 0; }
-						if (n < 0) { n = txt.length-1; }
+						txt = base.last.wheelLayers || [];
+					if ( txt.length > 1 ) {
+						n = base.last.wheelIndex + ( delta > 0 ? -1 : 1 );
+						if ( n > txt.length-1) { n = 0; }
+						if ( n < 0 ) { n = txt.length-1; }
 					} else {
 						n = 0;
 					}
-					$this.data({
-						'curnum' : n,
-						'layers' : txt,
-						'curtxt' : txt[n]
-					});
-					$this.html( txt[n] );
+					base.last.wheelIndex = n;
+					$( this ).html( txt[ n ] );
 					return false;
 				}
 			})
@@ -892,6 +903,7 @@ var $keyboard = $.keyboard = function(el, options){
 
 	// Insert text at caret/selection - thanks to Derek Wickwire for fixing this up!
 	base.insertText = function(txt){
+		if ( typeof txt === 'undefined' ) { return; }
 		var bksp, t,
 			isBksp = txt === '\b',
 			// use base.$preview.val() instead of base.preview.value (val.length includes carriage returns in IE).
@@ -1308,7 +1320,7 @@ var $keyboard = $.keyboard = function(el, options){
 	// base.temp[0] = keyset to attach the new button
 	// regKey = true when it is not an action key
 	base.addKey = function( keyName, name, regKey ) {
-		var t, keyClass, m, map, nm,
+		var keyClass, m, map, nm,
 			kbcss = $keyboard.css,
 			txt = name.split(':'),
 			len = txt.length - 1,
@@ -1362,9 +1374,7 @@ var $keyboard = $.keyboard = function(el, options){
 				'data-pos'    : base.temp[1] + ',' + base.temp[2],
 				'title'       : data.title,
 				'data-action' : data.action,
-				'data-curtxt' : data.html, // changes with mousewheel scroll
-				'data-html'   : data.html,
-				'data-curnum' : 0  // index of key data from other layers
+				'data-html'   : data.html
 			})
 			// add 'ui-keyboard-' + data.name for all keys
 			//  (e.g. 'Bksp' will have 'ui-keyboard-bskp' class)
@@ -1381,10 +1391,7 @@ var $keyboard = $.keyboard = function(el, options){
 			data = o.buildKey( base, data );
 			// copy html back to attributes
 			txt = data.$key.html();
-			data.$key.attr({
-				'data-html'   : txt,
-				'data-curtxt' : txt
-			});
+			data.$key.attr( 'data-html', txt );
 		}
 		return data.$key;
 	};
@@ -1717,7 +1724,7 @@ var $keyboard = $.keyboard = function(el, options){
 			base.close(true); // same as base.accept();
 			return false;     // return false prevents further processing
 		},
-		alt : function(base, el) {
+		alt : function(base) {
 			base.altActive = !base.altActive;
 			base.showSet();
 		},
@@ -1750,7 +1757,7 @@ var $keyboard = $.keyboard = function(el, options){
 			base.insertText('{d}');
 		},
 		// resets to base keyset (deprecated because "default" is a reserved word)
-		'default' : function(base, el) {
+		'default' : function(base) {
 			base.shiftActive = base.altActive = base.metaActive = false;
 			base.showSet();
 		},
@@ -1775,7 +1782,7 @@ var $keyboard = $.keyboard = function(el, options){
 			}
 		},
 		// caps lock key
-		lock : function(base,el) {
+		lock : function(base) {
 			base.last.keyset[0] = base.shiftActive = base.capsLock = !base.capsLock;
 			base.showSet();
 		},
@@ -1798,7 +1805,7 @@ var $keyboard = $.keyboard = function(el, options){
 			return false;
 		},
 		// same as 'default' - resets to base keyset
-		normal : function(base, el) {
+		normal : function(base) {
 			base.shiftActive = base.altActive = base.metaActive = false;
 			base.showSet();
 		},
@@ -1815,7 +1822,7 @@ var $keyboard = $.keyboard = function(el, options){
 				base.setScroll();
 			}
 		},
-		shift : function(base, el) {
+		shift : function(base) {
 			base.last.keyset[0] = base.shiftActive = !base.shiftActive;
 			base.showSet();
 		},
@@ -2171,6 +2178,10 @@ var $keyboard = $.keyboard = function(el, options){
 		// Event (namepaced) for when the character is added to the input (clicking on the keyboard)
 		keyBinding   : 'mousedown touchstart',
 
+		// enable/disable mousewheel functionality
+		// enabling still depends on the mousewheel plugin
+		useWheel : true,
+
 		// combos (emulate dead keys : http://en.wikipedia.org/wiki/Keyboard_layout#US-International)
 		// if user inputs `a the script converts it to à, ^o becomes ô, etc.
 		useCombos : true,
@@ -2191,12 +2202,11 @@ var $keyboard = $.keyboard = function(el, options){
 		// called instead of base.switchInput
 		switchInput   : function(keyboard, goToNext, isAccepted) {},
 		// used if you want to create a custom layout or modify the built-in keyboard
-		create        : function(keyboard) { return keyboard.buildKeyboard(); }
-*/
+		create        : function(keyboard) { return keyboard.buildKeyboard(); },
 
 		// build key callback
 		buildKey : function( keyboard, data ) {
-			/*
+			/ *
 			data = {
 				// READ ONLY
 				isAction : [boolean] true if key is an action key
@@ -2208,9 +2218,10 @@ var $keyboard = $.keyboard = function(el, options){
 				// use to modify key HTML
 				$key     : [object]  jQuery selector of key which is already appended to keyboard
 			}
-			*/
+			* /
 			return data;
 		},
+*/
 
 		// this callback is called just before the 'beforeClose' to check the value
 		// if the value is valid, return true and the keyboard will continue as it should
