@@ -770,10 +770,15 @@ var $keyboard = $.keyboard = function(el, options){
 					$keyboard.caret( base.$preview, base.last );
 				}
 				if (action.match('meta')) { action = 'meta'; }
-				if (action in $keyboard.keyaction && $.isFunction($keyboard.keyaction[action])) {
+				// keyaction is added as a string, override original action & text
+				if (action === base.last.key && typeof $keyboard.keyaction[ action ] === 'string' ) {
+ 					base.last.key = action = $keyboard.keyaction[ action ];
+				} else if (action in $keyboard.keyaction && $.isFunction($keyboard.keyaction[action])) {
 					// stop processing if action returns false (close & cancel)
 					if ( $keyboard.keyaction[ action ]( base, this, e ) === false ) { return false; }
-				} else if (typeof action !== 'undefined') {
+					action = null; // prevent inserting action name
+				}
+				if (typeof action !== 'undefined' && action !== null) {
 					txt = base.last.key = $(this).hasClass(kbcss.keyAction) ? action : base.last.key;
 					base.insertText(txt);
 					if (!base.capsLock && !o.stickyShift && !e.shiftKey) {
@@ -1840,29 +1845,17 @@ var $keyboard = $.keyboard = function(el, options){
 		},
 		// *** Special action keys: NBSP & zero-width characters ***
 		// Non-breaking space
-		NBSP : function(base) {
-			base.insertText('\u00a0');
-		},
+		NBSP : '\u00a0',
 		// zero width space
-		ZWSP : function(base) {
-			base.insertText('\u200b');
-		},
+		ZWSP : '\u200b',
 		// Zero width non-joiner
-		ZWNJ : function(base) {
-			base.insertText('\u200c');
-		},
+		ZWNJ : '\u200c',
 		// Zero width joiner
-		ZWJ : function(base) {
-			base.insertText('\u200d');
-		},
+		ZWJ : '\u200d',
 		// Left-to-right Mark
-		LRM : function(base) {
-			base.insertText('\u200e');
-		},
+		LRM : '\u200e',
 		// Right-to-left Mark
-		RLM : function(base) {
-			base.insertText('\u200f');
-		}
+		RLM : '\u200f'
 	};
 
 	// Default keyboard layouts
