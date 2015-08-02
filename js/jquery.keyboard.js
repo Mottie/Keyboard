@@ -1398,26 +1398,27 @@ var $keyboard = $.keyboard = function(el, options){
 		return data.$key;
 	};
 
-	base.customHash = function(){
+	base.customHash = function( layout ) {
 		/*jshint bitwise:false */
 		var i, array, hash, character, len,
-			layout = o.customLayout,
 			arrays = [], merged = [];
+		// pass layout to allow for testing
+		layout = typeof layout === 'undefined' ? o.customLayout : layout;
 		// get all layout arrays
-		for (array in layout) {
-			if (layout.hasOwnProperty(array)) {
-				arrays.push(layout[array]);
+		for ( array in layout ) {
+			if ( layout.hasOwnProperty( array ) ) {
+				arrays.push( layout[ array ] );
 			}
 		}
 		// flatten array
-		merged = merged.concat.apply(merged, arrays).join(' ');
+		merged = merged.concat.apply( merged, arrays ).join( ' ' );
 		// produce hash name - http://stackoverflow.com/a/7616484/145346
 		hash = 0;
 		len = merged.length;
-		if (len === 0) { return hash; }
-		for (i = 0; i < len; i++) {
-			character = merged.charCodeAt(i);
-			hash = ( (hash<<5) - hash) + character;
+		if ( len === 0 ) { return hash; }
+		for ( i = 0; i < len; i++ ) {
+			character = merged.charCodeAt( i );
+			hash = ( ( hash<<5 ) - hash ) + character;
 			hash = hash & hash; // Convert to 32bit integer
 		}
 		return hash;
