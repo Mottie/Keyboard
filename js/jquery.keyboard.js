@@ -1292,9 +1292,9 @@ var $keyboard = $.keyboard = function(el, options){
 		.addClass( $keyboard.css.keyButton );
 
 	base.processName = function( name ) {
-		name = ( name || '' ).replace( /\s/g, '-' );
+		name = ( name || '' ).replace( /\s+/g, '-' );
 		var index, n,
-			process = name.replace( /[^a-z0-9]/gi, '' ),
+			process = name.replace( /[^a-z0-9-]/gi, '' ),
 			len = process.length,
 			newName = [];
 		if ( len > 1 && name === process ) {
@@ -1306,7 +1306,9 @@ var $keyboard = $.keyboard = function(el, options){
 		if ( len ) {
 			for ( index = 0; index < len; index++ ) {
 				n = name[ index ];
-				newName.push( /[a-z0-9]/i.test( n ) ? n : ( index === 0 ? '' : '-' ) + n.charCodeAt( 0 ) );
+				// keep '-' as a dash, but don't add it or we get two dashes in a row
+				newName.push( /[a-z0-9-]/i.test( n ) ? ( n === '-' ? '' : n ) :
+					( index === 0 ? '' : '-' ) + n.charCodeAt( 0 ) );
 			}
 			return newName.join( '' );
 		} else {
@@ -1645,7 +1647,7 @@ var $keyboard = $.keyboard = function(el, options){
 			kbcss = $keyboard.css,
 			len = base.extensionNamespace.length,
 			tmp = [ kbcss.input, kbcss.locked, kbcss.placeholder, kbcss.noKeyboard,
-				kbcss.alwaysOpen, o.css.input].join(' ');
+				kbcss.alwaysOpen, o.css.input ].join(' ');
 		clearTimeout(base.timer);
 		clearTimeout(base.timer2);
 		base.removeBindings( base.namespace );
@@ -2327,7 +2329,7 @@ var $keyboard = $.keyboard = function(el, options){
  * Licensed under the MIT License:
  * http://www.opensource.org/licenses/mit-license.php
  * Highly modified from the original
-  */
+ */
 
 $.fn.caret = function( start, end ) {
 	if ( typeof this[0] === 'undefined' || this.is(':hidden') || this.css('visibility') === 'hidden' ) {
