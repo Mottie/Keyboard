@@ -1642,7 +1642,7 @@ var $keyboard = $.keyboard = function(el, options){
 		base.$el.unbind( namespace );
 	};
 
-	base.destroy = function() {
+	base.destroy = function( callback ) {
 		var index,
 			kbcss = $keyboard.css,
 			len = base.extensionNamespace.length,
@@ -1665,6 +1665,10 @@ var $keyboard = $.keyboard = function(el, options){
 			.removeAttr('role')
 			.removeData('keyboard');
 		base = null;
+
+		if ( typeof callback === 'function' ) {
+			callback();
+		}
 	};
 
 		// Run initializer
