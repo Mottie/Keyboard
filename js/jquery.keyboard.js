@@ -1292,9 +1292,8 @@ var $keyboard = $.keyboard = function(el, options){
 		.addClass( $keyboard.css.keyButton );
 
 	base.processName = function( name ) {
-		name = ( name || '' ).replace( /\s+/g, '-' );
 		var index, n,
-			process = name.replace( /[^a-z0-9-]/gi, '' ),
+			process = ( name || '' ).replace( /[^a-z0-9-_]/gi, '' ),
 			len = process.length,
 			newName = [];
 		if ( len > 1 && name === process ) {
@@ -1307,7 +1306,7 @@ var $keyboard = $.keyboard = function(el, options){
 			for ( index = 0; index < len; index++ ) {
 				n = name[ index ];
 				// keep '-' as a dash, but don't add it or we get two dashes in a row
-				newName.push( /[a-z0-9-]/i.test( n ) ? ( n === '-' ? '' : n ) :
+				newName.push( /[a-z0-9-_]/i.test( n ) ? ( /[-_]/.test(n) ? '' : n ) :
 					( index === 0 ? '' : '-' ) + n.charCodeAt( 0 ) );
 			}
 			return newName.join( '' );
@@ -1330,7 +1329,7 @@ var $keyboard = $.keyboard = function(el, options){
 			data = {
 				isAction : !regKey,
 				action   : keyName,
-				name     : (regKey === true) ? base.processName( keyName.split(/[(:]/)[0] ) : keyName
+				name     : base.processName( keyName.split(/[(:]/)[0] )
 			};
 		// map defined keys - format 'key(A):Label_for_key'
 		// 'key' = key that is seen (can any character; but it might need to be escaped using '\'
