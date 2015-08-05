@@ -75,6 +75,8 @@
 				base.caret_$div = $( '<div class="ui-keyboard-mirror-div" style="' + style + '">' )
 					.appendTo( base.$keyboard );
 
+				// remove caret, just-in-case
+				base.$keyboard.find('.ui-keyboard-caret').remove();
 				base.$caret = $( '<div class="ui-keyboard-caret ' + o.caretClass + '" style="position:absolute;">' )
 					.insertAfter( base.$preview );
 
@@ -170,9 +172,10 @@
 					base.caret_setup();
 				})
 				.bind( $keyboard.events.kbHidden + base.caret_namespace, function() {
+					// unbind events in case usePreview: false; see #376
 					var events = 'keyup keypress mouseup mouseleave '.split( ' ' ).join( base.caret_namespace + ' ' );
 					base.$preview.unbind( events );
-					base.$caret = null;
+					base.$caret.remove();
 					base.caret_$div = null;
 				});
 
