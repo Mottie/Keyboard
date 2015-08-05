@@ -2,7 +2,8 @@
 module.exports = function(grunt) {
 	'use strict';
 
-	var nomod = '/*** This file is dynamically generated ***\n' +
+	var pkg = grunt.file.readJSON( 'package.json' ),
+	nomod = '/*** This file is dynamically generated ***\n' +
 		'█████▄ ▄████▄   █████▄ ▄████▄ ██████   ███████▄ ▄████▄ █████▄ ██ ██████ ██  ██\n' +
 		'██  ██ ██  ██   ██  ██ ██  ██   ██     ██ ██ ██ ██  ██ ██  ██ ██ ██     ██  ██\n' +
 		'██  ██ ██  ██   ██  ██ ██  ██   ██     ██ ██ ██ ██  ██ ██  ██ ██ ██▀▀   ▀▀▀▀██\n' +
@@ -18,7 +19,7 @@ module.exports = function(grunt) {
 	// Project configuration.
 	grunt.initConfig({
 
-		pkg: grunt.file.readJSON( 'package.json' ),
+		pkg: pkg,
 
 		clean: {
 			core: {
@@ -195,8 +196,37 @@ module.exports = function(grunt) {
 	grunt.loadNpmTasks('grunt-contrib-watch');
 
 	// Default task.
-	grunt.registerTask('default', ['clean:core', 'jshint:core', 'concat:exts', 'cssmin', 'uglify:core']);
+	grunt.registerTask('default', [
+		'clean:core',
+		'jshint:core',
+		'concat:exts',
+		'cssmin',
+		'uglify:core',
+		'updateManifest'
+	]);
 	// layout build takes a lot longer to uglify
-	grunt.registerTask('layouts', ['clean:layouts', 'jshint:layouts', 'concat', 'cssmin', 'uglify']);
+	grunt.registerTask('layouts', [
+		'clean:layouts',
+		'jshint:layouts',
+		'concat',
+		'cssmin',
+		'uglify'
+	]);
+
+	// update keyboard.jquery.json file version numbers to match the package.json version
+	grunt.registerTask( 'updateManifest', function() {
+		var i, project,
+			projectFile = [ 'keyboard.jquery.json' ],
+			len = projectFile.length;
+		for ( i = 0; i < len; i++ ) {
+			if ( !grunt.file.exists( projectFile[ i ] ) ) {
+				grunt.log.error( 'file ' + projectFile[ i ] + ' not found' );
+				return true; // return false to abort the execution
+			}
+			project = grunt.file.readJSON( projectFile[ i ] ); // get file as json object
+			project.version = pkg.version;
+			grunt.file.write( projectFile[i], JSON.stringify( project, null, 2 ) ); // serialize it back to file
+		}
+	});
 
 };

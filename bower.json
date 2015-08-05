@@ -1,11 +1,11 @@
 {
   "name": "keyboard",
-  "version": "1.24.0",
   "main": [
     "dist/js/jquery.keyboard.min.js",
     "dist/css/keyboard.min.css",
     "dist/layouts/keyboard-layouts-combined.min.js",
-    "dist/layouts/keyboard-layouts-greywyvern.min.js"
+    "dist/layouts/keyboard-layouts-greywyvern.min.js",
+    "dist/layouts/keyboard-layouts-microsoft.min.js"
   ],
   "ignore": [
     "js/*.js",

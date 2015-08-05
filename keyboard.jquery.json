@@ -1,36 +1,40 @@
-﻿{
-	"name": "keyboard",
-	"title": "Keyboard",
-	"version": "1.24.0",
-	"description": "Virtual Keyboard using jQuery UI",
-	"author": {
-		"name": "Jeremy Satterfield",
-		"url": "https://github.com/jsatt"
-	},
-	"maintainers": [{
-		"name": "Rob Garrison",
-		"url": "https://github.com/Mottie",
-		"email": "wowmotty@gmail.com"
-	}],
-	"licenses": [{
-		"type": "MIT",
-		"url": "http://www.opensource.org/licenses/mit-license.php"
-	}],
-	"homepage": "http://wowmotty.blogspot.com/2010/11/jquery-ui-keyboard-widget.html",
-	"bugs": "https://github.com/Mottie/Keyboard/issues",
-	"docs": "https://github.com/Mottie/Keyboard/wiki",
-	"demo": "http://mottie.github.com/Keyboard/",
-	"dependencies": {
-		"jquery": ">=1.4.3"
-	},
-	"keywords": [
-		"customizable",
-		"keyboard",
-		"ui",
-		"accessibility",
-		"osk"
-	],
-	"files": [
-		"dist/**/*"
-	]
+{
+  "name": "keyboard",
+  "title": "Keyboard",
+  "version": "1.24.1",
+  "description": "Virtual Keyboard using jQuery UI",
+  "author": {
+    "name": "Jeremy Satterfield",
+    "url": "https://github.com/jsatt"
+  },
+  "maintainers": [
+    {
+      "name": "Rob Garrison",
+      "url": "https://github.com/Mottie",
+      "email": "wowmotty@gmail.com"
+    }
+  ],
+  "licenses": [
+    {
+      "type": "MIT",
+      "url": "http://www.opensource.org/licenses/mit-license.php"
+    }
+  ],
+  "homepage": "http://wowmotty.blogspot.com/2010/11/jquery-ui-keyboard-widget.html",
+  "bugs": "https://github.com/Mottie/Keyboard/issues",
+  "docs": "https://github.com/Mottie/Keyboard/wiki",
+  "demo": "http://mottie.github.com/Keyboard/",
+  "dependencies": {
+    "jquery": ">=1.4.3"
+  },
+  "keywords": [
+    "customizable",
+    "keyboard",
+    "ui",
+    "accessibility",
+    "osk"
+  ],
+  "files": [
+    "dist/**/*"
+  ]
 }

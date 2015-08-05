@@ -88,6 +88,13 @@ Wiki: [Home](https://github.com/Mottie/Keyboard/wiki/Home) | [FAQ](https://githu
 
 Only the latest changes will be shown below, see the wiki log to view older versions.
 
+### Version 1.24.1 (8/5/2015)
+
+* Caret extension:
+  * Avoid javascript errors when caret extension used without a preview window.
+  * Caret is now removed when keyboard is hidden (when `userPreview` is `false`).
+  * Thanks [@isfs](https://github.com/isfs); see [pull #376](https://github.com/Mottie/Keyboard/pull/376).
+
 ### Version 1.24.0 (8/2/2015)
 
 #### Docs
