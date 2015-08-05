@@ -170,6 +170,8 @@
 					base.caret_setup();
 				})
 				.bind( $keyboard.events.kbHidden + base.caret_namespace, function() {
+					var events = 'keyup keypress mouseup mouseleave '.split( ' ' ).join( base.caret_namespace + ' ' );
+					base.$preview.unbind( events );
 					base.$caret = null;
 					base.caret_$div = null;
 				});
