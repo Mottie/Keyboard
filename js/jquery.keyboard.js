@@ -850,7 +850,19 @@ var $keyboard = $.keyboard = function(el, options){
 			// I need to trigger a 'repeater.keyboard' to make it work
 			.bind('mouseup' + base.namespace + ' ' + 'mouseleave touchend touchmove touchcancel '.split(' ').join(base.namespace + 'kb '), function(e){
 				base.last.virtual = true;
-				if (/(mouseleave|touchend|touchcancel)/i.test(e.type)) {
+				if (e.type == "touchmove") {
+					// if moving within the same key, don't stop repeating
+					var $this = $(this);
+					var offset = $this.offset();
+					offset.right = offset.left + $this.outerWidth();
+					offset.bottom = offset.top + $this.outerHeight();
+					if (e.originalEvent.touches[0].pageX >= offset.left &&
+						e.originalEvent.touches[0].pageX < offset.right &&
+						e.originalEvent.touches[0].pageY >= offset.top &&
+						e.originalEvent.touches[0].pageY < offset.bottom) {
+						return true;
+					}
+				} else if (/(mouseleave|touchend|touchcancel)/i.test(e.type)) {
 					$(this).removeClass(o.css.buttonHover); // needed for touch devices
 				} else {
 					if (base.isVisible() && base.isCurrent()) { base.$preview.focus(); }
