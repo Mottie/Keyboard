@@ -728,7 +728,7 @@ var $keyboard = $.keyboard = function(el, options){
 				base.reveal();
 				$(document).trigger('checkkeyboard' + base.namespace);
 			}
-			base.$preview.focus();
+			if (!o.noFocus) base.$preview.focus();
 		});
 
 		// If preventing paste, block context menu (right click)
@@ -767,7 +767,7 @@ var $keyboard = $.keyboard = function(el, options){
 				last.eventTime = timer;
 				last.event = e;
 				last.virtual = true;
-				base.$preview.focus();
+				if (!o.noFocus) base.$preview.focus();
 				last.$key = $key;
 				last.key = $key.attr('data-value');
 				// Start caret in IE when not focused (happens with each virtual keyboard button click
@@ -865,7 +865,7 @@ var $keyboard = $.keyboard = function(el, options){
 				} else if (/(mouseleave|touchend|touchcancel)/i.test(e.type)) {
 					$(this).removeClass(o.css.buttonHover); // needed for touch devices
 				} else {
-					if (base.isVisible() && base.isCurrent()) { base.$preview.focus(); }
+					if (!o.noFocus && base.isVisible() && base.isCurrent()) { base.$preview.focus(); }
 					if (base.checkCaret) {
 						$keyboard.caret( base.$preview, base.last );
 					}
@@ -2094,6 +2094,9 @@ var $keyboard = $.keyboard = function(el, options){
 		// give the preview initial focus when the keyboard becomes visible
 		initialFocus : true,
 
+		// avoid changing the focus (hardware keyboard probably won't work)
+		noFocus      : false,
+
 		// if true, keyboard will remain open even if the input loses focus, but closes on escape
 		// or when another keyboard opens.
 		stayOpen     : false,
@@ -2283,7 +2286,8 @@ var $keyboard = $.keyboard = function(el, options){
 			return {};
 		}
 		var start, end, txt, pos;
-		$el.focus();
+		var noFocus = $el.getkeyboard() && $el.getkeyboard().options.noFocus;
+		if (!noFocus) $el.focus();
 		// set caret position
 		if (typeof param1 !== 'undefined') {
 			// allow setting caret using ( $el, { start: x, end: y } )
@@ -2306,7 +2310,7 @@ var $keyboard = $.keyboard = function(el, options){
 
 			// *** SET CARET POSITION ***
 			// modify the line below to adapt to other caret plugins
-			return $el.caret( start, end );
+			return $el.caret( start, end, noFocus );
 		}
 		// *** GET CARET POSITION ***
 		// modify the line below to adapt to other caret plugins
@@ -2347,7 +2351,7 @@ var $keyboard = $.keyboard = function(el, options){
  * Highly modified from the original
  */
 
-$.fn.caret = function( start, end ) {
+$.fn.caret = function( start, end, noFocus ) {
 	if ( typeof this[0] === 'undefined' || this.is(':hidden') || this.css('visibility') === 'hidden' ) {
 		return this;
 	}
@@ -2377,7 +2381,7 @@ $.fn.caret = function( start, end ) {
 			}
 		}
 		// must be visible or IE8 crashes; IE9 in compatibility mode works fine - issue #56
-		if ( $el.is(':visible') || $el.css('visibility') !== 'hidden' ) { el.focus(); }
+		if ( !noFocus && ($el.is(':visible') || $el.css('visibility') !== 'hidden') ) { el.focus(); }
 		el.scrollTop = sTop;
 		return this;
 	} else {
