@@ -175,7 +175,7 @@ var $keyboard = $.keyboard = function(el, options){
 		var $toggle = base.$keyboard.find( '.' + $keyboard.css.keyToggle ),
 			locked = !base.enabled;
 		// prevent physical keyboard from working
-		base.$preview.prop( 'readonly', locked );
+		base.$preview.prop( 'readonly', locked || base.options.lockInput );
 		// disable all buttons
 		base.$keyboard
 			.toggleClass( $keyboard.css.keyDisabled, locked )
