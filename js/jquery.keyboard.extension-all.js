@@ -530,6 +530,9 @@ $.fn.addAutocomplete = function(options){
 				.bind( $keyboard.events.kbBeforeVisible + base.caret_namespace, function() {
 					base.caret_setup();
 				})
+				.bind( $keyboard.events.kbVisible + base.caret_namespace, function() {
+					base.findCaretPos();
+				})
 				.bind( $keyboard.events.kbHidden + base.caret_namespace, function() {
 					// unbind events in case usePreview: false; see #376
 					var events = 'keyup keypress mouseup mouseleave '.split( ' ' ).join( base.caret_namespace + ' ' );
