@@ -654,7 +654,7 @@ var $keyboard = $.keyboard = function(el, options){
 
 					// Escape will hide the keyboard
 					case 27:
-						base.close( o.autoAccept && o.autoAcceptOnEsc ? 'true' : false );
+						if (!o.ignoreEsc) base.close( o.autoAccept && o.autoAcceptOnEsc ? 'true' : false );
 						return false;
 				}
 
@@ -1277,7 +1277,7 @@ var $keyboard = $.keyboard = function(el, options){
 
 	base.escClose = function(e){
 		if ( e && e.type === 'keyup' ) {
-			return ( e.which === 27 ) ? base.close( o.autoAccept && o.autoAcceptOnEsc ? 'true' : false ) : '';
+			return ( e.which === 27 && !o.ignoreEsc ) ? base.close( o.autoAccept && o.autoAcceptOnEsc ? 'true' : false ) : '';
 		}
 		// keep keyboard open if alwaysOpen or stayOpen is true - fixes mutliple always open keyboards or
 		// single stay open keyboard
@@ -2100,6 +2100,9 @@ var $keyboard = $.keyboard = function(el, options){
 		// if true, keyboard will remain open even if the input loses focus, but closes on escape
 		// or when another keyboard opens.
 		stayOpen     : false,
+
+		// if true, keyboard will not close if you press escape.
+		ignoreEsc    : false,
 
 		css : {
 			// input & preview
