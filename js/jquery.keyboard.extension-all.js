@@ -524,15 +524,14 @@ $.fn.addAutocomplete = function(options){
 				base.$caret.attr( o.charAttr, txt );
 			};
 
-			// visible event is fired before this extension is initialized, so check!
-			if ( base.options.alwaysOpen && base.isVisible() ) {
-				base.caret_setup();
-			}
 			// setup caret when keyboard is visible
 			base.$el
 				.unbind( base.caret_namespace )
 				.bind( $keyboard.events.kbBeforeVisible + base.caret_namespace, function() {
 					base.caret_setup();
+				})
+				.bind( $keyboard.events.kbVisible + base.caret_namespace, function() {
+					base.findCaretPos();
 				})
 				.bind( $keyboard.events.kbHidden + base.caret_namespace, function() {
 					// unbind events in case usePreview: false; see #376
@@ -541,6 +540,12 @@ $.fn.addAutocomplete = function(options){
 					base.$caret.remove();
 					base.caret_$div = null;
 				});
+
+			// visible event is fired before this extension is initialized, so check!
+			if ( base.options.alwaysOpen && base.isVisible() ) {
+				base.caret_setup();
+				base.findCaretPos();
+			}
 
 		});
 	};
