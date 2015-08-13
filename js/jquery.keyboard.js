@@ -1523,7 +1523,7 @@ var $keyboard = $.keyboard = function(el, options){
 						.replace(/,/, '.')
 						.match(/^sp:((\d+)?([\.|,]\d+)?)(em|px)?$/i)[1] || 0
 					);
-					$('<span class="' + kbcss.keyText + '">&#160;</span>')
+					$('<span class="' + kbcss.keyText + '"></span>')
 						// previously {sp:1} would add 1em margin to each side of a 0 width span
 						// now Firefox doesn't seem to render 0px dimensions, so now we set the
 						// 1em margin x 2 for the width
@@ -2035,7 +2035,7 @@ var $keyboard = $.keyboard = function(el, options){
 				'shift'  : 'Shift:Shift',
 				// +/- sign for num pad
 				'sign'   : '\u00b1:Change Sign',
-				'space'  : '&#160;:Space',
+				'space'  : '\u00a0:Space',
 				// right arrow to bar (used since this virtual keyboard works with one directional tabs)
 				't'      : '\u21e5:Tab',
 				// \u21b9 is the true tab symbol (left & right arrows)
