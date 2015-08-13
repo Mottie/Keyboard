@@ -103,7 +103,7 @@ Only the latest changes will be shown below, see the wiki log to view older vers
 * Caret extension
   * Ensure caret is properly initialised and visible for an `alwaysOpen` keyboard.
   * Make caret visible immediately on reveal, not just when another event occurs.
-  * See [pull #376](https://github.com/Mottie/Keyboard/pull/377).
+  * See [pull #377](https://github.com/Mottie/Keyboard/pull/377); thanks [@isfs](https://github.com/isfs) for all the above changes!
 * Theme
   * Add a basic white, non-library (not jQuery UI or Bootstrap) theme
   * This theme is to be used when neither jQuery UI css nor position utility is used as it positions the keyboard at the bottom of the browser windows using css.
