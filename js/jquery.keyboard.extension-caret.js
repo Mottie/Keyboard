@@ -1,5 +1,5 @@
-/*! jQuery UI Virtual Keyboard Virtual Caret v1.0.1 (beta) *//*
- * for Keyboard v1.18+ only (7/7/2015)
+/*! jQuery UI Virtual Keyboard Virtual Caret v1.1.0 (beta) *//*
+ * for Keyboard v1.18+ only (8/12/2015)
  * modified from https://github.com/component/textarea-caret-position
  *
  * By Rob Garrison (aka Mottie)
@@ -44,13 +44,15 @@
 		};
 		return this.each( function() {
 			// make sure a keyboard is attached
-			var o, base = $( this ).data( 'keyboard' );
+			var o, namespace,
+				kbevents = $keyboard.events,
+				base = $( this ).data( 'keyboard' );
 			if ( !base ) { return; }
 
 			// variables
 			o = base.caret_options = $.extend( {}, defaults, options );
-			base.caret_namespace = base.namespace + 'caret';
-			base.extensionNamespace.push( base.caret_namespace );
+			namespace = base.caret_namespace = base.namespace + 'caret';
+			base.extensionNamespace.push( namespace );
 
 			// modified from https://github.com/component/textarea-caret-position
 			// The properties that we copy into a mirrored div.
@@ -67,7 +69,7 @@
 			];
 
 			base.caret_setup = function() {
-				var events = 'keyup keypress mouseup mouseleave '.split( ' ' ).join( base.caret_namespace + ' ' ),
+				var events = 'keyup keypress mouseup mouseleave '.split( ' ' ).join( namespace + ' ' ),
 					style = 'position:absolute;visibility:hidden;top:-9999em;left:-9999em;' +
 						'white-space:pre-wrap;' +
 						( base.preview.nodeName === 'INPUT' ? '' : 'word-wrap:break-word;' );
@@ -81,8 +83,8 @@
 					.insertAfter( base.$preview );
 
 				base.$el
-					.unbind( $keyboard.events.kbChange + base.caret_namespace )
-					.bind( $keyboard.events.kbChange + base.caret_namespace, function() {
+					.unbind( kbevents.kbChange + namespace )
+					.bind( kbevents.kbChange + namespace, function() {
 						base.findCaretPos();
 					});
 				base.$preview
@@ -163,16 +165,16 @@
 
 			// setup caret when keyboard is visible
 			base.$el
-				.unbind( base.caret_namespace )
-				.bind( $keyboard.events.kbBeforeVisible + base.caret_namespace, function() {
+				.unbind( namespace )
+				.bind( kbevents.kbBeforeVisible + namespace, function() {
 					base.caret_setup();
 				})
-				.bind( $keyboard.events.kbVisible + base.caret_namespace, function() {
+				.bind( kbevents.kbVisible + namespace, function() {
 					base.findCaretPos();
 				})
-				.bind( $keyboard.events.kbHidden + base.caret_namespace, function() {
+				.bind( kbevents.kbHidden + namespace, function() {
 					// unbind events in case usePreview: false; see #376
-					var events = 'keyup keypress mouseup mouseleave '.split( ' ' ).join( base.caret_namespace + ' ' );
+					var events = 'keyup keypress mouseup mouseleave '.split( ' ' ).join( namespace + ' ' );
 					base.$preview.unbind( events );
 					base.$caret.remove();
 					base.caret_$div = null;

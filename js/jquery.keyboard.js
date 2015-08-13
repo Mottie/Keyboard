@@ -654,7 +654,9 @@ var $keyboard = $.keyboard = function(el, options){
 
 					// Escape will hide the keyboard
 					case 27:
-						if (!o.ignoreEsc) base.close( o.autoAccept && o.autoAcceptOnEsc ? 'true' : false );
+						if (!o.ignoreEsc) {
+							base.close( o.autoAccept && o.autoAcceptOnEsc ? 'true' : false );
+						}
 						return false;
 				}
 
@@ -728,7 +730,7 @@ var $keyboard = $.keyboard = function(el, options){
 				base.reveal();
 				$(document).trigger('checkkeyboard' + base.namespace);
 			}
-			if (!o.noFocus) base.$preview.focus();
+			if (!o.noFocus) { base.$preview.focus(); }
 		});
 
 		// If preventing paste, block context menu (right click)
@@ -767,7 +769,7 @@ var $keyboard = $.keyboard = function(el, options){
 				last.eventTime = timer;
 				last.event = e;
 				last.virtual = true;
-				if (!o.noFocus) base.$preview.focus();
+				if (!o.noFocus) { base.$preview.focus(); }
 				last.$key = $key;
 				last.key = $key.attr('data-value');
 				// Start caret in IE when not focused (happens with each virtual keyboard button click
@@ -850,10 +852,11 @@ var $keyboard = $.keyboard = function(el, options){
 			// I need to trigger a 'repeater.keyboard' to make it work
 			.bind('mouseup' + base.namespace + ' ' + 'mouseleave touchend touchmove touchcancel '.split(' ').join(base.namespace + 'kb '), function(e){
 				base.last.virtual = true;
-				if (e.type == "touchmove") {
+				var offset,
+					$this = $(this);
+				if (e.type === 'touchmove') {
 					// if moving within the same key, don't stop repeating
-					var $this = $(this);
-					var offset = $this.offset();
+					offset = $this.offset();
 					offset.right = offset.left + $this.outerWidth();
 					offset.bottom = offset.top + $this.outerHeight();
 					if (e.originalEvent.touches[0].pageX >= offset.left &&
@@ -863,7 +866,7 @@ var $keyboard = $.keyboard = function(el, options){
 						return true;
 					}
 				} else if (/(mouseleave|touchend|touchcancel)/i.test(e.type)) {
-					$(this).removeClass(o.css.buttonHover); // needed for touch devices
+					$this.removeClass(o.css.buttonHover); // needed for touch devices
 				} else {
 					if (!o.noFocus && base.isVisible() && base.isCurrent()) { base.$preview.focus(); }
 					if (base.checkCaret) {
@@ -2288,9 +2291,9 @@ var $keyboard = $.keyboard = function(el, options){
 		if ( !$el.length || $el.is(':hidden') || $el.css('visibility') === 'hidden' ) {
 			return {};
 		}
-		var start, end, txt, pos;
-		var noFocus = $el.getkeyboard() && $el.getkeyboard().options.noFocus;
-		if (!noFocus) $el.focus();
+		var start, end, txt, pos,
+			noFocus = $el.getkeyboard() && $el.getkeyboard().options.noFocus;
+		if (!noFocus) { $el.focus(); }
 		// set caret position
 		if (typeof param1 !== 'undefined') {
 			// allow setting caret using ( $el, { start: x, end: y } )
