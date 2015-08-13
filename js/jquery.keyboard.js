@@ -1048,7 +1048,7 @@ var $keyboard = $.keyboard = function(el, options){
 			.find('.' + kbcss.keyPrefix + 'lock').toggleClass( o.css.buttonActive, base.capsLock ).end()
 			.find('.' + kbcss.keySet).hide().end()
 			.find('.' + kbcss.keySet + key + base.rows[toShow]).show().end()
-			.find('.' + kbcss.keyAction + '.' + kbcss.keyboard + key).addClass(o.css.buttonActive);
+			.find('.' + kbcss.keyAction + '.' + kbcss.keyPrefix + key).addClass(o.css.buttonActive);
 		base.last.keyset = [ base.shiftActive, base.altActive, base.metaActive ];
 		base.$el.trigger( $keyboard.events.kbKeysetChange, [ base, base.el ] );
 	};
@@ -1444,7 +1444,7 @@ var $keyboard = $.keyboard = function(el, options){
 			// set keyboard language
 			base.updateLanguage();
 		}
-		var row, $row, currentSet, $layout,
+		var row, $row, currentSet,
 			kbcss = $keyboard.css,
 			sets = 0,
 			layout = $keyboard.builtLayouts[name || base.layout || o.layout] = {
@@ -1452,9 +1452,12 @@ var $keyboard = $.keyboard = function(el, options){
 				acceptedKeys : []
 			},
 			acceptedKeys = layout.acceptedKeys = [],
+			// using $layout temporarily to hold keyboard popup classnames
+			$layout = kbcss.keyboard + ' ' + o.css.popup + ' ' + o.css.container +
+				( o.alwaysOpen ? ' ' + kbcss.alwaysOpen : '' ),
 
 		container = $('<div />')
-			.addClass( kbcss.keyboard + ' ' + o.css.container + (o.alwaysOpen ? ' ' + kbcss.alwaysOpen : '') )
+			.addClass( $layout )
 			.attr({ 'role': 'textbox' })
 			.hide();
 		// verify layout or setup custom keyboard
@@ -2112,6 +2115,8 @@ var $keyboard = $.keyboard = function(el, options){
 			input          : 'ui-widget-content ui-corner-all',
 			// keyboard container
 			container      : 'ui-widget-content ui-widget ui-corner-all ui-helper-clearfix',
+			// keyboard container extra class (same as container, but separate)
+			popup          : '',
 			// default state
 			buttonDefault  : 'ui-state-default ui-corner-all',
 			// hovered button

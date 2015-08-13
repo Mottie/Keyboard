@@ -3,9 +3,9 @@ jQuery(function($) {
 	// QWERTY Text Input
 	// The bottom of this file is where the autocomplete extension is added
 	// ********************
-	$('.qwerty:first').keyboard({ layout: 'qwerty' });
+	$('#text').keyboard({ layout: 'qwerty' });
 
-	$('.version').html( '(v' + $('.qwerty').getkeyboard().version + ')' );
+	$('.version').html( '(v' + $('#text').getkeyboard().version + ')' );
 
 	// QWERTY Password
 	// ********************
@@ -31,7 +31,7 @@ jQuery(function($) {
 
 	// QWERTY (mod) Text Area
 	// ********************
-	$('#qwerty').keyboard({
+	$('#qwerty-mod').keyboard({
 		lockInput: true, // prevent manual keyboard entry
 		layout: 'custom',
 		customLayout: {
@@ -306,6 +306,10 @@ jQuery(function($) {
 				'{shift} Z X C V B N M < > ? {shift}',
 				'{accept} {space} {left} {right} {sp:.2} {del} {toggle}'
 			]
+		},
+		css: {
+			// add dark themed class
+			popup : 'ui-keyboard-dark-theme'
 		}
 	});
 

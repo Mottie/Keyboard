@@ -121,7 +121,7 @@
 		<h2>
 			<span class="tooltip-tipsy" title="Click, then scroll down to see this code">QWERTY Text</span>
 		</h2>
-		<input id="text" class="qwerty" type="text" placeholder=" Enter something...">
+		<input id="text" type="text" placeholder=" Enter something...">
 		<br>
 		<small>
 			* Placeholder (watermark).<br>
@@ -129,14 +129,14 @@
 		</small>
 		<div class="code ui-corner-all">
 			<h4>HTML</h4>
-			<pre class="prettyprint lang-html">&lt;input class="qwerty" type="text" placeholder=" Enter something..."&gt;</pre>
+			<pre class="prettyprint lang-html">&lt;input id="text" type="text" placeholder=" Enter something..."&gt;</pre>
 			<h4>Script</h4>
 			<pre class="prettyprint lang-js">// Autocomplete demo
 var availableTags = ["ActionScript", "AppleScript", "Asp", "BASIC", "C", "C++", "Clojure",
 	"COBOL", "ColdFusion", "Erlang", "Fortran", "Groovy", "Haskell", "Java", "JavaScript",
 	"Lisp", "Perl", "PHP", "Python", "Ruby", "Scala", "Scheme" ];
 
-$('.qwerty:eq(0)')
+$('#text')
 	.keyboard({ layout: 'qwerty' })
 	.autocomplete({
 		source: availableTags
@@ -159,7 +159,7 @@ $('.qwerty:eq(0)')
 			<span class="tooltip-tipsy" title="Click, then scroll down to see this code">QWERTY Password</span>
 			<img id="passwd" class="tooltip-tipsy" title="Click to open the virtual keyboard" src="css/images/keyboard.svg">
 		</h2>
-		<input id="password" class="qwerty" type="password">
+		<input id="password" type="password">
 		<br>
 		<small>
 			* Click icon to open keyboard.<br>
@@ -170,7 +170,7 @@ $('.qwerty:eq(0)')
 		<div class="code ui-corner-all">
 			<h4>HTML</h4>
 			<pre class="prettyprint lang-html">&lt;img id="passwd" class="tooltip-tipsy" title="Click to open the virtual keyboard" src="css/images/keyboard.svg"&gt;
-&lt;input id="password" class="qwerty" type="password"&gt;</pre>
+&lt;input id="password" type="password"&gt;</pre>
 			<h4>Script</h4>
 			<pre class="prettyprint lang-js">$('#password')
 	.keyboard({
@@ -196,7 +196,7 @@ $('#passwd').click(function(){
 		<h2>
 			<span class="tooltip-tipsy" title="Click, then scroll down to see this code">QWERTY (mod) Text Area</span>
 		</h2>
-		<textarea id="qwerty" class="qwerty"></textarea>
+		<textarea id="qwerty-mod"></textarea>
 		<br>
 		<small>
 			* Locked input (no manual input).<br>
@@ -205,9 +205,9 @@ $('#passwd').click(function(){
 		</small>
 		<div class="code ui-corner-all">
 			<h4>HTML</h4>
-			<pre class="prettyprint lang-html">&lt;textarea id="qwerty" class="qwerty"&gt;&lt;/textarea&gt;</pre>
+			<pre class="prettyprint lang-html">&lt;textarea id="qwerty-mod"&gt;&lt;/textarea&gt;</pre>
 			<h4>Script</h4>
-			<pre class="prettyprint lang-js">$('#qwerty')
+			<pre class="prettyprint lang-js">$('#qwerty-mod')
 	.keyboard({
 		lockInput: true, // prevent manual keyboard entry
 		layout: 'custom',
@@ -794,6 +794,11 @@ $('#hidden')
 			'{shift} Z X C V B N M < > ? {shift}',
 			'{accept} {space} {left} {right} {sp:.2} {del} {toggle}'
 		]
+	},
+	css: {
+		// add dark themed class to keyboard popup
+		// to use bright svg padlock icon
+		popup : 'ui-keyboard-dark-theme'
 	}
 })
 .addTyping();</pre>

@@ -51,6 +51,10 @@ textarea, input { width: 260px; background: #333; color: #ddd; border: #777 1px 
 #nav-demo .block { height: 250px; padding: 0; }
 #nav-demo input, #nav-demo textarea { margin: 2px; }
 
+/* Bootswatch demo */
+.ui-keyboard-input.light, .ui-keyboard-preview.light { color: #222; background: #ddd; }
+.ui-keyboard-input.dark, .ui-keyboard-preview.dark { color: #ddd; background: #222; }
+
 /* override bootstrap active state */
 button.btn-default:active {
  background-color: #FFF;
