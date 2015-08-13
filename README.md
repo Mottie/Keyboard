@@ -88,6 +88,27 @@ Wiki: [Home](https://github.com/Mottie/Keyboard/wiki/Home) | [FAQ](https://githu
 
 Only the latest changes will be shown below, see the wiki log to view older versions.
 
+### Version 1.25.0 (8/12/2015)
+
+* Core
+  * Don't stop repeating when touch moves within the same key.
+  * Add `noFocus` option to avoid focusing the input; use with caution for old IE!
+  * Ensure `lockInput` is effective when toggling.
+  * Add `ignoreEsc` option to prevent escape from closing the keyboard.
+  * See [pull #377](https://github.com/Mottie/Keyboard/pull/377); thanks [@isfs](https://github.com/isfs) for all the above changes!
+  * Some more tweaks to the above code.
+  * Add `popup` css option (in addition to `container` css option; they both add to the same element) to allow for adding theme class names more easily.
+  * Adjust css to include "ui-keyboard-dark-theme" to use brighter icons.
+  * Fix `&#160;` (a.k.a. `&nbsp;`) to prevent it from showing up in the space bar.
+* Caret extension
+  * Ensure caret is properly initialised and visible for an `alwaysOpen` keyboard.
+  * Make caret visible immediately on reveal, not just when another event occurs.
+  * See [pull #376](https://github.com/Mottie/Keyboard/pull/377).
+* Theme
+  * Add a basic white, non-library (not jQuery UI or Bootstrap) theme
+  * This theme is to be used when neither jQuery UI css nor position utility is used as it positions the keyboard at the bottom of the browser windows using css.
+  * See [the demo here](http://jsfiddle.net/Mottie/jsh0377k/).
+
 ### Version 1.24.1 (8/5/2015)
 
 * Caret extension:
@@ -174,12 +195,3 @@ Only the latest changes will be shown below, see the wiki log to view older vers
 #### Extensions
 
 * Update typing extension to use meta keys properly; since the `name` attribute is no longer used.
-
-### Version 1.23.5 (7/8/2015)
-
-* Autocomplete: add autocomplete menu position options.
-* Language: add Spanish translations; [pull #368](https://github.com/Mottie/Keyboard/pull/368). Thanks [adrianfish](https://github.com/adrianfish)!
-
-### Version 1.23.4 (7/7/2015)
-
-* Destroy method removes extension bindings. Fixes [issue #366](https://github.com/Mottie/Keyboard/issues/366).
