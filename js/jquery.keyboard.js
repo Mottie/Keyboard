@@ -426,6 +426,7 @@ var $keyboard = $.keyboard = function(el, options){
 				}
 			}
 			base.$keyboard = $keyboard.builtLayouts[base.layout].$keyboard.clone();
+			base.$keyboard.data( 'keyboard', base );
 			if ( ( base.el.id || '' ) !== '' ) {
 				// add ID to keyboard for styling purposes
 				base.$keyboard.attr( 'id', base.el.id + $keyboard.css.idSuffix );
@@ -439,6 +440,7 @@ var $keyboard = $.keyboard = function(el, options){
 				}
 				base.$preview = base.$el.clone(false)
 					.removeAttr('id')
+					.data( 'keyboard', base )
 					.removeClass(kbcss.placeholder + ' ' + kbcss.input)
 					.addClass(kbcss.preview + ' ' + o.css.input)
 					.removeAttr('aria-haspopup')
