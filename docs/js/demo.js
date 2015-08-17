@@ -494,7 +494,7 @@ jQuery(function($) {
 		"Scala",
 		"Scheme"
 	];
-	$('.qwerty:eq(0)')
+	$('#text')
 		.autocomplete({
 			source: availableTags
 		})

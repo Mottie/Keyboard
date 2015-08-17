@@ -215,8 +215,8 @@
 
 }));
 
-/*! jQuery UI Virtual Keyboard Autocomplete v1.9.1 *//*
- * for Keyboard v1.18+ only (7/7/2015)
+/*! jQuery UI Virtual Keyboard Autocomplete v1.9.2 *//*
+ * for Keyboard v1.18+ only (8/17/2015)
  *
  * By Rob Garrison (aka Mottie & Fudgey)
  * Licensed under the MIT License
@@ -301,9 +301,11 @@ $.fn.addAutocomplete = function(options){
 				.bind('autocompleteopen' + base.autocomplete_namespace, function() {
 					if (base.hasAutocomplete){
 						// default to $keyboard if no position.of defined
-						o.position.of = o.position.of || base.$keyboard;
+						var position = $.extend( {}, o.position );
+						// refresh base.$keyboard (it gets destroyed after use); fixes #382
+						position.of = position.of || base.$keyboard;
 						// reposition autocomplete window next to the keyboard
-						base.$autocomplete.menu.element.position( o.position );
+						base.$autocomplete.menu.element.position( position );
 					}
 				})
 				.bind('autocompleteselect' + base.autocomplete_namespace, function(e, ui){
