@@ -88,6 +88,25 @@ Wiki: [Home](https://github.com/Mottie/Keyboard/wiki/Home) | [FAQ](https://githu
 
 Only the latest changes will be shown below, see the wiki log to view older versions.
 
+### Version 1.25.1 (8/17/2015)
+
+* Change `package.json` to use the new spdx license expression syntax.
+* Core
+  * Add keyboard data to the preview input & keyboard, so using any of these methods will return the keyboard object:
+
+    ```js
+    // original method
+    var keyboard = $('input').data('keyboard');
+    // find currently focused keyboard & get keyboard object from it
+    var keyboard = $('.ui-keyboard-has-focus').data('keyboard');
+    // find currently focused keyboard preview input (only works if usePreview is true)
+    var keyboard = $('.ui-keyboard-has-focus .ui-keyboard-preview').data('keyboard');
+    ```
+
+    Thanks to [@isfs](https://github.com/isfs) for these additions!
+
+* Autocomplete: correctly position autocomplete popup on subsequent keyboard openings. Fixes [issue #382](https://github.com/Mottie/Keyboard/issues/382).
+
 ### Version 1.25.0 (8/12/2015)
 
 * Core
@@ -115,83 +134,3 @@ Only the latest changes will be shown below, see the wiki log to view older vers
   * Avoid javascript errors when caret extension used without a preview window.
   * Caret is now removed when keyboard is hidden (when `userPreview` is `false`).
   * Thanks [@isfs](https://github.com/isfs); see [pull #376](https://github.com/Mottie/Keyboard/pull/376).
-
-### Version 1.24.0 (8/2/2015)
-
-#### Docs
-
-* Use protocol-relative urls
-* Add font-awesome to repository. Removes initial delay in page rendering.
-
-#### Core
-
-* Clear key now enables `{dec}` key. See [issue #370](https://github.com/Mottie/Keyboard/issues/370).
-* Add processName function
-  * Previously, if a `t` and `test` button were added to a layout
-
-      ```js
-      'normal' : [ 't test st\u03b1\u03b2\u03bexyz' ]
-      ```
-
-    both keys would end up with a class name of `ui-keyboard-t`, because only the first letter was used.
-
-  * The `processName` function now includes all characters, so the class name for the `test` button would become `ui-keyboard-test`.
-  * If there are any non-alphanumeric characters, the character code for each symbol would be used instead. So a `stαβξxyz` button would have a class name of `ui-keyboard-st-945-946-958xyz` (notice that there is not a `-` between the `958` and `xyz`, this is because alphanumeric characters don't get a `-` added in front.
-  * Dashes are left in as-is (e.g. `test-xx` stays as `test-xx`, or `test-αβ` becomes `test-945-946`).
-  * Underscores are left as-is when followed by an alphanumeric character (e.g. `test_xx` stays as `test_xx`). When followed by a non-alphanumeric character, the underscore is followed by a dash, then the decimal ascii value of the character (e.g. `test_\u03b1\u03b2` becomes `test_-945-946`).
-  * The result is this processed name is added after the virtual key prefix contained in `$.keyboard.css.keyPrefix` (default is `ui-keyboard-`). So a key named "test-αβ" in the layout will have a class name of `ui-keyboard-text-945-946`.
-  * The result of this function is saved to the virtual key's `data-name` attribute.
-* The `data-name` attribute replaces the `name` attribute on buttons
-  *  `data-name` contains the suffix of the virtual button class name (e.g. `text-945-946` from the last example)
-  * Modified `showSet` function to allow passing the keyset name instead of the key element (which looked for `el.name`)
-* The `lockInput` option now blocks backspace, enter, capslock and pasting from the physical keyboard.
-* Mapped keys
-  * Now work correctly without the mousewheel plugin. Fixes [issue #373](https://github.com/Mottie/Keyboard/issues/373).
-  * The mapped character will be now be run through the processName function and used in the virtual key class name
-* Add `buildKey` callback function: it allows the modification of the text of the virtual key, like add line breaks or modify the HTML.
-* Add `useWheel` option:
-  * Setting this option to `true` (default) allows using the mousewheel while hovering over a virtual key to show key content from other keyset layers.
-  * Setting it as `false` will now limit the amount of processing that occurs while hovering over a virtual key.
-* Add callback function to the `destroy` function
-
-    ```js
-    // no parameters
-    $('input')data('keyboard').destroy(function(){
-      alert('keyboard destroyed');
-    });
-    ```
-
-* Add `layout` parameter to `customHash` function as a start to adding QUnit testing.
-
-#### Action keys
-
-* Add zero-width keys &amp; non-breaking space as action keys:
-  * `{NBSP}` - non-breaking space.
-  * `{ZWNJ}` - zero-width non-joiner.
-  * `{ZWJ}`  - zero-width joiner.
-  * `{LRM}`  - left-to-right mark.
-  * `{RLM}`  - right-to-left mark.
-* `keyaction` definitions can now be set as a string instead of a function. The following two functions are *equivalent*:
-
-    ```js
-    // new method
-    $.keyboard.keyaction.kirby = '<('-'<) ^('-')^ (>'-')>';
-    // original/alternative method
-    $.keyboard.keyaction.kirby = function( base ) {
-      base.insertText('<('-'<) ^('-')^ (>'-')>');
-    }
-    ```
-
-#### Caret
-
-* Use `$.keyboard.caret(#)` where `#` sets the start & end of the caret (no text is selected).
-* Use `$.keyboard.caret('start')` or `$.keyboard.caret(0)` to move the caret to the beginning.
-* Use `$.keyboard.caret('end')` (or, really any string that isn't `'start'`) to move the caret to the end.
-
-#### Language
-
-* Languages: Add native & English name to language value.
-
-#### Extensions
-
-* Update typing extension to use meta keys properly; since the `name` attribute is no longer used.
