@@ -102,7 +102,8 @@
 					div = base.caret_$div[0];
 
 				style = div.style;
-				computed = window.getComputedStyle ? getComputedStyle( element ) : element.currentStyle;
+				// getComputedStyle with null - fixes #384
+				computed = window.getComputedStyle ? getComputedStyle( element, null ) : element.currentStyle;
 				// get caret position based on text-direction
 				pos = $keyboard.caret( base.$preview );
 				position = Math[ computed.direction === 'ltr' ? 'max' : 'min' ]( pos.start, pos.end );
