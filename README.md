@@ -88,6 +88,11 @@ Wiki: [Home](https://github.com/Mottie/Keyboard/wiki/Home) | [FAQ](https://githu
 
 Only the latest changes will be shown below, see the wiki log to view older versions.
 
+### Version 1.25.2 (8/18/2015)
+
+* Caret extension:
+  * Include `null` when using `getComputedStyle` to prevent errors in older browsers. Fixes [issue #384](https://github.com/Mottie/Keyboard/issues/384).
+
 ### Version 1.25.1 (8/17/2015)
 
 * Change `package.json` to use the new spdx license expression syntax.
@@ -127,10 +132,3 @@ Only the latest changes will be shown below, see the wiki log to view older vers
   * Add a basic white, non-library (not jQuery UI or Bootstrap) theme
   * This theme is to be used when neither jQuery UI css nor position utility is used as it positions the keyboard at the bottom of the browser windows using css.
   * See [the demo here](http://jsfiddle.net/Mottie/jsh0377k/).
-
-### Version 1.24.1 (8/5/2015)
-
-* Caret extension:
-  * Avoid javascript errors when caret extension used without a preview window.
-  * Caret is now removed when keyboard is hidden (when `userPreview` is `false`).
-  * Thanks [@isfs](https://github.com/isfs); see [pull #376](https://github.com/Mottie/Keyboard/pull/376).
