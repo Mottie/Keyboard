@@ -98,6 +98,7 @@
 			base.findCaretPos = function() {
 				var style, computed, margin, pos, position, txt,
 					element = base.preview,
+					offset = base.$preview.position(),
 					isInput = element.nodeName === 'INPUT',
 					div = base.caret_$div[0];
 
@@ -156,8 +157,8 @@
 				style = Math.round( parseFloat( base.$preview.css( 'font-size' ) ) + margin * 2 ) + o.adjustHt;
 
 				base.$caret.css({
-					top: element.offsetTop - element.scrollTop + base.caretPos.top - margin,
-					left: element.offsetLeft - element.scrollLeft + base.caretPos.left,
+					top: offset.top - element.scrollTop + base.caretPos.top - margin,
+					left: offset.left - element.scrollLeft + base.caretPos.left,
 					height: style
 				});
 				txt = element.value.substring( position, position + o.charIndex ).replace(/\s/, '\xa0' ) || '\xa0';
