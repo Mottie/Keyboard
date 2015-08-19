@@ -88,6 +88,12 @@ Wiki: [Home](https://github.com/Mottie/Keyboard/wiki/Home) | [FAQ](https://githu
 
 Only the latest changes will be shown below, see the wiki log to view older versions.
 
+### Version 1.25.3 (8/19/2015)
+
+* Caret extension:
+  * Use jQuery `position()` method instead of DOM offset. Merged in [pull #383](https://github.com/Mottie/Keyboard/pull/383), thanks [@isfs](https://github.com/isfs)!
+  * Prevent javascript error while using physical keyboard tab. Fixes [issue #385](https://github.com/Mottie/Keyboard/issues/385).
+
 ### Version 1.25.2 (8/18/2015)
 
 * Caret extension:
