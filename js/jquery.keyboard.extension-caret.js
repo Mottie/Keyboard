@@ -96,6 +96,7 @@
 
 			// getCaretCoordinatesFn = function (element, position, recalculate) {
 			base.findCaretPos = function() {
+				if ( !base.caret_$div ) { return; }
 				var style, computed, margin, pos, position, txt, span, offset,
 					element = base.preview,
 					isInput = element.nodeName === 'INPUT',
