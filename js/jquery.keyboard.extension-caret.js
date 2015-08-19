@@ -96,9 +96,8 @@
 
 			// getCaretCoordinatesFn = function (element, position, recalculate) {
 			base.findCaretPos = function() {
-				var style, computed, margin, pos, position, txt,
+				var style, computed, margin, pos, position, txt, span, offset,
 					element = base.preview,
-					offset = base.$preview.position(),
 					isInput = element.nodeName === 'INPUT',
 					div = base.caret_$div[0];
 
@@ -137,7 +136,7 @@
 					div.textContent = div.textContent.replace( /\x20/g, '\xa0' );
 				}
 
-				var span = document.createElement( 'span' );
+				span = document.createElement( 'span' );
 				// Wrapping must be replicated *exactly*, including when a long word gets
 				// onto the next line, with whitespace at the end of the line before (#7).
 				// The *only* reliable way to do that is to copy the *entire* rest of the
@@ -147,14 +146,16 @@
 				span.textContent = element.value.substring( position ) || '.';
 				div.appendChild( span );
 
+				offset = $(span).position();
 				base.caretPos = {
-					top: span.offsetTop + parseInt( computed.borderTopWidth, 10 ) + o.offsetY,
-					left: span.offsetLeft + parseInt( computed.borderLeftWidth, 10 ) + o.offsetX
+					top: offset.top + parseInt( computed.borderTopWidth, 10 ) + o.offsetY,
+					left: offset.left + parseInt( computed.borderLeftWidth, 10 ) + o.offsetX
 				};
 
 				// make caret height = font-size + any margin-top x2 added by the css
 				margin = parseInt( base.$caret.css( 'margin-top' ), 10 );
 				style = Math.round( parseFloat( base.$preview.css( 'font-size' ) ) + margin * 2 ) + o.adjustHt;
+				offset = base.$preview.position();
 
 				base.$caret.css({
 					top: offset.top - element.scrollTop + base.caretPos.top - margin,
