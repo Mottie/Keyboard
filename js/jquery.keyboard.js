@@ -1010,6 +1010,8 @@ var $keyboard = $.keyboard = function(el, options){
 	base.showSet = function( name ) {
 		o = base.options; // refresh options
 		var kbcss = $keyboard.css,
+			prefix = '.' + kbcss.keyPrefix,
+			active = o.css.buttonActive,
 			key = '',
 			toShow = (base.shiftActive ? 1 : 0) + (base.altActive ? 2 : 0);
 		if (!base.shiftActive) { base.capsLock = false; }
@@ -1043,14 +1045,20 @@ var $keyboard = $.keyboard = function(el, options){
 			return;
 		}
 		base.$keyboard
-			.find('.' + kbcss.keyPrefix + 'alt,.' + kbcss.keyPrefix + 'shift,.' + kbcss.keyAction + '[class*=meta]')
-				.removeClass(o.css.buttonActive).end()
-			.find('.' + kbcss.keyPrefix + 'alt').toggleClass( o.css.buttonActive, base.altActive ).end()
-			.find('.' + kbcss.keyPrefix + 'shift').toggleClass( o.css.buttonActive, base.shiftActive ).end()
-			.find('.' + kbcss.keyPrefix + 'lock').toggleClass( o.css.buttonActive, base.capsLock ).end()
-			.find('.' + kbcss.keySet).hide().end()
-			.find('.' + kbcss.keySet + key + base.rows[toShow]).show().end()
-			.find('.' + kbcss.keyAction + '.' + kbcss.keyPrefix + key).addClass(o.css.buttonActive);
+			.find( prefix + 'alt,' + prefix + 'shift,.' + kbcss.keyAction + '[class*=meta]' )
+				.removeClass( active ).end()
+			.find( prefix + 'alt' ).toggleClass( active, base.altActive ).end()
+			.find( prefix + 'shift' ).toggleClass( active, base.shiftActive ).end()
+			.find( prefix + 'lock' ).toggleClass( active, base.capsLock ).end()
+			.find( '.' + kbcss.keySet ).hide().end()
+			.find( '.' + kbcss.keySet + key + base.rows[toShow] ).show().end()
+			.find( '.' + kbcss.keyAction + prefix + key ).addClass( active );
+		if ( base.metaActive ) {
+			base.$keyboard.find( prefix + base.metaActive )
+				// base.metaActive contains the string "meta#" or false
+				// without the !== false, jQuery UI tries to transition the classes
+				.toggleClass( active, base.metaActive !== false );
+		}
 		base.last.keyset = [ base.shiftActive, base.altActive, base.metaActive ];
 		base.$el.trigger( $keyboard.events.kbKeysetChange, [ base, base.el ] );
 	};
