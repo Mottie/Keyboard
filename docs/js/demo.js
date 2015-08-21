@@ -124,6 +124,8 @@ jQuery(function($) {
 	// Custom: Meta Sets
 	// ********************
 	$('#meta').keyboard({
+		// keyboard will open showing last key set used
+		resetDefault: false,
 		layout : 'custom',
 		display: {
 			'alt'    : 'AltGr:It\'s all Greek to me',

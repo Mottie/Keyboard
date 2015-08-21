@@ -64,7 +64,8 @@ button.btn-default:active {
 button.btn-default:active:hover {
  background-color: #3276B1;
 }
-
+/* override bootstrap code highlight */
+code { background: #222; }
 #showcode {
  display: none;
  overflow: auto;

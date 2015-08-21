@@ -297,8 +297,8 @@ var $keyboard = $.keyboard = function(el, options){
 
 		if (o.resetDefault) {
 			base.shiftActive = base.altActive = base.metaActive = false;
-			base.showSet();
 		}
+		base.showSet();
 
 		// beforeVisible event
 		base.$el.trigger( $keyboard.events.kbBeforeVisible, [ base, base.el ] );
@@ -2204,7 +2204,7 @@ var $keyboard = $.keyboard = function(el, options){
 		repeatRate   : 20,
 
 		// resets the keyboard to the default keyset when visible
-		resetDefault : false,
+		resetDefault : true,
 
 		// Event (namespaced) on the input to reveal the keyboard. To disable it, just set it to ''.
 		openOn       : 'focus',

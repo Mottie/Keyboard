@@ -442,7 +442,8 @@ $('#inter-type').click(function(){
 		<textarea id="meta"></textarea>
 		<br>
 		<small>
-			* <a href="//github.com/Mottie/Keyboard/wiki/Setup#typing">Typing</a> extension.
+			* <a href="//github.com/Mottie/Keyboard/wiki/Setup#typing">Typing</a> extension.<br>
+			* Keyboard opens showing last keyset.
 		</small>
 		<div class="code ui-corner-all">
 			<h4>HTML</h4>
@@ -450,6 +451,8 @@ $('#inter-type').click(function(){
 			<h4>Script</h4>
 			<pre class="prettyprint lang-js">$('#meta')
 	.keyboard({
+		// keyboard will open showing last key set used
+		resetDefault: false,
 		layout: 'custom',
 		display: {
 			'alt'    : 'AltGr:It\'s all Greek to me',
