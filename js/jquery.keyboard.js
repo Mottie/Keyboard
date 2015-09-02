@@ -51,7 +51,8 @@ var $keyboard = $.keyboard = function(el, options){
 
 	base.init = function(){
 		var position,
-			kbcss = $keyboard.css;
+			kbcss = $keyboard.css,
+			close;
 		base.settings = options || {};
 		// shallow copy position to prevent performance issues; see #357
 		if ( options && options.position ) {
@@ -124,7 +125,7 @@ var $keyboard = $.keyboard = function(el, options){
 
 		// Close with esc key & clicking outside
 		if (o.alwaysOpen) { o.stayOpen = true; }
-		$(document).bind('mousedown keyup touchstart checkkeyboard '.split(' ').join(base.namespace + ' '), function( e ) {
+		close = function( e ) {
 			if (base.opening) { return; }
 			base.escClose(e);
 			var $target = $(e.target);
@@ -136,7 +137,11 @@ var $keyboard = $.keyboard = function(el, options){
 					kb.focusOn();
 				}
 			}
-		});
+		};
+		$(document).bind('mousedown keyup touchstart checkkeyboard '.split(' ').join(base.namespace + ' '),close);
+		if (base.el.ownerDocument !== document) {
+			$(base.el.ownerDocument).bind('mousedown keyup touchstart checkkeyboard '.split(' ').join(base.namespace + ' '),close);
+		}
 
 		// Display keyboard on focus
 		base.$el
@@ -1666,6 +1671,9 @@ var $keyboard = $.keyboard = function(el, options){
 
 	base.removeBindings = function( namespace ) {
 		$(document).unbind( namespace );
+		if ( base.el.ownerDocument !== document ) {
+			$( base.el.ownerDocument ).unbind( namespace );
+		}
 		$(window).unbind( namespace );
 		base.$el.unbind( namespace );
 	};
