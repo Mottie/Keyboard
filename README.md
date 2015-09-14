@@ -88,6 +88,13 @@ Wiki: [Home](https://github.com/Mottie/Keyboard/wiki/Home) | [FAQ](https://githu
 
 Only the latest changes will be shown below, see the wiki log to view older versions.
 
+### Version 1.25.4 (9/14/2015)
+
+* Core:
+  * `resetDefault` option now behaves properly; set default to `true`. Fixes [issue #387](https://github.com/Mottie/Keyboard/issues/387).
+  * Active meta keys get a `css.buttonActive` class name, again
+* Typing: Update for modified `data-action` from v1.24.0. Fixes [issue #391](https://github.com/Mottie/Keyboard/issues/391).
+
 ### Version 1.25.3 (8/19/2015)
 
 * Caret extension:
@@ -98,43 +105,3 @@ Only the latest changes will be shown below, see the wiki log to view older vers
 
 * Caret extension:
   * Include `null` when using `getComputedStyle` to prevent errors in older browsers. Fixes [issue #384](https://github.com/Mottie/Keyboard/issues/384).
-
-### Version 1.25.1 (8/17/2015)
-
-* Change `package.json` to use the new spdx license expression syntax.
-* Core
-  * Add keyboard data to the preview input & keyboard, so using any of these methods will return the keyboard object:
-
-    ```js
-    // original method
-    var keyboard = $('input').data('keyboard');
-    // find currently focused keyboard & get keyboard object from it
-    var keyboard = $('.ui-keyboard-has-focus').data('keyboard');
-    // find currently focused keyboard preview input (only works if usePreview is true)
-    var keyboard = $('.ui-keyboard-has-focus .ui-keyboard-preview').data('keyboard');
-    ```
-
-    Thanks to [@isfs](https://github.com/isfs) for these additions!
-
-* Autocomplete: correctly position autocomplete popup on subsequent keyboard openings. Fixes [issue #382](https://github.com/Mottie/Keyboard/issues/382).
-
-### Version 1.25.0 (8/12/2015)
-
-* Core
-  * Don't stop repeating when touch moves within the same key.
-  * Add `noFocus` option to avoid focusing the input; use with caution for old IE!
-  * Ensure `lockInput` is effective when toggling.
-  * Add `ignoreEsc` option to prevent escape from closing the keyboard.
-  * See [pull #377](https://github.com/Mottie/Keyboard/pull/377); thanks [@isfs](https://github.com/isfs) for all the above changes!
-  * Some more tweaks to the above code.
-  * Add `popup` css option (in addition to `container` css option; they both add to the same element) to allow for adding theme class names more easily.
-  * Adjust css to include "ui-keyboard-dark-theme" to use brighter icons.
-  * Fix `&#160;` (a.k.a. `&nbsp;`) to prevent it from showing up in the space bar.
-* Caret extension
-  * Ensure caret is properly initialised and visible for an `alwaysOpen` keyboard.
-  * Make caret visible immediately on reveal, not just when another event occurs.
-  * See [pull #377](https://github.com/Mottie/Keyboard/pull/377); thanks [@isfs](https://github.com/isfs) for all the above changes!
-* Theme
-  * Add a basic white, non-library (not jQuery UI or Bootstrap) theme
-  * This theme is to be used when neither jQuery UI css nor position utility is used as it positions the keyboard at the bottom of the browser windows using css.
-  * See [the demo here](http://jsfiddle.net/Mottie/jsh0377k/).
