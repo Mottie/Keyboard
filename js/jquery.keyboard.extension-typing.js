@@ -1,5 +1,5 @@
-/*! jQuery UI Virtual Keyboard Typing Simulator v1.9.1 *//*
- * for Keyboard v1.18+ only (7/7/2015)
+/*! jQuery UI Virtual Keyboard Typing Simulator v1.10.0 *//*
+ * for Keyboard v1.18+ only (9/14/2015)
  *
  * By Rob Garrison (aka Mottie & Fudgey)
  * Licensed under the MIT License
@@ -214,7 +214,7 @@
 						m = String.fromCharCode(e.charCode || e.which);
 						tar = (mappedKeys.hasOwnProperty(m)) ?
 							'.' + kbcss.keyButton + '[data-action="' + mappedKeys[m]  + '"]' :
-							'.' + kbcss.keyPrefix + (e.charCode || e.which);
+							'.' + kbcss.keyPrefix + m;
 					}
 				}
 				// find key
