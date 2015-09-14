@@ -1,5 +1,7 @@
 Originally posted by Jeremy Satterfield in his [blog](http://jsatt.blogspot.com/2010/01/on-screen-keyboard-widget-using-jquery.html), [jQuery plugins](http://plugins.jquery.com/project/virtual_keyboard) and on [Snipplr](http://snipplr.com/view/21577/virtual-keyboard-widget/). Currently maintained by [Mottie](https://github.com/Mottie/Keyboard).
 
+[![Bower Version][bower-image]][bower-url] [![NPM Version][npm-image]][npm-url] [![devDependency Status][david-dev-image]][david-dev-url]
+
 ## Features ([Demo](http://mottie.github.com/Keyboard/))
 
 * An on-screen virtual keyboard embedded within the browser window which will popup when a specified entry field is focused.
@@ -83,6 +85,13 @@ Wiki: [Home](https://github.com/Mottie/Keyboard/wiki/Home) | [FAQ](https://githu
 * Keyboard code: [MIT License](http://www.opensource.org/licenses/mit-license.php) for all versions.
 * Caret code by C. F., Wong (Cloudgen): [MIT License](http://www.opensource.org/licenses/mit-license.php)
 * Layouts files: Most are under [WTFPL](http://sam.zoy.org/wtfpl/), unless the file itself specifies otherwise.
+
+[npm-url]: https://npmjs.org/package/virtual-keyboard
+[npm-image]: https://img.shields.io/npm/v/virtual-keyboard.svg
+[david-dev-url]: https://david-dm.org/Mottie/keyboard#info=devDependencies
+[david-dev-image]: https://img.shields.io/david/dev/Mottie/keyboard.svg
+[bower-url]: http://bower.io/search/?q=jquery.keyboard
+[bower-image]: https://img.shields.io/bower/v/jquery.keyboard.svg
 
 ## Change Log
 
