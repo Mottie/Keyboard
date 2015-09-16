@@ -89,7 +89,7 @@ Wiki: [Home](https://github.com/Mottie/Keyboard/wiki/Home) | [FAQ](https://githu
 [npm-url]: https://npmjs.org/package/virtual-keyboard
 [npm-image]: https://img.shields.io/npm/v/virtual-keyboard.svg
 [david-dev-url]: https://david-dm.org/Mottie/keyboard#info=devDependencies
-[david-dev-image]: https://img.shields.io/david/dev/Mottie/keyboard.svg
+[david-dev-image]: https://david-dm.org/Mottie/keyboard.svg
 [bower-url]: http://bower.io/search/?q=keyboard
 [bower-image]: https://img.shields.io/bower/v/keyboard.svg
 
