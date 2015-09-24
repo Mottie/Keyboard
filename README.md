@@ -97,6 +97,11 @@ Wiki: [Home](https://github.com/Mottie/Keyboard/wiki/Home) | [FAQ](https://githu
 
 Only the latest changes will be shown below, see the wiki log to view older versions.
 
+### Version 1.25.6 (9/24/2015)
+
+* Caret: Fix caret when currently focused keyboard is refocused with no preview window. See [pull #394](https://github.com/Mottie/Keyboard/pull/394), thanks [@isfs](https://github.com/isfs)!
+* Grunt: update dependencies, again.
+
 ### Version 1.25.5 (9/14/2015)
 
 * Grunt: update dependencies.
@@ -107,14 +112,3 @@ Only the latest changes will be shown below, see the wiki log to view older vers
   * `resetDefault` option now behaves properly; set default to `true`. Fixes [issue #387](https://github.com/Mottie/Keyboard/issues/387).
   * Active meta keys get a `css.buttonActive` class name, again
 * Typing: Update for modified `data-action` from v1.24.0. Fixes [issue #391](https://github.com/Mottie/Keyboard/issues/391).
-
-### Version 1.25.3 (8/19/2015)
-
-* Caret extension:
-  * Use jQuery `position()` method instead of DOM offset. Merged in [pull #383](https://github.com/Mottie/Keyboard/pull/383), thanks [@isfs](https://github.com/isfs)!
-  * Prevent javascript error while using physical keyboard tab. Fixes [issue #385](https://github.com/Mottie/Keyboard/issues/385).
-
-### Version 1.25.2 (8/18/2015)
-
-* Caret extension:
-  * Include `null` when using `getComputedStyle` to prevent errors in older browsers. Fixes [issue #384](https://github.com/Mottie/Keyboard/issues/384).

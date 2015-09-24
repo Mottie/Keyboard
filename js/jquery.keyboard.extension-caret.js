@@ -1,5 +1,5 @@
-/*! jQuery UI Virtual Keyboard Virtual Caret v1.1.2 (beta) *//*
- * for Keyboard v1.18+ only (8/19/2015)
+/*! jQuery UI Virtual Keyboard Virtual Caret v1.1.3 (beta) *//*
+ * for Keyboard v1.18+ only (9/24/2015)
  * modified from https://github.com/component/textarea-caret-position
  *
  * By Rob Garrison (aka Mottie)
@@ -78,7 +78,7 @@
 					.appendTo( base.$keyboard );
 
 				// remove caret, just-in-case
-				if (base.$caret) base.$caret.remove();
+				if (base.$caret) { base.$caret.remove(); }
 				base.$caret = $( '<div class="ui-keyboard-caret ' + o.caretClass + '" style="position:absolute;">' )
 					.insertAfter( base.$preview );
 
