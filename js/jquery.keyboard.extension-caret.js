@@ -78,7 +78,7 @@
 					.appendTo( base.$keyboard );
 
 				// remove caret, just-in-case
-				base.$keyboard.find('.ui-keyboard-caret').remove();
+				if (base.$caret) base.$caret.remove();
 				base.$caret = $( '<div class="ui-keyboard-caret ' + o.caretClass + '" style="position:absolute;">' )
 					.insertAfter( base.$preview );
 
@@ -181,6 +181,7 @@
 					var events = 'keyup keypress mouseup mouseleave '.split( ' ' ).join( namespace + ' ' );
 					base.$preview.unbind( events );
 					base.$caret.remove();
+					base.$caret = null;
 					base.caret_$div = null;
 				});
 
