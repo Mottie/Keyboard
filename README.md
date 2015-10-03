@@ -36,6 +36,7 @@ Originally posted by Jeremy Satterfield in his [blog](http://jsatt.blogspot.com/
 
 * Install using [bower](https://github.com/bower/bower) via `bower install keyboard`.
 * Install using [npm](https://www.npmjs.com/) via `npm install virtual-keyboard`.
+* [Use with AngularJs](https://github.com/antonio-spinelli/ng-virtual-keyboard) via `bower install ng-virtual-keyboard`.
 
 ## Documentation
 
