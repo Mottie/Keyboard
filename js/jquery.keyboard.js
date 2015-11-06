@@ -535,12 +535,16 @@ var $keyboard = $.keyboard = function(el, options){
 			}
 
 			if ( isTextarea ) {
+				// get current vertical position of scrollbar
+				var scrollTop = $(base.el).scrollTop();
 				// need the textarea scrollHeight, so set the clone textarea height to be the line height
 				base.$previewCopy
 					.height( base.lineHeight )
 					.val( value );
 				// set scrollTop for Textarea
 				base.preview.scrollTop = base.lineHeight * ( Math.floor( base.$previewCopy[0].scrollHeight / base.lineHeight ) - 1 );
+				// reset scrollbar position to original
+				$(base.preview).scrollTop(scrollTop);
 			} else {
 				// add non-breaking spaces
 				base.$previewCopy.val( value.replace(/\s/g, '\xa0') );
