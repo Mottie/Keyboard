@@ -412,9 +412,10 @@ var $keyboard = $.keyboard = function(el, options){
 
 	base.startup = function(){
 		var kbcss = $keyboard.css;
-		// ensure base.$preview is defined
-		base.$preview = base.$el;
-
+		// ensure base.$preview is defined; but don't overwrite it if keyboard is always visible
+		if ( !( o.alwaysOpen && base.$preview ) ) {
+			base.$preview = base.$el;
+		}
 		if ( !(base.$keyboard && base.$keyboard.length) ) {
 			// custom layout - create a unique layout name based on the hash
 			if (o.layout === 'custom') { o.layoutHash = 'custom' + base.customHash(); }
