@@ -614,7 +614,7 @@ var $keyboard = $.keyboard = function(el, options){
 					// allow navigation keys to work - Chrome doesn't fire a keypress event (8 = bksp)
 					if ( (e.which === 8 || e.which === 0) && $.inArray( e.keyCode, base.alwaysAllowed ) ) { return; }
 					// quick key check
-					if ($.inArray(k, layout.acceptedKeys) === -1) {
+					if ($.inArray(str, layout.acceptedKeys) === -1) {
 						e.preventDefault();
 						// copy event object in case e.preventDefault() breaks when changing the type
 						evt = $.extend({}, e);
