@@ -1467,7 +1467,7 @@ var $keyboard = $.keyboard = function(el, options){
 				mappedKeys   : {},
 				acceptedKeys : []
 			},
-			acceptedKeys = layout.acceptedKeys = [],
+			acceptedKeys = layout.acceptedKeys = o.restrictInclude ? ( '' + o.restrictInclude ).split( /\s+/ ) || [] : [],
 			// using $layout temporarily to hold keyboard popup classnames
 			$layout = kbcss.keyboard + ' ' + o.css.popup + ' ' + o.css.container +
 				( o.alwaysOpen ? ' ' + kbcss.alwaysOpen : '' ),
@@ -2160,7 +2160,9 @@ var $keyboard = $.keyboard = function(el, options){
 		lockInput    : false,
 
 		// Prevent keys not in the displayed keyboard from being typed in
-		restrictInput: false,
+		restrictInput : false,
+		// Additional allowed characters while restrictInput is true
+		restrictInclude : '', // e.g. 'a b foo \ud83d\ude38'
 
 		// Check input against validate function, if valid the accept button gets a class name of
 		// 'ui-keyboard-valid-input'. If invalid, the accept button gets a class name of
