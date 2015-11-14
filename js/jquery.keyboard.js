@@ -1821,7 +1821,8 @@ var $keyboard = $.keyboard = function(el, options){
 			// pressing virtual enter button inside of a textarea - add a carriage return
 			// e.target is span when clicking on text and button at other times
 			if (tag === 'TEXTAREA' && $(e.target).closest('button').length) {
-				base.insertText(' \n'); // IE8 fix (space + \n) - fixes #71 thanks Blookie!
+				// IE8 fix (space + \n) - fixes #71 thanks Blookie!
+				base.insertText( ( $keyboard.msie ? ' ' : '' ) + '\n' );
 			}
 		},
 		// caps lock key
