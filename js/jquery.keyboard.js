@@ -196,10 +196,16 @@ var $keyboard = $.keyboard = function(el, options){
 	};
 
 	base.setCurrent = function(){
-		var kbcss = $keyboard.css;
+		var kbcss = $keyboard.css,
+			// close any "isCurrent" keyboard (just in case they are always open)
+			$current = $( '.' + kbcss.isCurrent ),
+			kb = $current.data( 'keyboard' );
+		if ( !$.isEmptyObject( kb ) ) {
+			kb.close( kb.options.autoAccept ? 'true' : false );
+		}
+		$current.removeClass( kbcss.isCurrent );
 		// ui-keyboard-has-focus is applied in case multiple keyboards have alwaysOpen = true and are stacked
-		$('.' + kbcss.hasFocus).removeClass(kbcss.hasFocus);
-		$('.' + kbcss.isCurrent).removeClass(kbcss.isCurrent);
+		$( '.' + kbcss.hasFocus ).removeClass( kbcss.hasFocus );
 
 		base.$el.addClass(kbcss.isCurrent);
 		base.$keyboard.addClass(kbcss.hasFocus);
@@ -242,9 +248,6 @@ var $keyboard = $.keyboard = function(el, options){
 		if (!base.isVisible()) {
 			clearTimeout(base.timer);
 			base.reveal();
-		}
-		if (o.alwaysOpen) {
-			base.setCurrent();
 		}
 	};
 
@@ -689,6 +692,10 @@ var $keyboard = $.keyboard = function(el, options){
 				}
 			})
 			.bind('keydown' + base.namespace, function(e){
+				// ensure alwaysOpen keyboards are made active
+				if ( o.alwaysOpen && !base.isCurrent() ) {
+					base.reveal();
+				}
 				// prevent tab key from leaving the preview window
 				if ( e.which === 9 ) {
 					// allow tab to pass through - tab to next input/shift-tab for prev
@@ -816,6 +823,9 @@ var $keyboard = $.keyboard = function(el, options){
 			})
 			// Change hover class and tooltip
 			.bind('mouseenter mouseleave touchstart '.split(' ').join(base.namespace + ' '), function( e ) {
+				if ( o.alwaysOpen && e.type !== 'mouseleave' && !base.isCurrent() ) {
+					base.reveal();
+				}
 				if (!base.isCurrent()) { return; }
 				var $keys, txt,
 					last = base.last,
@@ -1262,20 +1272,19 @@ var $keyboard = $.keyboard = function(el, options){
 			if ( base ) {
 				// add close event time
 				base.last.eventTime = new Date().getTime();
-
-				if (o.openOn) {
-					// rebind input focus - delayed to fix IE issue #72
-					base.timer = setTimeout(function(){
-						// make sure keyboard isn't destroyed
-						// Check if base exists, this is a case when destroy is called, before timers have fired
-						if ( base && base.el.active ) {
-							base.$el.bind( o.openOn + base.namespace, function(){ base.focusOn(); });
-							// remove focus from element (needed for IE since blur doesn't seem to work)
-							if ($(':focus')[0] === base.el) { base.$el.blur(); }
-						}
-					}, 500);
-				}
 				if (!o.alwaysOpen && base.$keyboard) {
+					if (o.openOn) {
+						// rebind input focus - delayed to fix IE issue #72
+						base.timer = setTimeout(function(){
+							// make sure keyboard isn't destroyed
+							// Check if base exists, this is a case when destroy is called, before timers have fired
+							if ( base && base.el.active ) {
+								base.$el.bind( o.openOn + base.namespace, function(){ base.focusOn(); });
+								// remove focus from element (needed for IE since blur doesn't seem to work)
+								if ($(':focus')[0] === base.el) { base.$el.blur(); }
+							}
+						}, 500);
+					}
 					// free up memory
 					base.$keyboard.remove();
 					base.$keyboard = [];
@@ -2320,7 +2329,8 @@ var $keyboard = $.keyboard = function(el, options){
 			return {};
 		}
 		var start, end, txt, pos,
-			noFocus = $el.getkeyboard() && $el.getkeyboard().options.noFocus;
+			kb = $el.data( 'keyboard' ),
+			noFocus = kb && kb.options.noFocus;
 		if (!noFocus) { $el.focus(); }
 		// set caret position
 		if (typeof param1 !== 'undefined') {
