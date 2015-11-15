@@ -768,7 +768,7 @@ var $keyboard = $.keyboard = function(el, options){
 					// get keys from other layers/keysets (shift, alt, meta, etc) that line up by data-position
 					$keys = last.wheel_$Keys;
 					// target mousewheel selected key
-					$key = $keys ? $keys.eq( last.wheelIndex ) : $key;
+					$key = $keys && last.wheelIndex > -1 ? $keys.eq( last.wheelIndex ) : $key;
 				}
 				action = $key.attr( 'data-action' );
 				// don't split colon key. Fixes #264
