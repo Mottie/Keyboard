@@ -282,7 +282,7 @@ var $keyboard = $.keyboard = function(el, options){
 
 		// Unbind focus to prevent recursion - openOn may be empty if keyboard is opened externally
 		if (o.openOn) {
-			base.$el.unbind( o.openOn + base.namespace );
+			base.$el.unbind( $.trim( ( o.openOn + ' ' ).split( /\s+/ ).join( base.namespace + ' ' ) ) );
 		}
 
 		// build keyboard if it doesn't exist; or attach keyboard if it was removed, but not cleared
