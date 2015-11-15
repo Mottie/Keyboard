@@ -1279,6 +1279,7 @@ var $keyboard = $.keyboard = function(el, options){
 					// free up memory
 					base.$keyboard.remove();
 					base.$keyboard = [];
+					base.$previewCopy = null;
 				}
 				if (!base.watermark && base.el.value === '' && base.inPlaceholder !== '') {
 					base.$el
