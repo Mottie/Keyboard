@@ -90,13 +90,26 @@ Wiki: [Home](https://github.com/Mottie/Keyboard/wiki/Home) | [FAQ](https://githu
 [npm-url]: https://npmjs.org/package/virtual-keyboard
 [npm-image]: https://img.shields.io/npm/v/virtual-keyboard.svg
 [david-dev-url]: https://david-dm.org/Mottie/keyboard#info=devDependencies
-[david-dev-image]: https://david-dm.org/Mottie/keyboard.svg
+[david-dev-image]: https://david-dm.org/Mottie/keyboard/dev-status.svg
 [bower-url]: http://bower.io/search/?q=keyboard
 [bower-image]: https://img.shields.io/bower/v/keyboard.svg
 
 ## Change Log
 
 Only the latest changes will be shown below, see the wiki log to view older versions.
+
+### Version 1.25.7 (11/15/2015)
+
+* Readme: Add link to ng-virtual-keyboard for Angular JS.
+* `alwaysOpen` changes:
+  * Do not redefine stored preview object when alwaysOpen.
+  * `alwaysOpen` keyboards are now activated without using focus. Fixes [issue #395](https://github.com/Mottie/Keyboard/issues/395).
+* Restricted input compare to string. Fixes [issue #399](https://github.com/Mottie/Keyboard/issues/399).
+* Add `restrictInclude` option & update hex demo.
+* Do not include space with enter unless using old IE.
+* Mousewheel tweak, possible fix for [issue #379](https://github.com/Mottie/Keyboard/issues/379).
+* Clear clone variable on keyboard close. Fixes [issue #397](https://github.com/Mottie/Keyboard/issues/397) & [pull #398](https://github.com/Mottie/Keyboard/pull/398).
+* `openOn` option now allows multiple events.
 
 ### Version 1.25.6 (9/24/2015)
 
@@ -106,10 +119,3 @@ Only the latest changes will be shown below, see the wiki log to view older vers
 ### Version 1.25.5 (9/14/2015)
 
 * Grunt: update dependencies.
-
-### Version 1.25.4 (9/14/2015)
-
-* Core:
-  * `resetDefault` option now behaves properly; set default to `true`. Fixes [issue #387](https://github.com/Mottie/Keyboard/issues/387).
-  * Active meta keys get a `css.buttonActive` class name, again
-* Typing: Update for modified `data-action` from v1.24.0. Fixes [issue #391](https://github.com/Mottie/Keyboard/issues/391).

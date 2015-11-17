@@ -1,4 +1,4 @@
-/*! jQuery UI Virtual Keyboard v1.25.6 *//*
+/*! jQuery UI Virtual Keyboard v1.25.7 *//*
 
 Author: Jeremy Satterfield
 Modified: Rob Garrison (Mottie on github)
@@ -40,7 +40,7 @@ Setup/Usage:
 var $keyboard = $.keyboard = function(el, options){
 	var base = this, o;
 
-	base.version = '1.25.6';
+	base.version = '1.25.7';
 
 	// Access to jQuery and DOM versions of element
 	base.$el = $(el);
@@ -196,10 +196,16 @@ var $keyboard = $.keyboard = function(el, options){
 	};
 
 	base.setCurrent = function(){
-		var kbcss = $keyboard.css;
+		var kbcss = $keyboard.css,
+			// close any "isCurrent" keyboard (just in case they are always open)
+			$current = $( '.' + kbcss.isCurrent ),
+			kb = $current.data( 'keyboard' );
+		if ( !$.isEmptyObject( kb ) ) {
+			kb.close( kb.options.autoAccept ? 'true' : false );
+		}
+		$current.removeClass( kbcss.isCurrent );
 		// ui-keyboard-has-focus is applied in case multiple keyboards have alwaysOpen = true and are stacked
-		$('.' + kbcss.hasFocus).removeClass(kbcss.hasFocus);
-		$('.' + kbcss.isCurrent).removeClass(kbcss.isCurrent);
+		$( '.' + kbcss.hasFocus ).removeClass( kbcss.hasFocus );
 
 		base.$el.addClass(kbcss.isCurrent);
 		base.$keyboard.addClass(kbcss.hasFocus);
@@ -243,9 +249,6 @@ var $keyboard = $.keyboard = function(el, options){
 			clearTimeout(base.timer);
 			base.reveal();
 		}
-		if (o.alwaysOpen) {
-			base.setCurrent();
-		}
 	};
 
 	base.reveal = function(refresh){
@@ -279,7 +282,7 @@ var $keyboard = $.keyboard = function(el, options){
 
 		// Unbind focus to prevent recursion - openOn may be empty if keyboard is opened externally
 		if (o.openOn) {
-			base.$el.unbind( o.openOn + base.namespace );
+			base.$el.unbind( $.trim( ( o.openOn + ' ' ).split( /\s+/ ).join( base.namespace + ' ' ) ) );
 		}
 
 		// build keyboard if it doesn't exist; or attach keyboard if it was removed, but not cleared
@@ -412,9 +415,10 @@ var $keyboard = $.keyboard = function(el, options){
 
 	base.startup = function(){
 		var kbcss = $keyboard.css;
-		// ensure base.$preview is defined
-		base.$preview = base.$el;
-
+		// ensure base.$preview is defined; but don't overwrite it if keyboard is always visible
+		if ( !( o.alwaysOpen && base.$preview ) ) {
+			base.$preview = base.$el;
+		}
 		if ( !(base.$keyboard && base.$keyboard.length) ) {
 			// custom layout - create a unique layout name based on the hash
 			if (o.layout === 'custom') { o.layoutHash = 'custom' + base.customHash(); }
@@ -613,7 +617,7 @@ var $keyboard = $.keyboard = function(el, options){
 					// allow navigation keys to work - Chrome doesn't fire a keypress event (8 = bksp)
 					if ( (e.which === 8 || e.which === 0) && $.inArray( e.keyCode, base.alwaysAllowed ) ) { return; }
 					// quick key check
-					if ($.inArray(k, layout.acceptedKeys) === -1) {
+					if ($.inArray(str, layout.acceptedKeys) === -1) {
 						e.preventDefault();
 						// copy event object in case e.preventDefault() breaks when changing the type
 						evt = $.extend({}, e);
@@ -688,6 +692,10 @@ var $keyboard = $.keyboard = function(el, options){
 				}
 			})
 			.bind('keydown' + base.namespace, function(e){
+				// ensure alwaysOpen keyboards are made active
+				if ( o.alwaysOpen && !base.isCurrent() ) {
+					base.reveal();
+				}
 				// prevent tab key from leaving the preview window
 				if ( e.which === 9 ) {
 					// allow tab to pass through - tab to next input/shift-tab for prev
@@ -767,7 +775,7 @@ var $keyboard = $.keyboard = function(el, options){
 					// get keys from other layers/keysets (shift, alt, meta, etc) that line up by data-position
 					$keys = last.wheel_$Keys;
 					// target mousewheel selected key
-					$key = $keys ? $keys.eq( last.wheelIndex ) : $key;
+					$key = $keys && last.wheelIndex > -1 ? $keys.eq( last.wheelIndex ) : $key;
 				}
 				action = $key.attr( 'data-action' );
 				// don't split colon key. Fixes #264
@@ -815,6 +823,9 @@ var $keyboard = $.keyboard = function(el, options){
 			})
 			// Change hover class and tooltip
 			.bind('mouseenter mouseleave touchstart '.split(' ').join(base.namespace + ' '), function( e ) {
+				if ( o.alwaysOpen && e.type !== 'mouseleave' && !base.isCurrent() ) {
+					base.reveal();
+				}
 				if (!base.isCurrent()) { return; }
 				var $keys, txt,
 					last = base.last,
@@ -1261,23 +1272,23 @@ var $keyboard = $.keyboard = function(el, options){
 			if ( base ) {
 				// add close event time
 				base.last.eventTime = new Date().getTime();
-
-				if (o.openOn) {
-					// rebind input focus - delayed to fix IE issue #72
-					base.timer = setTimeout(function(){
-						// make sure keyboard isn't destroyed
-						// Check if base exists, this is a case when destroy is called, before timers have fired
-						if ( base && base.el.active ) {
-							base.$el.bind( o.openOn + base.namespace, function(){ base.focusOn(); });
-							// remove focus from element (needed for IE since blur doesn't seem to work)
-							if ($(':focus')[0] === base.el) { base.$el.blur(); }
-						}
-					}, 500);
-				}
 				if (!o.alwaysOpen && base.$keyboard) {
+					if (o.openOn) {
+						// rebind input focus - delayed to fix IE issue #72
+						base.timer = setTimeout(function(){
+							// make sure keyboard isn't destroyed
+							// Check if base exists, this is a case when destroy is called, before timers have fired
+							if ( base && base.el.active ) {
+								base.$el.bind( o.openOn + base.namespace, function(){ base.focusOn(); });
+								// remove focus from element (needed for IE since blur doesn't seem to work)
+								if ($(':focus')[0] === base.el) { base.$el.blur(); }
+							}
+						}, 500);
+					}
 					// free up memory
 					base.$keyboard.remove();
 					base.$keyboard = [];
+					base.$previewCopy = null;
 				}
 				if (!base.watermark && base.el.value === '' && base.inPlaceholder !== '') {
 					base.$el
@@ -1466,7 +1477,7 @@ var $keyboard = $.keyboard = function(el, options){
 				mappedKeys   : {},
 				acceptedKeys : []
 			},
-			acceptedKeys = layout.acceptedKeys = [],
+			acceptedKeys = layout.acceptedKeys = o.restrictInclude ? ( '' + o.restrictInclude ).split( /\s+/ ) || [] : [],
 			// using $layout temporarily to hold keyboard popup classnames
 			$layout = kbcss.keyboard + ' ' + o.css.popup + ' ' + o.css.container +
 				( o.alwaysOpen ? ' ' + kbcss.alwaysOpen : '' ),
@@ -1820,7 +1831,8 @@ var $keyboard = $.keyboard = function(el, options){
 			// pressing virtual enter button inside of a textarea - add a carriage return
 			// e.target is span when clicking on text and button at other times
 			if (tag === 'TEXTAREA' && $(e.target).closest('button').length) {
-				base.insertText(' \n'); // IE8 fix (space + \n) - fixes #71 thanks Blookie!
+				// IE8 fix (space + \n) - fixes #71 thanks Blookie!
+				base.insertText( ( $keyboard.msie ? ' ' : '' ) + '\n' );
 			}
 		},
 		// caps lock key
@@ -2158,7 +2170,9 @@ var $keyboard = $.keyboard = function(el, options){
 		lockInput    : false,
 
 		// Prevent keys not in the displayed keyboard from being typed in
-		restrictInput: false,
+		restrictInput : false,
+		// Additional allowed characters while restrictInput is true
+		restrictInclude : '', // e.g. 'a b foo \ud83d\ude38'
 
 		// Check input against validate function, if valid the accept button gets a class name of
 		// 'ui-keyboard-valid-input'. If invalid, the accept button gets a class name of
@@ -2315,7 +2329,8 @@ var $keyboard = $.keyboard = function(el, options){
 			return {};
 		}
 		var start, end, txt, pos,
-			noFocus = $el.getkeyboard() && $el.getkeyboard().options.noFocus;
+			kb = $el.data( 'keyboard' ),
+			noFocus = kb && kb.options.noFocus;
 		if (!noFocus) { $el.focus(); }
 		// set caret position
 		if (typeof param1 !== 'undefined') {

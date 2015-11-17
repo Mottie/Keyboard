@@ -113,6 +113,8 @@ jQuery(function($) {
 		},
 		maxLength : 6,
 		restrictInput : true, // Prevent keys not in the displayed keyboard from being typed in
+		// include lower case characters (added v1.25.7)
+		restrictInclude : 'a b c d e f',
 		useCombos : false, // don't want A+E to become a ligature
 		acceptValid: true,
 		validate: function(keyboard, value, isClosing){

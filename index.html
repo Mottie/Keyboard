@@ -402,6 +402,7 @@ $('#inter-type').click(function(){
 		<small>
 			* maxLength = 6.<br>
 			* Input restricted.<br>
+			* Lowercase included.<br>
 			* Valid @ length = 6.
 		</small>
 		<div class="code ui-corner-all">
@@ -422,10 +423,15 @@ $('#inter-type').click(function(){
 			]
 		},
 		maxLength : 6,
-		restrictInput : true, // Prevent keys not in the displayed keyboard from being typed in
-		useCombos : false, // don't want A+E to become a ligature
-		acceptValid: true,
-		validate: function(keyboard, value, isClosing){
+		// Prevent keys not in the displayed keyboard from being typed in
+		restrictInput : true,
+		// include lower case characters (added v1.25.7)
+		restrictInclude : 'a b c d e f',
+		// don't use combos or A+E could become a ligature
+		useCombos : false,
+		// activate the "validate" callback function
+		acceptValid : true,
+		validate : function(keyboard, value, isClosing){
 			// only make valid if input is 6 characters in length
 			return value.length === 6;
 		}
