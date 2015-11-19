@@ -1511,7 +1511,9 @@ var $keyboard = $.keyboard = function(el, options){
 					// remove extra spaces before spliting (regex probably could be improved)
 					currentSet = $.trim(keySet[row]).replace(/\{(\.?)[\s+]?:[\s+]?(\.?)\}/g,'{$1:$2}');
 					base.buildRow( $row, row, currentSet.split(/\s+/), acceptedKeys );
-					$row.find('.' + kbcss.keyButton + ':last').after('<br class="' + kbcss.endRow + '"/>');
+					$row.find('.' + kbcss.keyButton + ',.' + kbcss.keySpacer )
+						.filter(':last')
+						.after('<br class="' + kbcss.endRow + '"/>');
 				}
 			}
 		});
