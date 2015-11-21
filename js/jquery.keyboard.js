@@ -1717,7 +1717,7 @@ var $keyboard = $.keyboard = function(el, options){
 			kbcss = $keyboard.css,
 			len = base.extensionNamespace.length,
 			tmp = [ kbcss.input, kbcss.locked, kbcss.placeholder, kbcss.noKeyboard,
-				kbcss.alwaysOpen, o.css.input ].join(' ');
+				kbcss.alwaysOpen, o.css.input, kbcss.isCurrent ].join(' ');
 		clearTimeout(base.timer);
 		clearTimeout(base.timer2);
 		base.removeBindings( base.namespace );
