@@ -417,7 +417,7 @@ var $keyboard = $.keyboard = function(el, options){
 		var kbcss = $keyboard.css;
 		// ensure base.$preview is defined; but don't overwrite it if keyboard is always visible
 		if ( !( o.alwaysOpen && base.$preview ) ) {
-			base.$preview = base.$el;
+			base.makePreview();
 		}
 		if ( !(base.$keyboard && base.$keyboard.length) ) {
 			// custom layout - create a unique layout name based on the hash
@@ -441,29 +441,13 @@ var $keyboard = $.keyboard = function(el, options){
 				base.$keyboard.attr( 'id', base.el.id + $keyboard.css.idSuffix );
 			}
 
+			base.makePreview();
 			// build preview display
 			if (o.usePreview) {
 				// restore original positioning (in case usePreview option is altered)
 				if (!$.isEmptyObject(o.position)) {
 					o.position.at = o.position.orig_at;
 				}
-				base.$preview = base.$el.clone(false)
-					.removeAttr('id')
-					.data( 'keyboard', base )
-					.removeClass(kbcss.placeholder + ' ' + kbcss.input)
-					.addClass(kbcss.preview + ' ' + o.css.input)
-					.removeAttr('aria-haspopup')
-					.attr('tabindex', '-1')
-					.show(); // for hidden inputs
-				// Switch the number input fields to text so the caret positioning will work again
-				if (base.$preview.attr('type') == 'number') {
-					base.$preview.attr('type', 'text');
-				}
-				// build preview container and append preview display
-				$('<div />')
-					.addClass(kbcss.wrapper)
-					.append(base.$preview)
-					.prependTo(base.$keyboard);
 			} else {
 				// No preview display, use element and reposition the keyboard under it.
 				if (!$.isEmptyObject(o.position)) {
@@ -473,7 +457,6 @@ var $keyboard = $.keyboard = function(el, options){
 
 		}
 
-		base.preview = base.$preview[0];
 		base.$decBtn = base.$keyboard.find('.' + kbcss.keyPrefix + 'dec');
 		// add enter to allowed keys; fixes #190
 		if (o.enterNavigation || base.el.nodeName === 'TEXTAREA') { base.alwaysAllowed.push(13); }
@@ -497,6 +480,44 @@ var $keyboard = $.keyboard = function(el, options){
 			});
 		}
 
+	};
+
+	base.makePreview = function() {
+		if ( o.usePreview ) {
+			var indx, attrs, attr, removedAttr,
+				kbcss = $keyboard.css;
+			base.$preview = base.$el.clone( false )
+				.data( 'keyboard', base )
+				.removeClass( kbcss.placeholder + ' ' + kbcss.input )
+				.addClass( kbcss.preview + ' ' + o.css.input )
+				.attr( 'tabindex', '-1' )
+				.show(); // for hidden inputs
+			base.preview = base.$preview[0];
+
+			// Switch the number input field to text so the caret positioning will work again
+			if ( base.preview.type === 'number' ) {
+				base.preview.type = 'text';
+			}
+
+			// remove extraneous attributes.
+			removedAttr = /^(data-|id|aria-haspopup)/i;
+			attrs = base.$preview.get(0).attributes;
+			for ( indx = attrs.length - 1; indx >= 0; indx-- ) {
+				attr = attrs[ indx ] && attrs[ indx ].name;
+				if ( removedAttr.test( attr ) ) {
+					// remove data-attributes - see #351
+					base.preview.removeAttribute( attr );
+				}
+			}
+			// build preview container and append preview display
+			$('<div />')
+				.addClass( kbcss.wrapper )
+				.append( base.$preview )
+				.prependTo( base.$keyboard );
+		} else {
+			base.$preview = base.$el;
+			base.preview = base.el;
+		}
 	};
 
 	base.saveCaret = function(start, end, $el){
