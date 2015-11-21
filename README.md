@@ -98,6 +98,15 @@ Wiki: [Home](https://github.com/Mottie/Keyboard/wiki/Home) | [FAQ](https://githu
 
 Only the latest changes will be shown below, see the wiki log to view older versions.
 
+### Version 1.25.8 (11/21/2015)
+
+* Add endrow break after spaces. Fixes [issue #402](https://github.com/Mottie/Keyboard/issues/402).
+* Remove extraneous preview data-attributes. Fixes [issue #351](https://github.com/Mottie/Keyboard/issues/351).
+* Grunt:
+  * Update dependencies.
+  * Add rudimentary unit testing.
+* Destroy: remove isCurrent class.
+
 ### Version 1.25.7 (11/15/2015)
 
 * Readme: Add link to ng-virtual-keyboard for Angular JS.
@@ -115,7 +124,3 @@ Only the latest changes will be shown below, see the wiki log to view older vers
 
 * Caret: Fix caret when currently focused keyboard is refocused with no preview window. See [pull #394](https://github.com/Mottie/Keyboard/pull/394), thanks [@isfs](https://github.com/isfs)!
 * Grunt: update dependencies, again.
-
-### Version 1.25.5 (9/14/2015)
-
-* Grunt: update dependencies.
