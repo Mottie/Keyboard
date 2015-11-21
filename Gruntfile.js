@@ -174,9 +174,9 @@ module.exports = function(grunt) {
 			}
 		},
 
-//		qunit: {
-//			files: ['test/index.html']
-//		},
+		qunit: {
+			files: ['testing/test.html']
+		},
 
 		watch: {
 			scripts: {
@@ -189,7 +189,7 @@ module.exports = function(grunt) {
 
 	grunt.loadNpmTasks('grunt-contrib-clean');
 	grunt.loadNpmTasks('grunt-contrib-jshint');
-	// grunt.loadNpmTasks('grunt-contrib-qunit');
+	grunt.loadNpmTasks('grunt-contrib-qunit');
 	grunt.loadNpmTasks('grunt-contrib-concat');
 	grunt.loadNpmTasks('grunt-contrib-uglify');
 	grunt.loadNpmTasks('grunt-contrib-cssmin');
@@ -199,6 +199,7 @@ module.exports = function(grunt) {
 	grunt.registerTask('default', [
 		'clean:core',
 		'jshint:core',
+		'qunit',
 		'concat:exts',
 		'cssmin',
 		'uglify:core',

@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>Virtual Keyboard Testing (WIP)</title>
+	<link rel="stylesheet" href="qunit-1.20.0.css">
+	<style>
+	.tester {
+		position: absolute;
+		top: -999em;
+	}
+	</style>
+
+	<script src="qunit-1.20.0.js"></script>
+	<script src="../docs/js/jquery.min.js"></script>
+	<script src="../js/jquery.keyboard.js"></script>
+
+	<!-- <script src="../js/jquery.keyboard.extension-typing.js"></script> -->
+
+	<script src="testing.js"></script>
+
+	</head>
+	<body>
+		<div id="qunit"></div>
+		<div id="qunit-fixture"></div>
+
+		<div class="tester">
+			<input id="input" type="text">
+			<textarea id="textarea"></textarea>
+		</div>
+
+		<div id="test" class="tester"></div>
+
+	</body>
+</html>
