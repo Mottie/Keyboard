@@ -133,6 +133,20 @@ Wiki: [Home](https://github.com/Mottie/Keyboard/wiki/Home) | [FAQ](https://githu
 
 Only the latest changes will be shown below, see the wiki log to view older versions.
 
+### Version 1.25.9 (11/25/2015)
+
+* Readme: Update &amp; elaborate. Fixes [issue #410](https://github.com/Mottie/Keyboard/issues/410).
+* Themes: Update custom [basic (white)](http://jsfiddle.net/Mottie/jsh0377k/) &amp; add [dark theme](http://jsfiddle.net/Mottie/6dmqhLvh/).
+* Core:
+  * Update state of combo &amp; accept keys in their title.
+  * Added `display` options for `valid`, `invalid`, `active` and `disabled` to allow language specific changes.
+  * Make keysets display `inline-block`; remove all css floats.
+* Extender:
+  * Update default display value before initialization.
+  * Make extender layout display `inline-block`.
+* Docs: update Bootstrap to v3.3.6.
+* Grunt: Fix uglify to only preserve comments that start with a bang.
+
 ### Version 1.25.8 (11/21/2015)
 
 * Add endrow break after spaces. Fixes [issue #402](https://github.com/Mottie/Keyboard/issues/402).
@@ -154,8 +168,3 @@ Only the latest changes will be shown below, see the wiki log to view older vers
 * Mousewheel tweak, possible fix for [issue #379](https://github.com/Mottie/Keyboard/issues/379).
 * Clear clone variable on keyboard close. Fixes [issue #397](https://github.com/Mottie/Keyboard/issues/397) & [pull #398](https://github.com/Mottie/Keyboard/pull/398).
 * `openOn` option now allows multiple events.
-
-### Version 1.25.6 (9/24/2015)
-
-* Caret: Fix caret when currently focused keyboard is refocused with no preview window. See [pull #394](https://github.com/Mottie/Keyboard/pull/394), thanks [@isfs](https://github.com/isfs)!
-* Grunt: update dependencies, again.
