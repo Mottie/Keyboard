@@ -1088,8 +1088,11 @@ var $keyboard = $.keyboard = function(el, options){
 			.find( prefix + 'shift' ).toggleClass( active, base.shiftActive ).end()
 			.find( prefix + 'lock' ).toggleClass( active, base.capsLock ).end()
 			.find( '.' + kbcss.keySet ).hide().end()
-			.find( '.' + kbcss.keySet + key + base.rows[toShow] ).show().end()
 			.find( '.' + kbcss.keyAction + prefix + key ).addClass( active );
+
+		// show keyset using inline-block ( extender layout will then line up )
+		base.$keyboard.find( '.' + kbcss.keySet + key + base.rows[ toShow ] )[ 0 ].style.display = 'inline-block';
+
 		if ( base.metaActive ) {
 			base.$keyboard.find( prefix + base.metaActive )
 				// base.metaActive contains the string "meta#" or false

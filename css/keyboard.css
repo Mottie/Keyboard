@@ -30,9 +30,9 @@
 
 /* (in)valid inputs */
 button.ui-keyboard-accept.ui-keyboard-valid-input { border-color: #0c0; background: #080; color: #fff; }
-button.ui-keyboard-accept.ui-keyboard-valid-input:hover { background: #0a0; }
+button.ui-keyboard-accept.ui-keyboard-valid-input:not([disabled]):hover { background: #0a0; }
 button.ui-keyboard-accept.ui-keyboard-invalid-input { border-color: #c00; background: #800; color: #fff; opacity: 0.5; filter: alpha(opacity=50); }
-button.ui-keyboard-accept.ui-keyboard-invalid-input:hover { background: #a00; }
+button.ui-keyboard-accept.ui-keyboard-invalid-input:not([disabled]):hover { background: #a00; }
 
 /*** Caret extension definition ***/
 /* margin-top => is added to the caret height (top & bottom) */
@@ -109,7 +109,7 @@ button.ui-keyboard-toggle.ui-keyboard-disabled span {
 }
 
 /*** Extender keyboard extension ***/
-div.ui-keyboard-extender { float: right; margin-left: 5px; }
+div.ui-keyboard-extender { margin-left: 5px; }
 button.ui-keyboard-extender span {
 	width: .9em;
 	height: .9em;

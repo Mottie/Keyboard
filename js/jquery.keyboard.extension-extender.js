@@ -7,15 +7,15 @@
 */
 /*jshint browser:true, jquery:true, unused:false */
 /*global require:false, define:false, module:false */
-;(function(factory) {
-	if (typeof define === 'function' && define.amd) {
-		define(['jquery'], factory);
-	} else if (typeof module === 'object' && typeof module.exports === 'object') {
-		module.exports = factory(require('jquery'));
+;( function( factory ) {
+	if ( typeof define === 'function' && define.amd ) {
+		define( [ 'jquery' ], factory );
+	} else if ( typeof module === 'object' && typeof module.exports === 'object' ) {
+		module.exports = factory( require( 'jquery' ) );
 	} else {
-		factory(jQuery);
+		factory( jQuery );
 	}
-}(function($) {
+}( function( $ ) {
 'use strict';
 
 	var $keyboard = $.keyboard;
@@ -47,54 +47,56 @@
 			reposition : true
 		};
 		return this.each( function() {
+			var opts,
+				base = $( this ).data( 'keyboard' );
+
 			// make sure a keyboard is attached
-			var o, base = $( this ).data( 'keyboard' );
-			if (!base) { return; }
+			if ( !base ) { return; }
 
 			// variables
-			o = base.extender_options = $.extend( {}, defaults, options );
+			opts = base.extender_options = $.extend( {}, defaults, options );
 
 			base.extender_namespace = base.namespace + 'extender';
 			base.extensionNamespace.push( base.extender_namespace );
 
 			base.extender_setup = function() {
 				var $kb,
-					layout = o.layout;
+					layout = opts.layout;
 				if ( typeof $keyboard.builtLayouts[ layout ] === 'undefined' ) {
 					base.buildKeyboard( layout );
 				}
 				$kb = $keyboard.builtLayouts[ layout ].$keyboard.find( '.' + $keyboard.css.keySet + '-normal' ).clone();
 				$kb
 					.removeClass()
-					.removeAttr('name')
+					.removeAttr( 'name' )
 					.addClass( $keyboard.css.extender )
-					.toggle( o.showing )
-					.children('button')
-					.removeAttr('data-pos');
+					.children( 'button' )
+					.removeAttr( 'data-pos' );
+
+				// show extender using inline-block - allows the removal of css float
+				$kb[ 0 ].style.display = opts.showing ? 'inline-block' : 'none';
+
 				base.$keyboard.append( $kb );
-				base.extender_toggle( base.extender_options.showing );
+				base.extender_toggle( opts.showing );
 				base.bindKeys();
 			};
 
-			base.extender_toggle = function(set) {
-				base.extender_options.showing = typeof set === 'undefined' ? !base.extender_options.showing : set;
+			base.extender_toggle = function( set ) {
+				opts.showing = typeof set === 'undefined' ? !opts.showing : set;
 				base.$keyboard
-					.find( 'div.' + $keyboard.css.extender )
-					.toggle( base.extender_options.showing )
-					.end()
-					.find( '.' + $keyboard.css.keySet )
-					.css('float', base.extender_options.showing ? 'left' : 'none')
-					.end()
 					.find( 'button.' + $keyboard.css.extender )
-					.toggleClass( base.options.css.buttonActive, base.extender_options.showing );
+					.toggleClass( base.options.css.buttonActive, opts.showing )
+					.end()
+					.find( 'div.' + $keyboard.css.extender )[ 0 ].style.display = opts.showing ? 'inline-block' : 'none';
+
 				// force keyboard reposition
-				if (base.extender_options.reposition) {
-					$(window).trigger('resize');
+				if ( opts.reposition ) {
+					$( window ).trigger( 'resize' );
 				}
 			};
 
 			// visible event is fired before this extension is initialized, so check!
-			if (base.options.alwaysOpen && base.isVisible()) {
+			if ( base.options.alwaysOpen && base.isVisible() ) {
 				base.extender_setup();
 			}
 			// setup extender
