@@ -125,7 +125,9 @@ module.exports = function(grunt) {
 
 		uglify: {
 			options: {
-				preserveComments: 'some',
+				preserveComments: function( node, comment ){
+					return /^!/.test( comment.value );
+				},
 				report: 'gzip'
 			},
 			core: {
