@@ -1179,16 +1179,19 @@ var $keyboard = $.keyboard = function(el, options){
 
 	// Toggle accept button classes, if validating
 	base.checkValid = function(){
-		var kbcss = $keyboard.css,
+		var txt,
+			kbcss = $keyboard.css,
+			$accept = base.$keyboard.find('.' + kbcss.keyPrefix + 'accept'),
 			valid = true;
 		if ($.isFunction(o.validate)) {
 			valid = o.validate(base, base.$preview.val(), false);
 		}
 		// toggle accept button classes; defined in the css
-		base.$keyboard.find('.' + kbcss.keyPrefix + 'accept')
+		$accept
 			.toggleClass( kbcss.inputInvalid, !valid )
-			.toggleClass( kbcss.inputValid, valid );
-
+			.toggleClass( kbcss.inputValid, valid )
+			// update title to indicate that the entry is valid or invalid
+			.attr( 'title', $accept.attr('data-title') + ' (' + o.display[ valid ? 'valid' : 'invalid' ] + ')' );
 	};
 
 	// Decimal button for num pad - only allow one (not used by default)
@@ -1435,6 +1438,7 @@ var $keyboard = $.keyboard = function(el, options){
 				'data-value'  : data.value, // value
 				'data-name'   : data.name,
 				'data-pos'    : base.temp[1] + ',' + base.temp[2],
+				'data-title'  : data.title, // used to allow adding content to title
 				'title'       : data.title,
 				'data-action' : data.action,
 				'data-html'   : data.html
@@ -1634,10 +1638,15 @@ var $keyboard = $.keyboard = function(el, options){
 						break;
 
 					// toggle combo/diacritic key
+					/*jshint -W083 */
 					case 'combo':
 						base
 							.addKey('combo', action)
 							.addClass( kbcss.keyHasActive )
+							.attr('title', function( indx, title ) {
+								// add combo key state to title
+								return title + ' (' + o.display[ o.useCombos ? 'active' : 'disabled' ] + ')';
+							})
 							.toggleClass(o.css.buttonActive, o.useCombos);
 						break;
 
@@ -1818,11 +1827,16 @@ var $keyboard = $.keyboard = function(el, options){
 				base.checkDecimal();
 			}
 		},
-		combo : function(base) {
-			var c = !base.options.useCombos;
-			base.options.useCombos = c;
-			base.$keyboard.find('.' + $keyboard.css.keyPrefix + 'combo').toggleClass(base.options.css.buttonActive, c);
-			if (c) { base.checkCombos(); }
+		combo : function( base ) {
+			var o = base.options,
+				c = !o.useCombos,
+				$combo = base.$keyboard.find( '.' + $keyboard.css.keyPrefix + 'combo' );
+			o.useCombos = c;
+			$combo
+				.toggleClass( o.css.buttonActive, c )
+				// update combo key state
+				.attr( 'title', $combo.attr( 'data-title' ) + ' (' + o.display[ c ? 'active' : 'disabled' ] + ')' );
+			if ( c ) { base.checkCombos(); }
 			return false;
 		},
 		dec : function(base) {
@@ -2094,7 +2108,15 @@ var $keyboard = $.keyboard = function(el, options){
 				// \u21b9 is the true tab symbol (left & right arrows)
 				'tab'    : '\u21e5 Tab:Tab',
 				// replaced by an image
-				'toggle' : ' '
+				'toggle' : ' ',
+
+				// added to titles of keys
+				// accept key status when acceptValid:true
+				'valid'    : 'valid',
+				'invalid'  : 'invalid',
+				// combo key states
+				'active'   : 'active',
+				'disabled' : 'disabled'
 			},
 
 			// Message added to the key title while hovering, if the mousewheel plugin exists
@@ -2310,9 +2332,9 @@ var $keyboard = $.keyboard = function(el, options){
 		},
 */
 
-		// this callback is called just before the 'beforeClose' to check the value
-		// if the value is valid, return true and the keyboard will continue as it should
-		// (close if not always open, etc). If the value is not value, return false and the clear the keyboard
+		// this callback is called, if the acceptValid is true, and just before the 'beforeClose' to check
+		// the value if the value is valid, return true and the keyboard will continue as it should
+		// (close if not always open, etc). If the value is not valid, return false and clear the keyboard
 		// value ( like this "keyboard.$preview.val('');" ), if desired. The validate function is called after
 		// each input, the 'isClosing' value will be false; when the accept button is clicked,
 		// 'isClosing' is true
