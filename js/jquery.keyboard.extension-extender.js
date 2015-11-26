@@ -20,29 +20,24 @@
 
 	var $keyboard = $.keyboard;
 
-	$.extend( $keyboard.css, {
-		extender : 'ui-keyboard-extender'
-	});
+	$keyboard.css.extender = 'ui-keyboard-extender';
+	$keyboard.language.en.display.extender = ' :toggle_numpad';
 
-	$.extend( $keyboard.layouts, {
-		'numpad' : {
-			'normal' : [
-				'{clear} / * -',
-				'7 8 9 +',
-				'4 5 6 %',
-				'1 2 3 =',
-				'0 {dec} {left} {right}'
-			]
-		}
-	});
+	$keyboard.layouts.numpad = {
+		'normal' : [
+			'{clear} / * -',
+			'7 8 9 +',
+			'4 5 6 %',
+			'1 2 3 =',
+			'0 {dec} {left} {right}'
+		]
+	};
 
 	// add {extender} keyaction
-	$.extend( $keyboard.keyaction, {
-		extender: function( base, el ) {
-			base.extender_toggle();
-			return false;
-		}
-	});
+	$keyboard.keyaction.extender = function( base, el ) {
+		base.extender_toggle();
+		return false;
+	};
 
 	$.fn.addExtender = function(options) {
 		//Set the default values, use comma to separate the settings, example:
@@ -58,11 +53,7 @@
 
 			// variables
 			o = base.extender_options = $.extend( {}, defaults, options );
-			$.extend( true, $keyboard.language.en, {
-				display : {
-					'extender' : ' '
-				}
-			});
+
 			base.extender_namespace = base.namespace + 'extender';
 			base.extensionNamespace.push( base.extender_namespace );
 
