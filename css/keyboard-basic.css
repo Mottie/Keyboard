@@ -6,6 +6,10 @@
 	/* adjust overall keyboard size using "font-size" */
 	font-size: 14px;
 	text-align: center;
+	background: #fefefe;
+	border: 1px solid #aaa;
+	padding: 4px;
+
 	/* include the following setting to place the
 	keyboard at the bottom of the browser window */
 	width: 100%;
@@ -17,10 +21,8 @@
 	white-space: nowrap;
 	overflow-x: auto;
 }
-.ui-keyboard {
-	background: #fefefe;
-	border: 1px solid #aaa;
-	padding: 4px;
+.ui-keyboard-has-focus {
+	z-index: 16001;
 }
 .ui-keyboard-button {
 	border: 1px solid #aaa;
@@ -79,6 +81,18 @@
 .ui-keyboard-nokeyboard {
 	color: #888;
 	border-color: #888;
+}
+.ui-keyboard-spacer {
+	display: inline-block;
+	width: 1px;
+	height: 0;
+	cursor: default;
+}
+.ui-keyboard-NBSP span, .ui-keyboard-ZWSP span, .ui-keyboard-ZWNJ span, .ui-keyboard-ZWJ span,
+.ui-keyboard-LRM span, .ui-keyboard-RLM span {
+	font-size: 0.5em;
+	line-height: 1.5em;
+	white-space: normal;
 }
 
 /* combo key styling - toggles diacritics on/off */
@@ -147,6 +161,14 @@ button.ui-keyboard-toggle.ui-keyboard-disabled span {
 	e.g. 5 buttons * 2.2em = 11em, 6 buttons * 2.2em = 13.2em, etc */
 	max-width: 22em;
 	/* 10 buttons */
+}
+
+/*** Caret extension definition ***/
+/* margin-top => is added to the caret height (top & bottom) */
+.ui-keyboard-caret {
+	background: #c00;
+	width: 1px;
+	margin-top: 3px;
 }
 
 /*** Extender keyboard extension ***/
