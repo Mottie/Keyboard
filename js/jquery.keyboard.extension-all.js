@@ -109,6 +109,7 @@
 
 				// add hold key functionality for popups
 				base.$allKeys
+					.unbind( namespace )
 					.bind( start, function() {
 						clearTimeout( timer );
 						var $key = $( this ),
@@ -392,7 +393,8 @@ $.fn.addAutocomplete = function(options){
 	$keyboard.firefox = typeof window.mozInnerScreenX !== 'undefined';
 
 	$.extend( $keyboard.css, {
-		caret : 'ui-keyboard-caret'
+		caret : 'ui-keyboard-caret',
+		caretMirror : 'ui-keyboard-mirror-div'
 	});
 
 	$.fn.addCaret = function( options ) {
@@ -434,17 +436,19 @@ $.fn.addAutocomplete = function(options){
 			];
 
 			base.caret_setup = function() {
-				var events = 'keyup keypress mouseup mouseleave '.split( ' ' ).join( namespace + ' ' ),
+				var kbcss = $keyboard.css,
+					events = 'keyup keypress mouseup mouseleave '.split( ' ' ).join( namespace + ' ' ),
 					style = 'position:absolute;visibility:hidden;top:-9999em;left:-9999em;' +
 						'white-space:pre-wrap;' +
 						( base.preview.nodeName === 'INPUT' ? '' : 'word-wrap:break-word;' );
 				// add mirrored div
-				base.caret_$div = $( '<div class="ui-keyboard-mirror-div" style="' + style + '">' )
+				base.$keyboard.find( '.' + kbcss.caretMirror ).remove();
+				base.caret_$div = $( '<div class="' + kbcss.caretMirror + '" style="' + style + '">' )
 					.appendTo( base.$keyboard );
 
 				// remove caret, just-in-case
 				if (base.$caret) { base.$caret.remove(); }
-				base.$caret = $( '<div class="ui-keyboard-caret ' + o.caretClass + '" style="position:absolute;">' )
+				base.$caret = $( '<div class="' + kbcss.caret + ' ' + o.caretClass + '" style="position:absolute;">' )
 					.insertAfter( base.$preview );
 
 				base.$el
@@ -639,6 +643,8 @@ $.fn.addAutocomplete = function(options){
 				// show extender using inline-block - allows the removal of css float
 				$kb[ 0 ].style.display = opts.showing ? 'inline-block' : 'none';
 
+				// remove previous extender... just-in-case
+				base.$keyboard.find( '.' + $keyboard.css.extender ).remove();
 				base.$keyboard.append( $kb );
 				base.extender_toggle( opts.showing );
 				base.bindKeys();
@@ -1503,8 +1509,8 @@ $.keyboard = $.keyboard || {};
 			base.typing_setup = function(){
 				var kbevents = $keyboard.events,
 					namespace = base.typing_namespace;
-				base.$el.add( base.$preview ).unbind(namespace);
 				base.$el
+					.unbind( namespace )
 					.bind([ kbevents.kbHidden, kbevents.kbInactive, '' ].join( namespace + ' ' ), function(e){
 						base.typing_reset();
 					})
@@ -1512,10 +1518,12 @@ $.keyboard = $.keyboard || {};
 						base.typing_setup();
 					});
 				base.$allKeys
+					.unbind( namespace )
 					.bind('mousedown' + namespace, function(){
 						base.typing_reset();
 					});
 				base.$preview
+				.unbind( namespace )
 				.bind('keyup' + namespace, function(e){
 					if (o.init && o.lockTypeIn) { return false; }
 					if (e.which >= 37 && e.which <=40) { return; } // ignore arrow keys
@@ -1715,13 +1723,14 @@ $.keyboard = $.keyboard || {};
 				// visible event is fired before this extension is initialized, so check!
 				if (base.options.alwaysOpen && base.isVisible()) {
 					base.typing_setup();
+				} else {
+					// capture and simulate typing
+					base.$el
+						.unbind( $keyboard.events.kbBeforeVisible + base.typing_namespace )
+						.bind( $keyboard.events.kbBeforeVisible + base.typing_namespace, function(){
+							base.typing_setup();
+						});
 				}
-				// capture and simulate typing
-				base.$el
-					.unbind( $keyboard.events.kbBeforeVisible + base.typing_namespace )
-					.bind( $keyboard.events.kbBeforeVisible + base.typing_namespace, function(){
-						base.typing_setup();
-					});
 			}
 
 		});

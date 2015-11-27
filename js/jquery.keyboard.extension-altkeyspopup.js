@@ -102,6 +102,7 @@
 
 				// add hold key functionality for popups
 				base.$allKeys
+					.unbind( namespace )
 					.bind( start, function() {
 						clearTimeout( timer );
 						var $key = $( this ),

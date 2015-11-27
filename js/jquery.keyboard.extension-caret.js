@@ -27,7 +27,8 @@
 	$keyboard.firefox = typeof window.mozInnerScreenX !== 'undefined';
 
 	$.extend( $keyboard.css, {
-		caret : 'ui-keyboard-caret'
+		caret : 'ui-keyboard-caret',
+		caretMirror : 'ui-keyboard-mirror-div'
 	});
 
 	$.fn.addCaret = function( options ) {
@@ -69,17 +70,19 @@
 			];
 
 			base.caret_setup = function() {
-				var events = 'keyup keypress mouseup mouseleave '.split( ' ' ).join( namespace + ' ' ),
+				var kbcss = $keyboard.css,
+					events = 'keyup keypress mouseup mouseleave '.split( ' ' ).join( namespace + ' ' ),
 					style = 'position:absolute;visibility:hidden;top:-9999em;left:-9999em;' +
 						'white-space:pre-wrap;' +
 						( base.preview.nodeName === 'INPUT' ? '' : 'word-wrap:break-word;' );
 				// add mirrored div
-				base.caret_$div = $( '<div class="ui-keyboard-mirror-div" style="' + style + '">' )
+				base.$keyboard.find( '.' + kbcss.caretMirror ).remove();
+				base.caret_$div = $( '<div class="' + kbcss.caretMirror + '" style="' + style + '">' )
 					.appendTo( base.$keyboard );
 
 				// remove caret, just-in-case
 				if (base.$caret) { base.$caret.remove(); }
-				base.$caret = $( '<div class="ui-keyboard-caret ' + o.caretClass + '" style="position:absolute;">' )
+				base.$caret = $( '<div class="' + kbcss.caret + ' ' + o.caretClass + '" style="position:absolute;">' )
 					.insertAfter( base.$preview );
 
 				base.$el

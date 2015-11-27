@@ -96,8 +96,8 @@
 			base.typing_setup = function(){
 				var kbevents = $keyboard.events,
 					namespace = base.typing_namespace;
-				base.$el.add( base.$preview ).unbind(namespace);
 				base.$el
+					.unbind( namespace )
 					.bind([ kbevents.kbHidden, kbevents.kbInactive, '' ].join( namespace + ' ' ), function(e){
 						base.typing_reset();
 					})
@@ -105,10 +105,12 @@
 						base.typing_setup();
 					});
 				base.$allKeys
+					.unbind( namespace )
 					.bind('mousedown' + namespace, function(){
 						base.typing_reset();
 					});
 				base.$preview
+				.unbind( namespace )
 				.bind('keyup' + namespace, function(e){
 					if (o.init && o.lockTypeIn) { return false; }
 					if (e.which >= 37 && e.which <=40) { return; } // ignore arrow keys
@@ -308,13 +310,14 @@
 				// visible event is fired before this extension is initialized, so check!
 				if (base.options.alwaysOpen && base.isVisible()) {
 					base.typing_setup();
+				} else {
+					// capture and simulate typing
+					base.$el
+						.unbind( $keyboard.events.kbBeforeVisible + base.typing_namespace )
+						.bind( $keyboard.events.kbBeforeVisible + base.typing_namespace, function(){
+							base.typing_setup();
+						});
 				}
-				// capture and simulate typing
-				base.$el
-					.unbind( $keyboard.events.kbBeforeVisible + base.typing_namespace )
-					.bind( $keyboard.events.kbBeforeVisible + base.typing_namespace, function(){
-						base.typing_setup();
-					});
 			}
 
 		});

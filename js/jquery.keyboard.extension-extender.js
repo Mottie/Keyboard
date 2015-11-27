@@ -76,6 +76,8 @@
 				// show extender using inline-block - allows the removal of css float
 				$kb[ 0 ].style.display = opts.showing ? 'inline-block' : 'none';
 
+				// remove previous extender... just-in-case
+				base.$keyboard.find( '.' + $keyboard.css.extender ).remove();
 				base.$keyboard.append( $kb );
 				base.extender_toggle( opts.showing );
 				base.bindKeys();
