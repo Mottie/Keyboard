@@ -232,21 +232,8 @@ var $keyboard = $.keyboard = function(el, options){
 			// keyboard was destroyed
 			return;
 		}
-		if (base.$el.is(':visible')) {
-			// caret position is always 0,0 in webkit; and nothing is focused at this point... odd
-			// save caret position in the input to transfer it to the preview
-			// add delay to get correct caret position
-			base.timer2 = setTimeout(function(){
-				var undef;
-				// Number inputs don't support selectionStart and selectionEnd
-				// Number/email inputs don't support selectionStart and selectionEnd
-				if ( !/(number|email)/i.test(base.el.type) && !o.caretToEnd ) {
-					base.saveCaret( undef, undef, base.$el );
-				}
-			}, 20);
-		}
-		if (!base.isVisible()) {
-			clearTimeout(base.timer);
+		if ( !base.isVisible() ) {
+			clearTimeout( base.timer );
 			base.reveal();
 		}
 	};
@@ -369,7 +356,16 @@ var $keyboard = $.keyboard = function(el, options){
 			// opening keyboard flag; delay allows switching between keyboards without immediately closing
 			// the keyboard
 			base.timer2 = setTimeout(function() {
+				var undef;
 				base.opening = false;
+				// Number inputs don't support selectionStart and selectionEnd
+				// Number/email inputs don't support selectionStart and selectionEnd
+				if ( !/(number|email)/i.test( base.el.type ) && !o.caretToEnd ) {
+					// caret position is always 0,0 in webkit; and nothing is focused at this point... odd
+					// save caret position in the input to transfer it to the preview
+					// inside delay to get correct caret position
+					base.saveCaret( undef, undef, base.$el );
+				}
 				if (o.initialFocus) {
 					$keyboard.caret( base.$preview, base.last );
 				}
