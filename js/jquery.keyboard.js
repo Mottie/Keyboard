@@ -262,7 +262,7 @@ var $keyboard = $.keyboard = function(el, options){
 
 		// update keyboard after a layout change
 		if (refresh) {
-			base.isOpen = false;
+			base.isOpen = o.alwaysOpen;
 			base.last.val = base.$preview && base.$preview.val() || '';
 			if (base.$keyboard.length) {
 				base.$keyboard.remove();
@@ -309,8 +309,9 @@ var $keyboard = $.keyboard = function(el, options){
 		base.showSet();
 
 		// beforeVisible event
-		base.$el.trigger( $keyboard.events.kbBeforeVisible, [ base, base.el ] );
-
+		if ( !base.isVisible() ) {
+			base.$el.trigger( $keyboard.events.kbBeforeVisible, [ base, base.el ] );
+		}
 		base.setCurrent();
 		// update keyboard - enabled or disabled?
 		base.toggle();
@@ -364,23 +365,25 @@ var $keyboard = $.keyboard = function(el, options){
 			}
 		}
 
-		// opening keyboard flag; delay allows switching between keyboards without immediately closing
-		// the keyboard
-		base.timer2 = setTimeout(function(){
-			base.opening = false;
-			if (o.initialFocus) {
-				$keyboard.caret( base.$preview, base.last );
-			}
-			// save event time for keyboards with stayOpen: true
-			base.last.eventTime = new Date().getTime();
-			base.$el.trigger( $keyboard.events.kbVisible, [ base, base.el ] );
-			base.timer = setTimeout(function(){
-				// get updated caret information after visible event - fixes #331
-				if (base) { // Check if base exists, this is a case when destroy is called, before timers have fired
-					base.saveCaret();
+		if ( !refresh ) {
+			// opening keyboard flag; delay allows switching between keyboards without immediately closing
+			// the keyboard
+			base.timer2 = setTimeout(function() {
+				base.opening = false;
+				if (o.initialFocus) {
+					$keyboard.caret( base.$preview, base.last );
 				}
-			}, 200);
-		}, 10);
+				// save event time for keyboards with stayOpen: true
+				base.last.eventTime = new Date().getTime();
+				base.$el.trigger( $keyboard.events.kbVisible, [ base, base.el ] );
+				base.timer = setTimeout(function(){
+					// get updated caret information after visible event - fixes #331
+					if (base) { // Check if base exists, this is a case when destroy is called, before timers have fired
+						base.saveCaret();
+					}
+				}, 200);
+			}, 10);
+		}
 		// return base to allow chaining in typing extension
 		return base;
 	};
@@ -1277,7 +1280,7 @@ var $keyboard = $.keyboard = function(el, options){
 				if (o.cancelClose) { return; }
 			}
 			base.isCurrent(false);
-			base.isOpen = false;
+			base.isOpen = o.alwaysOpen;
 			// update value for always open keyboards
 			base.$preview.val(val);
 
