@@ -14,7 +14,7 @@ jQuery(function($) {
 		stayOpen : true,
 		layout   : 'qwerty'
 	});
-	$('#passwd').click(function(){
+	$('#password-opener').click(function(){
 		var kb = $('#password').getkeyboard();
 		// close the keyboard if the keyboard is visible and the button is clicked a second time
 		if ( kb.isOpen ) {
@@ -22,11 +22,6 @@ jQuery(function($) {
 		} else {
 			kb.reveal();
 		}
-	});
-	// since IE adds an overlay behind the input to prevent clicking in other inputs (the keyboard may not automatically open on focus... silly IE bug)
-	// We can remove the overlay (transparent) if desired using this code:
-	$('#password').bind('visible', function(e, keyboard, el){
-	 $('.ui-keyboard-overlay').remove(); // remove overlay because clicking on it will close the keyboard... we set "openOn" to null to prevent closing.
 	});
 
 	// QWERTY (mod) Text Area

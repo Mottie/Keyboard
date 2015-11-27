@@ -97,8 +97,8 @@
 		<a href="//github.com/Mottie/Keyboard">Virtual Keyboard</a><br>
 		<small class="version"></small>
 	</h1>
-	<iframe class="github-btn" src="//ghbtns.com/github-btn.html?user=Mottie&amp;repo=keyboard&amp;type=fork&amp;count=true" width="90" height="20" title="Fork on GitHub"></iframe>
-	<iframe class="github-btn" src="//ghbtns.com/github-btn.html?user=Mottie&amp;repo=keyboard&amp;type=watch&amp;count=true" width="100" height="20" title="Star on GitHub"></iframe>
+	<iframe class="github-btn" src="https://ghbtns.com/github-btn.html?user=Mottie&amp;repo=keyboard&amp;type=fork&amp;count=true" width="90" height="20" title="Fork on GitHub"></iframe>
+	<iframe class="github-btn" src="https://ghbtns.com/github-btn.html?user=Mottie&amp;repo=keyboard&amp;type=watch&amp;count=true" width="100" height="20" title="Star on GitHub"></iframe>
 	<h5>Original by
 		<a class="external" href="//jsatt.blogspot.com/2010/01/on-screen-keyboard-widget-using-jquery.html">Jeremy Satterfield</a>,
 		updated &amp; maintained by <a class="external" href="//wowmotty.blogspot.com/2010/11/jquery-ui-keyboard-widget.html">Rob Garrison</a>
@@ -157,7 +157,7 @@ $('#text')
 	<div class="block">
 		<h2>
 			<span class="tooltip-tipsy" title="Click, then scroll down to see this code">QWERTY Password</span>
-			<img id="passwd" class="tooltip-tipsy" title="Click to open the virtual keyboard" src="css/images/keyboard.svg">
+			<img id="password-opener" class="tooltip-tipsy" title="Click to open the virtual keyboard" src="css/images/keyboard.svg">
 		</h2>
 		<input id="password" type="password">
 		<br>
@@ -180,8 +180,8 @@ $('#text')
 	})
 	.addTyping();
 
-$('#passwd').click(function(){
-	var kb = $('.qwerty:eq(1)').getkeyboard();
+$('#password-opener').click(function(){
+	var kb = $('#password').getkeyboard();
 	// close the keyboard if the keyboard is visible and the button is clicked a second time
 	if ( kb.isOpen ) {
 		kb.close();
@@ -223,7 +223,7 @@ $('#passwd').click(function(){
 				'~ ! @ # $ % ^ & * ( ) _ + {bksp}',
 				'{tab} Q W E R T Y U I O P { } |',
 				'A S D F G H J K L : " {enter}',
-				'{shift} Z X C V B N M < > ? {shift}',
+				'{shift} Z X C V B N M &lt; &gt; ? {shift}',
 				'{accept} {space} {left} {right}'
 			]
 		}
@@ -801,7 +801,7 @@ $('#hidden')
 			'~ ! @ # $ % ^ & * ( ) _ + {bksp}',
 			'{tab} Q W E R T Y U I O P { } |',
 			'A S D F G H J K L : " {enter}',
-			'{shift} Z X C V B N M < > ? {shift}',
+			'{shift} Z X C V B N M &lt; &gt; ? {shift}',
 			'{accept} {space} {left} {right} {sp:.2} {del} {toggle}'
 		]
 	},
