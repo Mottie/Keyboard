@@ -4,6 +4,8 @@ A jQuery on-screen keyboard (OSK) plugin that works in the browser. Originally p
 
 ## Features ([Demo](http://mottie.github.com/Keyboard/))
 
+[![Join the chat at https://gitter.im/Mottie/Keyboard](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/Mottie/Keyboard?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+
 ### Ease of use
 
 * An on-screen virtual keyboard embedded within the browser window which will popup when a specified entry field is focused.
