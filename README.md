@@ -1,10 +1,10 @@
 A jQuery on-screen keyboard (OSK) plugin that works in the browser. Originally posted by Jeremy Satterfield in his [blog](http://jsatt.blogspot.com/2010/01/on-screen-keyboard-widget-using-jquery.html), [jQuery plugins](http://plugins.jquery.com/project/virtual_keyboard) and on [Snipplr](http://snipplr.com/view/21577/virtual-keyboard-widget/). Currently maintained by [Mottie](https://github.com/Mottie/Keyboard).
 
-[![Bower Version][bower-image]][bower-url] [![NPM Version][npm-image]][npm-url] [![devDependency Status][david-dev-image]][david-dev-url]
+[![Bower Version][bower-image]][bower-url] [![NPM Version][npm-image]][npm-url] [![devDependency Status][david-dev-image]][david-dev-url] [![Join the chat at https://gitter.im/Mottie/Keyboard][gitter-image]][gitter]
+
 
 ## Features ([Demo](http://mottie.github.com/Keyboard/))
 
-[![Join the chat at https://gitter.im/Mottie/Keyboard](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/Mottie/Keyboard?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
 ### Ease of use
 
@@ -130,6 +130,8 @@ Wiki: [Home](https://github.com/Mottie/Keyboard/wiki/Home) | [FAQ](https://githu
 [david-dev-image]: https://david-dm.org/Mottie/keyboard/dev-status.svg
 [bower-url]: http://bower.io/search/?q=keyboard
 [bower-image]: https://img.shields.io/bower/v/keyboard.svg
+[gitter-image]: https://badges.gitter.im/Join%20Chat.svg
+[gitter]: https://gitter.im/Mottie/Keyboard?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge
 
 ## Change Log
 
