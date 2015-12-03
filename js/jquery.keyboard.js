@@ -148,6 +148,12 @@ var $keyboard = $.keyboard = function(el, options){
 			.addClass( kbcss.input + ' ' + o.css.input )
 			.attr({ 'aria-haspopup' : 'true', 'role' : 'textbox' });
 
+		// set lockInput if the element is readonly; or make the element readonly if lockInput is set
+		if (o.lockInput || base.el.readOnly) {
+			o.lockInput = true;
+			base.$el.addClass(kbcss.locked).attr({ 'readonly': 'readonly'});
+		}
+
 		// add disabled/readonly class - dynamically updated on reveal
 		if (base.$el.is(':disabled') || (base.$el.attr('readonly') &&
 			!base.$el.hasClass(kbcss.locked))) {
@@ -459,9 +465,6 @@ var $keyboard = $.keyboard = function(el, options){
 		base.$decBtn = base.$keyboard.find('.' + kbcss.keyPrefix + 'dec');
 		// add enter to allowed keys; fixes #190
 		if (o.enterNavigation || base.el.nodeName === 'TEXTAREA') { base.alwaysAllowed.push(13); }
-		if (o.lockInput) {
-			base.$preview.addClass(kbcss.locked).attr({ 'readonly': 'readonly'});
-		}
 
 		base.bindKeyboard();
 
