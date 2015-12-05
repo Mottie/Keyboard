@@ -137,6 +137,24 @@ Wiki: [Home](https://github.com/Mottie/Keyboard/wiki/Home) | [FAQ](https://githu
 
 Only the latest changes will be shown below, see the wiki log to view older versions.
 
+### Version 1.25.10 (12/5/2015)
+
+* Themes:
+  * Add missing definitions to custom themes.
+  * Add minified custom themes.
+  * Keep keyboard centered while resizing textarea.
+* Core:
+  * Prevent `beforeVisible` & `visible` events when `alwaysOpen` is `true`.
+  * Save caret immediately before changing focus.
+  * Keyboard now works with `readonly` set on input prior to initialization.
+  * Move duplicate `touchstart` code to prevent lag on Mobile devices. Fixes issues [#379](https://github.com/Mottie/Keyboard/issues/379) &amp; [#411](https://github.com/Mottie/Keyboard/issues/411).
+  * Consolidate keyCodes to make the code more readable.
+* Extensions: update extensions to prevent duplicates. In case `alwaysOpen` is `true` & `beforeVisible` or `visible` events fire.
+* Miscellaneous:
+  * Main demo cleanup.
+  * Add "main" to `package.json`. Fixes [issue #414](https://github.com/Mottie/Keyboard/issues/414).
+  * Add & adjust Gitter badge to readme. Fixes [issue #413](https://github.com/Mottie/Keyboard/issues/413).
+
 ### Version 1.25.9 (11/25/2015)
 
 * Readme: Update &amp; elaborate. Fixes [issue #410](https://github.com/Mottie/Keyboard/issues/410).
@@ -159,16 +177,3 @@ Only the latest changes will be shown below, see the wiki log to view older vers
   * Update dependencies.
   * Add rudimentary unit testing.
 * Destroy: remove isCurrent class.
-
-### Version 1.25.7 (11/15/2015)
-
-* Readme: Add link to ng-virtual-keyboard for Angular JS.
-* `alwaysOpen` changes:
-  * Do not redefine stored preview object when alwaysOpen.
-  * `alwaysOpen` keyboards are now activated without using focus. Fixes [issue #395](https://github.com/Mottie/Keyboard/issues/395).
-* Restricted input compare to string. Fixes [issue #399](https://github.com/Mottie/Keyboard/issues/399).
-* Add `restrictInclude` option & update hex demo.
-* Do not include space with enter unless using old IE.
-* Mousewheel tweak, possible fix for [issue #379](https://github.com/Mottie/Keyboard/issues/379).
-* Clear clone variable on keyboard close. Fixes [issue #397](https://github.com/Mottie/Keyboard/issues/397) & [pull #398](https://github.com/Mottie/Keyboard/pull/398).
-* `openOn` option now allows multiple events.

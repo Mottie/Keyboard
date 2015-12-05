@@ -5,8 +5,8 @@
 █████▀ ▀████▀   ██  ██ ▀████▀   ██     ██ ██ ██ ▀████▀ █████▀ ██ ██     █████▀
 */
 /*! jQuery UI Virtual Keyboard - ALL Extensions + Mousewheel */
-/*! jQuery UI Virtual Keyboard Alt Key Popup v1.0.1 *//*
- * for Keyboard v1.18+ only (7/7/2015)
+/*! jQuery UI Virtual Keyboard Alt Key Popup v1.0.2 *//*
+ * for Keyboard v1.18+ only (12/5/2015)
  *
  * By Rob Garrison (aka Mottie)
  * Licensed under the MIT License
@@ -364,8 +364,8 @@ $.fn.addAutocomplete = function(options){
 
 }));
 
-/*! jQuery UI Virtual Keyboard Virtual Caret v1.1.3 (beta) *//*
- * for Keyboard v1.18+ only (9/24/2015)
+/*! jQuery UI Virtual Keyboard Virtual Caret v1.1.4 (beta) *//*
+ * for Keyboard v1.18+ only (12/5/2015)
  * modified from https://github.com/component/textarea-caret-position
  *
  * By Rob Garrison (aka Mottie)
@@ -565,8 +565,8 @@ $.fn.addAutocomplete = function(options){
 
 }));
 
-/*! jQuery UI Virtual Keyboard Extender v1.0.1 *//*
- * for Keyboard v1.18+ only (7/7/2015)
+/*! jQuery UI Virtual Keyboard Extender v1.0.2 *//*
+ * for Keyboard v1.18+ only (12/5/2015)
  *
  * By Rob Garrison (aka Mottie)
  * Licensed under the MIT License
@@ -1411,8 +1411,8 @@ $.keyboard = $.keyboard || {};
 
 }));
 
-/*! jQuery UI Virtual Keyboard Typing Simulator v1.10.0 *//*
- * for Keyboard v1.18+ only (9/14/2015)
+/*! jQuery UI Virtual Keyboard Typing Simulator v1.10.1 *//*
+ * for Keyboard v1.18+ only (12/5/2015)
  *
  * By Rob Garrison (aka Mottie & Fudgey)
  * Licensed under the MIT License
