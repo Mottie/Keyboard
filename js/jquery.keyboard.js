@@ -50,7 +50,7 @@ var $keyboard = $.keyboard = function(el, options){
 	base.$el.data('keyboard', base);
 
 	base.init = function(){
-		var position,
+		var k, position,
 			kbcss = $keyboard.css,
 			close;
 		base.settings = options || {};
@@ -88,11 +88,24 @@ var $keyboard = $.keyboard = function(el, options){
 		base.isOpen = false;
 		// is mousewheel plugin loaded?
 		base.wheel = $.isFunction( $.fn.mousewheel );
-		// keyCode of keys always allowed to be typed - caps lock, page up & down, end, home, arrow, insert &
-		// delete keys
-		base.alwaysAllowed = [20,33,34,35,36,37,38,39,40,45,46];
+		// keyCode of keys always allowed to be typed
+		k = $keyboard.keyCodes;
+		// base.alwaysAllowed = [20,33,34,35,36,37,38,39,40,45,46];
+		base.alwaysAllowed = [
+			k.capsLock,
+			k.pageUp,
+			k.pageDown,
+			k.end,
+			k.home,
+			k.left,
+			k.up,
+			k.right,
+			k.down,
+			k.insert,
+			k.delete
+		];
 		base.$keyboard = [];
-		// keyboard enabled
+		// keyboard enabled; set to false on destroy
 		base.enabled = true;
 		// make a copy of the original keyboard position
 		if (!$.isEmptyObject(o.position)) {
@@ -610,8 +623,10 @@ var $keyboard = $.keyboard = function(el, options){
 		}
 	};
 
-	base.bindKeyboard = function(){
-		var evt, layout = $keyboard.builtLayouts[base.layout];
+	base.bindKeyboard = function() {
+		var evt,
+			keyCodes = $keyboard.keyCodes,
+			layout = $keyboard.builtLayouts[base.layout];
 		base.$preview
 			.unbind('keypress keyup keydown mouseup touchend '.split(' ').join(base.namespace + ' '))
 			.bind('click' + base.namespace, function(){
@@ -631,14 +646,18 @@ var $keyboard = $.keyboard = function(el, options){
 					base.saveCaret();
 				}
 				// update caps lock - can only do this while typing =(
-				base.capsLock = (((k >= 65 && k <= 90) && !e.shiftKey) ||
-					((k >= 97 && k <= 122) && e.shiftKey)) ? true : false;
+				// ascii uppercase A = 65 (same as keyCode); ascii uppercase Z = 90 (same as keyCode)
+				base.capsLock = ( ( ( k >= keyCodes.A && k <= keyCodes.Z ) && !e.shiftKey ) ||
+					// ASCII lowercase a = 97; ASCII lowercase z = 122
+					( ( k >= keyCodes.a && k <= keyCodes.z ) && e.shiftKey ) ) ? true : false;
 
 				// restrict input - keyCode in keypress special keys:
 				// see http://www.asquare.net/javascript/tests/KeyCode.html
 				if (o.restrictInput) {
 					// allow navigation keys to work - Chrome doesn't fire a keypress event (8 = bksp)
-					if ( (e.which === 8 || e.which === 0) && $.inArray( e.keyCode, base.alwaysAllowed ) ) { return; }
+					if ( ( e.which === keyCodes.backSpace || e.which === 0 ) && $.inArray( e.keyCode, base.alwaysAllowed ) ) {
+						return;
+					}
 					// quick key check
 					if ($.inArray(str, layout.acceptedKeys) === -1) {
 						e.preventDefault();
@@ -650,10 +669,11 @@ var $keyboard = $.keyboard = function(el, options){
 							o.restricted( evt, base, base.el );
 						}
 					}
-				} else if ( (e.ctrlKey || e.metaKey) && (e.which === 97 || e.which === 99 || e.which === 118 ||
-						(e.which >= 120 && e.which <=122)) ) {
-					// Allow select all (ctrl-a:97), copy (ctrl-c:99), paste (ctrl-v:118) & cut (ctrl-x:120) &
-					// redo (ctrl-y:121)& undo (ctrl-z:122); meta key for mac
+				} else if ( ( e.ctrlKey || e.metaKey ) &&
+						( e.which === keyCodes.A || e.which === keyCodes.C || e.which === keyCodes.V ||
+						( e.which >= keyCodes.X && e.which <= keyCodes.Z ) ) ) {
+					// Allow select all (ctrl-a), copy (ctrl-c), paste (ctrl-v) & cut (ctrl-x) &
+					// redo (ctrl-y)& undo (ctrl-z); meta key for mac
 					return;
 				}
 				// Mapped Keys - allows typing on a regular keyboard and the mapped key is entered
@@ -672,7 +692,7 @@ var $keyboard = $.keyboard = function(el, options){
 				base.last.virtual = false;
 				switch (e.which) {
 					// Insert tab key
-					case 9 :
+					case keyCodes.tab :
 						// Added a flag to prevent from tabbing into an input, keyboard opening, then adding the tab to the keyboard preview
 						// area on keyup. Sadly it still happens if you don't release the tab key immediately because keydown event auto-repeats
 						if (base.tab && o.tabNavigation && !o.lockInput) {
@@ -687,7 +707,7 @@ var $keyboard = $.keyboard = function(el, options){
 						break;
 
 					// Escape will hide the keyboard
-					case 27:
+					case keyCodes.escape :
 						if (!o.ignoreEsc) {
 							base.close( o.autoAccept && o.autoAcceptOnEsc ? 'true' : false );
 						}
@@ -720,7 +740,7 @@ var $keyboard = $.keyboard = function(el, options){
 					base.reveal();
 				}
 				// prevent tab key from leaving the preview window
-				if ( e.which === 9 ) {
+				if ( e.which === keyCodes.tab ) {
 					// allow tab to pass through - tab to next input/shift-tab for prev
 					base.tab = true;
 					return false;
@@ -730,22 +750,22 @@ var $keyboard = $.keyboard = function(el, options){
 				base.last.virtual = false;
 				switch (e.which) {
 
-					case 8 :
+					case keyCodes.backSpace :
 						$keyboard.keyaction.bksp(base, null, e);
 						e.preventDefault();
 						break;
 
-					case 13:
+					case keyCodes.enter :
 						$keyboard.keyaction.enter(base, null, e);
 						break;
 
 					// Show capsLock
-					case 20:
+					case keyCodes.capsLock :
 						base.shiftActive = base.capsLock = !base.capsLock;
 						base.showSet();
 						break;
 
-					case 86:
+					case keyCodes.V :
 						// prevent ctrl-v/cmd-v
 						if (e.ctrlKey || e.metaKey) {
 							if (o.preventPaste) { e.preventDefault(); return; }
@@ -1336,7 +1356,9 @@ var $keyboard = $.keyboard = function(el, options){
 
 	base.escClose = function(e){
 		if ( e && e.type === 'keyup' ) {
-			return ( e.which === 27 && !o.ignoreEsc ) ? base.close( o.autoAccept && o.autoAcceptOnEsc ? 'true' : false ) : '';
+			return ( e.which === $keyboard.keyCodes.escape && !o.ignoreEsc ) ?
+				base.close( o.autoAccept && o.autoAcceptOnEsc ? 'true' : false ) :
+				'';
 		}
 		// keep keyboard open if alwaysOpen or stayOpen is true - fixes mutliple always open keyboards or
 		// single stay open keyboard
@@ -1759,6 +1781,37 @@ var $keyboard = $.keyboard = function(el, options){
 		// Run initializer
 		base.init();
 	};
+
+	// event.which & ASCII values
+	$keyboard.keyCodes = {
+		backSpace: 8,
+		tab: 9,
+		enter: 13,
+		capsLock: 20,
+		escape: 27,
+		space: 32,
+		pageUp: 33,
+		pageDown: 34,
+		end: 35,
+		home: 36,
+		left: 37,
+		up: 38,
+		right: 39,
+		down: 40,
+		insert: 45,
+		delete: 46,
+		// event.which keyCodes (uppercase letters)
+		A: 65,
+		Z: 90,
+		V: 86,
+		C: 67,
+		X: 88,
+
+		// ASCII lowercase a & z
+		a: 97,
+		z: 122
+	};
+
 	$keyboard.css = {
 		// keyboard id suffix
 		idSuffix: '_keyboard',
