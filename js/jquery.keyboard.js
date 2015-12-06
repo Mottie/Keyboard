@@ -49,8 +49,8 @@ var $keyboard = $.keyboard = function(el, options){
 	// Add a reverse reference to the DOM object
 	base.$el.data('keyboard', base);
 
-	base.init = function(){
-		var k, position,
+	base.init = function() {
+		var k, position, tmp,
 			kbcss = $keyboard.css,
 			kbevents = $keyboard.events,
 			close;
@@ -148,23 +148,12 @@ var $keyboard = $.keyboard = function(el, options){
 
 		// Close with esc key & clicking outside
 		if (o.alwaysOpen) { o.stayOpen = true; }
-		close = function( e ) {
-			if (base.opening) { return; }
-			base.escClose(e);
-			var $target = $(e.target);
-			// needed for IE to allow switching between keyboards smoothly
-			if ( $target.hasClass( kbcss.input ) ) {
-				var kb = $target.data('keyboard');
-				// only trigger on self
-				if ( kb === base && !kb.$el.hasClass( kbcss.isCurrent ) && e.type === kb.options.openOn ) {
-					kb.focusOn();
-				}
-			}
-		};
-		$(document).bind('mousedown keyup touchstart checkkeyboard '.split(' ').join(base.namespace + ' '),close);
-		if (base.el.ownerDocument !== document) {
-			$(base.el.ownerDocument).bind('mousedown keyup touchstart checkkeyboard '.split(' ').join(base.namespace + ' '),close);
+
+		tmp = $( document );
+		if ( base.el.ownerDocument !== document ) {
+			tmp = tmp.add( base.el.ownerDocument );
 		}
+		tmp.bind( 'mousedown keyup touchstart checkkeyboard '.split( ' ' ).join( base.namespace + ' ' ), base.checkClose );
 
 		// Display keyboard on focus
 		base.$el
@@ -1362,6 +1351,21 @@ var $keyboard = $.keyboard = function(el, options){
 
 	base.accept = function(){
 		return base.close(true);
+	};
+
+	base.checkClose = function( e ) {
+		if ( base.opening ) { return; }
+		base.escClose( e );
+		var kbcss = $.keyboard.css,
+			$target = $( e.target );
+		// needed for IE to allow switching between keyboards smoothly
+		if ( $target.hasClass( kbcss.input ) ) {
+			var kb = $target.data( 'keyboard' );
+			// only trigger on self
+			if ( kb === base && !kb.$el.hasClass( kbcss.isCurrent ) && e.type === kb.options.openOn ) {
+				kb.focusOn();
+			}
+		}
 	};
 
 	base.escClose = function(e){
