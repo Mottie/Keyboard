@@ -52,6 +52,7 @@ var $keyboard = $.keyboard = function(el, options){
 	base.init = function(){
 		var k, position,
 			kbcss = $keyboard.css,
+			kbevents = $keyboard.events,
 			close;
 		base.settings = options || {};
 		// shallow copy position to prevent performance issues; see #357
@@ -129,10 +130,19 @@ var $keyboard = $.keyboard = function(el, options){
 		};
 		base.temp = [ '', 0, 0 ]; // used when building the keyboard - [keyset element, row, index]
 
-		// Bind events
-		$.each('initialized beforeVisible visible hidden canceled accepted beforeClose'.split(' '), function( i, f ) {
-			if ($.isFunction(o[f])){
-				base.$el.bind(f + base.namespace, o[f]);
+		// Callbacks
+		$.each([
+			kbevents.kbInit,
+			kbevents.kbBeforeVisible,
+			kbevents.kbVisible,
+			kbevents.kbHidden,
+			kbevents.inputCanceled,
+			kbevents.inputAccepted,
+			kbevents.kbBeforeClose
+		], function( i, callback ) {
+			if ( $.isFunction( o[ callback ] ) ) {
+				// bind callback functions within options to triggered events
+				base.$el.bind( callback + base.namespace, o[ callback ] );
 			}
 		});
 
@@ -186,7 +196,7 @@ var $keyboard = $.keyboard = function(el, options){
 				.val( base.inPlaceholder );
 		}
 
-		base.$el.trigger( $keyboard.events.kbInit, [ base, base.el ] );
+		base.$el.trigger( kbevents.kbInit, [ base, base.el ] );
 
 		// initialized with keyboard open
 		if (o.alwaysOpen) {
