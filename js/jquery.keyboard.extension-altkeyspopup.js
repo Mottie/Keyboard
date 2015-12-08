@@ -106,7 +106,7 @@
 					.bind( start, function() {
 						clearTimeout( timer );
 						var $key = $( this ),
-							key = $key.attr( 'data-action' ) || '';
+							key = $key.attr( 'data-value' ) || '';
 						if ( key in $keyboard.altKeys ) {
 							timer = setTimeout( function() {
 								base.altKeyPopup_popup( key, $key );
