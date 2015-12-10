@@ -1,6 +1,7 @@
 {
   "name": "keyboard",
   "main": [
+    "js/jquery.keyboard.js",
     "dist/js/jquery.keyboard.min.js",
     "dist/css/keyboard.min.css",
     "dist/layouts/keyboard-layouts-combined.min.js",
