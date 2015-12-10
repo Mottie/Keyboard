@@ -137,6 +137,16 @@ Wiki: [Home](https://github.com/Mottie/Keyboard/wiki/Home) | [FAQ](https://githu
 
 Only the latest changes will be shown below, see the wiki log to view older versions.
 
+### Version 1.25.11 (12/10/2015)
+
+* Bower: Add development (non-minified) keyboard script. See [issue #418](https://github.com/Mottie/Keyboard/issues/418).
+* Core:
+  * Use correct event names while binding callback options.
+  * Make internal close function public.
+* AltKeysPopup:
+  * Compare altkeys to key data-value. See [issue #416](https://github.com/Mottie/Keyboard/issues/416).
+  * Add physical keyboard long hold & popup navigation. See [issue #416](https://github.com/Mottie/Keyboard/issues/416).
+
 ### Version 1.25.10 (12/5/2015)
 
 * Themes:
@@ -168,12 +178,3 @@ Only the latest changes will be shown below, see the wiki log to view older vers
   * Make extender layout display `inline-block`.
 * Docs: update Bootstrap to v3.3.6.
 * Grunt: Fix uglify to only preserve comments that start with a bang.
-
-### Version 1.25.8 (11/21/2015)
-
-* Add endrow break after spaces. Fixes [issue #402](https://github.com/Mottie/Keyboard/issues/402).
-* Remove extraneous preview data-attributes. Fixes [issue #351](https://github.com/Mottie/Keyboard/issues/351).
-* Grunt:
-  * Update dependencies.
-  * Add rudimentary unit testing.
-* Destroy: remove isCurrent class.
