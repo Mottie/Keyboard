@@ -131,15 +131,15 @@
 				base.altkeypopup_blockingFlag = false;
 				base.$preview
 					.unbind( namespace )
-					.bind( 'keydown keyup'.split( ' ' ).join( namespace + ' ' ), function( e ) {
-						if ( e.type === 'keyup' ) {
+					.bind( 'keydown keyup'.split( ' ' ).join( namespace + ' ' ), function( event ) {
+						if ( event.type === 'keyup' ) {
 							clearTimeout( timer );
 							base.altkeypopup_blockingFlag = false;
 						} else if ( !base.altkeypopup_blockingFlag ) {
 							var layout = $keyboard.builtLayouts[ base.layout ],
 								$key = $( event.target ),
-								key = String.fromCharCode( e.charCode || e.which );
-							if ( !e.shiftKey ) {
+								key = String.fromCharCode( event.charCode || event.which );
+							if ( !event.shiftKey ) {
 								key = key.toLowerCase();
 							}
 							// find mapped key, if any
