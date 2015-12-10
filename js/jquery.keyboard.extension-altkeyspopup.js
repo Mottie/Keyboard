@@ -1,5 +1,5 @@
-/*! jQuery UI Virtual Keyboard Alt Key Popup v1.0.2 *//*
- * for Keyboard v1.18+ only (12/5/2015)
+/*! jQuery UI Virtual Keyboard Alt Key Popup v1.1.0 *//*
+ * for Keyboard v1.18+ only (12/10/2015)
  *
  * By Rob Garrison (aka Mottie)
  * Licensed under the MIT License
@@ -73,13 +73,24 @@
 		')' : '\u300b \u3011 \u3015'  // » 】 〕
 	}, $keyboard.altKeys );
 
+	// physical keyboard navigation inside popup
+	$keyboard.navigationKeys = $.extend({
+		enter      : 13,
+		escape     : 27,
+		end        : 35,
+		home       : 36,
+		left       : 37,
+		right      : 39,
+	}, $keyboard.navigationKeys );
+
 	$.fn.addAltKeyPopup = function( options ) {
 		//Set the default values, use comma to separate the settings, example:
 		var defaults = {
 			// time to hold down a button in ms to trigger a popup
 			holdTime : 500,
 			// event triggered when popup is visible
-			popupVisible : 'popup-visible'
+			popupVisible : 'popup-visible',
+			popupHidden  : 'popup-hidden'
 		};
 		return this.each( function() {
 			// make sure a keyboard is attached
@@ -116,6 +127,45 @@
 					.bind( end, function() {
 						clearTimeout( timer );
 					});
+
+				base.altkeypopup_blockingFlag = false;
+				base.$preview
+					.unbind( namespace )
+					.bind( 'keydown keyup'.split( ' ' ).join( namespace + ' ' ), function( e ) {
+						if ( e.type === 'keyup' ) {
+							clearTimeout( timer );
+							base.altkeypopup_blockingFlag = false;
+						} else if ( !base.altkeypopup_blockingFlag ) {
+							var layout = $keyboard.builtLayouts[ base.layout ],
+								$key = $( event.target ),
+								key = String.fromCharCode( e.charCode || e.which );
+							if ( !e.shiftKey ) {
+								key = key.toLowerCase();
+							}
+							// find mapped key, if any
+							if ( layout.hasMappedKeys && layout.mappedKeys.hasOwnProperty( key ) ) {
+								key = layout.mappedKeys[ key ];
+							}
+							base.altkeypopup_blockingFlag = true;
+							timer = setTimeout( function(){
+								base.altKeyPopup_popup( key, $key );
+							}, base.altkeypopup_options.holdTime );
+							return true;
+						}
+						// prevent key repeat
+						return false;
+					});
+			};
+
+			base.altKeyPopup_close = function() {
+				base.altkeypopup_blockingFlag = false;
+				base.altKeyPopup_$overlay.remove();
+				$( document ).unbind( namespace );
+				base.$preview.focus();
+				// restore ignoreEsc option
+				base.options.ignoreEsc = base.altKeyPopup_savedIgnoreEsc;
+				// trigger popup hidden event
+				base.$el.trigger( base.altkeypopup_options.popupHidden, [ base ] );
 			};
 
 			base.altKeyPopup_popup = function( key, $key ) {
@@ -131,7 +181,7 @@
 					})
 					.appendTo( base.$keyboard )
 					.bind( 'click touchstart', function() {
-						base.altKeyPopup_$overlay.remove();
+						base.altKeyPopup_close();
 					});
 
 				// remove character added when key was initially pressed, unless it was a backspace key
@@ -162,6 +212,28 @@
 						$( this ).toggleClass( base.options.css.buttonHover, event.type === 'mouseover' );
 					});
 
+				// popup opened using physical keyboard... add key highlight
+				if ( !base.last.virtual ) {
+					base.altKeyPopup_navigate( true ); // init
+				}
+				// set ignoreEsc to allow escape to ONLY close the popup
+				base.altKeyPopup_savedIgnoreEsc = base.options.ignoreEsc;
+				base.options.ignoreEsc = true;
+				$( document )
+					.unbind( namespace )
+					.bind( 'keydown' + namespace, function( event ) {
+						// keep home & end from scrolling the page
+						return false;
+					})
+					.bind( 'keyup' + namespace, function( event ) {
+						if ( event.which === $keyboard.navigationKeys.escape ) {
+							base.altKeyPopup_close();
+						} else {
+							base.altKeyPopup_navigate( event );
+						}
+						return false;
+					});
+
 				// position popup within $keyboard container
 				positionHoriz = $key.position().left - ( $keys.outerWidth() / 2 ) + ( $key.outerWidth() / 2 );
 				if ( positionHoriz + $keys.outerWidth() > kbWidth ) {
@@ -189,8 +261,45 @@
 					top : positionVert < top ? top : positionVert,
 					left : positionHoriz < 0 ? 0 : positionHoriz
 				});
+				base.$preview.blur();
 				// trigger popup visible event
 				base.$el.trigger( base.altkeypopup_options.popupVisible, [ base ] );
+			};
+
+			base.altKeyPopup_navigate = function( event ) {
+				var indx,
+					kbcss = $keyboard.css,
+					k = $keyboard.navigationKeys,
+					hover = base.options.css.buttonHover,
+					$keys = base.$keyboard.find( '.' + kbcss.altKeyPopup ).find( '.' + kbcss.keyButton ),
+					max = $keys.length - 1;
+				// popup visible, add key highlight
+				if ( event === true ) {
+					$keys.eq( 0 ).addClass( hover );
+					base.altKeyPopup_currentIndex = 0;
+					return;
+				}
+
+				indx = base.altKeyPopup_currentIndex;
+				if ( event.which === k.enter ) {
+					base.insertText( $keys.eq( indx ).attr( 'data-value' ) );
+					base.altKeyPopup_close();
+					return true;
+				}
+
+				switch( event.which ) {
+					case k.end   : indx = max; break; // End
+					case k.home  : indx = 0; break; // Home
+					case k.left  : indx -= 1; break; // Left
+					case k.right : indx += 1; break; // Right
+				}
+				if ( indx < 0 ) { indx = 0; }
+				if ( indx > max ) { indx = max; }
+				base.altKeyPopup_currentIndex = indx;
+				$keys
+					.removeClass( hover )
+					.eq( indx )
+					.addClass( hover );
 			};
 
 			// visible event is fired before this extension is initialized, so check!
