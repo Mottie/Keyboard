@@ -146,10 +146,12 @@
 							if ( layout.hasMappedKeys && layout.mappedKeys.hasOwnProperty( key ) ) {
 								key = layout.mappedKeys[ key ];
 							}
-							base.altkeypopup_blockingFlag = true;
-							timer = setTimeout( function(){
-								base.altKeyPopup_popup( key, $key );
-							}, base.altkeypopup_options.holdTime );
+							if ( key in $keyboard.altKeys ) {
+								base.altkeypopup_blockingFlag = true;
+								timer = setTimeout( function(){
+									base.altKeyPopup_popup( key, $key );
+								}, base.altkeypopup_options.holdTime );
+							}
 							return true;
 						}
 						// prevent key repeat
