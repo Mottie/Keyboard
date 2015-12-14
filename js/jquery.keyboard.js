@@ -637,6 +637,9 @@ var $keyboard = $.keyboard = function(el, options){
 			.bind('keypress' + base.namespace, function(e){
 				if (o.lockInput) { return false; }
 				var k = e.charCode || e.which,
+					// capsLock can only be checked while typing a-z
+					k1 = k >= keyCodes.A && k <= keyCodes.Z,
+					k2 = k >= keyCodes.a && k <= keyCodes.z,
 					str = base.last.key = String.fromCharCode(k);
 				base.last.virtual = false;
 				base.last.event = e;
@@ -644,11 +647,16 @@ var $keyboard = $.keyboard = function(el, options){
 				if (base.checkCaret) {
 					base.saveCaret();
 				}
-				// update caps lock - can only do this while typing =(
-				// ascii uppercase A = 65 (same as keyCode); ascii uppercase Z = 90 (same as keyCode)
-				base.capsLock = ( ( ( k >= keyCodes.A && k <= keyCodes.Z ) && !e.shiftKey ) ||
-					// ASCII lowercase a = 97; ASCII lowercase z = 122
-					( ( k >= keyCodes.a && k <= keyCodes.z ) && e.shiftKey ) ) ? true : false;
+
+				// update capsLock
+				if ( k !== keyCodes.capsLock && ( k1 || k2 ) ) {
+					base.capsLock = ( k1 && !e.shiftKey ) || ( k2 && e.shiftKey );
+					// if shifted keyset not visible, then show it
+					if ( base.capsLock && !base.shiftActive ) {
+						base.shiftActive = true;
+						base.showSet();
+					}
+				}
 
 				// restrict input - keyCode in keypress special keys:
 				// see http://www.asquare.net/javascript/tests/KeyCode.html
@@ -746,6 +754,7 @@ var $keyboard = $.keyboard = function(el, options){
 				}
 
 				if ( o.lockInput ) { return false; }
+
 				base.last.virtual = false;
 				switch (e.which) {
 

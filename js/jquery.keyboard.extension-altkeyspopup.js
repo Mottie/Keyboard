@@ -131,15 +131,28 @@
 				base.altkeypopup_blockingFlag = false;
 				base.$preview
 					.unbind( namespace )
-					.bind( 'keydown keyup'.split( ' ' ).join( namespace + ' ' ), function( event ) {
+					.bind( 'keypress keydown keyup'.split( ' ' ).join( namespace + ' ' ), function( event ) {
+
 						if ( event.type === 'keyup' ) {
 							clearTimeout( timer );
 							base.altkeypopup_blockingFlag = false;
-						} else if ( !base.altkeypopup_blockingFlag ) {
-							var layout = $keyboard.builtLayouts[ base.layout ],
-								$key = $( event.target ),
-								key = String.fromCharCode( event.charCode || event.which );
-							if ( !event.shiftKey ) {
+							return true;
+						}
+						var tmp,
+							layout = $keyboard.builtLayouts[ base.layout ],
+							keyCodes = $keyboard.keyCodes,
+							$key = $( event.target ),
+							k = event.charCode || event.which,
+							key = String.fromCharCode( k );
+
+						if ( event.type === 'keydown' && key in $keyboard.altKeys ) {
+							tmp = base.altkeypopup_blockingFlag;
+							base.altkeypopup_blockingFlag = true;
+							// return true on initial keydown or keypress never fires
+							// then return false to prevent repeat key
+							return !tmp;
+						} else if ( base.altkeypopup_blockingFlag ) {
+							if ( ( k >= keyCodes.a && k <= keyCodes.z ) && !event.shiftKey ) {
 								key = key.toLowerCase();
 							}
 							// find mapped key, if any
@@ -147,7 +160,7 @@
 								key = layout.mappedKeys[ key ];
 							}
 							if ( key in $keyboard.altKeys ) {
-								base.altkeypopup_blockingFlag = true;
+
 								timer = setTimeout( function(){
 									base.altKeyPopup_popup( key, $key );
 								}, base.altkeypopup_options.holdTime );
