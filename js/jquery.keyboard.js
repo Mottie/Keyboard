@@ -52,8 +52,7 @@ var $keyboard = $.keyboard = function(el, options){
 	base.init = function() {
 		var k, position, tmp,
 			kbcss = $keyboard.css,
-			kbevents = $keyboard.events,
-			close;
+			kbevents = $keyboard.events;
 		base.settings = options || {};
 		// shallow copy position to prevent performance issues; see #357
 		if ( options && options.position ) {
@@ -91,6 +90,10 @@ var $keyboard = $.keyboard = function(el, options){
 		base.wheel = $.isFunction( $.fn.mousewheel );
 		// keyCode of keys always allowed to be typed
 		k = $keyboard.keyCodes;
+
+		// special character in regex that need to be escaped
+		base.escapeRegex = /[-\/\\^$*+?.()|[\]{}]/g;
+
 		// base.alwaysAllowed = [20,33,34,35,36,37,38,39,40,45,46];
 		base.alwaysAllowed = [
 			k.capsLock,
@@ -1137,7 +1140,7 @@ var $keyboard = $.keyboard = function(el, options){
 	// check for key combos (dead keys)
 	base.checkCombos = function(){
 		if (!base.isVisible()) { return base.$preview.val(); }
-		var i, r, t, t2,
+		var r, t, t2,
 			// use base.$preview.val() instead of base.preview.value (val.length includes carriage returns in IE).
 			val = base.$preview.val(),
 			pos = $keyboard.caret( base.$preview ),
@@ -1181,19 +1184,26 @@ var $keyboard = $.keyboard = function(el, options){
 
 		// check input restrictions - in case content was pasted
 		if (o.restrictInput && val !== '') {
-			t = val;
-			r = layout.acceptedKeys.length;
-			for (i=0; i < r; i++){
-				if (t === '') { continue; }
-				t2 = layout.acceptedKeys[i];
-				if (val.indexOf(t2) >= 0) {
-					// escape out all special characters
-					if (/[\[|\]|\\|\^|\$|\.|\||\?|\*|\+|\(|\)|\{|\}]/g.test(t2)) { t2 = '\\' + t2; }
-					t = t.replace( (new RegExp(t2, 'g')), '');
-				}
+			t = layout.acceptedKeys.length;
+
+			r = layout.acceptedKeysRegex;
+			if ( !r ) {
+				t2 = $.map( layout.acceptedKeys, function( v ) {
+					// escape any special characters
+					return v.replace( base.escapeRegex, '\\$&' );
+				});
+				r = layout.acceptedKeysRegex = new RegExp( '(' + t2.join( '|' ) + ')', 'g' );
 			}
-			// what's left over are keys that aren't in the acceptedKeys array
-			if (t !== '') { val = val.replace(t, ''); }
+
+			// only save matching keys
+			t2 = val.match( r );
+			if ( t2 ) {
+				val = t2.join( '' );
+			} else {
+				// no valid characters
+				val = '';
+				len = 0;
+			}
 		}
 
 		// save changes, then reposition caret
@@ -1213,8 +1223,7 @@ var $keyboard = $.keyboard = function(el, options){
 
 	// Toggle accept button classes, if validating
 	base.checkValid = function(){
-		var txt,
-			kbcss = $keyboard.css,
+		var kbcss = $keyboard.css,
 			$accept = base.$keyboard.find('.' + kbcss.keyPrefix + 'accept'),
 			valid = true;
 		if ($.isFunction(o.validate)) {
