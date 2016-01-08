@@ -211,12 +211,12 @@
 				if (base.typing_event && e) {
 					if (base.typing_xref.hasOwnProperty(e.keyCode || e.which)) {
 						// special named keys: bksp, tab and enter
-						tar = '.' + kbcss.keyPrefix + base.typing_xref[e.keyCode || e.which];
+						tar = '.' + kbcss.keyPrefix + base.processName( base.typing_xref[e.keyCode || e.which] );
 					} else {
 						m = String.fromCharCode(e.charCode || e.which);
 						tar = (mappedKeys.hasOwnProperty(m)) ?
-							'.' + kbcss.keyButton + '[data-action="' + mappedKeys[m]  + '"]' :
-							'.' + kbcss.keyPrefix + m;
+							'.' + kbcss.keyButton + '[data-value="' + mappedKeys[m]  + '"]' :
+							'.' + kbcss.keyPrefix + base.processName( m );
 					}
 				}
 				// find key
