@@ -124,6 +124,7 @@ var $keyboard = $.keyboard = function(el, options){
 			end: 0,
 			key: '',
 			val: '',
+			preVal: '',
 			layout: '',
 			virtual: true,
 			keyset: [ false, false, false ],
@@ -271,6 +272,7 @@ var $keyboard = $.keyboard = function(el, options){
 		// update keyboard after a layout change
 		if (refresh) {
 			base.isOpen = o.alwaysOpen;
+			base.last.preVal = '' + base.last.val;
 			base.last.val = base.$preview && base.$preview.val() || '';
 			if (base.$keyboard.length) {
 				base.$keyboard.remove();
@@ -737,6 +739,7 @@ var $keyboard = $.keyboard = function(el, options){
 				// change callback is no longer bound to the input element as the callback could be
 				// called during an external change event with all the necessary parameters (issue #157)
 				base.$el.trigger( $keyboard.events.kbChange, [ base, base.el ] );
+				base.last.preVal = '' + base.last.val;
 				base.last.val = base.$preview.val();
 
 				if ($.isFunction(o.change)){
@@ -912,6 +915,7 @@ var $keyboard = $.keyboard = function(el, options){
 				$keyboard.caret( base.$preview, last );
 				base.checkCombos();
 				base.$el.trigger( $keyboard.events.kbChange, [ base, base.el ] );
+				last.preVal = '' + last.val;
 				last.val = base.$preview.val();
 
 				if ($.isFunction(o.change)){
