@@ -42,6 +42,18 @@ module.exports = function(grunt) {
 			}
 		},
 
+		copy: {
+			js: {
+				files : [{
+					expand: true,
+					dot: true,
+					flatten: true,
+					src: [ 'js/jquery.keyboard.js' ],
+					dest: 'dist/js/'
+				}]
+			}
+		},
+
 		concat: {
 			exts: {
 				options: {
@@ -196,12 +208,14 @@ module.exports = function(grunt) {
 	grunt.loadNpmTasks('grunt-contrib-uglify');
 	grunt.loadNpmTasks('grunt-contrib-cssmin');
 	grunt.loadNpmTasks('grunt-contrib-watch');
+	grunt.loadNpmTasks('grunt-contrib-copy');
 
 	// Default task.
 	grunt.registerTask('default', [
 		'clean:core',
 		'jshint:core',
 		'qunit',
+		'copy',
 		'concat:exts',
 		'cssmin',
 		'uglify:core',
