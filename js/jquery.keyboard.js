@@ -1456,17 +1456,20 @@ var $keyboard = $.keyboard = function(el, options){
 				action   : keyName,
 				name     : base.processName( keyName.split(/[(:]/)[0] )
 			};
-		// map defined keys - format 'key(A):Label_for_key'
+		// map defined keys - format 'key(A):Label_for_key_(ignore_parentheses_here)'
 		// 'key' = key that is seen (can any character; but it might need to be escaped using '\'
 		//  or entered as unicode '\u####'
 		// '(A)' = the actual key on the real keyboard to remap, ':Label_for_key' ends up in the title/tooltip
-		if (/\(.+\)/.test(n)) { // n = '\u0391(A):alpha'
+		if ( /\(.+\)/.test( n.split( ':' )[0] ) || /^:\(.+\)/.test( n ) ) { // n = '\u0391(A):alpha' or n = ':(x)'
 			map = n.replace(/\(([^()]+)\)/, ''); // remove '(A)', left with '\u0391:alpha'
-			m = n.match(/\(([^()]+)\)/)[1]; // extract 'A' from '(A)'
+			m = n.match( /\(([^()]+)\)/ )[1]; // extract 'A' from '(A)'
 			n = map;
 			nm = map.split(':');
 			map = (nm[0] !== '' && nm.length > 1) ? nm[0] : map; // get '\u0391' from '\u0391:alpha'
 			$keyboard.builtLayouts[base.layout].mappedKeys[m] = map;
+			$keyboard.builtLayouts[base.layout].acceptedKeys.push(m);
+		} else if (regKey) {
+			$keyboard.builtLayouts[base.layout].acceptedKeys.push(n);
 		}
 
 		// find key label
@@ -1766,7 +1769,6 @@ var $keyboard = $.keyboard = function(el, options){
 
 				// regular button (not an action key)
 				t = keys[key];
-				acceptedKeys.push( t === ':' ? t : t.split(':')[0] );
 				base.addKey(t, t, true);
 			}
 		}
