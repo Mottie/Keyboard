@@ -137,6 +137,24 @@ Wiki: [Home](https://github.com/Mottie/Keyboard/wiki/Home) | [FAQ](https://githu
 
 Only the latest changes will be shown below, see the wiki log to view older versions.
 
+### Version 1.25.12 (1/10/2016)
+
+* Core:
+  * Tweak capslock detection code. See [issue #416](https://github.com/Mottie/Keyboard/issues/416).
+  * `restrictInput` matches accepted keys instead of replacing. Fixes [issue #419](https://github.com/Mottie/Keyboard/issues/419).
+  * Fixed mapped &amp; accepted keys.
+  * Add `last.preVal` which stores the previous value.
+* AltKeysPopup:
+  * Fix javascript error.
+  * Prevent javascript error if altKey is undefined.
+  * Tweak capslock detection code.
+  * Prevent opening multiple popups.
+  * Fix key highlighting on keyboard navigation.
+  * Ensure all popup windows removed.
+  * See [issue #416](https://github.com/Mottie/Keyboard/issues/416).
+* Typing: Fix mapped key highlighting while typing.
+* Build: Include unminified keyboard file in dist folder. See [issue #422](https://github.com/Mottie/Keyboard/issues/422).
+
 ### Version 1.25.11 (12/10/2015)
 
 * Bower: Add development (non-minified) keyboard script. See [issue #418](https://github.com/Mottie/Keyboard/issues/418).
@@ -164,17 +182,3 @@ Only the latest changes will be shown below, see the wiki log to view older vers
   * Main demo cleanup.
   * Add "main" to `package.json`. Fixes [issue #414](https://github.com/Mottie/Keyboard/issues/414).
   * Add & adjust Gitter badge to readme. Fixes [issue #413](https://github.com/Mottie/Keyboard/issues/413).
-
-### Version 1.25.9 (11/25/2015)
-
-* Readme: Update &amp; elaborate. Fixes [issue #410](https://github.com/Mottie/Keyboard/issues/410).
-* Themes: Update custom [basic (white)](http://jsfiddle.net/Mottie/jsh0377k/) &amp; add [dark theme](http://jsfiddle.net/Mottie/6dmqhLvh/).
-* Core:
-  * Update state of combo &amp; accept keys in their title.
-  * Added `display` options for `valid`, `invalid`, `active` and `disabled` to allow language specific changes.
-  * Make keysets display `inline-block`; remove all css floats.
-* Extender:
-  * Update default display value before initialization.
-  * Make extender layout display `inline-block`.
-* Docs: update Bootstrap to v3.3.6.
-* Grunt: Fix uglify to only preserve comments that start with a bang.
