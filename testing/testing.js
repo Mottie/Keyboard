@@ -23,9 +23,11 @@ jQuery(function($){
 	************************************************/
 	QUnit.test( 'processName', function(assert) {
 		var p = kb.processName;
-		assert.expect(15);
+		assert.expect(17);
 		assert.equal( p('a'), 'a', 'Single letter "a"');
 		assert.equal( p('z'), 'z', 'Single letter "z"');
+		assert.equal( p('-'), '-', 'Dash "-"'); // previously returned empty string
+		assert.equal( p('_'), '_', 'Underscore "_"');
 		assert.equal( p('te'), 'te', 'Two letters "te"');
 		assert.equal( p('tes'), 'tes', 'Three letters "test"');
 		assert.equal( p('test'), 'test', 'Four letters "test"');

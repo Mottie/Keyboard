@@ -1433,8 +1433,8 @@ var $keyboard = $.keyboard = function(el, options){
 		if ( len ) {
 			for ( index = 0; index < len; index++ ) {
 				n = name[ index ];
-				// keep '-' as a dash, but don't add it or we get two dashes in a row
-				newName.push( /[a-z0-9-_]/i.test( n ) ? ( /[-_]/.test(n) ? '' : n ) :
+				// keep '-' and '_'... so for dash, we get two dashes in a row
+				newName.push( /[a-z0-9-_]/i.test( n ) ? ( /[-_]/.test(n) && index !== 0 ? '' : n ) :
 					( index === 0 ? '' : '-' ) + n.charCodeAt( 0 ) );
 			}
 			return newName.join( '' );
