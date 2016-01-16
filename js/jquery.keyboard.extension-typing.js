@@ -85,6 +85,8 @@
 				9  : 'tab',
 				13 : 'enter',
 				32 : 'space',
+				37 : 'left',
+				39 : 'right',
 				46 : 'del'
 			};
 			base.typing_event = false;
@@ -136,7 +138,7 @@
 					}
 					base.typing_event = true;
 					// Simulate key press for tab and backspace since they don't fire the keypress event
-					if (e.which === 8 || e.which === 9) {
+					if (base.typing_xref[e.which]) {
 						base.typing_findKey( '', e ); // pass event object
 					}
 
@@ -209,13 +211,14 @@
 				// All of this breaks when the CapLock is on... unable to find a cross-browser method that works.
 				tar = '.' + kbcss.keyButton + '[data-action="' + k + '"]';
 				if (base.typing_event && e) {
-					if (base.typing_xref.hasOwnProperty(e.keyCode || e.which)) {
+					// xref used for keydown ( 46 = delete in keypress & period on keydown )
+					if (e.type !== 'keypress' && base.typing_xref.hasOwnProperty(e.keyCode || e.which)) {
 						// special named keys: bksp, tab and enter
 						tar = '.' + kbcss.keyPrefix + base.processName( base.typing_xref[e.keyCode || e.which] );
 					} else {
 						m = String.fromCharCode(e.charCode || e.which);
 						tar = (mappedKeys.hasOwnProperty(m)) ?
-							'.' + kbcss.keyButton + '[data-value="' + mappedKeys[m]  + '"]' :
+							'.' + kbcss.keyButton + '[data-value="' + mappedKeys[m].replace(/"/g, '\\"') + '"]' :
 							'.' + kbcss.keyPrefix + base.processName( m );
 					}
 				}
