@@ -137,6 +137,18 @@ Wiki: [Home](https://github.com/Mottie/Keyboard/wiki/Home) | [FAQ](https://githu
 
 Only the latest changes will be shown below, see the wiki log to view older versions.
 
+### Version 1.25.13 (1/16/2016)
+
+* Docs:
+  * Update jQuery &amp; migrate plugin.
+  * Add jQuery v3.0.0-beta1 to test.
+* Core:
+  * Fix ":" mapping & change key data-action values. Fixes [issue #425](https://github.com/Mottie/Keyboard/issues/425).
+  * Dash &amp; underscore keys get a class name assigned.
+* Typing:
+  * Include arrow & other keys.
+  * Fix issue where "." was not highlighted while typing.
+
 ### Version 1.25.12 (1/10/2016)
 
 * Core:
@@ -164,21 +176,3 @@ Only the latest changes will be shown below, see the wiki log to view older vers
 * AltKeysPopup:
   * Compare altkeys to key data-value. See [issue #416](https://github.com/Mottie/Keyboard/issues/416).
   * Add physical keyboard long hold & popup navigation. See [issue #416](https://github.com/Mottie/Keyboard/issues/416).
-
-### Version 1.25.10 (12/5/2015)
-
-* Themes:
-  * Add missing definitions to custom themes.
-  * Add minified custom themes.
-  * Keep keyboard centered while resizing textarea.
-* Core:
-  * Prevent `beforeVisible` & `visible` events when `alwaysOpen` is `true`.
-  * Save caret immediately before changing focus.
-  * Keyboard now works with `readonly` set on input prior to initialization.
-  * Move duplicate `touchstart` code to prevent lag on Mobile devices. Fixes issues [#379](https://github.com/Mottie/Keyboard/issues/379) &amp; [#411](https://github.com/Mottie/Keyboard/issues/411).
-  * Consolidate keyCodes to make the code more readable.
-* Extensions: update extensions to prevent duplicates. In case `alwaysOpen` is `true` & `beforeVisible` or `visible` events fire.
-* Miscellaneous:
-  * Main demo cleanup.
-  * Add "main" to `package.json`. Fixes [issue #414](https://github.com/Mottie/Keyboard/issues/414).
-  * Add & adjust Gitter badge to readme. Fixes [issue #413](https://github.com/Mottie/Keyboard/issues/413).

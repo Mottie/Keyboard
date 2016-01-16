@@ -1,4 +1,4 @@
-/*! jQuery UI Virtual Keyboard v1.25.12 *//*
+/*! jQuery UI Virtual Keyboard v1.25.13 *//*
 
 Author: Jeremy Satterfield
 Modified: Rob Garrison (Mottie on github)
@@ -40,7 +40,7 @@ Setup/Usage:
 var $keyboard = $.keyboard = function(el, options){
 	var base = this, o;
 
-	base.version = '1.25.12';
+	base.version = '1.25.13';
 
 	// Access to jQuery and DOM versions of element
 	base.$el = $(el);
@@ -881,8 +881,6 @@ var $keyboard = $.keyboard = function(el, options){
 					$key = $keys && last.wheelIndex > -1 ? $keys.eq( last.wheelIndex ) : $key;
 				}
 				action = $key.attr( 'data-action' );
-				// don't split colon key. Fixes #264
-				action = action === ':' ? ':' : (action || '').split(':')[0];
 				if ( timer - ( last.eventTime || 0 ) < o.preventDoubleEventTime ) { return; }
 				last.eventTime = timer;
 				last.event = e;
@@ -1420,6 +1418,7 @@ var $keyboard = $.keyboard = function(el, options){
 		.attr({ 'role': 'button', 'type': 'button', 'aria-disabled': 'false', 'tabindex' : '-1' })
 		.addClass( $keyboard.css.keyButton );
 
+	// convert key names into a class name
 	base.processName = function( name ) {
 		var index, n,
 			process = ( name || '' ).replace( /[^a-z0-9-_]/gi, '' ),
@@ -1434,8 +1433,8 @@ var $keyboard = $.keyboard = function(el, options){
 		if ( len ) {
 			for ( index = 0; index < len; index++ ) {
 				n = name[ index ];
-				// keep '-' as a dash, but don't add it or we get two dashes in a row
-				newName.push( /[a-z0-9-_]/i.test( n ) ? ( /[-_]/.test(n) ? '' : n ) :
+				// keep '-' and '_'... so for dash, we get two dashes in a row
+				newName.push( /[a-z0-9-_]/i.test( n ) ? ( /[-_]/.test(n) && index !== 0 ? '' : n ) :
 					( index === 0 ? '' : '-' ) + n.charCodeAt( 0 ) );
 			}
 			return newName.join( '' );
@@ -1444,57 +1443,116 @@ var $keyboard = $.keyboard = function(el, options){
 		}
 	};
 
+	base.processKeys = function( name ) {
+		var tmp,
+			parts = name.split( ':' ),
+			data = {
+				name: null,
+				map: '',
+				title: ''
+			};
+		/* map defined keys
+		format 'key(A):Label_for_key_(ignore_parentheses_here)'
+			'key' = key that is seen (can any character(s); but it might need to be escaped using '\'
+				or entered as unicode '\u####'
+			'(A)' = the actual key on the real keyboard to remap
+			':Label_for_key' ends up in the title/tooltip
+		Examples:
+			'\u0391(A):alpha', 'x(y):this_(might)_cause_problems
+			or edge cases of ':(x)', 'x(:)', 'x(()' or 'x())'
+		Enhancement (if I can get alt keys to work):
+			A mapped key will include the mod key, e.g. 'x(alt-x)' or 'x(alt-shift-x)'
+		*/
+		if ( /\(.+\)/.test( parts[0] ) || /^:\(.+\)/.test( name ) || /\([(:)]\)/.test( name ) ) {
+			// edge cases 'x(:)', 'x(()' or 'x())'
+			if ( /\([(:)]\)/.test( name ) ) {
+				tmp = parts[0].match( /([^(]+)\((.+)\)/ );
+				if ( tmp && tmp.length ) {
+					data.name = tmp[1];
+					data.map = tmp[2];
+					data.title = parts.length > 1 ? parts.slice( 1 ).join( ':' ) : '';
+				} else {
+					// edge cases 'x(:)', ':(x)' or ':(:)'
+					data.name = name.match( /([^(]+)/ )[0];
+					if ( data.name === ':' ) {
+						// ':(:):test' => parts = [ '', '(', ')', 'title' ] need to slice 1
+						parts = parts.slice(1);
+					}
+					if ( tmp === null ) {
+						// 'x(:):test' => parts = [ 'x(', ')', 'title' ] need to slice 2
+						data.map = ':';
+						parts = parts.slice(2);
+					}
+					data.title = parts.length ? parts.join( ':' ) : '';
+				}
+			} else {
+				// example: \u0391(A):alpha; extract 'A' from '(A)'
+				data.map = name.match( /\(([^()]+?)\)/ )[ 1 ];
+				// remove '(A)', left with '\u0391:alpha'
+				name = name.replace( /\(([^()]+)\)/, '' );
+				tmp = name.split( ':' );
+				// get '\u0391' from '\u0391:alpha'
+				if ( tmp[ 0 ] === '' ) {
+					data.name = ':';
+					parts = parts.slice( 1 );
+				} else {
+					data.name = tmp[ 0 ];
+				}
+				data.title = parts.length > 1 ? parts.slice( 1 ).join( ':' ) : '';
+			}
+		} else {
+			// find key label
+			// corner case of '::;' reduced to ':;', split as ['', ';']
+			if ( parts[0] === '' ) {
+				data.name = ':';
+				parts = parts.slice( 1 );
+			} else {
+				data.name = parts[ 0 ];
+			}
+			data.title = parts.length > 1 ? parts.slice( 1 ).join( ':' ) : '';
+		}
+		data.title = $.trim( data.title ).replace( /_/g, ' ' );
+		return data;
+	};
+
 	// Add key function
 	// keyName = the name of the function called in $.keyboard.keyaction when the button is clicked
 	// name = name added to key, or cross-referenced in the display options
 	// base.temp[0] = keyset to attach the new button
 	// regKey = true when it is not an action key
-	base.addKey = function( keyName, name, regKey ) {
-		var keyClass, m, map, nm,
-			kbcss = $keyboard.css,
-			txt = name.split(':'),
-			len = txt.length - 1,
-			n = (regKey === true) ? keyName : o.display[txt[0]] || keyName,
-			data = {
-				isAction : !regKey,
-				action   : keyName,
-				name     : base.processName( keyName.split(/[(:]/)[0] )
-			};
-		// map defined keys - format 'key(A):Label_for_key_(ignore_parentheses_here)'
-		// 'key' = key that is seen (can any character; but it might need to be escaped using '\'
-		//  or entered as unicode '\u####'
-		// '(A)' = the actual key on the real keyboard to remap, ':Label_for_key' ends up in the title/tooltip
-		if ( /\(.+\)/.test( n.split( ':' )[0] ) || /^:\(.+\)/.test( n ) ) { // n = '\u0391(A):alpha' or n = ':(x)'
-			map = n.replace(/\(([^()]+)\)/, ''); // remove '(A)', left with '\u0391:alpha'
-			m = n.match( /\(([^()]+)\)/ )[1]; // extract 'A' from '(A)'
-			n = map;
-			nm = map.split(':');
-			map = (nm[0] !== '' && nm.length > 1) ? nm[0] : map; // get '\u0391' from '\u0391:alpha'
-			$keyboard.builtLayouts[base.layout].mappedKeys[m] = map;
-			$keyboard.builtLayouts[base.layout].acceptedKeys.push(m);
-		} else if (regKey) {
-			$keyboard.builtLayouts[base.layout].acceptedKeys.push(n);
+	base.addKey = function( keyName, action, regKey ) {
+		var keyClass, tmp, keys,
+			data = {},
+			txt = base.processKeys( regKey ? keyName : action ),
+			kbcss = $keyboard.css;
+
+		if ( !regKey && o.display[ txt.name ] ) {
+			keys = base.processKeys( o.display[ txt.name ] );
+			keys.action = txt.name;
+		} else {
+			// when regKey is true, keyName is the same as action
+			keys = txt;
+			keys.action = txt.name;
 		}
 
-		// find key label
-		nm = n.split(':');
-		// corner case of ':(:):;' reduced to '::;', split as ['', '', ';']
-		if (nm[0] === '' && nm[1] === '') { n = ':'; }
-		n = (nm[0] !== '' && nm.length > 1) ? nm[0] : n;
-		// allow alt naming of action keys
-		data.value = $.trim( regKey ? n : txt[1] || n );
-		// added to title
-		data.title = (nm.length > 1) ? $.trim(nm[1]).replace(/_/g, ' ') || '' : len > 0 ? txt[len] || '' : '';
+		data.name = base.processName( txt.name );
+
+		if ( keys.map !== '' ) {
+			$keyboard.builtLayouts[base.layout].mappedKeys[ keys.map ] = keys.name;
+			$keyboard.builtLayouts[base.layout].acceptedKeys.push( keys.name );
+		} else if ( regKey ) {
+			$keyboard.builtLayouts[base.layout].acceptedKeys.push( keys.name );
+		}
 
 		// Action keys will have the 'ui-keyboard-actionkey' class
 		// '\u2190'.length = 1 because the unicode is converted, so if more than one character,
 		// add the wide class
-		keyClass = ( data.value.length > 2 ) ? ' ' + kbcss.keyWide : '';
+		keyClass = ( keys.name.length > 2 ) ? ' ' + kbcss.keyWide : '';
 		keyClass += ( regKey ) ? '' : ' ' + kbcss.keyAction;
 
 		data.html = '<span class="' + kbcss.keyText + '">' +
 			// this prevents HTML from being added to the key
-			data.value.replace(/[\u00A0-\u9999<>\&]/gim, function(i) {
+			keys.name.replace(/[\u00A0-\u9999<>\&]/gim, function(i) {
 				return '&#'+i.charCodeAt(0)+';';
 			}) +
 			'</span>';
@@ -1502,12 +1560,10 @@ var $keyboard = $.keyboard = function(el, options){
 		data.$key = base.keyBtn
 			.clone()
 			.attr({
-				'data-value'  : data.value, // value
-				'data-name'   : data.name,
+				'data-value'  : keys.name, // value
+				'data-name'   : keys.action,
 				'data-pos'    : base.temp[1] + ',' + base.temp[2],
-				'data-title'  : data.title, // used to allow adding content to title
-				'title'       : data.title,
-				'data-action' : data.action,
+				'data-action' : keys.action,
 				'data-html'   : data.html
 			})
 			// add 'ui-keyboard-' + data.name for all keys
@@ -1521,11 +1577,21 @@ var $keyboard = $.keyboard = function(el, options){
 			.html( data.html )
 			.appendTo( base.temp[0] );
 
+		if ( keys.map ) {
+			data.$key.attr( 'data-mapped', keys.map );
+		}
+		if ( keys.title ) {
+			data.$key.attr({
+				'data-title'  : keys.title, // used to allow adding content to title
+				'title'       : keys.title
+			});
+		}
+
 		if ( typeof o.buildKey === 'function' ) {
 			data = o.buildKey( base, data );
 			// copy html back to attributes
-			txt = data.$key.html();
-			data.$key.attr( 'data-html', txt );
+			tmp = data.$key.html();
+			data.$key.attr( 'data-html', tmp );
 		}
 		return data.$key;
 	};
