@@ -42,6 +42,29 @@ jQuery(function($){
 	});
 
 	/************************************************
+		processKey
+	************************************************/
+	QUnit.test( 'processKeys', function(assert) {
+		var k = kb.processKeys;
+		assert.expect(15);
+		assert.deepEqual( k('test'), { name: 'test', map: '', title: '' }, 'test');
+		assert.deepEqual( k('@:this_is_an_at_symbol'), { name: '@', map: '', title: 'this is an at symbol' }, '@:this_is_an_at_symbol');
+		assert.deepEqual( k(';(q)'), { name: ';', map: 'q', title: '' }, ';(q)');
+		assert.deepEqual( k('\u03b1(a):lower_case_alpha_(type_a)'), { name: '\u03b1', map: 'a', title: 'lower case alpha (type a)' }, '\u03b1(a):lower_case_alpha_(type_a)');
+		assert.deepEqual( k('((*)'), { name: '(', map: '*', title: '' }, '((*)');
+		assert.deepEqual( k(')(()'), { name: ')', map: '(', title: '' }, ')(()');
+		assert.deepEqual( k(')(():test_(ok)'), { name: ')', map: '(', title: 'test (ok)' }, ')(():test_(ok)');
+		assert.deepEqual( k('=())'), { name: '=', map: ')', title: '' }, '=())');
+		assert.deepEqual( k('=()):foo_(bar)'), { name: '=', map: ')', title: 'foo (bar)' }, '=()):foo_(bar)');
+		assert.deepEqual( k('::bar_(foo)'), { name: ':', map: '', title: 'bar (foo)' }, '::bar_(foo)');
+		assert.deepEqual( k('x(:)'), { name: 'x', map: ':', title: '' }, 'x(:)');
+		assert.deepEqual( k(':(:)'), { name: ':', map: ':', title: '' }, ':(:)');
+		assert.deepEqual( k('x(:):;'), { name: 'x', map: ':', title: ';' }, 'x(:):;');
+		assert.deepEqual( k(':(:):;'), { name: ':', map: ':', title: ';' }, ':(:):;');
+		assert.deepEqual( k(':(:):test2_(status:ok)'), { name: ':', map: ':', title: 'test2 (status:ok)' }, ':(:):test2_(status:ok)');
+	});
+
+	/************************************************
 		customHash
 	************************************************/
 	QUnit.test( 'customHash', function( assert ) {
