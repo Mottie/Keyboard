@@ -736,14 +736,20 @@ var $keyboard = $.keyboard = function(el, options){
 				}, 100);
 
 				base.checkMaxLength();
-				// change callback is no longer bound to the input element as the callback could be
-				// called during an external change event with all the necessary parameters (issue #157)
-				base.$el.trigger( $keyboard.events.kbChange, [ base, base.el ] );
+
 				base.last.preVal = '' + base.last.val;
 				base.last.val = base.$preview.val();
+				e.type = $keyboard.events.kbChange;
+				// base.last.key may be empty string (shift, enter, tab, etc) when keyboard is first visible
+				// use e.key instead, if browser supports it
+				e.action = base.last.key;
+				base.$el.trigger( e, [ base, base.el ] );
 
+				// change callback is no longer bound to the input element as the callback could be
+				// called during an external change event with all the necessary parameters (issue #157)
 				if ($.isFunction(o.change)){
-					o.change( $.Event( $keyboard.events.inputChange ), base, base.el );
+					e.type = $keyboard.events.inputChange;
+					o.change( e, base, base.el );
 					return false;
 				}
 			})
@@ -863,6 +869,7 @@ var $keyboard = $.keyboard = function(el, options){
 					}
 				}
 			})
+			// keyBinding = 'mousedown touchstart' by default
 			.bind(o.keyBinding.split(' ').join(base.namespace + ' ') + base.namespace + ' ' + $keyboard.events.kbRepeater, function(e){
 				e.preventDefault();
 				// prevent errors when external triggers attempt to 'type' - see issue #158
@@ -912,12 +919,15 @@ var $keyboard = $.keyboard = function(el, options){
 				// set caret if caret moved by action function; also, attempt to fix issue #131
 				$keyboard.caret( base.$preview, last );
 				base.checkCombos();
-				base.$el.trigger( $keyboard.events.kbChange, [ base, base.el ] );
+				e.type = $keyboard.events.kbChange;
+				e.action = last.key;
+				base.$el.trigger( e, [ base, base.el ] );
 				last.preVal = '' + last.val;
 				last.val = base.$preview.val();
 
 				if ($.isFunction(o.change)){
-					o.change( $.Event( $keyboard.events.inputChange ), base, base.el );
+					e.type = $keyboard.events.inputChange;
+					o.change( e, base, base.el );
 					// return false to prevent reopening keyboard if base.accept() was called
 					return false;
 				}
