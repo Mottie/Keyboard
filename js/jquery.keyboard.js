@@ -911,7 +911,7 @@ var $keyboard = $.keyboard = function(el, options){
 				if (typeof action !== 'undefined' && action !== null) {
 					last.key = $(this).hasClass(kbcss.keyAction) ? action : last.key;
 					base.insertText( last.key );
-					if (!base.capsLock && !o.stickyShift && !e.shiftKey) {
+					if (!base.capsLock || !o.stickyShift && !e.shiftKey) {
 						base.shiftActive = false;
 						base.showSet( $key.attr('data-name') );
 					}
