@@ -1159,7 +1159,11 @@ var $keyboard = $.keyboard = function(el, options){
 			layout = $keyboard.builtLayouts[base.layout],
 			len = val.length; // save original content length
 		// return if val is empty; fixes #352
-		if (val === '') { return val; }
+		if (val === '') {
+			// check valid on empty string - see #429
+			if (o.acceptValid) { base.checkValid(); }
+			return val;
+		}
 
 		// silly IE caret hacks... it should work correctly, but navigating using arrow keys in a textarea
 		// is still difficult
