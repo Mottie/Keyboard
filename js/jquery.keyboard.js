@@ -1538,7 +1538,8 @@ var $keyboard = $.keyboard = function(el, options){
 
 		if ( !regKey && o.display[ txt.name ] ) {
 			keys = base.processKeys( o.display[ txt.name ] );
-			keys.action = txt.name;
+			// action contained in "keyName" (e.g. keyName = "accept", action = "a" (use checkmark instead of text))
+			keys.action = base.processKeys( keyName ).name;
 		} else {
 			// when regKey is true, keyName is the same as action
 			keys = txt;
@@ -1554,11 +1555,15 @@ var $keyboard = $.keyboard = function(el, options){
 			$keyboard.builtLayouts[base.layout].acceptedKeys.push( keys.name );
 		}
 
-		// Action keys will have the 'ui-keyboard-actionkey' class
+		if ( regKey ) {
+			keyClass = data.name === '' ? '' : kbcss.keyPrefix + data.name;
+		} else {
+			// Action keys will have the 'ui-keyboard-actionkey' class
+			keyClass = kbcss.keyAction + ' ' + kbcss.keyPrefix + keys.action;
+		}
 		// '\u2190'.length = 1 because the unicode is converted, so if more than one character,
 		// add the wide class
-		keyClass = ( keys.name.length > 2 ) ? ' ' + kbcss.keyWide : '';
-		keyClass += ( regKey ) ? '' : ' ' + kbcss.keyAction;
+		keyClass += ( keys.name.length > 2 ? ' ' + kbcss.keyWide : '' ) + ' ' + o.css.buttonDefault;
 
 		data.html = '<span class="' + kbcss.keyText + '">' +
 			// this prevents HTML from being added to the key
@@ -1570,7 +1575,7 @@ var $keyboard = $.keyboard = function(el, options){
 		data.$key = base.keyBtn
 			.clone()
 			.attr({
-				'data-value'  : keys.name, // value
+				'data-value'  : regKey ? keys.name : keys.action, // value
 				'data-name'   : keys.action,
 				'data-pos'    : base.temp[1] + ',' + base.temp[2],
 				'data-action' : keys.action,
@@ -1583,17 +1588,17 @@ var $keyboard = $.keyboard = function(el, options){
 			//  (e.g. '~' is a regular key, class = 'ui-keyboard-126'
 			//  (126 is the unicode decimal value - same as &#126;)
 			//  See https://en.wikipedia.org/wiki/List_of_Unicode_characters#Control_codes
-			.addClass( ( data.name === '' ? '' : kbcss.keyPrefix + data.name + keyClass + ' ' ) + o.css.buttonDefault )
+			.addClass( keyClass )
 			.html( data.html )
 			.appendTo( base.temp[0] );
 
 		if ( keys.map ) {
 			data.$key.attr( 'data-mapped', keys.map );
 		}
-		if ( keys.title ) {
+		if ( keys.title || txt.title ) {
 			data.$key.attr({
-				'data-title'  : keys.title, // used to allow adding content to title
-				'title'       : keys.title
+				'data-title'  : txt.title || keys.title, // used to allow adding content to title
+				'title'       : txt.title || keys.title
 			});
 		}
 
