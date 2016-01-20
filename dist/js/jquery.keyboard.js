@@ -1,4 +1,4 @@
-/*! jQuery UI Virtual Keyboard v1.25.13 *//*
+/*! jQuery UI Virtual Keyboard v1.25.14 *//*
 
 Author: Jeremy Satterfield
 Modified: Rob Garrison (Mottie on github)
@@ -40,7 +40,7 @@ Setup/Usage:
 var $keyboard = $.keyboard = function(el, options){
 	var base = this, o;
 
-	base.version = '1.25.13';
+	base.version = '1.25.14';
 
 	// Access to jQuery and DOM versions of element
 	base.$el = $(el);
@@ -736,14 +736,20 @@ var $keyboard = $.keyboard = function(el, options){
 				}, 100);
 
 				base.checkMaxLength();
-				// change callback is no longer bound to the input element as the callback could be
-				// called during an external change event with all the necessary parameters (issue #157)
-				base.$el.trigger( $keyboard.events.kbChange, [ base, base.el ] );
+
 				base.last.preVal = '' + base.last.val;
 				base.last.val = base.$preview.val();
+				e.type = $keyboard.events.kbChange;
+				// base.last.key may be empty string (shift, enter, tab, etc) when keyboard is first visible
+				// use e.key instead, if browser supports it
+				e.action = base.last.key;
+				base.$el.trigger( e, [ base, base.el ] );
 
+				// change callback is no longer bound to the input element as the callback could be
+				// called during an external change event with all the necessary parameters (issue #157)
 				if ($.isFunction(o.change)){
-					o.change( $.Event( $keyboard.events.inputChange ), base, base.el );
+					e.type = $keyboard.events.inputChange;
+					o.change( e, base, base.el );
 					return false;
 				}
 			})
@@ -863,6 +869,7 @@ var $keyboard = $.keyboard = function(el, options){
 					}
 				}
 			})
+			// keyBinding = 'mousedown touchstart' by default
 			.bind(o.keyBinding.split(' ').join(base.namespace + ' ') + base.namespace + ' ' + $keyboard.events.kbRepeater, function(e){
 				e.preventDefault();
 				// prevent errors when external triggers attempt to 'type' - see issue #158
@@ -904,7 +911,7 @@ var $keyboard = $.keyboard = function(el, options){
 				if (typeof action !== 'undefined' && action !== null) {
 					last.key = $(this).hasClass(kbcss.keyAction) ? action : last.key;
 					base.insertText( last.key );
-					if (!base.capsLock && !o.stickyShift && !e.shiftKey) {
+					if (!base.capsLock || !o.stickyShift && !e.shiftKey) {
 						base.shiftActive = false;
 						base.showSet( $key.attr('data-name') );
 					}
@@ -912,12 +919,15 @@ var $keyboard = $.keyboard = function(el, options){
 				// set caret if caret moved by action function; also, attempt to fix issue #131
 				$keyboard.caret( base.$preview, last );
 				base.checkCombos();
-				base.$el.trigger( $keyboard.events.kbChange, [ base, base.el ] );
+				e.type = $keyboard.events.kbChange;
+				e.action = last.key;
+				base.$el.trigger( e, [ base, base.el ] );
 				last.preVal = '' + last.val;
 				last.val = base.$preview.val();
 
 				if ($.isFunction(o.change)){
-					o.change( $.Event( $keyboard.events.inputChange ), base, base.el );
+					e.type = $keyboard.events.inputChange;
+					o.change( e, base, base.el );
 					// return false to prevent reopening keyboard if base.accept() was called
 					return false;
 				}
@@ -1149,7 +1159,11 @@ var $keyboard = $.keyboard = function(el, options){
 			layout = $keyboard.builtLayouts[base.layout],
 			len = val.length; // save original content length
 		// return if val is empty; fixes #352
-		if (val === '') { return val; }
+		if (val === '') {
+			// check valid on empty string - see #429
+			if (o.acceptValid) { base.checkValid(); }
+			return val;
+		}
 
 		// silly IE caret hacks... it should work correctly, but navigating using arrow keys in a textarea
 		// is still difficult
@@ -1528,7 +1542,8 @@ var $keyboard = $.keyboard = function(el, options){
 
 		if ( !regKey && o.display[ txt.name ] ) {
 			keys = base.processKeys( o.display[ txt.name ] );
-			keys.action = txt.name;
+			// action contained in "keyName" (e.g. keyName = "accept", action = "a" (use checkmark instead of text))
+			keys.action = base.processKeys( keyName ).name;
 		} else {
 			// when regKey is true, keyName is the same as action
 			keys = txt;
@@ -1544,11 +1559,15 @@ var $keyboard = $.keyboard = function(el, options){
 			$keyboard.builtLayouts[base.layout].acceptedKeys.push( keys.name );
 		}
 
-		// Action keys will have the 'ui-keyboard-actionkey' class
+		if ( regKey ) {
+			keyClass = data.name === '' ? '' : kbcss.keyPrefix + data.name;
+		} else {
+			// Action keys will have the 'ui-keyboard-actionkey' class
+			keyClass = kbcss.keyAction + ' ' + kbcss.keyPrefix + keys.action;
+		}
 		// '\u2190'.length = 1 because the unicode is converted, so if more than one character,
 		// add the wide class
-		keyClass = ( keys.name.length > 2 ) ? ' ' + kbcss.keyWide : '';
-		keyClass += ( regKey ) ? '' : ' ' + kbcss.keyAction;
+		keyClass += ( keys.name.length > 2 ? ' ' + kbcss.keyWide : '' ) + ' ' + o.css.buttonDefault;
 
 		data.html = '<span class="' + kbcss.keyText + '">' +
 			// this prevents HTML from being added to the key
@@ -1560,7 +1579,7 @@ var $keyboard = $.keyboard = function(el, options){
 		data.$key = base.keyBtn
 			.clone()
 			.attr({
-				'data-value'  : keys.name, // value
+				'data-value'  : regKey ? keys.name : keys.action, // value
 				'data-name'   : keys.action,
 				'data-pos'    : base.temp[1] + ',' + base.temp[2],
 				'data-action' : keys.action,
@@ -1573,17 +1592,17 @@ var $keyboard = $.keyboard = function(el, options){
 			//  (e.g. '~' is a regular key, class = 'ui-keyboard-126'
 			//  (126 is the unicode decimal value - same as &#126;)
 			//  See https://en.wikipedia.org/wiki/List_of_Unicode_characters#Control_codes
-			.addClass( ( data.name === '' ? '' : kbcss.keyPrefix + data.name + keyClass + ' ' ) + o.css.buttonDefault )
+			.addClass( keyClass )
 			.html( data.html )
 			.appendTo( base.temp[0] );
 
 		if ( keys.map ) {
 			data.$key.attr( 'data-mapped', keys.map );
 		}
-		if ( keys.title ) {
+		if ( keys.title || txt.title ) {
 			data.$key.attr({
-				'data-title'  : keys.title, // used to allow adding content to title
-				'title'       : keys.title
+				'data-title'  : txt.title || keys.title, // used to allow adding content to title
+				'title'       : txt.title || keys.title
 			});
 		}
 

@@ -137,6 +137,14 @@ Wiki: [Home](https://github.com/Mottie/Keyboard/wiki/Home) | [FAQ](https://githu
 
 Only the latest changes will be shown below, see the wiki log to view older versions.
 
+### Version 1.26.14 (1/19/2016)
+* Core:
+ * Fix action key class names - bug introduced in last update.
+ * Triggered change events now use a modified keyboard event.
+ * The lock (caps lock) key now "sticks" properly.
+ * Call validate with empty input. Fixes [issue #429](https://github.com/Mottie/Keyboard/issues/429).
+* Build: update dependencies.
+
 ### Version 1.25.13 (1/16/2016)
 
 * Docs:
@@ -166,13 +174,3 @@ Only the latest changes will be shown below, see the wiki log to view older vers
   * See [issue #416](https://github.com/Mottie/Keyboard/issues/416).
 * Typing: Fix mapped key highlighting while typing.
 * Build: Include unminified keyboard file in dist folder. See [issue #422](https://github.com/Mottie/Keyboard/issues/422).
-
-### Version 1.25.11 (12/10/2015)
-
-* Bower: Add development (non-minified) keyboard script. See [issue #418](https://github.com/Mottie/Keyboard/issues/418).
-* Core:
-  * Use correct event names while binding callback options.
-  * Make internal close function public.
-* AltKeysPopup:
-  * Compare altkeys to key data-value. See [issue #416](https://github.com/Mottie/Keyboard/issues/416).
-  * Add physical keyboard long hold & popup navigation. See [issue #416](https://github.com/Mottie/Keyboard/issues/416).
