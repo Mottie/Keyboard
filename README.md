@@ -2,9 +2,7 @@ A jQuery on-screen keyboard (OSK) plugin that works in the browser. Originally p
 
 [![Bower Version][bower-image]][bower-url] [![NPM Version][npm-image]][npm-url] [![devDependency Status][david-dev-image]][david-dev-url] [![Join the chat at https://gitter.im/Mottie/Keyboard][gitter-image]][gitter]
 
-
 ## Features ([Demo](http://mottie.github.com/Keyboard/))
-
 
 ### Ease of use
 
@@ -135,9 +133,14 @@ Wiki: [Home](https://github.com/Mottie/Keyboard/wiki/Home) | [FAQ](https://githu
 
 ## Change Log
 
-Only the latest changes will be shown below, see the wiki log to view older versions.
+Only the latest changes will be shown below, see the [wiki log](https://github.com/Mottie/Keyboard/wiki/Log) to view older versions.
+
+### Version 1.26.15 (1/19/2016)
+
+* Add npm autoupdate data for cdnjs & version bump.
 
 ### Version 1.26.14 (1/19/2016)
+
 * Core:
  * Fix action key class names - bug introduced in last update.
  * Triggered change events now use a modified keyboard event.
