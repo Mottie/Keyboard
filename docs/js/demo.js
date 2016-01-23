@@ -123,6 +123,8 @@ jQuery(function($) {
 	$('#meta').keyboard({
 		// keyboard will open showing last key set used
 		resetDefault: false,
+		autoAccept: true, // required for userClosed: true
+		userClosed: true,
 		layout : 'custom',
 		display: {
 			'alt'    : 'AltGr:It\'s all Greek to me',

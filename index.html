@@ -449,7 +449,8 @@ $('#inter-type').click(function(){
 		<br>
 		<small>
 			* <a href="//github.com/Mottie/Keyboard/wiki/Setup#typing">Typing</a> extension.<br>
-			* Keyboard opens showing last keyset.
+			* Keyboard opens showing last keyset.<br>
+			* userClosed set (accept/cancel to close).
 		</small>
 		<div class="code ui-corner-all">
 			<h4>HTML</h4>
@@ -459,6 +460,8 @@ $('#inter-type').click(function(){
 	.keyboard({
 		// keyboard will open showing last key set used
 		resetDefault: false,
+		autoAccept: true, // required for userClosed: true
+		userClosed: true, // keyboard open until user closes with accept or cancel
 		layout: 'custom',
 		display: {
 			'alt'    : 'AltGr:It\'s all Greek to me',

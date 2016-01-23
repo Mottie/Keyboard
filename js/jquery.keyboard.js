@@ -261,14 +261,14 @@ var $keyboard = $.keyboard = function(el, options){
 	};
 
 	base.reveal = function(refresh){
-		if (base.isOpen) {
+		if (base.isOpen && !o.userClosed) {
 			refresh = true;
 		}
-		var kbcss = $keyboard.css;
-		base.opening = true;
+		var alreadyOpen = base.isOpen,
+			kbcss = $keyboard.css;
+		base.opening = !alreadyOpen;
 		// remove all 'extra' keyboards
 		$('.' + kbcss.keyboard).not('.' + kbcss.alwaysOpen).remove();
-
 		// update keyboard after a layout change
 		if (refresh) {
 			base.isOpen = o.alwaysOpen;
@@ -376,6 +376,12 @@ var $keyboard = $.keyboard = function(el, options){
 		}
 
 		if ( !refresh ) {
+			if ( alreadyOpen ) {
+				// restore caret position (userClosed)
+				$keyboard.caret( base.$preview, base.last );
+				return base;
+			}
+
 			// opening keyboard flag; delay allows switching between keyboards without immediately closing
 			// the keyboard
 			base.timer2 = setTimeout(function() {
@@ -438,7 +444,7 @@ var $keyboard = $.keyboard = function(el, options){
 	base.startup = function(){
 		var kbcss = $keyboard.css;
 		// ensure base.$preview is defined; but don't overwrite it if keyboard is always visible
-		if ( !( o.alwaysOpen && base.$preview ) ) {
+		if ( !( ( o.alwaysOpen || o.userClosed ) && base.$preview ) ) {
 			base.makePreview();
 		}
 		if ( !(base.$keyboard && base.$keyboard.length) ) {
@@ -632,8 +638,8 @@ var $keyboard = $.keyboard = function(el, options){
 			keyCodes = $keyboard.keyCodes,
 			layout = $keyboard.builtLayouts[base.layout];
 		base.$preview
-			.unbind('keypress keyup keydown mouseup touchend '.split(' ').join(base.namespace + ' '))
-			.bind('click' + base.namespace, function(){
+			.unbind( base.namespace )
+			.bind('click' + base.namespace + ' touchstart' + base.namespace, function() {
 				// update last caret position after user click, use at least 150ms or it doesn't work in IE
 				base.timer2 = setTimeout(function(){
 					base.saveCaret();
@@ -796,9 +802,7 @@ var $keyboard = $.keyboard = function(el, options){
 			})
 			.bind('mouseup touchend '.split(' ').join(base.namespace + ' '), function(){
 				base.last.virtual = true;
-				if (base.checkCaret) {
-					base.saveCaret();
-				}
+				base.saveCaret();
 			});
 
 		// prevent keyboard event bubbling
@@ -826,8 +830,10 @@ var $keyboard = $.keyboard = function(el, options){
 			// Change hover class and tooltip - moved this touchstart before option.keyBinding touchstart
 			// to prevent mousewheel lag/duplication - Fixes #379 & #411
 			.bind('mouseenter mouseleave touchstart '.split(' ').join(base.namespace + ' '), function( e ) {
-				if ( o.alwaysOpen && e.type !== 'mouseleave' && !base.isCurrent() ) {
+				if ( ( o.alwaysOpen || o.userClosed ) && e.type !== 'mouseleave' && !base.isCurrent() ) {
 					base.reveal();
+					base.$preview.focus();
+					$keyboard.caret( base.$preview, base.last );
 				}
 				if (!base.isCurrent()) { return; }
 				var $keys, txt,
@@ -1150,8 +1156,11 @@ var $keyboard = $.keyboard = function(el, options){
 	};
 
 	// check for key combos (dead keys)
-	base.checkCombos = function(){
-		if (!base.isVisible()) { return base.$preview.val(); }
+	base.checkCombos = function() {
+		// return val for close function
+		if ( !( base.isVisible() || base.$keyboard.hasClass( $keyboard.css.hasFocus ) ) ) {
+			return base.$preview.val();
+		}
 		var r, t, t2,
 			// use base.$preview.val() instead of base.preview.value (val.length includes carriage returns in IE).
 			val = base.$preview.val(),
@@ -1321,11 +1330,11 @@ var $keyboard = $.keyboard = function(el, options){
 	// Close the keyboard, if visible. Pass a status of true, if the content was accepted
 	// (for the event trigger).
 	base.close = function(accepted){
-		if (base.isOpen) {
+		if (base.isOpen && base.$keyboard.length) {
 			clearTimeout(base.throttled);
 			var kbcss = $keyboard.css,
 				kbevents = $keyboard.events,
-				val = (accepted) ?  base.checkCombos() : base.originalContent;
+				val = (accepted) ? base.checkCombos() : base.originalContent;
 			// validate input if accepted
 			if (accepted && $.isFunction(o.validate) && !o.validate(base, val, true)) {
 				val = base.originalContent;
@@ -1333,7 +1342,7 @@ var $keyboard = $.keyboard = function(el, options){
 				if (o.cancelClose) { return; }
 			}
 			base.isCurrent(false);
-			base.isOpen = o.alwaysOpen;
+			base.isOpen = o.alwaysOpen || o.userClosed;
 			// update value for always open keyboards
 			base.$preview.val(val);
 
@@ -1351,11 +1360,18 @@ var $keyboard = $.keyboard = function(el, options){
 				.trigger( (o.alwaysOpen) ? kbevents.kbInactive : kbevents.kbHidden, [ base, base.el ] )
 				.blur();
 
+			// save caret after updating value (fixes userClosed issue with changing focus)
+			$keyboard.caret( base.$preview, base.last );
 			// base is undefined if keyboard was destroyed - fixes #358
 			if ( base ) {
 				// add close event time
 				base.last.eventTime = new Date().getTime();
-				if (!o.alwaysOpen && base.$keyboard) {
+				if ( !( o.alwaysOpen || o.userClosed && accepted === 'true' ) && base.$keyboard.length ) {
+					// free up memory
+					base.$keyboard.remove();
+					base.$keyboard = [];
+					base.$previewCopy = null;
+
 					if (o.openOn) {
 						// rebind input focus - delayed to fix IE issue #72
 						base.timer = setTimeout(function(){
@@ -1368,10 +1384,6 @@ var $keyboard = $.keyboard = function(el, options){
 							}
 						}, 500);
 					}
-					// free up memory
-					base.$keyboard.remove();
-					base.$keyboard = [];
-					base.$previewCopy = null;
 				}
 				if (!base.watermark && base.el.value === '' && base.inPlaceholder !== '') {
 					base.$el
@@ -1414,7 +1426,7 @@ var $keyboard = $.keyboard = function(el, options){
 		// ignore autoaccept if using escape - good idea?
 		if ( !base.isCurrent() && base.isOpen || base.isOpen && e.target !== base.el ) {
 			// don't close if stayOpen is set; but close if a different keyboard is being opened
-			if (o.stayOpen && !$(e.target).hasClass('ui-keyboard-input')) {
+			if ( ( o.stayOpen || o.userClosed ) && !$( e.target ).hasClass( $keyboard.css.input ) ) {
 				return;
 			}
 			// stop propogation in IE - an input getting focus doesn't open a keyboard if one is already open
@@ -1657,7 +1669,7 @@ var $keyboard = $.keyboard = function(el, options){
 			acceptedKeys = layout.acceptedKeys = o.restrictInclude ? ( '' + o.restrictInclude ).split( /\s+/ ) || [] : [],
 			// using $layout temporarily to hold keyboard popup classnames
 			$layout = kbcss.keyboard + ' ' + o.css.popup + ' ' + o.css.container +
-				( o.alwaysOpen ? ' ' + kbcss.alwaysOpen : '' ),
+				( o.alwaysOpen || o.userClosed ? ' ' + kbcss.alwaysOpen : '' ),
 
 		container = $('<div />')
 			.addClass( $layout )
