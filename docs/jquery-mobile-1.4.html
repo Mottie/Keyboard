@@ -83,8 +83,7 @@
 				TODO : Kick this over to the core Keyboard.  Thinking an option like 'destroyWhenHidden'
 				*/
 				hidden: function (eventInfo, keyboard) {
-					keyboard.$keyboard.remove();
-					delete keyboard.$keyboard;
+					keyboard.removeKeyboard();
 					keyboard.mobile_initialized = false;
 				}
 			})

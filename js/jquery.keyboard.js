@@ -187,9 +187,7 @@ http://www.opensource.org/licenses/mit-license.php
 		}
 
 		if (o.openOn) {
-			base.$el.bind(o.openOn + base.namespace, function () {
-				base.focusOn();
-			});
+			base.bindFocus();
 		}
 
 		// Add placeholder if not supported by the browser
@@ -233,7 +231,8 @@ http://www.opensource.org/licenses/mit-license.php
 			// close any "isCurrent" keyboard (just in case they are always open)
 			$current = $('.' + kbcss.isCurrent),
 			kb = $current.data('keyboard');
-		if (!$.isEmptyObject(kb)) {
+		// close keyboard, if not self
+		if (!$.isEmptyObject(kb) && kb.el !== base.el) {
 			kb.close(kb.options.autoAccept ? 'true' : false);
 		}
 		$current.removeClass(kbcss.isCurrent);
@@ -279,18 +278,22 @@ http://www.opensource.org/licenses/mit-license.php
 		var alreadyOpen = base.isOpen,
 			kbcss = $keyboard.css;
 		base.opening = !alreadyOpen;
-		// remove all 'extra' keyboards
-		$('.' + kbcss.keyboard).not('.' + kbcss.alwaysOpen).remove();
+		// remove all 'extra' keyboards by calling close function
+		$('.' + kbcss.keyboard).not('.' + kbcss.alwaysOpen).each(function(){
+			var kb = $(this).data('keyboard');
+			if (!$.isEmptyObject(kb)) {
+				kb.close(kb.options.autoAccept && kb.options.autoAcceptOnEsc ? 'true' : false);
+			}
+		});
 		// update keyboard after a layout change
 		if (refresh) {
+			if (base.$keyboard.length) {
+				base.removeKeyboard();
+				base.shiftActive = base.altActive = base.metaActive = false;
+			}
 			base.isOpen = o.alwaysOpen;
 			base.last.preVal = '' + base.last.val;
 			base.last.val = base.$preview && base.$preview.val() || '';
-			if (base.$keyboard.length) {
-				base.$keyboard.remove();
-				base.$keyboard = [];
-				base.shiftActive = base.altActive = base.metaActive = false;
-			}
 		}
 
 		// Don't open if disabled
@@ -661,6 +664,22 @@ http://www.opensource.org/licenses/mit-license.php
 
 				base.last.scrollWidth = scrollWidth;
 				base.last.direction = direction;
+			}
+		}
+	};
+
+	base.bindFocus = function () {
+		if (o.openOn) {
+			// make sure keyboard isn't destroyed
+			// Check if base exists, this is a case when destroy is called, before timers have fired
+			if (base && base.el.active) {
+				base.$el.bind(o.openOn + base.namespace, function () {
+					base.focusOn();
+				});
+				// remove focus from element (needed for IE since blur doesn't seem to work)
+				if ($(':focus')[0] === base.el) {
+					base.$el.blur();
+				}
 			}
 		}
 	};
@@ -1494,26 +1513,11 @@ http://www.opensource.org/licenses/mit-license.php
 				base.last.eventTime = new Date().getTime();
 				if (!(o.alwaysOpen || o.userClosed && accepted === 'true') && base.$keyboard.length) {
 					// free up memory
-					base.$keyboard.remove();
-					base.$keyboard = [];
-					base.$previewCopy = null;
-
-					if (o.openOn) {
-						// rebind input focus - delayed to fix IE issue #72
-						base.timer = setTimeout(function () {
-							// make sure keyboard isn't destroyed
-							// Check if base exists, this is a case when destroy is called, before timers have fired
-							if (base && base.el.active) {
-								base.$el.bind(o.openOn + base.namespace, function () {
-									base.focusOn();
-								});
-								// remove focus from element (needed for IE since blur doesn't seem to work)
-								if ($(':focus')[0] === base.el) {
-									base.$el.blur();
-								}
-							}
-						}, 500);
-					}
+					base.removeKeyboard();
+					// rebind input focus - delayed to fix IE issue #72
+					base.timer = setTimeout(function () {
+						base.bindFocus();
+					}, 500);
 				}
 				if (!base.watermark && base.el.value === '' && base.inPlaceholder !== '') {
 					base.$el
@@ -2040,6 +2044,20 @@ http://www.opensource.org/licenses/mit-license.php
 		base.$el.unbind(namespace);
 	};
 
+	base.removeKeyboard = function () {
+		base.$allKeys = null;
+		base.$decBtn = null;
+		base.preview = null;
+		base.$preview.removeData('keyboard');
+		base.$preview = null;
+		base.$previewCopy = null;
+		base.$keyboard.removeData('keyboard');
+		base.$keyboard.remove();
+		base.$keyboard = [];
+		base.isOpen = false;
+		base.isCurrent(false);
+	};
+
 	base.destroy = function (callback) {
 		var index,
 			kbcss = $keyboard.css,
@@ -2055,14 +2073,14 @@ http://www.opensource.org/licenses/mit-license.php
 			].join(' ');
 		clearTimeout(base.timer);
 		clearTimeout(base.timer2);
+		if (base.$keyboard.length) {
+			base.removeKeyboard();
+		}
 		base.removeBindings(base.namespace);
 		for (index = 0; index < len; index++) {
 			base.removeBindings(base.extensionNamespace[index]);
 		}
 		base.el.active = false;
-		if (base.$keyboard.length) {
-			base.$keyboard.remove();
-		}
 
 		base.$el
 			.removeClass(tmp)
