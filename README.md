@@ -135,6 +135,14 @@ Wiki: [Home](https://github.com/Mottie/Keyboard/wiki/Home) | [FAQ](https://githu
 
 Only the latest changes will be shown below, see the [wiki log](https://github.com/Mottie/Keyboard/wiki/Log) to view older versions.
 
+### Version 1.26.16 (2/1/2016)
+
+* Core:
+  * Add `userClosed` option. See [issue #415](https://github.com/Mottie/Keyboard/issues/415).
+  * Add remove keyboard function & prevent memory leaks.
+  * Reformat code.
+* Scramble: Scramble once with multiple always open keyboards. Fixes [issue #430](https://github.com/Mottie/Keyboard/issues/430).
+
 ### Version 1.26.15 (1/19/2016)
 
 * Add npm autoupdate data for cdnjs & version bump.
