@@ -38,8 +38,7 @@ $.keyboard = $.keyboard || {};
 
 	$.fn.addScramble = function(options) {
 		//Set the default values, use comma to separate the settings, example:
-		var savedLayout,
-		defaults = {
+		var defaults = {
 			targetKeys    : /[a-z\d]/i, // keys to randomize
 			byRow         : true,  // randomize by row, otherwise randomize all keys
 			byKeySet      : false, // if true, randomize one keyset & duplicate
@@ -96,8 +95,8 @@ $.keyboard = $.keyboard || {};
 								tmp = $(this).attr('data-value') || '';
 								tmp = tmp.length === 1 && o.targetKeys.test(tmp) ? tmp : false;
 								if (o.byRow) {
-									row.push( this );
-									map.push ( tmp );
+									row.push(this);
+									map.push (tmp);
 								} else {
 									keyboard[rowIndex] = this;
 									keyboardmap[rowIndex] = tmp;
@@ -159,16 +158,25 @@ $.keyboard = $.keyboard || {};
 					$sets = $keyboard.find('.' + $.keyboard.css.keySet),
 					$orig = $sets.eq(0);
 				$sets = $sets.filter(':gt(0)');
-				$orig.children().each(function(i, cell){
+				$orig.children().each(function(i, cell) {
 					typ = cell.tagName === 'BR';
 					pos = $(cell).attr('data-pos');
 					/*jshint loopfunc:true */
-					$sets.each(function(j, k){
+					$sets.each(function(j, k) {
 						selector = typ ? 'br:first' : 'button[data-pos="' + pos + '"]';
 						$(k).find(selector).appendTo( k );
 					});
 				});
 				return $keyboard;
+			};
+
+			base.setScrambleLayout = function() {
+				// scrambled layout already initialized
+				if (!/^scrambled/.test(opts.layout)) {
+					base.orig_layout = opts.layout;
+					var savedLayout = savedLayout || 'scrambled' + Math.round(Math.random() * 10000);
+					opts.layout = o.sameForAll ? savedLayout : 'scrambled' + Math.round(Math.random() * 10000);
+				}
 			};
 
 			// create scrambled keyboard layout
@@ -177,7 +185,7 @@ $.keyboard = $.keyboard || {};
 				$.keyboard.builtLayouts[layout] = {
 					mappedKeys   : {},
 					acceptedKeys : [],
-					$keyboard: null
+					$keyboard    : null
 				};
 				if ( typeof $.keyboard.builtLayouts[base.orig_layout] === 'undefined' ) {
 					base.layout = opts.layout = base.orig_layout;
@@ -188,7 +196,8 @@ $.keyboard = $.keyboard || {};
 				// clone, scramble then save layout
 				$.keyboard.builtLayouts[layout] = $.extend(true, {}, $.keyboard.builtLayouts[base.orig_layout]);
 				if (o.randomizeOnce) {
-					$.keyboard.builtLayouts[layout].$keyboard = base.scramble_setup( $.keyboard.builtLayouts[base.orig_layout].$keyboard.clone() );
+					$.keyboard.builtLayouts[layout].$keyboard =
+						base.scramble_setup( $.keyboard.builtLayouts[base.orig_layout].$keyboard.clone() );
 				}
 				base.$keyboard = $.keyboard.builtLayouts[layout].$keyboard;
 				if ( !o.randomizeOnce ) {
@@ -203,17 +212,21 @@ $.keyboard = $.keyboard || {};
 				}
 			};
 
-			// scrambled layout already initialized
-			if (!/^scrambled/.test(opts.layout)) {
-				base.orig_layout = opts.layout;
-				savedLayout = savedLayout || 'scrambled' + Math.round(Math.random() * 10000);
-				opts.layout = o.sameForAll ? savedLayout : 'scrambled' + Math.round(Math.random() * 10000);
-			}
+			base.setScrambleLayout();
 
 			// special case when keyboard is set to always be open
 			if (opts.alwaysOpen && base.$keyboard.length) {
-				setTimeout(function(){
+				setTimeout(function() {
+					var built = $.keyboard.builtLayouts;
 					base.$keyboard = base.scramble_setup(base.$keyboard);
+					base.setScrambleLayout();
+					if (typeof built[opts.layout] === 'undefined') {
+						built[opts.layout] = {
+							mappedKeys   : $.extend({}, built[base.layout].mappedKeys),
+							acceptedKeys : $.extend([], built[base.layout].acceptedKeys),
+							$keyboard    : base.$keyboard.clone()
+						};
+					}
 					if ($.isFunction(o.init)) {
 						o.init(base);
 					}
