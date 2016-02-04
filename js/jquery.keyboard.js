@@ -1093,7 +1093,8 @@ http://www.opensource.org/licenses/mit-license.php
 					// save the key, make sure we are repeating the right one (fast typers)
 					base.mouseRepeat = [true, key];
 					setTimeout(function () {
-						if (base.mouseRepeat[0] && base.mouseRepeat[1] === key) {
+						// don't repeat keys if it is disabled - see #431
+						if (base.mouseRepeat[0] && base.mouseRepeat[1] === key && !key[0].disabled) {
 							base.repeatKey(key);
 						}
 					}, o.repeatDelay);
