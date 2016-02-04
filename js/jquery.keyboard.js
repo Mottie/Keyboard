@@ -147,7 +147,7 @@ http://www.opensource.org/licenses/mit-license.php
 		], function (i, callback) {
 			if ($.isFunction(o[callback])) {
 				// bind callback functions within options to triggered events
-				base.$el.bind(callback + base.namespace, o[callback]);
+				base.$el.bind(callback + base.namespace + 'callbacks', o[callback]);
 			}
 		});
 
@@ -2078,6 +2078,7 @@ http://www.opensource.org/licenses/mit-license.php
 			base.removeKeyboard();
 		}
 		base.removeBindings(base.namespace);
+		base.removeBindings(base.namespace + 'callbacks');
 		for (index = 0; index < len; index++) {
 			base.removeBindings(base.extensionNamespace[index]);
 		}
