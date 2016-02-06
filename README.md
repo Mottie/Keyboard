@@ -135,7 +135,13 @@ Wiki: [Home](https://github.com/Mottie/Keyboard/wiki/Home) | [FAQ](https://githu
 
 Only the latest changes will be shown below, see the [wiki log](https://github.com/Mottie/Keyboard/wiki/Log) to view older versions.
 
-### Version 1.26.16 (2/1/2016)
+### Version 1.25.17 (2/6/2016)
+
+* Prevent repeater event if key is disabled. See [issue #431](https://github.com/Mottie/Keyboard/issues/431).
+* Use different namespace for callbacks. Fixes [issue #432](https://github.com/Mottie/Keyboard/issues/432).
+* Fix version numbers in readme & wiki... version is at 1.25, not 1.26.
+
+### Version 1.25.16 (2/1/2016)
 
 * Core:
   * Add `userClosed` option. See [issue #415](https://github.com/Mottie/Keyboard/issues/415).
@@ -143,45 +149,6 @@ Only the latest changes will be shown below, see the [wiki log](https://github.c
   * Reformat code.
 * Scramble: Scramble once with multiple always open keyboards. Fixes [issue #430](https://github.com/Mottie/Keyboard/issues/430).
 
-### Version 1.26.15 (1/19/2016)
+### Version 1.25.15 (1/19/2016)
 
 * Add npm autoupdate data for cdnjs & version bump.
-
-### Version 1.26.14 (1/19/2016)
-
-* Core:
- * Fix action key class names - bug introduced in last update.
- * Triggered change events now use a modified keyboard event.
- * The lock (caps lock) key now "sticks" properly.
- * Call validate with empty input. Fixes [issue #429](https://github.com/Mottie/Keyboard/issues/429).
-* Build: update dependencies.
-
-### Version 1.25.13 (1/16/2016)
-
-* Docs:
-  * Update jQuery &amp; migrate plugin.
-  * Add jQuery v3.0.0-beta1 to test.
-* Core:
-  * Fix ":" mapping & change key data-action values. Fixes [issue #425](https://github.com/Mottie/Keyboard/issues/425).
-  * Dash &amp; underscore keys get a class name assigned.
-* Typing:
-  * Include arrow & other keys.
-  * Fix issue where "." was not highlighted while typing.
-
-### Version 1.25.12 (1/10/2016)
-
-* Core:
-  * Tweak capslock detection code. See [issue #416](https://github.com/Mottie/Keyboard/issues/416).
-  * `restrictInput` matches accepted keys instead of replacing. Fixes [issue #419](https://github.com/Mottie/Keyboard/issues/419).
-  * Fixed mapped &amp; accepted keys.
-  * Add `last.preVal` which stores the previous value.
-* AltKeysPopup:
-  * Fix javascript error.
-  * Prevent javascript error if altKey is undefined.
-  * Tweak capslock detection code.
-  * Prevent opening multiple popups.
-  * Fix key highlighting on keyboard navigation.
-  * Ensure all popup windows removed.
-  * See [issue #416](https://github.com/Mottie/Keyboard/issues/416).
-* Typing: Fix mapped key highlighting while typing.
-* Build: Include unminified keyboard file in dist folder. See [issue #422](https://github.com/Mottie/Keyboard/issues/422).
