@@ -135,6 +135,10 @@ Wiki: [Home](https://github.com/Mottie/Keyboard/wiki/Home) | [FAQ](https://githu
 
 Only the latest changes will be shown below, see the [wiki log](https://github.com/Mottie/Keyboard/wiki/Log) to view older versions.
 
+### Version 1.25.18 (2/6/2016)
+
+* Update dependencies & distribution files.
+
 ### Version 1.25.17 (2/6/2016)
 
 * Prevent repeater event if key is disabled. See [issue #431](https://github.com/Mottie/Keyboard/issues/431).

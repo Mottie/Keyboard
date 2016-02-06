@@ -1,4 +1,4 @@
-/*! jQuery UI Virtual Keyboard v1.25.16 *//*
+/*! jQuery UI Virtual Keyboard v1.25.18 *//*
 Author: Jeremy Satterfield
 Maintained: Rob Garrison (Mottie on github)
 Licensed under the MIT License
@@ -42,7 +42,7 @@ http://www.opensource.org/licenses/mit-license.php
 	var $keyboard = $.keyboard = function (el, options) {
 	var o, base = this;
 
-	base.version = '1.25.16';
+	base.version = '1.25.18';
 
 	// Access to jQuery and DOM versions of element
 	base.$el = $(el);
@@ -147,7 +147,7 @@ http://www.opensource.org/licenses/mit-license.php
 		], function (i, callback) {
 			if ($.isFunction(o[callback])) {
 				// bind callback functions within options to triggered events
-				base.$el.bind(callback + base.namespace, o[callback]);
+				base.$el.bind(callback + base.namespace + 'callbacks', o[callback]);
 			}
 		});
 
@@ -1093,7 +1093,8 @@ http://www.opensource.org/licenses/mit-license.php
 					// save the key, make sure we are repeating the right one (fast typers)
 					base.mouseRepeat = [true, key];
 					setTimeout(function () {
-						if (base.mouseRepeat[0] && base.mouseRepeat[1] === key) {
+						// don't repeat keys if it is disabled - see #431
+						if (base.mouseRepeat[0] && base.mouseRepeat[1] === key && !key[0].disabled) {
 							base.repeatKey(key);
 						}
 					}, o.repeatDelay);
@@ -2077,6 +2078,7 @@ http://www.opensource.org/licenses/mit-license.php
 			base.removeKeyboard();
 		}
 		base.removeBindings(base.namespace);
+		base.removeBindings(base.namespace + 'callbacks');
 		for (index = 0; index < len; index++) {
 			base.removeBindings(base.extensionNamespace[index]);
 		}
