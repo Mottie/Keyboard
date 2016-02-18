@@ -2,7 +2,7 @@
   "name": "virtual-keyboard",
   "title": "Keyboard",
   "description": "Virtual Keyboard using jQuery UI",
-  "version": "1.25.19",
+  "version": "1.25.20",
   "author": {
     "name": "Jeremy Satterfield",
     "url": "https://github.com/jsatt"
@@ -26,8 +26,8 @@
     "osk",
     "jquery-plugin"
   ],
-  "homepage": "http://wowmotty.blogspot.com/2010/11/jquery-ui-keyboard-widget.html",
-  "demo": "http://mottie.github.com/Keyboard/",
+  "homepage": "https://github.com/Mottie/Keyboard",
+  "demo": "http://mottie.github.io/Keyboard/",
   "docs": "https://github.com/Mottie/Keyboard/wiki",
   "bugs": "https://github.com/Mottie/Keyboard/issues",
   "main": "dist/js/jquery.keyboard.min.js",

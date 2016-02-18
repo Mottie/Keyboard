@@ -77,6 +77,7 @@ A jQuery on-screen keyboard (OSK) plugin that works in the browser. Originally p
 ## Installation
 
 * Download a [zip](https://github.com/Mottie/Keyboard/archive/master.zip) or [tar.gz](https://github.com/Mottie/Keyboard/archive/master.tar.gz) with all files, for use in the browser.
+* Use the files from [CDNJS](https://cdnjs.com/libraries/virtual-keyboard).
 * Install using [bower](https://github.com/bower/bower) via `bower install keyboard`.
 * Install using [npm](https://www.npmjs.com/) via `npm install virtual-keyboard`.
 * [Use with AngularJs](https://github.com/antonio-spinelli/ng-virtual-keyboard) via `bower install ng-virtual-keyboard`.
@@ -135,6 +136,13 @@ Wiki: [Home](https://github.com/Mottie/Keyboard/wiki/Home) | [FAQ](https://githu
 
 Only the latest changes will be shown below, see the [wiki log](https://github.com/Mottie/Keyboard/wiki/Log) to view older versions.
 
+### Version 1.25.20 (2/18/2016)
+
+* Files are now available through [CDNJS](https://cdnjs.com/libraries/virtual-keyboard)! Fixes [issue #434](https://github.com/Mottie/Keyboard/issues/434).
+* Fix theme switcher styling.
+* Fix reference to destroyed base. See [pull #435](https://github.com/Mottie/Keyboard/pull/435); thanks [@akiraspeirs](https://github.com/akiraspeirs)!
+* Update dependencies.
+
 ### Version 1.25.19 (2/10/2016)
 
 * Fix null reference when toggling keyboards quickly. See [pull #433](https://github.com/Mottie/Keyboard/pull/433); thanks [@akiraspeirs](https://github.com/akiraspeirs)!
@@ -142,9 +150,3 @@ Only the latest changes will be shown below, see the [wiki log](https://github.c
 ### Version 1.25.18 (2/6/2016)
 
 * Update dependencies & distribution files.
-
-### Version 1.25.17 (2/6/2016)
-
-* Prevent repeater event if key is disabled. See [issue #431](https://github.com/Mottie/Keyboard/issues/431).
-* Use different namespace for callbacks. Fixes [issue #432](https://github.com/Mottie/Keyboard/issues/432).
-* Fix version numbers in readme & wiki... version is at 1.25, not 1.26.
