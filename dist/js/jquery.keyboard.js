@@ -693,7 +693,9 @@ http://www.opensource.org/licenses/mit-license.php
 			.bind('click' + base.namespace + ' touchstart' + base.namespace, function () {
 				// update last caret position after user click, use at least 150ms or it doesn't work in IE
 				base.timer2 = setTimeout(function () {
-					base.saveCaret();
+					if (base){
+						base.saveCaret();
+					}
 				}, 150);
 			})
 			.bind('keypress' + base.namespace, function (e) {
@@ -793,7 +795,7 @@ http://www.opensource.org/licenses/mit-license.php
 				clearTimeout(base.throttled);
 				base.throttled = setTimeout(function () {
 					// fix error in OSX? see issue #102
-					if (base.isVisible()) {
+					if (base && base.isVisible()) {
 						base.checkCombos();
 					}
 				}, 100);
@@ -1094,7 +1096,7 @@ http://www.opensource.org/licenses/mit-license.php
 					base.mouseRepeat = [true, key];
 					setTimeout(function () {
 						// don't repeat keys if it is disabled - see #431
-						if (base.mouseRepeat[0] && base.mouseRepeat[1] === key && !key[0].disabled) {
+						if (base && base.mouseRepeat[0] && base.mouseRepeat[1] === key && !key[0].disabled) {
 							base.repeatKey(key);
 						}
 					}, o.repeatDelay);
@@ -1177,7 +1179,9 @@ http://www.opensource.org/licenses/mit-license.php
 		key.trigger($keyboard.events.kbRepeater);
 		if (base.mouseRepeat[0]) {
 			base.repeater = setTimeout(function () {
-				base.repeatKey(key);
+				if (base){
+					base.repeatKey(key);
+				}
 			}, base.repeatTime);
 		}
 	};
@@ -1517,7 +1521,9 @@ http://www.opensource.org/licenses/mit-license.php
 					base.removeKeyboard();
 					// rebind input focus - delayed to fix IE issue #72
 					base.timer = setTimeout(function () {
-						base.bindFocus();
+						if(base){
+							base.bindFocus();
+						}
 					}, 500);
 				}
 				if (!base.watermark && base.el.value === '' && base.inPlaceholder !== '') {
