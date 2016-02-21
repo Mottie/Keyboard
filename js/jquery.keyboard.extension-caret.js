@@ -1,5 +1,5 @@
-/*! jQuery UI Virtual Keyboard Virtual Caret v1.1.4 (beta) *//*
- * for Keyboard v1.18+ only (12/5/2015)
+/*! jQuery UI Virtual Keyboard Virtual Caret v1.1.5 (beta) *//*
+ * for Keyboard v1.18+ only (2/20/2016)
  * modified from https://github.com/component/textarea-caret-position
  *
  * By Rob Garrison (aka Mottie)
@@ -73,7 +73,7 @@
 				var kbcss = $keyboard.css,
 					events = 'keyup keypress mouseup mouseleave '.split( ' ' ).join( namespace + ' ' ),
 					style = 'position:absolute;visibility:hidden;top:-9999em;left:-9999em;' +
-						'white-space:pre-wrap;' +
+						'white-space:pre-wrap;z-index:-10;' +
 						( base.preview.nodeName === 'INPUT' ? '' : 'word-wrap:break-word;' );
 				// add mirrored div
 				base.$keyboard.find( '.' + kbcss.caretMirror ).remove();
@@ -102,6 +102,7 @@
 				if ( !base.caret_$div ) { return; }
 				var style, computed, margin, pos, position, txt, span, offset,
 					element = base.preview,
+					fontWidth = parseFloat( base.$preview.css('fontSize') ),
 					isInput = element.nodeName === 'INPUT',
 					div = base.caret_$div[0];
 
@@ -125,13 +126,13 @@
 					if ( element.scrollHeight > parseInt( computed.height, 10 ) ) {
 						style.overflowY = 'scroll';
 					}
-				} else {
-					// for Chrome to not render a scrollbar; IE keeps overflowY = 'scroll'
-					// style.overflow = 'hidden';
-					style.width = parseInt( isInput ? element.scrollWidth : computed.width, 10 ) +
-						// add 50 extra px if it's an input to prevent wrap
-						( isInput ? 50 : 0 ) + 'px';
 				}
+
+				// for Chrome to not render a scrollbar; IE keeps overflowY = 'scroll'
+				// style.overflow = 'hidden';
+				style.width = parseInt( isInput ? element.scrollWidth : computed.width, 10 ) +
+					// add 2em extra width if it's an input to prevent wrap
+					( isInput ? fontWidth * 2 : 0 ) + 'px';
 
 				div.textContent = element.value.substring( 0, position );
 				// the second special handling for input type="text" vs textarea:
@@ -147,18 +148,23 @@
 				// textarea's content into the <span> created at the caret position.
 				// for inputs, just '.' would be enough, but why bother?
 				// || because a completely empty faux span doesn't render at all
-				span.textContent = element.value.substring( position ) || '.';
+				// changed to zero-width space due to inaccuracy when textAlign = center; see #436
+				span.textContent = element.value.substring( position ) || '\u200b';
 				div.appendChild( span );
 
 				offset = $(span).position();
+
+				// adjust for 2em added to width moves caret, use half; see #436
+				pos = style.textAlign === 'center' ? fontWidth : 0;
+
 				base.caretPos = {
 					top: offset.top + parseInt( computed.borderTopWidth, 10 ) + o.offsetY,
-					left: offset.left + parseInt( computed.borderLeftWidth, 10 ) + o.offsetX
+					left: offset.left + parseInt( computed.borderLeftWidth, 10 ) + o.offsetX - pos
 				};
 
 				// make caret height = font-size + any margin-top x2 added by the css
 				margin = parseInt( base.$caret.css( 'margin-top' ), 10 );
-				style = Math.round( parseFloat( base.$preview.css( 'font-size' ) ) + margin * 2 ) + o.adjustHt;
+				style = Math.round( fontWidth + margin * 2 ) + o.adjustHt;
 				offset = base.$preview.position();
 
 				base.$caret.css({
