@@ -136,6 +136,10 @@ Wiki: [Home](https://github.com/Mottie/Keyboard/wiki/Home) | [FAQ](https://githu
 
 Only the latest changes will be shown below, see the [wiki log](https://github.com/Mottie/Keyboard/wiki/Log) to view older versions.
 
+### Version 1.25.21 (2/20/2016)
+
+* Caret: Adjust calculation when `textAlign:center` set; fixes [issue #436](https://github.com/Mottie/Keyboard/issues/436).
+
 ### Version 1.25.20 (2/18/2016)
 
 * Files are now available through [CDNJS](https://cdnjs.com/libraries/virtual-keyboard)! Fixes [issue #434](https://github.com/Mottie/Keyboard/issues/434).
@@ -146,7 +150,3 @@ Only the latest changes will be shown below, see the [wiki log](https://github.c
 ### Version 1.25.19 (2/10/2016)
 
 * Fix null reference when toggling keyboards quickly. See [pull #433](https://github.com/Mottie/Keyboard/pull/433); thanks [@akiraspeirs](https://github.com/akiraspeirs)!
-
-### Version 1.25.18 (2/6/2016)
-
-* Update dependencies & distribution files.

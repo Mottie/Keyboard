@@ -2,7 +2,7 @@
   "name": "virtual-keyboard",
   "title": "Keyboard",
   "description": "Virtual Keyboard using jQuery UI",
-  "version": "1.25.20",
+  "version": "1.25.21",
   "author": {
     "name": "Jeremy Satterfield",
     "url": "https://github.com/jsatt"

@@ -57,7 +57,7 @@ module.exports = function(grunt) {
 		concat: {
 			exts: {
 				options: {
-					banner: nomod + '/*! jQuery UI Virtual Keyboard - ALL Extensions + Mousewheel */\n'
+					banner: nomod + '/*! jQuery UI Virtual Keyboard (<%= pkg.version %>) - ALL Extensions + Mousewheel */\n'
 				},
 				files: {
 					'js/jquery.keyboard.extension-all.js': [ 'js/jquery.keyboard.extension-*.js', 'js/jquery.mousewheel.js' ]
@@ -137,7 +137,7 @@ module.exports = function(grunt) {
 
 		uglify: {
 			options: {
-				preserveComments: function( node, comment ){
+				preserveComments: function( node, comment ) {
 					return /^!/.test( comment.value );
 				},
 				report: 'gzip'
