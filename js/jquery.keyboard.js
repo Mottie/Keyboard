@@ -272,8 +272,8 @@ http://www.opensource.org/licenses/mit-license.php
 	};
 
 	base.reveal = function (refresh) {
-		if (base.isOpen && !o.userClosed) {
-			refresh = true;
+		if (!refresh && base.isOpen && !o.userClosed) {
+			refresh = !o.alwaysOpen;
 		}
 		var alreadyOpen = base.isOpen,
 			kbcss = $keyboard.css;
@@ -293,7 +293,7 @@ http://www.opensource.org/licenses/mit-license.php
 			}
 			base.isOpen = o.alwaysOpen;
 			base.last.preVal = '' + base.last.val;
-			base.last.val = base.$preview && base.$preview.val() || '';
+			base.last.val = base.$preview && base.$preview.val() || base.$el.val();
 		}
 
 		// Don't open if disabled
@@ -1495,7 +1495,6 @@ http://www.opensource.org/licenses/mit-license.php
 			base.isOpen = o.alwaysOpen || o.userClosed;
 			// update value for always open keyboards
 			base.$preview.val(val);
-
 			base.$el
 				.removeClass(kbcss.isCurrent + ' ' + kbcss.inputAutoAccepted)
 				// add 'ui-keyboard-autoaccepted' to inputs - see issue #66
