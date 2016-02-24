@@ -104,8 +104,8 @@
 		showKb = function(layout){
 			var kb = $('#multi').getkeyboard();
 			kb.options.layout = layout;
-			// true flag causes a keyboard refresh
-			kb.reveal(true);
+			// redraw keyboard with new layout
+			kb.redraw();
 		};
 
 		$.each(layouts.sort(), function(i, l){
