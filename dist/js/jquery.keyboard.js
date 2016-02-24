@@ -1,4 +1,4 @@
-/*! jQuery UI Virtual Keyboard v1.25.21 *//*
+/*! jQuery UI Virtual Keyboard v1.25.22 *//*
 Author: Jeremy Satterfield
 Maintained: Rob Garrison (Mottie on github)
 Licensed under the MIT License
@@ -42,7 +42,7 @@ http://www.opensource.org/licenses/mit-license.php
 	var $keyboard = $.keyboard = function (el, options) {
 	var o, base = this;
 
-	base.version = '1.25.21';
+	base.version = '1.25.22';
 
 	// Access to jQuery and DOM versions of element
 	base.$el = $(el);
@@ -271,10 +271,23 @@ http://www.opensource.org/licenses/mit-license.php
 		}
 	};
 
-	base.reveal = function (refresh) {
-		if (base.isOpen && !o.userClosed) {
-			refresh = true;
+	// add redraw method to make API more clear
+	base.redraw = function () {
+		// update keyboard after a layout change
+		if (base.$keyboard.length) {
+
+			base.last.preVal = '' + base.last.val;
+			base.last.val = base.$preview && base.$preview.val() || base.$el.val();
+			base.$el.val( base.last.val );
+
+			base.removeKeyboard();
+			base.shiftActive = base.altActive = base.metaActive = false;
 		}
+		base.isOpen = o.alwaysOpen;
+		base.reveal(true);
+	};
+
+	base.reveal = function (redraw) {
 		var alreadyOpen = base.isOpen,
 			kbcss = $keyboard.css;
 		base.opening = !alreadyOpen;
@@ -285,16 +298,6 @@ http://www.opensource.org/licenses/mit-license.php
 				kb.close(kb.options.autoAccept && kb.options.autoAcceptOnEsc ? 'true' : false);
 			}
 		});
-		// update keyboard after a layout change
-		if (refresh) {
-			if (base.$keyboard.length) {
-				base.removeKeyboard();
-				base.shiftActive = base.altActive = base.metaActive = false;
-			}
-			base.isOpen = o.alwaysOpen;
-			base.last.preVal = '' + base.last.val;
-			base.last.val = base.$preview && base.$preview.val() || '';
-		}
 
 		// Don't open if disabled
 		if (base.$el.is(':disabled') || (base.$el.attr('readonly') && !base.$el.hasClass(kbcss.locked))) {
@@ -323,7 +326,7 @@ http://www.opensource.org/licenses/mit-license.php
 		}
 		// save starting content, in case we cancel
 		base.originalContent = base.$el.val();
-		base.$preview.val(refresh ? base.last.val : base.originalContent);
+		base.$preview.val(base.originalContent);
 
 		// disable/enable accept button
 		if (o.acceptValid) {
@@ -392,40 +395,38 @@ http://www.opensource.org/licenses/mit-license.php
 			}
 		}
 
-		if (!refresh) {
-			if (alreadyOpen) {
-				// restore caret position (userClosed)
-				$keyboard.caret(base.$preview, base.last);
-				return base;
-			}
-
-			// opening keyboard flag; delay allows switching between keyboards without immediately closing
-			// the keyboard
-			base.timer2 = setTimeout(function () {
-				var undef;
-				base.opening = false;
-				// Number inputs don't support selectionStart and selectionEnd
-				// Number/email inputs don't support selectionStart and selectionEnd
-				if (!/(number|email)/i.test(base.el.type) && !o.caretToEnd) {
-					// caret position is always 0,0 in webkit; and nothing is focused at this point... odd
-					// save caret position in the input to transfer it to the preview
-					// inside delay to get correct caret position
-					base.saveCaret(undef, undef, base.$el);
-				}
-				if (o.initialFocus) {
-					$keyboard.caret(base.$preview, base.last);
-				}
-				// save event time for keyboards with stayOpen: true
-				base.last.eventTime = new Date().getTime();
-				base.$el.trigger($keyboard.events.kbVisible, [base, base.el]);
-				base.timer = setTimeout(function () {
-					// get updated caret information after visible event - fixes #331
-					if (base) { // Check if base exists, this is a case when destroy is called, before timers fire
-						base.saveCaret();
-					}
-				}, 200);
-			}, 10);
+		if (alreadyOpen || redraw) {
+			// restore caret position (userClosed)
+			$keyboard.caret(base.$preview, base.last);
+			return base;
 		}
+
+		// opening keyboard flag; delay allows switching between keyboards without immediately closing
+		// the keyboard
+		base.timer2 = setTimeout(function () {
+			var undef;
+			base.opening = false;
+			// Number inputs don't support selectionStart and selectionEnd
+			// Number/email inputs don't support selectionStart and selectionEnd
+			if (!/(number|email)/i.test(base.el.type) && !o.caretToEnd) {
+				// caret position is always 0,0 in webkit; and nothing is focused at this point... odd
+				// save caret position in the input to transfer it to the preview
+				// inside delay to get correct caret position
+				base.saveCaret(undef, undef, base.$el);
+			}
+			if (o.initialFocus) {
+				$keyboard.caret(base.$preview, base.last);
+			}
+			// save event time for keyboards with stayOpen: true
+			base.last.eventTime = new Date().getTime();
+			base.$el.trigger($keyboard.events.kbVisible, [base, base.el]);
+			base.timer = setTimeout(function () {
+				// get updated caret information after visible event - fixes #331
+				if (base) { // Check if base exists, this is a case when destroy is called, before timers fire
+					base.saveCaret();
+				}
+			}, 200);
+		}, 10);
 		// return base to allow chaining in typing extension
 		return base;
 	};
@@ -1495,7 +1496,6 @@ http://www.opensource.org/licenses/mit-license.php
 			base.isOpen = o.alwaysOpen || o.userClosed;
 			// update value for always open keyboards
 			base.$preview.val(val);
-
 			base.$el
 				.removeClass(kbcss.isCurrent + ' ' + kbcss.inputAutoAccepted)
 				// add 'ui-keyboard-autoaccepted' to inputs - see issue #66
