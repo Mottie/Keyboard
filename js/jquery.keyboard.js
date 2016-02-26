@@ -1736,7 +1736,7 @@ http://www.opensource.org/licenses/mit-license.php
 
 		data.html = '<span class="' + kbcss.keyText + '">' +
 			// this prevents HTML from being added to the key
-			keys.name.replace(/[\u00A0-\u9999<>\&]/gim, function (i) {
+			keys.name.replace(/[\u00A0-\u9999]/gim, function (i) {
 				return '&#' + i.charCodeAt(0) + ';';
 			}) +
 			'</span>';
