@@ -136,6 +136,10 @@ Wiki: [Home](https://github.com/Mottie/Keyboard/wiki/Home) | [FAQ](https://githu
 
 Only the latest changes will be shown below, see the [wiki log](https://github.com/Mottie/Keyboard/wiki/Log) to view older versions.
 
+### Version 1.25.23 (2/26/2016)
+
+* HTML is now allowed in display settings. Fixes [issue #440](https://github.com/Mottie/Keyboard/issues/440).
+
 ### Version 1.25.22 (2/24/2016)
 
 * Retain input value on `alwaysOpen` hover; See [issue #430](https://github.com/Mottie/Keyboard/issues/430).
@@ -146,10 +150,3 @@ Only the latest changes will be shown below, see the [wiki log](https://github.c
 ### Version 1.25.21 (2/20/2016)
 
 * Caret: Adjust calculation when `textAlign:center` set; fixes [issue #436](https://github.com/Mottie/Keyboard/issues/436).
-
-### Version 1.25.20 (2/18/2016)
-
-* Files are now available through [CDNJS](https://cdnjs.com/libraries/virtual-keyboard)! Fixes [issue #434](https://github.com/Mottie/Keyboard/issues/434).
-* Fix theme switcher styling.
-* Fix reference to destroyed base. See [pull #435](https://github.com/Mottie/Keyboard/pull/435); thanks [@akiraspeirs](https://github.com/akiraspeirs)!
-* Update dependencies.
