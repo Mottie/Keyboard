@@ -2054,8 +2054,11 @@ http://www.opensource.org/licenses/mit-license.php
 	base.removeKeyboard = function () {
 		base.$allKeys = null;
 		base.$decBtn = null;
+		// base.$preview === base.$el when o.usePreview is false - fixes #442
+		if (o.usePreview) {
+			base.$preview.removeData('keyboard');
+		}
 		base.preview = null;
-		base.$preview.removeData('keyboard');
 		base.$preview = null;
 		base.$previewCopy = null;
 		base.$keyboard.removeData('keyboard');
