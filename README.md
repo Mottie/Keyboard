@@ -136,6 +136,11 @@ Wiki: [Home](https://github.com/Mottie/Keyboard/wiki/Home) | [FAQ](https://githu
 
 Only the latest changes will be shown below, see the [wiki log](https://github.com/Mottie/Keyboard/wiki/Log) to view older versions.
 
+### Version 1.25.24 (3/5/2016)
+
+* Update dependencies.
+* Remove keyboard data from preview when `usePrevies` is `true`. Fixes [issue #442](https://github.com/Mottie/Keyboard/issues/442).
+
 ### Version 1.25.23 (2/26/2016)
 
 * HTML is now allowed in display settings. Fixes [issue #440](https://github.com/Mottie/Keyboard/issues/440).
@@ -146,7 +151,3 @@ Only the latest changes will be shown below, see the [wiki log](https://github.c
 * Add `redraw` method.
   * Extracted from `reveal` method, so using `reveal(true)` no longer works as expected.
   * See the documentation on the [`redraw` method](https://github.com/Mottie/Keyboard/wiki/Methods#redraw).
-
-### Version 1.25.21 (2/20/2016)
-
-* Caret: Adjust calculation when `textAlign:center` set; fixes [issue #436](https://github.com/Mottie/Keyboard/issues/436).
