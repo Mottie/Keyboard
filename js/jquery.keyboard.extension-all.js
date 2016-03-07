@@ -4,7 +4,7 @@
 ██  ██ ██  ██   ██  ██ ██  ██   ██     ██ ██ ██ ██  ██ ██  ██ ██ ██▀▀   ▀▀▀▀██
 █████▀ ▀████▀   ██  ██ ▀████▀   ██     ██ ██ ██ ▀████▀ █████▀ ██ ██     █████▀
 */
-/*! jQuery UI Virtual Keyboard (1.25.24) - ALL Extensions + Mousewheel */
+/*! jQuery UI Virtual Keyboard (1.25.25) - ALL Extensions + Mousewheel */
 /*! jQuery UI Virtual Keyboard Alt Key Popup v1.1.1 *//*
  * for Keyboard v1.18+ only (1/10/2016)
  *
@@ -699,7 +699,7 @@ $.fn.addAutocomplete = function(options){
 
 }));
 
-/*! jQuery UI Virtual Keyboard Extender v1.0.2 *//*
+/*! jQuery UI Virtual Keyboard Extender v1.0.3 *//*
  * for Keyboard v1.18+ only (12/5/2015)
  *
  * By Rob Garrison (aka Mottie)
@@ -778,7 +778,7 @@ $.fn.addAutocomplete = function(options){
 				$kb[ 0 ].style.display = opts.showing ? 'inline-block' : 'none';
 
 				// remove previous extender... just-in-case
-				base.$keyboard.find( '.' + $keyboard.css.extender ).remove();
+				base.$keyboard.find( 'div.' + $keyboard.css.extender ).remove();
 				base.$keyboard.append( $kb );
 				base.extender_toggle( opts.showing );
 				base.bindKeys();

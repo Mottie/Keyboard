@@ -136,6 +136,10 @@ Wiki: [Home](https://github.com/Mottie/Keyboard/wiki/Home) | [FAQ](https://githu
 
 Only the latest changes will be shown below, see the [wiki log](https://github.com/Mottie/Keyboard/wiki/Log) to view older versions.
 
+### Version 1.25.25 (3/7/2016)
+
+* Extender: Do not remove extender toggle button!
+
 ### Version 1.25.24 (3/5/2016)
 
 * Update dependencies.
@@ -144,10 +148,3 @@ Only the latest changes will be shown below, see the [wiki log](https://github.c
 ### Version 1.25.23 (2/26/2016)
 
 * HTML is now allowed in display settings. Fixes [issue #440](https://github.com/Mottie/Keyboard/issues/440).
-
-### Version 1.25.22 (2/24/2016)
-
-* Retain input value on `alwaysOpen` hover; See [issue #430](https://github.com/Mottie/Keyboard/issues/430).
-* Add `redraw` method.
-  * Extracted from `reveal` method, so using `reveal(true)` no longer works as expected.
-  * See the documentation on the [`redraw` method](https://github.com/Mottie/Keyboard/wiki/Methods#redraw).

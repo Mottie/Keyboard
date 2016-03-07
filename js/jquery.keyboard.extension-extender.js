@@ -1,4 +1,4 @@
-/*! jQuery UI Virtual Keyboard Extender v1.0.2 *//*
+/*! jQuery UI Virtual Keyboard Extender v1.0.3 *//*
  * for Keyboard v1.18+ only (12/5/2015)
  *
  * By Rob Garrison (aka Mottie)
