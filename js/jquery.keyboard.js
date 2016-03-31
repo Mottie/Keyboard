@@ -692,12 +692,16 @@ http://www.opensource.org/licenses/mit-license.php
 		base.$preview
 			.unbind(base.namespace)
 			.bind('click' + base.namespace + ' touchstart' + base.namespace, function () {
+				if (o.alwaysOpen && !base.isCurrent()) {
+					base.reveal();
+				}
 				// update last caret position after user click, use at least 150ms or it doesn't work in IE
 				base.timer2 = setTimeout(function () {
 					if (base){
 						base.saveCaret();
 					}
 				}, 150);
+
 			})
 			.bind('keypress' + base.namespace, function (e) {
 				if (o.lockInput) {
