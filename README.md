@@ -136,6 +136,17 @@ Wiki: [Home](https://github.com/Mottie/Keyboard/wiki/Home) | [FAQ](https://githu
 
 Only the latest changes will be shown below, see the [wiki log](https://github.com/Mottie/Keyboard/wiki/Log) to view older versions.
 
+### Version 1.25.26 (4/6/2016)
+
+* Core:
+  * Set position fixed on test element to prevent scrolling.
+  * Click/touchstart correctly switches to `alwaysOpen` keyboards. Fixes [issue #448](https://github.com/Mottie/Keyboard/issues/448).
+  * Correct stickyShift behavior. Fixes [issue #452](https://github.com/Mottie/Keyboard/issues/452) & reverts [`663b86d`](https://github.com/Mottie/Keyboard/commit/663b86dfba6d1dece66809b1b290f8542730a5ab).
+* Misc:
+  * Update dependencies.
+  * Update qunit.
+  * Update jQuery.
+
 ### Version 1.25.25 (3/7/2016)
 
 * Extender: Do not remove extender toggle button!
@@ -144,7 +155,3 @@ Only the latest changes will be shown below, see the [wiki log](https://github.c
 
 * Update dependencies.
 * Remove keyboard data from preview when `usePrevies` is `true`. Fixes [issue #442](https://github.com/Mottie/Keyboard/issues/442).
-
-### Version 1.25.23 (2/26/2016)
-
-* HTML is now allowed in display settings. Fixes [issue #440](https://github.com/Mottie/Keyboard/issues/440).

@@ -692,12 +692,16 @@ http://www.opensource.org/licenses/mit-license.php
 		base.$preview
 			.unbind(base.namespace)
 			.bind('click' + base.namespace + ' touchstart' + base.namespace, function () {
+				if (o.alwaysOpen && !base.isCurrent()) {
+					base.reveal();
+				}
 				// update last caret position after user click, use at least 150ms or it doesn't work in IE
 				base.timer2 = setTimeout(function () {
 					if (base){
 						base.saveCaret();
 					}
 				}, 150);
+
 			})
 			.bind('keypress' + base.namespace, function (e) {
 				if (o.lockInput) {
@@ -1004,7 +1008,7 @@ http://www.opensource.org/licenses/mit-license.php
 				if (typeof action !== 'undefined' && action !== null) {
 					last.key = $(this).hasClass(kbcss.keyAction) ? action : last.key;
 					base.insertText(last.key);
-					if (!base.capsLock || !o.stickyShift && !e.shiftKey) {
+					if (!base.capsLock && !o.stickyShift && !e.shiftKey) {
 						base.shiftActive = false;
 						base.showSet($key.attr('data-name'));
 					}
@@ -2755,7 +2759,7 @@ http://www.opensource.org/licenses/mit-license.php
 		if (typeof $keyboard.checkCaret !== 'boolean') {
 			// Check if caret position is saved when input is hidden or loses focus
 			// (*cough* all versions of IE and I think Opera has/had an issue as well
-			var $temp = $('<div style="height:0px;width:0px;overflow:hidden;">' +
+			var $temp = $('<div style="height:0px;width:0px;overflow:hidden;position:fixed;top:0;left:-100px;">' +
 				'<input type="text" value="testing"/></div>').prependTo('body'); // stop page scrolling
 			$keyboard.caret($temp.find('input'), 3, 3);
 			// Also save caret position of the input if it is locked

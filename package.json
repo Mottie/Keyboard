@@ -2,7 +2,7 @@
   "name": "virtual-keyboard",
   "title": "Keyboard",
   "description": "Virtual Keyboard using jQuery UI",
-  "version": "1.25.25",
+  "version": "1.25.26",
   "author": {
     "name": "Jeremy Satterfield",
     "url": "https://github.com/jsatt"
@@ -48,7 +48,7 @@
     }
   ],
   "devDependencies": {
-    "grunt": "~0.4.5",
+    "grunt": "^1.0.1",
     "grunt-cli": "^1.1.0",
     "grunt-contrib-clean": "^1.0.0",
     "grunt-contrib-concat": "^1.0.0",
