@@ -1,8 +1,8 @@
 /*!
 * TableSorter QUnit Testing
 */
-/*jshint unused: false */
-/*global QUnit: false, jQuery: false, ipv6tests: false */
+/*jshint unused: true */
+/*global QUnit: false, jQuery: false */
 
 jQuery(function($){
 
@@ -82,8 +82,7 @@ jQuery(function($){
 			customHash
 		************************************************/
 		QUnit.test( 'customHash', function( assert ) {
-			var h,
-				layouts = $keyboard.layouts;
+			var layouts = $keyboard.layouts;
 			assert.expect(3);
 			// custom hash should not vary over time; so if a default layout changes,
 			//  it will show up here as an error
