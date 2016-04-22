@@ -4175,152 +4175,6 @@ jQuery.keyboard.layouts['ms-Turkmen'] = {
 	]
 };
 
-/* US-Dvorak Keyboard Layout
- * generated from http://www.microsoft.com/resources/msdn/goglobal/keyboards/kbddv.html
- */
-jQuery.keyboard.layouts['ms-US-Dvorak'] = {
-	"name" : "ms-US-Dvorak",
-	"lang" : ["en"],
-	"normal" : [
-		"` 1 2 3 4 5 6 7 8 9 0 [ ] {bksp}",
-		"{tab} ' , . p y f g c r l / = \u005C",
-		"a o e u i d h t n s - {enter}",
-		"{shift} ; q j k x b m w v z {shift}",
-		"{accept} {space} {cancel}"
-	],
-	"shift" : [
-		"~ ! @ # $ % ^ & * ( ) { } {bksp}",
-		"{tab} \u0022 < > P Y F G C R L ? + |",
-		"A O E U I D H T N S _ {enter}",
-		"{shift} : Q J K X B M W V Z {shift}",
-		"{accept} {space} {cancel}"
-	]
-};
-
-/* US-Dvorak for left hand Keyboard Layout
- * generated from http://www.microsoft.com/resources/msdn/goglobal/keyboards/kbdusl.html
- */
-jQuery.keyboard.layouts['ms-US-Dvorak for left hand'] = {
-	"name" : "ms-US-Dvorak for left hand",
-	"lang" : ["en"],
-	"normal" : [
-		"` [ ] / p f m l j 4 3 2 1 {bksp}",
-		"{tab} ; q b y u r s o . 6 5 = \u005C",
-		"- k c d t h e a z 8 7 {enter}",
-		"{shift} ' x g v w n i , 0 9 {shift}",
-		"{accept} {space} {cancel}"
-	],
-	"shift" : [
-		"~ { } ? P F M L J $ # @ ! {bksp}",
-		"{tab} : Q B Y U R S O > ^ % + |",
-		"_ K C D T H E A Z * & {enter}",
-		"{shift} \u0022 X G V W N I < ) ( {shift}",
-		"{accept} {space} {cancel}"
-	]
-};
-
-/* US-Dvorak for right hand Keyboard Layout
- * generated from http://www.microsoft.com/resources/msdn/goglobal/keyboards/kbdusr.html
- */
-jQuery.keyboard.layouts['ms-US-Dvorak for right hand'] = {
-	"name" : "ms-US-Dvorak for right hand",
-	"lang" : ["en"],
-	"normal" : [
-		"` 1 2 3 4 j l m f p / [ ] {bksp}",
-		"{tab} 5 6 q . o r s u y b ; = \u005C",
-		"7 8 z a e h t d c k - {enter}",
-		"{shift} 9 0 x , i n w v g ' {shift}",
-		"{accept} {space} {cancel}"
-	],
-	"shift" : [
-		"~ ! @ # $ J L M F P ? { } {bksp}",
-		"{tab} % ^ Q > O R S U Y B : + |",
-		"& * Z A E H T D C K _ {enter}",
-		"{shift} ( ) X < I N W V G \u0022 {shift}",
-		"{accept} {space} {cancel}"
-	]
-};
-
-/* US English (Latin) Keyboard Layout
- * generated from http://www.microsoft.com/resources/msdn/goglobal/keyboards/kbdus.html
- */
-jQuery.keyboard.layouts['ms-US English (Latin)'] = {
-	"name" : "ms-US English (Latin)",
-	"lang" : ["en"],
-	"normal" : [
-		"` 1 2 3 4 5 6 7 8 9 0 - = {bksp}",
-		"{tab} q w e r t y u i o p [ ] \u005c",
-		"a s d f g h j k l ; ' {enter}",
-		"{shift} \u005c z x c v b n m , . / {shift}",
-		"{accept} {space} {cancel}"
-	],
-	"shift" : [
-		"~ ! @ # $ % ^ & * ( ) _ + {bksp}",
-		"{tab} Q W E R T Y U I O P { } |",
-		"A S D F G H J K L : \u0022 {enter}",
-		"{shift} | Z X C V B N M < > / {shift}",
-		"{accept} {space} {cancel}"
-	]
-};
-
-/* US English (IBM Arabic 238_L) Keyboard Layout
- * generated from http://www.microsoft.com/resources/msdn/goglobal/keyboards/kbdusa.html
- */
-jQuery.keyboard.layouts['ms-US English (IBM Arabic 238_L)'] = {
-	"name" : "ms-US English (IBM Arabic 238_L)",
-	"lang" : ["en"],
-	"normal" : [
-		"< 1 2 3 4 5 6 7 8 9 0 - = {bksp}",
-		"{tab} q w e r t y u i o p [ ] `",
-		"a s d f g h j k l ; ' {enter}",
-		"{shift} \u005C z x c v b n m , . / {shift}",
-		"{accept} {space} {cancel}"
-	],
-	"shift" : [
-		"> ! @ # $ % ^ & * ( ) _ + {bksp}",
-		"{tab} Q W E R T Y U I O P { } ~",
-		"A S D F G H J K L : \u0022 {enter}",
-		"{shift} | Z X C V B N M , . ? {shift}",
-		"{accept} {space} {cancel}"
-	]
-};
-
-/* US-International Keyboard Layout
- * generated from http://www.microsoft.com/resources/msdn/goglobal/keyboards/kbdusx.html
- */
-jQuery.keyboard.layouts['ms-US-International'] = {
-	"name" : "ms-US-International",
-	"lang" : ["en"],
-	"normal" : [
-		"` 1 2 3 4 5 6 7 8 9 0 - = {bksp}",
-		"{tab} q w e r t y u i o p [ ]",
-		"a s d f g h j k l ; ' \u005C {enter}",
-		"{shift} z x c v b n m , . / {shift}",
-		"{accept} {alt} {space} {alt} {cancel}"
-	],
-	"shift" : [
-		"~ ! @ # $ % ^ & * ( ) _ + {bksp}",
-		"{tab} Q W E R T Y U I O P { }",
-		"A S D F G H J K L : \u0022 | {enter}",
-		"{shift} Z X C V B N M < > ? {shift}",
-		"{accept} {alt} {space} {alt} {cancel}"
-	],
-	"alt" : [
-		"{empty} \u00A1 \u00B2 \u00B3 \u00A4 \u20AC \u00BC \u00BD \u00BE \u2018 \u2019 \u00A5 \u00D7 {bksp}",
-		"{tab} \u00E4 \u00E5 \u00E9 \u00AE \u00FE \u00FC \u00FA \u00ED \u00F3 \u00F6 \u00AB \u00BB",
-		"\u00E1 \u00DF \u00F0 {empty} {empty} {empty} {empty} {empty} \u00F8 \u00B6 \u00B4 \u00AC {enter}",
-		"{shift} \u00E6 {empty} \u00A9 {empty} {empty} \u00F1 \u00B5 \u00E7 {empty} \u00BF {shift}",
-		"{accept} {alt} {space} {alt} {cancel}"
-	],
-	"alt-shift" : [
-		"{empty} \u00B9 {empty} {empty} \u00A3 {empty} {empty} {empty} {empty} {empty} {empty} {empty} \u00F7 {bksp}",
-		"{tab} \u00C4 \u00C5 \u00C9 {empty} \u00DE \u00DC \u00DA \u00CD \u00D3 \u00D6 {empty} {empty}",
-		"\u00C1 \u00A7 \u00D0 {empty} {empty} {empty} {empty} {empty} \u00D8 \u00B0 \u00A8 \u00A6 {enter}",
-		"{shift} \u00C6 {empty} \u00A2 {empty} {empty} \u00D1 {empty} \u00C7 {empty} {empty} {shift}",
-		"{accept} {alt} {space} {alt} {cancel}"
-	]
-};
-
 /* Ukrainian Keyboard Layout
  * generated from http://www.microsoft.com/resources/msdn/goglobal/keyboards/kbdur.html
  */
@@ -4484,6 +4338,152 @@ jQuery.keyboard.layouts['ms-Urdu'] = {
 		"\u0698 \u0632 \u0691 \u06ba \u06c2 \u0621 \u0622 \u06af \u064a : \" {enter}",
 		"{shift} | {ZWJ} {ZWNJ} \u06d3 {LRM} \u0624 \u0626 {RLM} > < / {shift}",
 		"{accept} {space} {cancel}"
+	]
+};
+
+/* US-Dvorak Keyboard Layout
+ * generated from http://www.microsoft.com/resources/msdn/goglobal/keyboards/kbddv.html
+ */
+jQuery.keyboard.layouts['ms-US-Dvorak'] = {
+	"name" : "ms-US-Dvorak",
+	"lang" : ["en"],
+	"normal" : [
+		"` 1 2 3 4 5 6 7 8 9 0 [ ] {bksp}",
+		"{tab} ' , . p y f g c r l / = \u005C",
+		"a o e u i d h t n s - {enter}",
+		"{shift} ; q j k x b m w v z {shift}",
+		"{accept} {space} {cancel}"
+	],
+	"shift" : [
+		"~ ! @ # $ % ^ & * ( ) { } {bksp}",
+		"{tab} \u0022 < > P Y F G C R L ? + |",
+		"A O E U I D H T N S _ {enter}",
+		"{shift} : Q J K X B M W V Z {shift}",
+		"{accept} {space} {cancel}"
+	]
+};
+
+/* US-Dvorak for left hand Keyboard Layout
+ * generated from http://www.microsoft.com/resources/msdn/goglobal/keyboards/kbdusl.html
+ */
+jQuery.keyboard.layouts['ms-US-Dvorak for left hand'] = {
+	"name" : "ms-US-Dvorak for left hand",
+	"lang" : ["en"],
+	"normal" : [
+		"` [ ] / p f m l j 4 3 2 1 {bksp}",
+		"{tab} ; q b y u r s o . 6 5 = \u005C",
+		"- k c d t h e a z 8 7 {enter}",
+		"{shift} ' x g v w n i , 0 9 {shift}",
+		"{accept} {space} {cancel}"
+	],
+	"shift" : [
+		"~ { } ? P F M L J $ # @ ! {bksp}",
+		"{tab} : Q B Y U R S O > ^ % + |",
+		"_ K C D T H E A Z * & {enter}",
+		"{shift} \u0022 X G V W N I < ) ( {shift}",
+		"{accept} {space} {cancel}"
+	]
+};
+
+/* US-Dvorak for right hand Keyboard Layout
+ * generated from http://www.microsoft.com/resources/msdn/goglobal/keyboards/kbdusr.html
+ */
+jQuery.keyboard.layouts['ms-US-Dvorak for right hand'] = {
+	"name" : "ms-US-Dvorak for right hand",
+	"lang" : ["en"],
+	"normal" : [
+		"` 1 2 3 4 j l m f p / [ ] {bksp}",
+		"{tab} 5 6 q . o r s u y b ; = \u005C",
+		"7 8 z a e h t d c k - {enter}",
+		"{shift} 9 0 x , i n w v g ' {shift}",
+		"{accept} {space} {cancel}"
+	],
+	"shift" : [
+		"~ ! @ # $ J L M F P ? { } {bksp}",
+		"{tab} % ^ Q > O R S U Y B : + |",
+		"& * Z A E H T D C K _ {enter}",
+		"{shift} ( ) X < I N W V G \u0022 {shift}",
+		"{accept} {space} {cancel}"
+	]
+};
+
+/* US English (Latin) Keyboard Layout
+ * generated from http://www.microsoft.com/resources/msdn/goglobal/keyboards/kbdus.html
+ */
+jQuery.keyboard.layouts['ms-US English (Latin)'] = {
+	"name" : "ms-US English (Latin)",
+	"lang" : ["en"],
+	"normal" : [
+		"` 1 2 3 4 5 6 7 8 9 0 - = {bksp}",
+		"{tab} q w e r t y u i o p [ ] \u005c",
+		"a s d f g h j k l ; ' {enter}",
+		"{shift} \u005c z x c v b n m , . / {shift}",
+		"{accept} {space} {cancel}"
+	],
+	"shift" : [
+		"~ ! @ # $ % ^ & * ( ) _ + {bksp}",
+		"{tab} Q W E R T Y U I O P { } |",
+		"A S D F G H J K L : \u0022 {enter}",
+		"{shift} | Z X C V B N M < > / {shift}",
+		"{accept} {space} {cancel}"
+	]
+};
+
+/* US English (IBM Arabic 238_L) Keyboard Layout
+ * generated from http://www.microsoft.com/resources/msdn/goglobal/keyboards/kbdusa.html
+ */
+jQuery.keyboard.layouts['ms-US English (IBM Arabic 238_L)'] = {
+	"name" : "ms-US English (IBM Arabic 238_L)",
+	"lang" : ["en"],
+	"normal" : [
+		"< 1 2 3 4 5 6 7 8 9 0 - = {bksp}",
+		"{tab} q w e r t y u i o p [ ] `",
+		"a s d f g h j k l ; ' {enter}",
+		"{shift} \u005C z x c v b n m , . / {shift}",
+		"{accept} {space} {cancel}"
+	],
+	"shift" : [
+		"> ! @ # $ % ^ & * ( ) _ + {bksp}",
+		"{tab} Q W E R T Y U I O P { } ~",
+		"A S D F G H J K L : \u0022 {enter}",
+		"{shift} | Z X C V B N M , . ? {shift}",
+		"{accept} {space} {cancel}"
+	]
+};
+
+/* US-International Keyboard Layout
+ * generated from http://www.microsoft.com/resources/msdn/goglobal/keyboards/kbdusx.html
+ */
+jQuery.keyboard.layouts['ms-US-International'] = {
+	"name" : "ms-US-International",
+	"lang" : ["en"],
+	"normal" : [
+		"` 1 2 3 4 5 6 7 8 9 0 - = {bksp}",
+		"{tab} q w e r t y u i o p [ ]",
+		"a s d f g h j k l ; ' \u005C {enter}",
+		"{shift} z x c v b n m , . / {shift}",
+		"{accept} {alt} {space} {alt} {cancel}"
+	],
+	"shift" : [
+		"~ ! @ # $ % ^ & * ( ) _ + {bksp}",
+		"{tab} Q W E R T Y U I O P { }",
+		"A S D F G H J K L : \u0022 | {enter}",
+		"{shift} Z X C V B N M < > ? {shift}",
+		"{accept} {alt} {space} {alt} {cancel}"
+	],
+	"alt" : [
+		"{empty} \u00A1 \u00B2 \u00B3 \u00A4 \u20AC \u00BC \u00BD \u00BE \u2018 \u2019 \u00A5 \u00D7 {bksp}",
+		"{tab} \u00E4 \u00E5 \u00E9 \u00AE \u00FE \u00FC \u00FA \u00ED \u00F3 \u00F6 \u00AB \u00BB",
+		"\u00E1 \u00DF \u00F0 {empty} {empty} {empty} {empty} {empty} \u00F8 \u00B6 \u00B4 \u00AC {enter}",
+		"{shift} \u00E6 {empty} \u00A9 {empty} {empty} \u00F1 \u00B5 \u00E7 {empty} \u00BF {shift}",
+		"{accept} {alt} {space} {alt} {cancel}"
+	],
+	"alt-shift" : [
+		"{empty} \u00B9 {empty} {empty} \u00A3 {empty} {empty} {empty} {empty} {empty} {empty} {empty} \u00F7 {bksp}",
+		"{tab} \u00C4 \u00C5 \u00C9 {empty} \u00DE \u00DC \u00DA \u00CD \u00D3 \u00D6 {empty} {empty}",
+		"\u00C1 \u00A7 \u00D0 {empty} {empty} {empty} {empty} {empty} \u00D8 \u00B0 \u00A8 \u00A6 {enter}",
+		"{shift} \u00C6 {empty} \u00A2 {empty} {empty} \u00D1 {empty} \u00C7 {empty} {empty} {shift}",
+		"{accept} {alt} {space} {alt} {cancel}"
 	]
 };
 
@@ -4885,6 +4885,65 @@ jQuery.keyboard.language.hu = {
 	},
 	// Message added to the key title while hovering, if the mousewheel plugin exists
 	wheelMessage : 'Haszn\u00e1ld az eg\u00e9r g\u00f6rget\u0151t a t\u00f6bbi billenty\u0171 \u00e1tv\u00e1lt\u00e1shoz',
+};
+
+// Keyboard Language
+// please update this section to match this language and email me with corrections!
+// "all" is used here for example purposes, by convention it should be the ISO 639-1 code for the specified language
+// ***********************
+jQuery.keyboard.language.it = {
+	language: 'Italiano (Italian)', // e.g. 'Русский (Russian)'
+	display : {
+		'a'      : '\u2714:Accetta (Shift+Enter)', // check mark - same action as accept
+		'accept' : 'Accetta:Accetta (Shift+Enter)',
+		'alt'    : 'AltGr:Grafemi Alternativi',
+		'b'      : '\u2190:Cancella',    // Left arrow (same as &larr;)
+		'bksp'   : 'Canc:Cancella',
+		'c'      : '\u2716:Annulla (Esc)', // big X, close - same action as cancel
+		'cancel' : 'Annulla:Annulla (Esc)',
+		'clear'  : 'C:Pulisci',             // clear num pad
+		'combo'  : '\u00f6:Tasti Combinati',
+		'dec'    : ',:Decimale',           // decimal point for num pad (optional), change '.' to ',' for European format
+		'e'      : '\u21b5:Invio',        // down, then left arrow - enter symbol
+		'enter'  : 'Invio:Invio',
+		'lock'   : '\u21ea Bloc:Bloc Maiusc', // caps lock
+		's'      : '\u21e7:Maiusc',        // thick hollow up arrow
+		'shift'  : 'Maiusc:Maiusc',
+		'sign'   : '\u00b1:Cambia Segno',  // +/- sign for num pad
+		'space'  : '&nbsp;:Spazio',
+		't'      : '\u21e5:Tab',          // right arrow to bar (used since this virtual keyboard works with one directional tabs)
+		'tab'    : '\u21e5 Tab:Tab'       // \u21b9 is the true tab symbol (left & right arrows)
+	},
+	// Message added to the key title while hovering, if the mousewheel plugin exists
+	wheelMessage : 'Usa la rotella del mouse per vedere altri tasti'
+
+	// uncomment, then include changes to the comboRegex here
+	/*
+	, comboRegex : /([`\'~\^\"ao])([a-z])/mig,
+	*/
+
+	// uncomment, then include any changes to the combos option here
+	/*
+	, combos : {
+		// grave
+		'`' : { a:"\u00e0", A:"\u00c0", e:"\u00e8", E:"\u00c8", i:"\u00ec", I:"\u00cc", o:"\u00f2", O:"\u00d2",
+				u:"\u00f9", U:"\u00d9", y:"\u1ef3", Y:"\u1ef2" },
+		// acute & cedilla
+		"'" : { a:"\u00e1", A:"\u00c1", e:"\u00e9", E:"\u00c9", i:"\u00ed", I:"\u00cd", o:"\u00f3", O:"\u00d3",
+				u:"\u00fa", U:"\u00da", y:"\u00fd", Y:"\u00dd" },
+		// umlaut/trema
+		'"' : { a:"\u00e4", A:"\u00c4", e:"\u00eb", E:"\u00cb", i:"\u00ef", I:"\u00cf", o:"\u00f6", O:"\u00d6",
+				u:"\u00fc", U:"\u00dc", y:"\u00ff", Y:"\u0178" },
+		// circumflex
+		'^' : { a:"\u00e2", A:"\u00c2", e:"\u00ea", E:"\u00ca", i:"\u00ee", I:"\u00ce", o:"\u00f4", O:"\u00d4",
+				u:"\u00fb", U:"\u00db", y:"\u0177", Y:"\u0176" },
+		// tilde
+		'~' : { a:"\u00e3", A:"\u00c3", e:"\u1ebd", E:"\u1ebc", i:"\u0129", I:"\u0128", o:"\u00f5", O:"\u00d5",
+				u:"\u0169", U:"\u0168", y:"\u1ef9", Y:"\u1ef8", n:"\u00f1", N:"\u00d1" }
+	},
+	// language direction
+	rtl : false
+	*/
 };
 
 // Keyboard Language
