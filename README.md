@@ -136,6 +136,10 @@ Wiki: [Home](https://github.com/Mottie/Keyboard/wiki/Home) | [FAQ](https://githu
 
 Only the latest changes will be shown below, see the [wiki log](https://github.com/Mottie/Keyboard/wiki/Log) to view older versions.
 
+### Version 1.25.27 (4/24/2016)
+
+* Added Italian translation. See [Pull #455](https://github.com/Mottie/Keyboard/pull/455); thanks @[Chosko](https://github.com/Chosko)!
+
 ### Version 1.25.26 (4/6/2016)
 
 * Core:
@@ -150,8 +154,3 @@ Only the latest changes will be shown below, see the [wiki log](https://github.c
 ### Version 1.25.25 (3/7/2016)
 
 * Extender: Do not remove extender toggle button!
-
-### Version 1.25.24 (3/5/2016)
-
-* Update dependencies.
-* Remove keyboard data from preview when `usePrevies` is `true`. Fixes [issue #442](https://github.com/Mottie/Keyboard/issues/442).
