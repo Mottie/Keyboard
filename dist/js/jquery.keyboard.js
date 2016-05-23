@@ -1506,10 +1506,13 @@ http://www.opensource.org/licenses/mit-license.php
 				.addClass((accepted || false) ? accepted === true ? '' : kbcss.inputAutoAccepted : '')
 				.val(val)
 				// trigger default change event - see issue #146
-				.trigger(kbevents.inputChange)
+				.trigger(kbevents.inputChange);
+			// don't trigger an empty event - see issue #463
+			if (!o.alwaysOpen) {
 				// don't trigger beforeClose if keyboard is always open
-				.trigger((o.alwaysOpen) ? '' : kbevents.kbBeforeClose, [base, base.el, (accepted || false)])
-
+				base.$el.trigger(kbevents.kbBeforeClose, [base, base.el, (accepted || false)]);
+			}
+			base.$el
 				.trigger(((accepted || false) ? kbevents.inputAccepted : kbevents.inputCanceled), [base, base.el])
 				.trigger((o.alwaysOpen) ? kbevents.kbInactive : kbevents.kbHidden, [base, base.el])
 				.blur();
