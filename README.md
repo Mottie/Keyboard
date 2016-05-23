@@ -137,6 +137,12 @@ Wiki: [Home](https://github.com/Mottie/Keyboard/wiki/Home) | [FAQ](https://githu
 
 Only the latest changes will be shown below, see the [wiki log](https://github.com/Mottie/Keyboard/wiki/Log) to view older versions.
 
+### Version 1.25.28 (5/23/2016)
+
+* Readme: Add link to gemfile. Thanks to [scicasoft](https://github.com/scicasoft) for creating it!
+* Docs: Update jQuery & add migrate for v3.0. Not using jQuery v3.0 yet due to limitations with Bootstrap.
+* Core: Only trigger named events. Fixes [issue #463](https://github.com/Mottie/Keyboard/issues/463).
+
 ### Version 1.25.27 (4/24/2016)
 
 * Added Italian translation. See [Pull #455](https://github.com/Mottie/Keyboard/pull/455); thanks @[Chosko](https://github.com/Chosko)!
@@ -151,7 +157,3 @@ Only the latest changes will be shown below, see the [wiki log](https://github.c
   * Update dependencies.
   * Update qunit.
   * Update jQuery.
-
-### Version 1.25.25 (3/7/2016)
-
-* Extender: Do not remove extender toggle button!
