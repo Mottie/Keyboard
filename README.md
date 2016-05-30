@@ -139,6 +139,14 @@ Wiki: [Home](https://github.com/Mottie/Keyboard/wiki/Home) | [FAQ](https://githu
 
 Only the latest changes will be shown below, see the [wiki log](https://github.com/Mottie/Keyboard/wiki/Log) to view older versions.
 
+### Version 1.25.29 (5/29/2016)
+
+* Core:
+  * Prevent JS error if keyboard closes before "keyup".
+  * Add `autoAcceptOnValid` option.
+* Readme: Add link to react.js component.
+* Testing: Update to jQuery 3.0.0-rc1; update migrate.
+
 ### Version 1.25.28 (5/23/2016)
 
 * Readme: Add link to gemfile. Thanks to [scicasoft](https://github.com/scicasoft) for creating it!
@@ -148,14 +156,3 @@ Only the latest changes will be shown below, see the [wiki log](https://github.c
 ### Version 1.25.27 (4/24/2016)
 
 * Added Italian translation. See [Pull #455](https://github.com/Mottie/Keyboard/pull/455); thanks @[Chosko](https://github.com/Chosko)!
-
-### Version 1.25.26 (4/6/2016)
-
-* Core:
-  * Set position fixed on test element to prevent scrolling.
-  * Click/touchstart correctly switches to `alwaysOpen` keyboards. Fixes [issue #448](https://github.com/Mottie/Keyboard/issues/448).
-  * Correct stickyShift behavior. Fixes [issue #452](https://github.com/Mottie/Keyboard/issues/452) & reverts [`663b86d`](https://github.com/Mottie/Keyboard/commit/663b86dfba6d1dece66809b1b290f8542730a5ab).
-* Misc:
-  * Update dependencies.
-  * Update qunit.
-  * Update jQuery.
