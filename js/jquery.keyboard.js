@@ -823,6 +823,12 @@ http://www.opensource.org/licenses/mit-license.php
 					o.change(e, base, base.el);
 					return false;
 				}
+				if (o.acceptValid && o.autoAcceptOnValid) {
+					if ($.isFunction(o.validate) && o.validate(base, base.$preview.val())) {
+						base.$preview.blur();
+						base.accept();
+					}
+				}
 			})
 			.bind('keydown' + base.namespace, function (e) {
 				// ensure alwaysOpen keyboards are made active
@@ -2623,6 +2629,8 @@ http://www.opensource.org/licenses/mit-license.php
 		// 'ui-keyboard-valid-input'. If invalid, the accept button gets a class name of
 		// 'ui-keyboard-invalid-input'
 		acceptValid: false,
+		// Auto-accept when input is valid; requires `acceptValid` set `true` & validate callback
+		autoAcceptOnValid: false,
 
 		// if acceptValid is true & the validate function returns a false, this option will cancel
 		// a keyboard close only after the accept button is pressed
