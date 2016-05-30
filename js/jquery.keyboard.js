@@ -1067,6 +1067,12 @@ http://www.opensource.org/licenses/mit-license.php
 				}
 				base.mouseRepeat = [false, ''];
 				clearTimeout(base.repeater); // make sure key repeat stops!
+				if (o.acceptValid && o.autoAcceptOnValid) {
+					if ($.isFunction(o.validate) && o.validate(base, base.$preview.val())) {
+						base.$preview.blur();
+						base.accept();
+					}
+				}
 				return false;
 			})
 			// prevent form submits when keyboard is bound locally - issue #64
