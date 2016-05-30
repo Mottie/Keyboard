@@ -704,7 +704,7 @@ http://www.opensource.org/licenses/mit-license.php
 
 			})
 			.bind('keypress' + base.namespace, function (e) {
-				if (o.lockInput) {
+				if (o.lockInput || !base.isCurrent()) {
 					return false;
 				}
 				var k = e.charCode || e.which,
@@ -768,6 +768,7 @@ http://www.opensource.org/licenses/mit-license.php
 
 			})
 			.bind('keyup' + base.namespace, function (e) {
+				if (!base.isCurrent()) { return; }
 				base.last.virtual = false;
 				switch (e.which) {
 					// Insert tab key
@@ -1051,7 +1052,7 @@ http://www.opensource.org/licenses/mit-license.php
 				} else if (/(mouseleave|touchend|touchcancel)/i.test(e.type)) {
 					$this.removeClass(o.css.buttonHover); // needed for touch devices
 				} else {
-					if (!o.noFocus && base.isVisible() && base.isCurrent()) {
+					if (!o.noFocus && base.isCurrent() && base.isVisible()) {
 						base.$preview.focus();
 					}
 					if (base.checkCaret) {
@@ -1158,6 +1159,7 @@ http://www.opensource.org/licenses/mit-license.php
 
 	// check max length
 	base.checkMaxLength = function () {
+		if (!base.isCurrent()) { return; }
 		var start, caret,
 			val = base.$preview.val();
 		if (o.maxLength !== false && val.length > o.maxLength) {
