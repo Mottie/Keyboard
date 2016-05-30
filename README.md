@@ -80,8 +80,10 @@ A jQuery on-screen keyboard (OSK) plugin that works in the browser. Originally p
 * Use the files from [CDNJS](https://cdnjs.com/libraries/virtual-keyboard).
 * Install using [bower](https://github.com/bower/bower) via `bower install keyboard`.
 * Install using [npm](https://www.npmjs.com/) via `npm install virtual-keyboard`.
-* Use with [AngularJs](https://github.com/antonio-spinelli/ng-virtual-keyboard) by [antonio-spinelli](https://github.com/antonio-spinelli) via `bower install ng-virtual-keyboard`.
-* Use with [Ruby On Rails](https://github.com/scicasoft/virtual_keyboard) by [scicasoft](https://github.com/scicasoft) via `gem install virtual_keyboard`.
+* Use with:
+  * [AngularJs](https://github.com/antonio-spinelli/ng-virtual-keyboard) by [antonio-spinelli](https://github.com/antonio-spinelli) via `bower install ng-virtual-keyboard`.
+  * [Ruby On Rails](https://github.com/scicasoft/virtual_keyboard) by [scicasoft](https://github.com/scicasoft) via `gem install virtual_keyboard`.
+  * [React.js](https://github.com/Utzel-Butzel/react-virtual-keyboard) by [Utzel-Butzel](https://github.com/Utzel-Butzel).
 
 ## Documentation
 
