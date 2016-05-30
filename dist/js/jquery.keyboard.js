@@ -388,7 +388,7 @@ http://www.opensource.org/licenses/mit-license.php
 			if (base.last.end === 0 && base.last.start > 0) {
 				base.last.end = base.last.start;
 			}
-			// IE will have start -1, end of 0 when not focused (see demo: http://jsfiddle.net/Mottie/fgryQ/3/)
+			// IE will have start -1, end of 0 when not focused (see demo: https://jsfiddle.net/Mottie/fgryQ/3/)
 			if (base.last.start < 0) {
 				// ensure caret is at the end of the text (needed for IE)
 				base.last.start = base.last.end = base.originalContent.length;
