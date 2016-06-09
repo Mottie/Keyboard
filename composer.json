@@ -1,5 +1,5 @@
 {
-  "name": "Mottie/Keyboard",
+  "name": "mottie/keyboard",
   "description": "A jQuery on-screen keyboard (OSK) plugin that works in the browser.",
   "homepage": "https://github.com/Mottie/Keyboard",
   "type": "component",
