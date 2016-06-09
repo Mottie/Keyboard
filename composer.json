@@ -1,0 +1,52 @@
+{
+  "name": "Mottie/Keyboard",
+  "description": "A jQuery on-screen keyboard (OSK) plugin that works in the browser.",
+  "homepage": "https://github.com/Mottie/Keyboard",
+  "type": "component",
+  "license": "MIT",
+  "require": {
+    "jquery": "^1.6.0"
+  },
+  "authors": [{
+    "name": "Jeremy Satterfield",
+    "url": "https://github.com/jsatt"
+  },{
+    "name": "Rob Garrison",
+    "url": "https://github.com/Mottie",
+    "email": "wowmotty@gmail.com"
+  }],
+  "keywords": [
+    "customizable",
+    "keyboard",
+    "ui",
+    "accessibility",
+    "osk",
+    "jquery-plugin"
+  ],
+  "extra": {
+    "component": {
+      "scripts": [
+        "dist/js/jquery.keyboard.js"
+      ],
+      "files": [
+        "dist/css/keyboard.min.css",
+        "dist/css/keyboard-basic.min.css",
+        "dist/css/keyboard-dark.min.css",
+        "dist/css/keyboard-previewkeyset.min.css",
+        "dist/js/jquery.keyboard.js",
+        "dist/js/jquery.keyboard.min.js",
+        "dist/js/jquery.keyboard.extension-all.min.js",
+        "dist/js/jquery.keyboard.extension-altkeyspopup.min.js",
+        "dist/js/jquery.keyboard.extension-autocomplete.min.js",
+        "dist/js/jquery.keyboard.extension-caret.min.js",
+        "dist/js/jquery.keyboard.extension-extender.min.js",
+        "dist/js/jquery.keyboard.extension-mobile.min.js",
+        "dist/js/jquery.keyboard.extension-navigation.min.js",
+        "dist/js/jquery.keyboard.extension-previewkeyset.min.js",
+        "dist/js/jquery.keyboard.extension-scramble.min.js",
+        "dist/js/jquery.keyboard.extension-typing.min.js",
+        "dist/js/jquery.mousewheel.min.js"
+      ]
+    }
+  }
+}
