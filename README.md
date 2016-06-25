@@ -46,7 +46,7 @@ A jQuery on-screen keyboard (OSK) plugin that works in the browser. Originally p
 ### Themes
 
 * jQuery UI themes are used by default.
-* Bootstrap themes ([original](https://jsfiddle.net/Mottie/MK947/1837/) or [dark](https://jsfiddle.net/Mottie/egb3a1sk/494/)) can also be applied.
+* Bootstrap themes ([original](https://jsfiddle.net/Mottie/gfgkb4o1/) or [dark](https://jsfiddle.net/Mottie/emLfqchq/)) can also be applied.
 * Or add a completely custom theme (without using jQuery UI position utility):
   * [Light](https://jsfiddle.net/Mottie/jsh0377k/) using [keyboard-basic.css](https://github.com/Mottie/Keyboard/blob/master/css/keyboard-basic.css).
   * [Dark](https://jsfiddle.net/Mottie/6dmqhLvh/) using [keyboard-dark.css](https://github.com/Mottie/Keyboard/blob/master/css/keyboard-dark.css).
