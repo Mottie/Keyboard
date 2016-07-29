@@ -888,7 +888,7 @@ http://www.opensource.org/licenses/mit-license.php
 				base.reveal();
 				$(document).trigger('checkkeyboard' + base.namespace);
 			}
-			if (!o.noFocus) {
+			if (!o.noFocus && base.$preview) {
 				base.$preview.focus();
 			}
 		});
