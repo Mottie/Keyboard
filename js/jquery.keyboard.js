@@ -764,6 +764,10 @@ http://www.opensource.org/licenses/mit-license.php
 					base.insertText(base.last.key);
 					e.preventDefault();
 				}
+				if (typeof o.beforeInsert === 'function') {
+					base.insertText(base.last.key);
+					e.preventDefault();
+				}
 				base.checkMaxLength();
 
 			})
@@ -1125,7 +1129,11 @@ http://www.opensource.org/licenses/mit-license.php
 
 	// Insert text at caret/selection - thanks to Derek Wickwire for fixing this up!
 	base.insertText = function (txt) {
-		if (typeof txt === 'undefined') {
+		if (typeof o.beforeInsert === 'function') {
+			txt = o.beforeInsert(base.last.event, base, base.el, txt);
+		}
+		if (typeof txt === 'undefined' || txt === false) {
+			base.last.key = '';
 			return;
 		}
 		var bksp, t,
@@ -2716,6 +2724,7 @@ http://www.opensource.org/licenses/mit-license.php
 			initialized   : function(e, keyboard, el) {},
 			beforeVisible : function(e, keyboard, el) {},
 			visible       : function(e, keyboard, el) {},
+			beforeInsert  : function(e, keyboard, el, textToAdd) { return textToAdd; },
 			change        : function(e, keyboard, el) {},
 			beforeClose   : function(e, keyboard, el, accepted) {},
 			accepted      : function(e, keyboard, el) {},
