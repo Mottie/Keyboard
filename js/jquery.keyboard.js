@@ -894,6 +894,7 @@ http://www.opensource.org/licenses/mit-license.php
 			}
 			if (!o.noFocus && base.$preview) {
 				base.$preview.focus();
+				e.preventDefault();
 			}
 		});
 
@@ -996,6 +997,7 @@ http://www.opensource.org/licenses/mit-license.php
 				last.virtual = true;
 				if (!o.noFocus) {
 					base.$preview.focus();
+					e.preventDefault();
 				}
 				last.$key = $key;
 				last.key = $key.attr('data-value');
