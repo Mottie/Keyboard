@@ -139,6 +139,19 @@ Wiki: [Home](https://github.com/Mottie/Keyboard/wiki/Home) | [FAQ](https://githu
 
 Only the latest changes will be shown below, see the [wiki log](https://github.com/Mottie/Keyboard/wiki/Log) to view older versions.
 
+### Version 1.26.0 (7/29/2016)
+
+* Core:
+  * Add `autoAcceptOnValid` with virtual typing.
+  * Prevent JS error when `usePreview` is `false`.
+  * Add `beforeInsert` callback method.
+  * Add `event.preventDefault` after focusing on input. See [#468](https://github.com/Mottie/Keyboard/issues/468).
+* Readme: Update demo links.
+* Docs: Update jQuery (v3.1.0).
+* Misc:
+  * Add `composer.json`; See [issue #466](https://github.com/Mottie/Keyboard/issues/466).
+  * Fix caps in `composer.json`.
+
 ### Version 1.25.29 (5/29/2016)
 
 * Core:
@@ -152,7 +165,3 @@ Only the latest changes will be shown below, see the [wiki log](https://github.c
 * Readme: Add link to gemfile. Thanks to [scicasoft](https://github.com/scicasoft) for creating it!
 * Docs: Update jQuery & add migrate for v3.0. Not using jQuery v3.0 yet due to limitations with Bootstrap.
 * Core: Only trigger named events. Fixes [issue #463](https://github.com/Mottie/Keyboard/issues/463).
-
-### Version 1.25.27 (4/24/2016)
-
-* Added Italian translation. See [Pull #455](https://github.com/Mottie/Keyboard/pull/455); thanks @[Chosko](https://github.com/Chosko)!

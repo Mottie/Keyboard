@@ -1,4 +1,4 @@
-/*! jQuery UI Virtual Keyboard v1.25.29 *//*
+/*! jQuery UI Virtual Keyboard v1.26.0 *//*
 Author: Jeremy Satterfield
 Maintained: Rob Garrison (Mottie on github)
 Licensed under the MIT License
@@ -42,7 +42,7 @@ http://www.opensource.org/licenses/mit-license.php
 	var $keyboard = $.keyboard = function (el, options) {
 	var o, base = this;
 
-	base.version = '1.25.29';
+	base.version = '1.26.0';
 
 	// Access to jQuery and DOM versions of element
 	base.$el = $(el);
@@ -764,6 +764,10 @@ http://www.opensource.org/licenses/mit-license.php
 					base.insertText(base.last.key);
 					e.preventDefault();
 				}
+				if (typeof o.beforeInsert === 'function') {
+					base.insertText(base.last.key);
+					e.preventDefault();
+				}
 				base.checkMaxLength();
 
 			})
@@ -888,8 +892,9 @@ http://www.opensource.org/licenses/mit-license.php
 				base.reveal();
 				$(document).trigger('checkkeyboard' + base.namespace);
 			}
-			if (!o.noFocus) {
+			if (!o.noFocus && base.$preview) {
 				base.$preview.focus();
+				e.preventDefault();
 			}
 		});
 
@@ -992,6 +997,7 @@ http://www.opensource.org/licenses/mit-license.php
 				last.virtual = true;
 				if (!o.noFocus) {
 					base.$preview.focus();
+					e.preventDefault();
 				}
 				last.$key = $key;
 				last.key = $key.attr('data-value');
@@ -1067,6 +1073,12 @@ http://www.opensource.org/licenses/mit-license.php
 				}
 				base.mouseRepeat = [false, ''];
 				clearTimeout(base.repeater); // make sure key repeat stops!
+				if (o.acceptValid && o.autoAcceptOnValid) {
+					if ($.isFunction(o.validate) && o.validate(base, base.$preview.val())) {
+						base.$preview.blur();
+						base.accept();
+					}
+				}
 				return false;
 			})
 			// prevent form submits when keyboard is bound locally - issue #64
@@ -1119,7 +1131,11 @@ http://www.opensource.org/licenses/mit-license.php
 
 	// Insert text at caret/selection - thanks to Derek Wickwire for fixing this up!
 	base.insertText = function (txt) {
-		if (typeof txt === 'undefined') {
+		if (typeof o.beforeInsert === 'function') {
+			txt = o.beforeInsert(base.last.event, base, base.el, txt);
+		}
+		if (typeof txt === 'undefined' || txt === false) {
+			base.last.key = '';
 			return;
 		}
 		var bksp, t,
@@ -2710,6 +2726,7 @@ http://www.opensource.org/licenses/mit-license.php
 			initialized   : function(e, keyboard, el) {},
 			beforeVisible : function(e, keyboard, el) {},
 			visible       : function(e, keyboard, el) {},
+			beforeInsert  : function(e, keyboard, el, textToAdd) { return textToAdd; },
 			change        : function(e, keyboard, el) {},
 			beforeClose   : function(e, keyboard, el, accepted) {},
 			accepted      : function(e, keyboard, el) {},

@@ -1,21 +1,61 @@
 {
   "name": "keyboard",
+  "description": "Virtual Keyboard using jQuery UI",
+  "keywords": [
+    "customizable",
+    "keyboard",
+    "ui",
+    "accessibility",
+    "osk",
+    "jquery-plugin"
+  ],
+  "authors": [
+    {
+      "name": "Jeremy Satterfield",
+      "homepage": "https://github.com/jsatt"
+    },
+    {
+      "name": "Rob Garrison",
+      "homepage": "https://mottie.github.io/Keyboard/",
+      "email": "wowmotty@gmail.com"
+    }
+  ],
+  "homepage": "https://github.com/Mottie/Keyboard",
   "main": [
-    "js/jquery.keyboard.js",
-    "dist/js/jquery.keyboard.min.js",
-    "dist/css/keyboard.min.css",
-    "dist/layouts/keyboard-layouts-combined.min.js",
-    "dist/layouts/keyboard-layouts-greywyvern.min.js",
-    "dist/layouts/keyboard-layouts-microsoft.min.js"
+    "dist/js/jquery.keyboard.js",
+    "css/keyboard.css",
+    "layouts/keyboard-layouts-combined.js",
+    "layouts/keyboard-layouts-greywyvern.js",
+    "layouts/keyboard-layouts-microsoft.js"
   ],
   "ignore": [
     "js/*.js",
-    "css/*.css",
-    "layouts/*.js",
     "docs/*"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/Mottie/keyboard.git"
+  },
+  "license": "MIT",
+  "moduleType": [
+    "amd",
+    "globals",
+    "node"
   ],
   "dependencies": {
     "jquery": ">=1.4.3",
     "jquery-ui": ">=1.9.2"
+  },
+  "devDependencies": {
+    "grunt": "^1.0.1",
+    "grunt-cli": "^1.1.0",
+    "grunt-contrib-clean": "^1.0.0",
+    "grunt-contrib-concat": "^1.0.0",
+    "grunt-contrib-copy": "^1.0.0",
+    "grunt-contrib-cssmin": "^1.0.1",
+    "grunt-contrib-jshint": "^1.0.0",
+    "grunt-contrib-qunit": "^1.1.0",
+    "grunt-contrib-uglify": "^2.0.0",
+    "grunt-contrib-watch": "^1.0.0"
   }
 }

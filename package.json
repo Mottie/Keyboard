@@ -2,7 +2,7 @@
   "name": "virtual-keyboard",
   "title": "Keyboard",
   "description": "Virtual Keyboard using jQuery UI",
-  "version": "1.25.29",
+  "version": "1.26.0",
   "author": {
     "name": "Jeremy Satterfield",
     "url": "https://github.com/jsatt"
@@ -17,6 +17,9 @@
   "license": "MIT",
   "dependencies": {
     "jquery": ">=1.4.3"
+  },
+  "optionalDependencies" : {
+    "jquery-ui": ">=1.9.2"
   },
   "keywords": [
     "customizable",
@@ -56,7 +59,7 @@
     "grunt-contrib-cssmin": "^1.0.1",
     "grunt-contrib-jshint": "^1.0.0",
     "grunt-contrib-qunit": "^1.1.0",
-    "grunt-contrib-uglify": "^1.0.1",
+    "grunt-contrib-uglify": "^2.0.0",
     "grunt-contrib-watch": "^1.0.0"
   }
 }
