@@ -160,8 +160,14 @@ http://www.opensource.org/licenses/mit-license.php
 		if (base.el.ownerDocument !== document) {
 			tmp = tmp.add(base.el.ownerDocument);
 		}
-		tmp.bind('mousedown keyup touchstart checkkeyboard '.split(' ')
-			.join(base.namespace + ' '), base.checkClose);
+
+		var bindings = 'keyup checkkeyboard ';
+		if(o.closeByClickEvent) {
+			bindings = 'click ';
+		} else {
+			bindings += 'mousedown touchstart ';
+		}
+		tmp.bind(bindings.split(' ').join(base.namespace + ' '), base.checkClose);
 
 		// Display keyboard on focus
 		base.$el
@@ -2606,6 +2612,9 @@ http://www.opensource.org/licenses/mit-license.php
 
 		// if true, keyboard will not close if you press escape.
 		ignoreEsc: false,
+
+		// if true, keyboard will only closed on click event instead of mousedown and touchstart
+		closeByClickEvent: false,
 
 		css: {
 			// input & preview
