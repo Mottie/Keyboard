@@ -139,6 +139,12 @@ Wiki: [Home](https://github.com/Mottie/Keyboard/wiki/Home) | [FAQ](https://githu
 
 Only the latest changes will be shown below, see the [wiki log](https://github.com/Mottie/Keyboard/wiki/Log) to view older versions.
 
+### Version 1.26.1 (8/12/2016)
+
+* Add new setting `closeByClickEvent`. See [pull #476](https://github.com/Mottie/Keyboard/pull/476); thanks [@SeeeD](https://github.com/SeeeD)!
+* Core: Include `userClosed` default.
+* Docs: Switch to using `"normal"` instead of `"default"`.
+
 ### Version 1.26.0 (7/29/2016)
 
 * Core:
@@ -159,9 +165,3 @@ Only the latest changes will be shown below, see the [wiki log](https://github.c
   * Add `autoAcceptOnValid` option.
 * Readme: Add link to react.js component.
 * Testing: Update to jQuery 3.0.0-rc1; update migrate.
-
-### Version 1.25.28 (5/23/2016)
-
-* Readme: Add link to gemfile. Thanks to [scicasoft](https://github.com/scicasoft) for creating it!
-* Docs: Update jQuery & add migrate for v3.0. Not using jQuery v3.0 yet due to limitations with Bootstrap.
-* Core: Only trigger named events. Fixes [issue #463](https://github.com/Mottie/Keyboard/issues/463).
