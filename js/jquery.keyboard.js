@@ -2615,6 +2615,10 @@ http://www.opensource.org/licenses/mit-license.php
 		// or when another keyboard opens.
 		stayOpen: false,
 
+		// Prevents the keyboard from closing when the user clicks or presses outside the keyboard
+		// the `autoAccept` option must also be set to true when this option is true or changes are lost
+		userClosed: false,
+
 		// if true, keyboard will not close if you press escape.
 		ignoreEsc: false,
 
