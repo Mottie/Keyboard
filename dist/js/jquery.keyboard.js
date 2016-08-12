@@ -1,4 +1,4 @@
-/*! jQuery UI Virtual Keyboard v1.26.0 *//*
+/*! jQuery UI Virtual Keyboard v1.26.1 *//*
 Author: Jeremy Satterfield
 Maintained: Rob Garrison (Mottie on github)
 Licensed under the MIT License
@@ -42,7 +42,7 @@ http://www.opensource.org/licenses/mit-license.php
 	var $keyboard = $.keyboard = function (el, options) {
 	var o, base = this;
 
-	base.version = '1.26.0';
+	base.version = '1.26.1';
 
 	// Access to jQuery and DOM versions of element
 	base.$el = $(el);
@@ -2609,6 +2609,10 @@ http://www.opensource.org/licenses/mit-license.php
 		// if true, keyboard will remain open even if the input loses focus, but closes on escape
 		// or when another keyboard opens.
 		stayOpen: false,
+
+		// Prevents the keyboard from closing when the user clicks or presses outside the keyboard
+		// the `autoAccept` option must also be set to true when this option is true or changes are lost
+		userClosed: false,
 
 		// if true, keyboard will not close if you press escape.
 		ignoreEsc: false,
