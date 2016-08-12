@@ -98,7 +98,7 @@ jQuery(function($) {
 	$('#hex').keyboard({
 		layout: 'custom',
 		customLayout: {
-			'default' : [
+			'normal' : [
 				'C D E F',
 				'8 9 A B',
 				'4 5 6 7',
@@ -134,7 +134,7 @@ jQuery(function($) {
 			'meta99' : '\u2660:numbers'          // Spade
 		},
 		customLayout: {
-			'default' : [
+			'normal' : [
 				// Add labels using a ":" after the key's name and replace spaces with "_"
 				// without the labels this line is just 'a b c d e f g'
 				'a:a_letter,_that_sounds_like_"ey" b:a_bug_that_makes_honey c:is_when_I_look_around d:a_grade,_I_never_got e:is_what_girls_say_when_they_run_away_from_me f:u,_is_what_I_say_to_those_screaming_girls! g:gee,_is_that_the_end_of_my_wittiness?',
@@ -207,7 +207,7 @@ jQuery(function($) {
 			'meta2'  : '\u2665'  // Heart
 		},
 		customLayout: {
-			'default' : [
+			'normal' : [
 				'd e f a u l t',
 				'{meta1} {meta2} {accept} {cancel}'
 			],
@@ -228,7 +228,7 @@ jQuery(function($) {
 	$('#junk').keyboard({
 		layout: 'custom',
 		customLayout: {
-			'default' : [
+			'normal' : [
 				'a e i o u y c',
 				'` \' " ~ ^ {dec} {combo}',
 				'{tab} {enter} {bksp}',
@@ -257,7 +257,7 @@ jQuery(function($) {
 	$('#map').keyboard({
 		layout : 'custom',
 		customLayout: {
-			'default' : [
+			'normal' : [
 				// "n(a):title/tooltip"; n = new key, (a) = actual key, ":label" = title/tooltip (use an underscore "_" in place of a space " ")
 				'\u03b1(a):lower_case_alpha_(type_a) \u03b2(b):lower_case_beta_(type_b) \u03be(c):lower_case_xi_(type_c) \u03b4(d):lower_case_delta_(type_d) \u03b5(e):lower_case_epsilon_(type_e) \u03b6(f):lower_case_zeta_(type_f) \u03b3(g):lower_case_gamma_(type_g)', // lower case Greek
 				'{shift} {accept} {cancel}'
@@ -319,19 +319,19 @@ jQuery(function($) {
 	$('#ipad').keyboard({
 
 		display: {
-			'bksp'    : '\u2190',
-			'accept'  : 'return',
-			'default' : 'ABC',
-			'shift'   : '\u21d1',
-			'meta1'   : '.?123',
-			'meta2'   : '#+='
+			'bksp'   : '\u2190',
+			'accept' : 'return',
+			'normal' : 'ABC',
+			'shift'  : '\u21d1',
+			'meta1'  : '.?123',
+			'meta2'  : '#+='
 		},
 
 		layout: 'custom',
 
 		customLayout: {
 
-			'default': [
+			'normal': [
 				'q w e r t y u i o p {bksp}',
 				'a s d f g h j k l {enter}',
 				'{s} z x c v b n m , . {s}',
@@ -347,13 +347,13 @@ jQuery(function($) {
 				'1 2 3 4 5 6 7 8 9 0 {bksp}',
 				'- / : ; ( ) \u20ac & @ {enter}',
 				'{meta2} . , ? ! \' " {meta2}',
-				'{default} {space} {default} {accept}'
+				'{normal} {space} {normal} {accept}'
 			],
 			'meta2': [
 				'[ ] { } # % ^ * + = {bksp}',
 				'_ \\ | ~ < > $ \u00a3 \u00a5 {enter}',
 				'{meta1} . , ? ! \' " {meta1}',
-				'{default} {space} {default} {accept}'
+				'{normal} {space} {normal} {accept}'
 			]
 
 		}
@@ -365,19 +365,19 @@ jQuery(function($) {
 	$('#ipad-email').keyboard({
 
 		display: {
-			'bksp'    : '\u2190',
-			'enter'   : 'return',
-			'default' : 'ABC',
-			'meta1'   : '.?123',
-			'meta2'   : '#+=',
-			'accept'  : '\u21d3'
+			'bksp'   : '\u2190',
+			'enter'  : 'return',
+			'normal' : 'ABC',
+			'meta1'  : '.?123',
+			'meta2'  : '#+=',
+			'accept' : '\u21d3'
 		},
 
 		layout: 'custom',
 
 		customLayout: {
 
-			'default': [
+			'normal': [
 				'q w e r t y u i o p {bksp}',
 				'a s d f g h j k l {enter}',
 				'{s} z x c v b n m @ . {s}',
@@ -393,13 +393,13 @@ jQuery(function($) {
 				'1 2 3 4 5 6 7 8 9 0 {bksp}',
 				'` | { } % ^ * / \' {enter}',
 				'{meta2} $ & ~ # = + . {meta2}',
-				'{default} {space} ! ? {accept}'
+				'{normal} {space} ! ? {accept}'
 			],
 			'meta2': [
 				'[ ] { } \u2039 \u203a ^ * " , {bksp}',
 				'\\ | / < > $ \u00a3 \u00a5 \u2022 {enter}',
 				'{meta1} \u20ac & ~ # = + . {meta1}',
-				'{default} {space} ! ? {accept}'
+				'{normal} {space} ! ? {accept}'
 			]
 
 		}
