@@ -143,7 +143,8 @@ http://www.opensource.org/licenses/mit-license.php
 			kbevents.kbHidden,
 			kbevents.inputCanceled,
 			kbevents.inputAccepted,
-			kbevents.kbBeforeClose
+			kbevents.kbBeforeClose,
+			kbevents.inputRestricted
 		], function (i, callback) {
 			if ($.isFunction(o[callback])) {
 				// bind callback functions within options to triggered events
@@ -750,9 +751,6 @@ http://www.opensource.org/licenses/mit-license.php
 						evt = $.extend({}, e);
 						evt.type = $keyboard.events.inputRestricted;
 						base.$el.trigger(evt, [base, base.el]);
-						if ($.isFunction(o.restricted)) {
-							o.restricted(evt, base, base.el);
-						}
 					}
 				} else if ((e.ctrlKey || e.metaKey) &&
 					(e.which === keyCodes.A || e.which === keyCodes.C || e.which === keyCodes.V ||
