@@ -1613,7 +1613,7 @@ http://www.opensource.org/licenses/mit-license.php
 			}
 			if(o.closeByClickEvent) {
 				// only close the keyboard if the user is clicking on an input or if he causes a click event (touchstart/mousedown will not force the close with this setting)
-				if($(e.target).is("input") || e.type === 'click') {
+				if($(e.target).is("input") || $(e.target).is("textarea") || e.type === 'click') {
 					base.close(o.autoAccept ? 'true' : false);
 				}
 			} else {
