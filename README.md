@@ -139,6 +139,12 @@ Wiki: [Home](https://github.com/Mottie/Keyboard/wiki/Home) | [FAQ](https://githu
 
 Only the latest changes will be shown below, see the [wiki log](https://github.com/Mottie/Keyboard/wiki/Log) to view older versions.
 
+### Version 1.26.2 (8/19/2016)
+
+* Core:
+  * Internally bind to `inputRestrict` event for callback.
+  * Merge & tweak `closeByClickEvent` bug fix. Closes [pull #477](https://github.com/Mottie/Keyboard/pull/477); thanks [@SeeeD](https://github.com/SeeeD)!
+
 ### Version 1.26.1 (8/12/2016)
 
 * Add new setting `closeByClickEvent`. See [pull #476](https://github.com/Mottie/Keyboard/pull/476); thanks [@SeeeD](https://github.com/SeeeD)!
@@ -157,11 +163,3 @@ Only the latest changes will be shown below, see the [wiki log](https://github.c
 * Misc:
   * Add `composer.json`; See [issue #466](https://github.com/Mottie/Keyboard/issues/466).
   * Fix caps in `composer.json`.
-
-### Version 1.25.29 (5/29/2016)
-
-* Core:
-  * Prevent JS error if keyboard closes before "keyup".
-  * Add `autoAcceptOnValid` option.
-* Readme: Add link to react.js component.
-* Testing: Update to jQuery 3.0.0-rc1; update migrate.
