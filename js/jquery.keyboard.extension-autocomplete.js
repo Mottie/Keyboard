@@ -45,6 +45,7 @@ $.fn.addAutocomplete = function(options) {
 			at : 'left top',
 			collision: 'flip'
 		},
+		events: 'autocomplete',
 		data: ''
 	};
 
@@ -64,6 +65,7 @@ $.fn.addAutocomplete = function(options) {
 
 			// variables
 			o = base.autocomplete_options = $.extend( true, {}, defaults, options );
+			events = o.events || o.data || 'autocomplete';
 
 			// visible event is fired before this extension is initialized, so check!
 			if (base.options.alwaysOpen && base.isVisible()) {
@@ -85,7 +87,7 @@ $.fn.addAutocomplete = function(options) {
 				.bind($.keyboard.events.kbHidden + namespace, function() {
 					base.$el.autocomplete('close');
 				})
-				.bind('autocompleteopen' + namespace, function() {
+				.bind(events + 'open' + namespace, function() {
 					if (base.hasAutocomplete) {
 						// default to $keyboard if no position.of defined
 						var position = $.extend( {}, o.position );
@@ -95,7 +97,7 @@ $.fn.addAutocomplete = function(options) {
 						base.$autocomplete.menu.element.position( position );
 					}
 				})
-				.bind('autocompleteselect' + namespace, function(e, ui) {
+				.bind(events + 'select' + namespace, function(e, ui) {
 					var v = ui.item && ui.item.value || '';
 					if (base.hasAutocomplete && v !== '') {
 						base.$preview
@@ -112,9 +114,10 @@ $.fn.addAutocomplete = function(options) {
 		base.autocomplete_setup = function() {
 			// look for autocomplete
 			base.$autocomplete = base.$el.data(base.autocomplete_options.data) ||
-				base.$el.data('autocomplete') ||
+				// data changes based on jQuery UI version
 				base.$el.data('uiAutocomplete') ||
-				base.$el.data('ui-autocomplete');
+				base.$el.data('ui-autocomplete') ||
+				base.$el.data('autocomplete');
 			base.hasAutocomplete = (typeof(base.$autocomplete) === 'undefined') ?
 				false : (base.$autocomplete.options.disabled) ? false : true;
 			// only bind to keydown once
