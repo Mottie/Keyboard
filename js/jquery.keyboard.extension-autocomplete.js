@@ -37,7 +37,7 @@
 	}
 }(function($) {
 'use strict';
-$.fn.addAutocomplete = function(options){
+$.fn.addAutocomplete = function(options) {
 	var defaults = {
 		position : {
 			of : null,
@@ -48,16 +48,19 @@ $.fn.addAutocomplete = function(options){
 		data: ''
 	};
 
-	return this.each(function(){
+	return this.each(function() {
 		// make sure a keyboard is attached
-		var o, base = $(this).data('keyboard');
+		var o, namespace,
+			base = $(this).data('keyboard');
+
 		if (!base) { return; }
 
-		base.autocomplete_namespace = base.namespace + 'Autocomplete';
-		base.extensionNamespace.push( base.autocomplete_namespace );
+		namespace = base.namespace + 'Autocomplete';
+		base.autocomplete_namespace = namespace;
+		base.extensionNamespace.push( namespace );
 
 		// Setup
-		base.autocomplete_init = function(){
+		base.autocomplete_init = function() {
 
 			// variables
 			o = base.autocomplete_options = $.extend( true, {}, defaults, options );
@@ -68,22 +71,22 @@ $.fn.addAutocomplete = function(options){
 			}
 
 			base.$el
-				.unbind(base.autocomplete_namespace)
-				.bind($.keyboard.events.kbVisible + base.autocomplete_namespace,function(){
+				.unbind(namespace)
+				.bind($.keyboard.events.kbVisible + namespace, function() {
 					base.autocomplete_setup();
 				})
-				.bind($.keyboard.events.kbChange + base.autocomplete_namespace,function(){
+				.bind($.keyboard.events.kbChange + namespace, function() {
 					if (base.hasAutocomplete && base.isVisible()) {
 						base.$el
 							.val(base.$preview.val())
 							.trigger('keydown.autocomplete');
 					}
 				})
-				.bind($.keyboard.events.kbHidden + base.autocomplete_namespace, function(){
+				.bind($.keyboard.events.kbHidden + namespace, function() {
 					base.$el.autocomplete('close');
 				})
-				.bind('autocompleteopen' + base.autocomplete_namespace, function() {
-					if (base.hasAutocomplete){
+				.bind('autocompleteopen' + namespace, function() {
+					if (base.hasAutocomplete) {
 						// default to $keyboard if no position.of defined
 						var position = $.extend( {}, o.position );
 						// refresh base.$keyboard (it gets destroyed after use); fixes #382
@@ -92,9 +95,9 @@ $.fn.addAutocomplete = function(options){
 						base.$autocomplete.menu.element.position( position );
 					}
 				})
-				.bind('autocompleteselect' + base.autocomplete_namespace, function(e, ui){
+				.bind('autocompleteselect' + namespace, function(e, ui) {
 					var v = ui.item && ui.item.value || '';
-					if (base.hasAutocomplete && v !== ''){
+					if (base.hasAutocomplete && v !== '') {
 						base.$preview
 							.val( v )
 							.focus();
@@ -106,20 +109,24 @@ $.fn.addAutocomplete = function(options){
 		};
 
 		// set up after keyboard is visible
-		base.autocomplete_setup = function(){
+		base.autocomplete_setup = function() {
 			// look for autocomplete
 			base.$autocomplete = base.$el.data(base.autocomplete_options.data) ||
 				base.$el.data('autocomplete') ||
 				base.$el.data('uiAutocomplete') ||
 				base.$el.data('ui-autocomplete');
-			base.hasAutocomplete = (typeof(base.$autocomplete) === 'undefined') ? false : (base.$autocomplete.options.disabled) ? false : true;
+			base.hasAutocomplete = (typeof(base.$autocomplete) === 'undefined') ?
+				false : (base.$autocomplete.options.disabled) ? false : true;
 			// only bind to keydown once
 			if (base.hasAutocomplete) {
-				base.$preview.bind('keydown' + base.autocomplete_namespace, function(e){
+				base.$preview.bind('keydown' + namespace, function(e) {
 					// send keys to the autocomplete widget (arrow, pageup/down, etc)
 					base.$el.val( base.$preview.val() ).triggerHandler(e);
 				});
-				base.$allKeys.bind('mouseup mousedown mouseleave touchstart touchend touchcancel '.split(' ').join(base.autocomplete_namespace + ' '),function(event){
+				var events = 'mouseup mousedown mouseleave touchstart touchend touchcancel '
+					.split(' ')
+					.join(namespace + ' ');
+				base.$allKeys.bind(events, function(event) {
 					clearTimeout( base.$autocomplete.searching );
 					var evt = event;
 					base.$autocomplete.searching = setTimeout(function() {
@@ -137,9 +144,12 @@ $.fn.addAutocomplete = function(options){
 		base.origEscClose = base.escClose;
 
 		// replace original function with this one
-		base.escClose = function(e){
+		base.escClose = function(e) {
 			// prevent selecting an item in autocomplete from closing keyboard
-			if ( base.hasAutocomplete && (e.target.id === 'ui-active-menuitem' || $(e.target).closest('ul').hasClass('ui-autocomplete')) ) { return; }
+			if ( base.hasAutocomplete && (
+				e.target.id === 'ui-active-menuitem' ||
+				$(e.target).closest('ul').hasClass('ui-autocomplete'))
+			) { return; }
 			base.origEscClose(e);
 		};
 
