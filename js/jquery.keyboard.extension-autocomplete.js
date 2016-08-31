@@ -65,7 +65,7 @@ $.fn.addAutocomplete = function(options) {
 
 			// variables
 			o = base.autocomplete_options = $.extend( true, {}, defaults, options );
-			events = o.events || o.data || 'autocomplete';
+			var events = o.events || o.data || 'autocomplete';
 
 			// visible event is fired before this extension is initialized, so check!
 			if (base.options.alwaysOpen && base.isVisible()) {
