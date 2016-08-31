@@ -1,5 +1,5 @@
-/*! jQuery UI Virtual Keyboard Autocomplete v1.9.2 *//*
- * for Keyboard v1.18+ only (8/17/2015)
+/*! jQuery UI Virtual Keyboard Autocomplete v1.10.0 *//*
+ * for Keyboard v1.18+ only (8/31/2016)
  *
  * By Rob Garrison (aka Mottie & Fudgey)
  * Licensed under the MIT License
@@ -44,7 +44,8 @@ $.fn.addAutocomplete = function(options){
 			my : 'right top',
 			at : 'left top',
 			collision: 'flip'
-		}
+		},
+		data: ''
 	};
 
 	return this.each(function(){
@@ -107,7 +108,10 @@ $.fn.addAutocomplete = function(options){
 		// set up after keyboard is visible
 		base.autocomplete_setup = function(){
 			// look for autocomplete
-			base.$autocomplete = base.$el.data('autocomplete') || base.$el.data('uiAutocomplete') || base.$el.data('ui-autocomplete');
+			base.$autocomplete = base.$el.data(base.autocomplete_options.data) ||
+				base.$el.data('autocomplete') ||
+				base.$el.data('uiAutocomplete') ||
+				base.$el.data('ui-autocomplete');
 			base.hasAutocomplete = (typeof(base.$autocomplete) === 'undefined') ? false : (base.$autocomplete.options.disabled) ? false : true;
 			// only bind to keydown once
 			if (base.hasAutocomplete) {
