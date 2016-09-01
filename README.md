@@ -139,6 +139,14 @@ Wiki: [Home](https://github.com/Mottie/Keyboard/wiki/Home) | [FAQ](https://githu
 
 Only the latest changes will be shown below, see the [wiki log](https://github.com/Mottie/Keyboard/wiki/Log) to view older versions.
 
+### Version 1.26.3 (8/31/2016)
+
+* Autocomplete:
+  * Allow for custom widgets
+  * Code cleanup.
+  * Custom widgets have custom events.
+  * [demo](https://jsfiddle.net/Mottie/pf79f43c/).
+
 ### Version 1.26.2 (8/19/2016)
 
 * Core:
@@ -150,16 +158,3 @@ Only the latest changes will be shown below, see the [wiki log](https://github.c
 * Add new setting `closeByClickEvent`. See [pull #476](https://github.com/Mottie/Keyboard/pull/476); thanks [@SeeeD](https://github.com/SeeeD)!
 * Core: Include `userClosed` default.
 * Docs: Switch to using `"normal"` instead of `"default"`.
-
-### Version 1.26.0 (7/29/2016)
-
-* Core:
-  * Add `autoAcceptOnValid` with virtual typing.
-  * Prevent JS error when `usePreview` is `false`.
-  * Add `beforeInsert` callback method.
-  * Add `event.preventDefault` after focusing on input. See [#468](https://github.com/Mottie/Keyboard/issues/468).
-* Readme: Update demo links.
-* Docs: Update jQuery (v3.1.0).
-* Misc:
-  * Add `composer.json`; See [issue #466](https://github.com/Mottie/Keyboard/issues/466).
-  * Fix caps in `composer.json`.
