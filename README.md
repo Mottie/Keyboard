@@ -139,6 +139,11 @@ Wiki: [Home](https://github.com/Mottie/Keyboard/wiki/Home) | [FAQ](https://githu
 
 Only the latest changes will be shown below, see the [wiki log](https://github.com/Mottie/Keyboard/wiki/Log) to view older versions.
 
+### Version 1.26.4 (9/14/2016)
+
+* Core: Empty buttons do not get the action class.
+* Autocomplete: Fix issues with custom widget calling.
+
 ### Version 1.26.3 (8/31/2016)
 
 * Autocomplete:
@@ -152,9 +157,3 @@ Only the latest changes will be shown below, see the [wiki log](https://github.c
 * Core:
   * Internally bind to `inputRestrict` event for callback.
   * Merge & tweak `closeByClickEvent` bug fix. Closes [pull #477](https://github.com/Mottie/Keyboard/pull/477); thanks [@SeeeD](https://github.com/SeeeD)!
-
-### Version 1.26.1 (8/12/2016)
-
-* Add new setting `closeByClickEvent`. See [pull #476](https://github.com/Mottie/Keyboard/pull/476); thanks [@SeeeD](https://github.com/SeeeD)!
-* Core: Include `userClosed` default.
-* Docs: Switch to using `"normal"` instead of `"default"`.
