@@ -1,7 +1,7 @@
-/*! jQuery UI Virtual Keyboard Autocomplete v1.10.0 *//*
- * for Keyboard v1.18+ only (8/31/2016)
+/*! jQuery UI Virtual Keyboard Autocomplete v1.11.0 *//*
+ * for Keyboard v1.18+ only (9/14/2016)
  *
- * By Rob Garrison (aka Mottie & Fudgey)
+ * By Rob Garrison (Mottie)
  * Licensed under the MIT License
  *
  * Use this extension with the Virtual Keyboard to get
@@ -81,11 +81,11 @@ $.fn.addAutocomplete = function(options) {
 					if (base.hasAutocomplete && base.isVisible()) {
 						base.$el
 							.val(base.$preview.val())
-							.trigger('keydown.autocomplete');
+							.trigger('keydown.' + o.events);
 					}
 				})
 				.bind($.keyboard.events.kbHidden + namespace, function() {
-					base.$el.autocomplete('close');
+					base.$el[o.data || 'autocomplete']('close');
 				})
 				.bind(events + 'open' + namespace, function() {
 					if (base.hasAutocomplete) {
