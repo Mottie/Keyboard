@@ -20,6 +20,9 @@
 	position: fixed;
 	white-space: nowrap;
 	overflow-x: auto;
+	/* see issue #484 */
+	-ms-touch-action: manipulation;
+	touch-action: manipulation;
 }
 .ui-keyboard-has-focus {
 	z-index: 16001;

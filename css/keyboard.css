@@ -6,6 +6,9 @@
 	left: 0;
 	top: 0;
 	z-index: 16000;
+	/* see issue #484 */
+	-ms-touch-action: manipulation;
+	touch-action: manipulation;
 }
 .ui-keyboard-has-focus {
 	z-index: 16001;
