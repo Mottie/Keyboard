@@ -1721,7 +1721,7 @@ http://www.opensource.org/licenses/mit-license.php
 		} else {
 			// find key label
 			// corner case of '::;' reduced to ':;', split as ['', ';']
-			if (parts[0] === '') {
+			if (name !== '' && parts[0] === '') {
 				data.name = ':';
 				parts = parts.slice(1);
 			} else {

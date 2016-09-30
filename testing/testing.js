@@ -60,7 +60,8 @@ jQuery(function($){
 		************************************************/
 		QUnit.test( 'processKeys', function(assert) {
 			var k = kb.processKeys;
-			assert.expect(15);
+			assert.expect(16);
+			assert.deepEqual( k(''), { name: '', map: '', title: ''}, 'Empty name');
 			assert.deepEqual( k('test'), { name: 'test', map: '', title: '' }, 'test');
 			assert.deepEqual( k('@:this_is_an_at_symbol'), { name: '@', map: '', title: 'this is an at symbol' }, '@:this_is_an_at_symbol');
 			assert.deepEqual( k(';(q)'), { name: ';', map: 'q', title: '' }, ';(q)');
