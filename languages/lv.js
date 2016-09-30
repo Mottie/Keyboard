@@ -30,11 +30,11 @@ jQuery.keyboard.language.lv = {
 	// New combos using specific accents
 	combos : {
 		// duplicated from regular combos, used specific accents here instead
-		// acute & cedilla c C é É n N ó Ó s S z Z
+		// acute & cedilla c C Ã© Ã‰ n N Ã³ Ã“ s S z Z
 		"'" : { c:"\u0107", C:"\u0106", e:"\u00e9", E:"\u00c9", n:"\u0144", N:"\u0143", o:"\u00f3", O:"\u00d3", s:"\u015b", S:"\u015a", z:"\u017a", Z:"\u0179" },
-		// diaeresis: ä Ä ö Ö ü Ü
+		// diaeresis: Ã¤ Ã„ Ã¶ Ã– Ã¼ Ãœ
 		'\u00a8' : { a:"\u00e4", A:"\u00c4", o:"\u00f6", O:"\u00d6", u:"\u00fc", U:"\u00dc" },
-		// degree sign å Å e E g z Z
+		// degree sign Ã¥ Ã… e E g z Z
 		'\u00b0' : { a:"\u00e5", A:"\u00c5", e:"\u0117", E:"\u0116", g:"\u0121", z:"\u017c", Z:"\u017b" },
 	},
 	comboRegex : /([`\'~\^\"ao\u00a8\u00b0])([a-z])/mig

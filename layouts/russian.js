@@ -74,4 +74,3 @@ jQuery.keyboard.layouts["russian-mac"] = {
 		"{accept} {alt} {space} {alt} {cancel}"
 	]
 };
-

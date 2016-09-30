@@ -137,9 +137,8 @@
 
 				base.altkeypopup_blockingFlag = false;
 				base.$preview
-					.unbind( namespace )
+					.unbind( 'keypress keydown keyup'.split( ' ' ).join( namespace + ' ' ) )
 					.bind( 'keypress keydown keyup'.split( ' ' ).join( namespace + ' ' ), function( event ) {
-
 						if ( event.type === 'keyup' ) {
 							clearTimeout( timer );
 							base.altkeypopup_blockingFlag = false;

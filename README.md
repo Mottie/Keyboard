@@ -139,6 +139,18 @@ Wiki: [Home](https://github.com/Mottie/Keyboard/wiki/Home) | [FAQ](https://githu
 
 Only the latest changes will be shown below, see the [wiki log](https://github.com/Mottie/Keyboard/wiki/Log) to view older versions.
 
+### Version 1.26.5 (9/30/2016)
+
+* Core:
+  * Revert addition of `preventDefault` in [issue #468](https://github.com/Mottie/Keyboard/issues/468).
+  * Fix `{empty}` keys inserting a colon.
+* AltKeysPopup: Do not unbind all events after init. Fixes [issue #460](https://github.com/Mottie/Keyboard/issues/460).
+* CSS:
+  * Make CSS more readable.
+  * Prevent multi touch from zooming. See [issue #484](https://github.com/Mottie/Keyboard/issues/484).
+  * Fix a few CSS issues introduced in the previous changes. YAY!
+* Docs: Update jQuery, jQuery UI &amp; bootstrap.
+
 ### Version 1.26.4 (9/14/2016)
 
 * Core: Empty buttons do not get the action class.
@@ -151,9 +163,3 @@ Only the latest changes will be shown below, see the [wiki log](https://github.c
   * Code cleanup.
   * Custom widgets have custom events.
   * [demo](https://jsfiddle.net/Mottie/pf79f43c/).
-
-### Version 1.26.2 (8/19/2016)
-
-* Core:
-  * Internally bind to `inputRestrict` event for callback.
-  * Merge & tweak `closeByClickEvent` bug fix. Closes [pull #477](https://github.com/Mottie/Keyboard/pull/477); thanks [@SeeeD](https://github.com/SeeeD)!
