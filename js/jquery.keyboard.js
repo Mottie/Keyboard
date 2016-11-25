@@ -709,9 +709,9 @@ http://www.opensource.org/licenses/mit-license.php
 
 			})
 			.bind('keypress' + base.namespace, function (e) {
-				if (o.lockInput || !base.isCurrent()) {
-					return false;
-				}
+				if (o.lockInput) return false; 
+				if (!base.isCurrent()) return;
+
 				var k = e.charCode || e.which,
 					// capsLock can only be checked while typing a-z
 					k1 = k >= keyCodes.A && k <= keyCodes.Z,
