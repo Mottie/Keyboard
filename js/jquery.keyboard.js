@@ -1536,13 +1536,15 @@ http://www.opensource.org/licenses/mit-license.php
 				// don't trigger beforeClose if keyboard is always open
 				base.$el.trigger(kbevents.kbBeforeClose, [base, base.el, (accepted || false)]);
 			}
+			// save caret after updating value (fixes userClosed issue with changing focus)
+			$keyboard.caret(base.$preview, base.last);
+			
 			base.$el
 				.trigger(((accepted || false) ? kbevents.inputAccepted : kbevents.inputCanceled), [base, base.el])
 				.trigger((o.alwaysOpen) ? kbevents.kbInactive : kbevents.kbHidden, [base, base.el])
 				.blur();
 
-			// save caret after updating value (fixes userClosed issue with changing focus)
-			$keyboard.caret(base.$preview, base.last);
+
 			// base is undefined if keyboard was destroyed - fixes #358
 			if (base) {
 				// add close event time
