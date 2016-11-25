@@ -709,8 +709,12 @@ http://www.opensource.org/licenses/mit-license.php
 
 			})
 			.bind('keypress' + base.namespace, function (e) {
-				if (o.lockInput) return false; 
-				if (!base.isCurrent()) return;
+				if (o.lockInput) {
+					return false;
+				}
+				if (!base.isCurrent()) {
+					return;
+				}
 
 				var k = e.charCode || e.which,
 					// capsLock can only be checked while typing a-z
@@ -1538,7 +1542,7 @@ http://www.opensource.org/licenses/mit-license.php
 			}
 			// save caret after updating value (fixes userClosed issue with changing focus)
 			$keyboard.caret(base.$preview, base.last);
-			
+
 			base.$el
 				.trigger(((accepted || false) ? kbevents.inputAccepted : kbevents.inputCanceled), [base, base.el])
 				.trigger((o.alwaysOpen) ? kbevents.kbInactive : kbevents.kbHidden, [base, base.el])
