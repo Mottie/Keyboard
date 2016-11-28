@@ -4,7 +4,7 @@
 ██  ██ ██  ██   ██  ██ ██  ██   ██     ██ ██ ██ ██  ██ ██  ██ ██ ██▀▀   ▀▀▀▀██
 █████▀ ▀████▀   ██  ██ ▀████▀   ██     ██ ██ ██ ▀████▀ █████▀ ██ ██     █████▀
 */
-/*! jQuery UI Virtual Keyboard (1.26.4) - ALL Extensions + Mousewheel */
+/*! jQuery UI Virtual Keyboard (1.26.6) - ALL Extensions + Mousewheel */
 /*! jQuery UI Virtual Keyboard Alt Key Popup v1.1.1 *//*
  * for Keyboard v1.18+ only (1/10/2016)
  *
@@ -1331,7 +1331,7 @@ $.fn.previewKeyset = function( options ) {
 }));
 
 /*
- * jQuery UI Virtual Keyboard Scramble Extension v1.6.2 for Keyboard v1.18+ (updated 2/1/2016)
+ * jQuery UI Virtual Keyboard Scramble Extension v1.6.2 for Keyboard v1.18+ (updated 11/28/2016)
  *
  * By Rob Garrison (aka Mottie & Fudgey)
  * Licensed under the MIT License
@@ -1519,12 +1519,11 @@ $.keyboard = $.keyboard || {};
 					acceptedKeys : [],
 					$keyboard    : null
 				};
-				if ( typeof $.keyboard.builtLayouts[base.orig_layout] === 'undefined' ) {
-					base.layout = opts.layout = base.orig_layout;
-					// build original layout, if not already built, e.g. "qwerty"
-					base.buildKeyboard( base.layout, true );
-					base.layout = opts.layout = layout;
-				}
+				base.layout = opts.layout = base.orig_layout;
+				// build original layout, if not already built, e.g. "qwerty"
+				base.buildKeyboard( base.layout, true );
+				base.layout = opts.layout = layout;
+
 				// clone, scramble then save layout
 				$.keyboard.builtLayouts[layout] = $.extend(true, {}, $.keyboard.builtLayouts[base.orig_layout]);
 				if (o.randomizeOnce) {

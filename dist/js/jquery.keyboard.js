@@ -1,4 +1,4 @@
-/*! jQuery UI Virtual Keyboard v1.26.4 *//*
+/*! jQuery UI Virtual Keyboard v1.26.6 *//*
 Author: Jeremy Satterfield
 Maintained: Rob Garrison (Mottie on github)
 Licensed under the MIT License
@@ -42,7 +42,7 @@ http://www.opensource.org/licenses/mit-license.php
 	var $keyboard = $.keyboard = function (el, options) {
 	var o, base = this;
 
-	base.version = '1.26.4';
+	base.version = '1.26.6';
 
 	// Access to jQuery and DOM versions of element
 	base.$el = $(el);
@@ -709,9 +709,13 @@ http://www.opensource.org/licenses/mit-license.php
 
 			})
 			.bind('keypress' + base.namespace, function (e) {
-				if (o.lockInput || !base.isCurrent()) {
+				if (o.lockInput) {
 					return false;
 				}
+				if (!base.isCurrent()) {
+					return;
+				}
+
 				var k = e.charCode || e.which,
 					// capsLock can only be checked while typing a-z
 					k1 = k >= keyCodes.A && k <= keyCodes.Z,
@@ -1473,7 +1477,7 @@ http://www.opensource.org/licenses/mit-license.php
 			}
 			var kb,
 				stopped = false,
-				all = $('button, input, textarea, a')
+				all = $('button, input, select, textarea, a')
 					.filter(':visible')
 					.not(':disabled'),
 				indx = all.index(base.$el) + (goToNext ? 1 : -1);
@@ -1536,13 +1540,15 @@ http://www.opensource.org/licenses/mit-license.php
 				// don't trigger beforeClose if keyboard is always open
 				base.$el.trigger(kbevents.kbBeforeClose, [base, base.el, (accepted || false)]);
 			}
+			// save caret after updating value (fixes userClosed issue with changing focus)
+			$keyboard.caret(base.$preview, base.last);
+
 			base.$el
 				.trigger(((accepted || false) ? kbevents.inputAccepted : kbevents.inputCanceled), [base, base.el])
 				.trigger((o.alwaysOpen) ? kbevents.kbInactive : kbevents.kbHidden, [base, base.el])
 				.blur();
 
-			// save caret after updating value (fixes userClosed issue with changing focus)
-			$keyboard.caret(base.$preview, base.last);
+
 			// base is undefined if keyboard was destroyed - fixes #358
 			if (base) {
 				// add close event time
