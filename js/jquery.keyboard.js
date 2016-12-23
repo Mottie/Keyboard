@@ -606,6 +606,8 @@ http://www.opensource.org/licenses/mit-license.php
 						visibility: 'hidden'
 					})
 					.addClass($keyboard.css.inputClone);
+					// prevent submitting content on form submission
+					base.$previewCopy[0].disabled = true;
 				if (!isTextarea) {
 					// make input zero-width because we need an accurate scrollWidth
 					base.$previewCopy.css({
