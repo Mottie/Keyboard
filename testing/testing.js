@@ -127,7 +127,7 @@ jQuery(function($){
 		QUnit.test( 'addKey', function(assert) {
 			var tmp,
 				k = kb.addKey;
-			assert.expect(5);
+			assert.expect(7);
 			assert.equal( true, compare( k('accept', 'accept'), {
 					'data-name': 'accept',
 					'data-value': 'accept',
@@ -167,6 +167,28 @@ jQuery(function($){
 					'text': '\u2660'
 				}),
 				'in key title overrides display title'
+			);
+			tmp = 'meta_testing';
+			kb.options.display[tmp] = '\u2660:testing_keyboard';
+			assert.equal( true, compare( k(tmp, tmp), {
+					'data-name': tmp,
+					'data-value': tmp,
+					'title': 'testing keyboard',
+					'hasClass': 'ui-keyboard-' + tmp,
+					'text': '\u2660'
+				}),
+				'meta key extended name (underscore) testing'
+			);
+			tmp = 'meta-testing:testing!';
+			kb.options.display['meta-testing'] = '\u2660';
+			assert.equal( true, compare( k(tmp, tmp), {
+					'data-name': 'meta-testing',
+					'data-value': 'meta-testing',
+					'title': 'testing!',
+					'hasClass': 'ui-keyboard-meta-testing',
+					'text': '\u2660'
+				}),
+				'meta key extended name (dash) testing'
 			);
 			tmp = 'xy\u03b1\u03b2\u03bez:test';
 			assert.equal( true, compare( k(tmp, tmp, true), {

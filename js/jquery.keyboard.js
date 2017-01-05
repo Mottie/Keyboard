@@ -606,8 +606,8 @@ http://www.opensource.org/licenses/mit-license.php
 						visibility: 'hidden'
 					})
 					.addClass($keyboard.css.inputClone);
-					// prevent submitting content on form submission
-					base.$previewCopy[0].disabled = true;
+				// prevent submitting content on form submission
+				base.$previewCopy[0].disabled = true;
 				if (!isTextarea) {
 					// make input zero-width because we need an accurate scrollWidth
 					base.$previewCopy.css({
@@ -1011,7 +1011,7 @@ http://www.opensource.org/licenses/mit-license.php
 				if (base.checkCaret) {
 					$keyboard.caret(base.$preview, last);
 				}
-				if (action.match('meta')) {
+				if (/^meta/.test(action)) {
 					action = 'meta';
 				}
 				// keyaction is added as a string, override original action & text
@@ -1228,9 +1228,9 @@ http://www.opensource.org/licenses/mit-license.php
 			base.last.keyset = [base.shiftActive, base.altActive, base.metaActive];
 			base.shiftActive = /shift/i.test(str);
 			base.altActive = /alt/i.test(str);
-			if (/meta/.test(str)) {
+			if (/\bmeta/.test(str)) {
 				base.metaActive = true;
-				base.showSet(str.match(/meta\d+/i)[0]);
+				base.showSet(str.match(/\bmeta[\w-]+/i)[0]);
 			} else {
 				base.metaActive = false;
 				base.showSet();
@@ -1252,8 +1252,8 @@ http://www.opensource.org/licenses/mit-license.php
 		}
 		// check meta key set
 		if (base.metaActive) {
-			// the name attribute contains the meta set # 'meta99'
-			key = (/meta/i.test(name)) ? name : '';
+			// the name attribute contains the meta set name 'meta99'
+			key = (/^meta/i.test(name)) ? name : '';
 			// save active meta keyset name
 			if (key === '') {
 				key = (base.metaActive === true) ? '' : base.metaActive;
@@ -1980,7 +1980,7 @@ http://www.opensource.org/licenses/mit-license.php
 				}
 
 				// meta keys
-				if (/^meta\d+\:?(\w+)?/i.test(action)) {
+				if (/^meta[\w-]+\:?(\w+)?/i.test(action)) {
 					base
 						.addKey(action.split(':')[0], action)
 						.addClass(kbcss.keyHasActive);
