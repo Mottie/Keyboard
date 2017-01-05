@@ -229,6 +229,8 @@ http://www.opensource.org/licenses/mit-license.php
 		if (locked && base.typing_options) {
 			base.typing_options.text = '';
 		}
+		// allow chaining
+		return base;
 	};
 
 	base.setCurrent = function () {
@@ -290,6 +292,7 @@ http://www.opensource.org/licenses/mit-license.php
 		}
 		base.isOpen = o.alwaysOpen;
 		base.reveal(true);
+		return base;
 	};
 
 	base.reveal = function (redraw) {
@@ -1183,6 +1186,8 @@ http://www.opensource.org/licenses/mit-license.php
 		base.$preview.val(val);
 		base.saveCaret(t, t); // save caret in case of bksp
 		base.setScroll();
+		// see #506.. allow chaining of insertText
+		return base;
 	};
 
 	// check max length
@@ -1207,6 +1212,8 @@ http://www.opensource.org/licenses/mit-license.php
 		if (base.$decBtn.length) {
 			base.checkDecimal();
 		}
+		// allow chaining
+		return base;
 	};
 
 	// mousedown repeater
@@ -1238,6 +1245,8 @@ http://www.opensource.org/licenses/mit-license.php
 		} else {
 			base.showSet(str);
 		}
+		// allow chaining
+		return base;
 	};
 
 	base.showSet = function (name) {
