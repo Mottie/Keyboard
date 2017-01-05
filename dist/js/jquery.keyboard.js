@@ -1,4 +1,4 @@
-/*! jQuery UI Virtual Keyboard v1.26.7 *//*
+/*! jQuery UI Virtual Keyboard v1.26.8 *//*
 Author: Jeremy Satterfield
 Maintained: Rob Garrison (Mottie on github)
 Licensed under the MIT License
@@ -42,7 +42,7 @@ http://www.opensource.org/licenses/mit-license.php
 	var $keyboard = $.keyboard = function (el, options) {
 	var o, base = this;
 
-	base.version = '1.26.7';
+	base.version = '1.26.8';
 
 	// Access to jQuery and DOM versions of element
 	base.$el = $(el);
@@ -229,6 +229,8 @@ http://www.opensource.org/licenses/mit-license.php
 		if (locked && base.typing_options) {
 			base.typing_options.text = '';
 		}
+		// allow chaining
+		return base;
 	};
 
 	base.setCurrent = function () {
@@ -277,7 +279,11 @@ http://www.opensource.org/licenses/mit-license.php
 	};
 
 	// add redraw method to make API more clear
-	base.redraw = function () {
+	base.redraw = function (layout) {
+		if (layout) {
+			// allow updating the layout by calling redraw
+			base.options.layout = layout;
+		}
 		// update keyboard after a layout change
 		if (base.$keyboard.length) {
 
@@ -290,6 +296,7 @@ http://www.opensource.org/licenses/mit-license.php
 		}
 		base.isOpen = o.alwaysOpen;
 		base.reveal(true);
+		return base;
 	};
 
 	base.reveal = function (redraw) {
@@ -580,6 +587,13 @@ http://www.opensource.org/licenses/mit-license.php
 		}
 	};
 
+	// Added in v1.26.8 to allow chaining of the caret function, e.g.
+	// keyboard.reveal().caret(4,5).insertText('test').caret('end');
+	base.caret = function(param1, param2) {
+		$keyboard.caret(base.$preview, param1, param2);
+		return base;
+	};
+
 	base.saveCaret = function (start, end, $el) {
 		var p = $keyboard.caret($el || base.$preview, start, end);
 		base.last.start = typeof start === 'undefined' ? p.start : start;
@@ -606,8 +620,8 @@ http://www.opensource.org/licenses/mit-license.php
 						visibility: 'hidden'
 					})
 					.addClass($keyboard.css.inputClone);
-					// prevent submitting content on form submission
-					base.$previewCopy[0].disabled = true;
+				// prevent submitting content on form submission
+				base.$previewCopy[0].disabled = true;
 				if (!isTextarea) {
 					// make input zero-width because we need an accurate scrollWidth
 					base.$previewCopy.css({
@@ -1011,7 +1025,7 @@ http://www.opensource.org/licenses/mit-license.php
 				if (base.checkCaret) {
 					$keyboard.caret(base.$preview, last);
 				}
-				if (action.match('meta')) {
+				if (/^meta/.test(action)) {
 					action = 'meta';
 				}
 				// keyaction is added as a string, override original action & text
@@ -1183,6 +1197,8 @@ http://www.opensource.org/licenses/mit-license.php
 		base.$preview.val(val);
 		base.saveCaret(t, t); // save caret in case of bksp
 		base.setScroll();
+		// see #506.. allow chaining of insertText
+		return base;
 	};
 
 	// check max length
@@ -1207,6 +1223,8 @@ http://www.opensource.org/licenses/mit-license.php
 		if (base.$decBtn.length) {
 			base.checkDecimal();
 		}
+		// allow chaining
+		return base;
 	};
 
 	// mousedown repeater
@@ -1228,9 +1246,9 @@ http://www.opensource.org/licenses/mit-license.php
 			base.last.keyset = [base.shiftActive, base.altActive, base.metaActive];
 			base.shiftActive = /shift/i.test(str);
 			base.altActive = /alt/i.test(str);
-			if (/meta/.test(str)) {
+			if (/\bmeta/.test(str)) {
 				base.metaActive = true;
-				base.showSet(str.match(/meta\d+/i)[0]);
+				base.showSet(str.match(/\bmeta[\w-]+/i)[0]);
 			} else {
 				base.metaActive = false;
 				base.showSet();
@@ -1238,6 +1256,8 @@ http://www.opensource.org/licenses/mit-license.php
 		} else {
 			base.showSet(str);
 		}
+		// allow chaining
+		return base;
 	};
 
 	base.showSet = function (name) {
@@ -1252,8 +1272,8 @@ http://www.opensource.org/licenses/mit-license.php
 		}
 		// check meta key set
 		if (base.metaActive) {
-			// the name attribute contains the meta set # 'meta99'
-			key = (/meta/i.test(name)) ? name : '';
+			// the name attribute contains the meta set name 'meta99'
+			key = (/^meta/i.test(name)) ? name : '';
 			// save active meta keyset name
 			if (key === '') {
 				key = (base.metaActive === true) ? '' : base.metaActive;
@@ -1980,7 +2000,7 @@ http://www.opensource.org/licenses/mit-license.php
 				}
 
 				// meta keys
-				if (/^meta\d+\:?(\w+)?/i.test(action)) {
+				if (/^meta[\w-]+\:?(\w+)?/i.test(action)) {
 					base
 						.addKey(action.split(':')[0], action)
 						.addClass(kbcss.keyHasActive);

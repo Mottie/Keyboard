@@ -4,7 +4,7 @@
 ██  ██ ██  ██   ██  ██ ██  ██   ██     ██ ██ ██ ██  ██ ██  ██ ██ ██▀▀   ▀▀▀▀██
 █████▀ ▀████▀   ██  ██ ▀████▀   ██     ██ ██ ██ ▀████▀ █████▀ ██ ██     █████▀
 */
-/*! jQuery UI Virtual Keyboard (1.26.7) - ALL Extensions + Mousewheel */
+/*! jQuery UI Virtual Keyboard (1.26.8) - ALL Extensions + Mousewheel */
 /*! jQuery UI Virtual Keyboard Alt Key Popup v1.1.1 *//*
  * for Keyboard v1.18+ only (1/10/2016)
  *
@@ -1573,8 +1573,8 @@ $.keyboard = $.keyboard || {};
 
 }));
 
-/*! jQuery UI Virtual Keyboard Typing Simulator v1.10.2 *//*
- * for Keyboard v1.18+ only (1/10/2016)
+/*! jQuery UI Virtual Keyboard Typing Simulator v1.10.3 *//*
+ * for Keyboard v1.18+ only (1/5/2017)
  *
  * By Rob Garrison (aka Mottie & Fudgey)
  * Licensed under the MIT License

@@ -1,5 +1,5 @@
-/*! jQuery UI Virtual Keyboard Typing Simulator v1.10.2 *//*
- * for Keyboard v1.18+ only (1/10/2016)
+/*! jQuery UI Virtual Keyboard Typing Simulator v1.10.3 *//*
+ * for Keyboard v1.18+ only (1/5/2017)
  *
  * By Rob Garrison (aka Mottie & Fudgey)
  * Licensed under the MIT License

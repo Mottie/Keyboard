@@ -139,6 +139,31 @@ Wiki: [Home](https://github.com/Mottie/Keyboard/wiki/Home) | [FAQ](https://githu
 
 Only the latest changes will be shown below, see the [wiki log](https://github.com/Mottie/Keyboard/wiki/Log) to view older versions.
 
+### Verison 1.26.8 (1/5/2017)
+
+* Core:
+  * Meta keyset names no longer require a number. See [issue #504](https://github.com/Mottie/Keyboard/issues/504).
+    * Previously meta keyset name examples: `meta0`, `meta1`, ... `meta99`.
+    * Updated name examples: `meta0` (still allowed), `metakeys`, `meta_symbols`, `meta-greek`.
+    * The name **must** always start with `meta` followed by any of the following characters `A-Za-z0-9_-`.
+  * Update to allow the following functions to be chained:
+    * `checkMaxLength`
+    * `insertText`
+    * `redraw`
+    * `showKeySet`
+    * `toggle`
+  * The `redraw` function now accepts a layout parameter allowing the changing of the layout:
+    * Previously, you had to [get the `keyboard` object](https://github.com/Mottie/Keyboard/wiki/Usage#get-the-keyboard-object), set `keyboard.options.layouts = "new_layout";` then use `keyboard.redraw();`.
+    * Now you can get the `keyboard` object and use the following, `keyboard.redraw("new_layout");`.
+  * Add `caret` function:
+    * Previously you had to use `$.keyboard.caret(keyboard.$preview, start, end)` to set the caret position.
+    * In this update, you can get the `keyboard` object, then use `keyboard.caret(start, end)`.
+    * The target input is assumed to the the `keyboard.$preview` (updated to use `keyboard.$el` when `usePreview` is `false`).
+    * The `start` and `end` parameters match the `$.keyboard.caret()` function parameters - see [docs](https://github.com/Mottie/Keyboard/wiki/Methods#caret) for more details.
+    * This function is chainable: `keyboard.reveal().caret(4,5).insertText(' hola ').caret('end');` - this method **will* require setting the [`initialFocus` option](https://github.com/Mottie/Keyboard/wiki/Usability#initialfocus) to `false` to prevent issues with the caret position.
+* Typing:
+  * Update to handle keyset changes with the new meta keyset names.
+
 ### Version 1.26.7 (12/23/2016)
 
 * Core: prevent form submission on hidden input. Fixes [issue #500](https://github.com/Mottie/Keyboard/issues/500).
@@ -154,15 +179,3 @@ Only the latest changes will be shown below, see the [wiki log](https://github.c
   * Two different custom layouts now working. See [issue #493](https://github.com/Mottie/Keyboard/issues/493) & [pull #494](https://github.com/Mottie/Keyboard/pull/494).
 * Docs:
   * Update theme switcher.
-
-### Version 1.26.5 (9/30/2016)
-
-* Core:
-  * Revert addition of `preventDefault` in [issue #468](https://github.com/Mottie/Keyboard/issues/468).
-  * Fix `{empty}` keys inserting a colon.
-* AltKeysPopup: Do not unbind all events after init. Fixes [issue #460](https://github.com/Mottie/Keyboard/issues/460).
-* CSS:
-  * Make CSS more readable.
-  * Prevent multi touch from zooming. See [issue #484](https://github.com/Mottie/Keyboard/issues/484).
-  * Fix a few CSS issues introduced in the previous changes. YAY!
-* Docs: Update jQuery, jQuery UI &amp; bootstrap.
