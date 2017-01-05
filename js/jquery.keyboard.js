@@ -279,7 +279,11 @@ http://www.opensource.org/licenses/mit-license.php
 	};
 
 	// add redraw method to make API more clear
-	base.redraw = function () {
+	base.redraw = function (layout) {
+		if (layout) {
+			// allow updating the layout by calling redraw
+			base.options.layout = layout;
+		}
 		// update keyboard after a layout change
 		if (base.$keyboard.length) {
 
