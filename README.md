@@ -139,6 +139,14 @@ Wiki: [Home](https://github.com/Mottie/Keyboard/wiki/Home) | [FAQ](https://githu
 
 Only the latest changes will be shown below, see the [wiki log](https://github.com/Mottie/Keyboard/wiki/Log) to view older versions.
 
+### Verison 1.26.9 (1/7/2017)
+
+* Core:
+  * Chained functions stop when keyboard is hidden.
+  * Add `getKeySet` method. See [issue #504](https://github.com/Mottie/Keyboard/issues/504).
+* Docs:
+  * Update `typeIn` code for meta demo.
+
 ### Verison 1.26.8 (1/5/2017)
 
 * Core:
@@ -167,15 +175,3 @@ Only the latest changes will be shown below, see the [wiki log](https://github.c
 ### Version 1.26.7 (12/23/2016)
 
 * Core: prevent form submission on hidden input. Fixes [issue #500](https://github.com/Mottie/Keyboard/issues/500).
-
-### Version 1.26.6 (11/28/2016)
-
-* Core:
-  * Move caret call before blur prevents jumping. See [pull #499](https://github.com/Mottie/Keyboard/pull/499); thanks [@bastih](https://github.com/bastih)!
-  * Prevent default only on locked input. See [issue #495](https://github.com/Mottie/Keyboard/issues/495) & [pull #497](https://github.com/Mottie/Keyboard/pull/497); thanks [@uNmAnNeR](https://github.com/uNmAnNeR)!
-  * Minor linting update.
-  * Include select elements in tab navigation. Fixes [issue #489](https://github.com/Mottie/Keyboard/issues/489).
-* Scramble:
-  * Two different custom layouts now working. See [issue #493](https://github.com/Mottie/Keyboard/issues/493) & [pull #494](https://github.com/Mottie/Keyboard/pull/494).
-* Docs:
-  * Update theme switcher.

@@ -1,4 +1,4 @@
-/*! jQuery UI Virtual Keyboard v1.26.8 *//*
+/*! jQuery UI Virtual Keyboard v1.26.9 *//*
 Author: Jeremy Satterfield
 Maintained: Rob Garrison (Mottie on github)
 Licensed under the MIT License

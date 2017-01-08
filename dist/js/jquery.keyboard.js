@@ -1,4 +1,4 @@
-/*! jQuery UI Virtual Keyboard v1.26.8 *//*
+/*! jQuery UI Virtual Keyboard v1.26.9 *//*
 Author: Jeremy Satterfield
 Maintained: Rob Garrison (Mottie on github)
 Licensed under the MIT License
@@ -213,6 +213,7 @@ http://www.opensource.org/licenses/mit-license.php
 	};
 
 	base.toggle = function () {
+		if (!base.isVisible()) { return; }
 		var $toggle = base.$keyboard.find('.' + $keyboard.css.keyToggle),
 			locked = !base.enabled;
 		// prevent physical keyboard from working
@@ -1151,6 +1152,7 @@ http://www.opensource.org/licenses/mit-license.php
 
 	// Insert text at caret/selection - thanks to Derek Wickwire for fixing this up!
 	base.insertText = function (txt) {
+		if (!base.isVisible()) { return; }
 		if (typeof o.beforeInsert === 'function') {
 			txt = o.beforeInsert(base.last.event, base, base.el, txt);
 		}
@@ -1203,7 +1205,7 @@ http://www.opensource.org/licenses/mit-license.php
 
 	// check max length
 	base.checkMaxLength = function () {
-		if (!base.isCurrent()) { return; }
+		if (!base.isVisible()) { return; }
 		var start, caret,
 			val = base.$preview.val();
 		if (o.maxLength !== false && val.length > o.maxLength) {
@@ -1239,6 +1241,22 @@ http://www.opensource.org/licenses/mit-license.php
 		}
 	};
 
+	base.getKeySet = function () {
+		var sets = [];
+		if (base.altActive) {
+			sets.push('alt');
+		}
+		if (base.shiftActive) {
+			sets.push('shift');
+		}
+		if (base.metaActive) {
+			// base.metaActive contains the string name of the
+			// current meta keyset
+			sets.push(base.metaActive);
+		}
+		return sets.length ? sets.join('+') : 'normal';
+	};
+
 	// make it easier to switch keysets via API
 	// showKeySet('shift+alt+meta1')
 	base.showKeySet = function (str) {
@@ -1261,6 +1279,7 @@ http://www.opensource.org/licenses/mit-license.php
 	};
 
 	base.showSet = function (name) {
+		if (!base.isVisible()) { return; }
 		o = base.options; // refresh options
 		var kbcss = $keyboard.css,
 			prefix = '.' + kbcss.keyPrefix,
