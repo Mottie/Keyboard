@@ -1241,6 +1241,22 @@ http://www.opensource.org/licenses/mit-license.php
 		}
 	};
 
+	base.getKeySet = function () {
+		var sets = [];
+		if (base.altActive) {
+			sets.push('alt');
+		}
+		if (base.shiftActive) {
+			sets.push('shift');
+		}
+		if (base.metaActive) {
+			// base.metaActive contains the string name of the
+			// current meta keyset
+			sets.push(base.metaActive);
+		}
+		return sets.length ? sets.join('+') : 'normal';
+	};
+
 	// make it easier to switch keysets via API
 	// showKeySet('shift+alt+meta1')
 	base.showKeySet = function (str) {
