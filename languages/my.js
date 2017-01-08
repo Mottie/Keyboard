@@ -2,7 +2,7 @@
 // please update this section to match this language and email me with corrections!
 // "all" is used here for example purposes, by convention it should be the ISO 639-1 code for the specified language
 // ***********************
-jQuery.keyboard.language.all = {
+jQuery.keyboard.language.my = {
 	language: 'ဗမာ (Burmese)', // e.g. 'Русский (Russian)'
 	display : {
 		'a'      : '\u2714:Accept (Shift+Enter)', // check mark - same action as accept
