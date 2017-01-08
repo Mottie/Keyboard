@@ -4,17 +4,17 @@ jQuery.keyboard.layouts['burmese'] = {
 	'name' : 'burmese',
 	'lang' : ['my'], // this setting must match the "all" language definition below
 	'normal': [
-		'` 1 2 3 4 5 6 7 8 9 0 - = {bksp}',
-		'{tab} q w e r t y u i o p [ ] \\',
-		'a s d f g h j k l ; \' {enter}',
-		'{shift} z x c v b n m , . / {shift}',
+		'\u1050 \u1041 \u1042 \u1043 \u1044 \u1045 \u1046 \u1047 \u1048 \u1049 \u1040 - = {bksp}',
+		'{tab} \u1006 \u1010 \u1014 \u1019 \u1021 \u1015 \u1000 \u1004 \u101e \u1005 \u101f \u1029 \u104f',
+		'\u1031 \u103b \u102d \u103a \u102b \u1037 \u103c \u102f \u1030 \u1038 \' {enter}',
+		'{shift} \u1016 \u1011 \u1001 \u101c \u1018 \u100a \u102c , . / {shift}',
 		'{accept} {alt} {space} {alt} {cancel}'
 	],
 	'shift': [
-		'~ ! @ # $ % ^ & * ( ) _ + {bksp}',
-		'{tab} Q W E R T Y U I O P { } |',
-		'A S D F G H J K L : " {enter}',
-		'{shift} Z X C V B N M < > ? {shift}',
+		'\u100e \u100d \u1052 \u100b \u1053 \u1054 \u1055 \u101b * ( ) _ + {bksp}',
+		'{tab} \u1008 \u101d \u1023 \u104e \u1024 \u104c \u1025 \u104d \u103f \u100f \u1027 \u102a \u1051',
+		'\u1017 \u103e \u102e \u1039 \u103d \u1036 \u1032 \u1012 \u1013 \u1002 " {enter}',
+		'{shift} \u1007 \u100c \u1003 \u1020 \u101a \u1009 \u1026 \u104a \u104b ? {shift}',
 		'{accept} {alt} {space} {alt} {cancel}'
 	],
 	'alt': [
