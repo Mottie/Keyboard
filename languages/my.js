@@ -1,9 +1,13 @@
-// Keyboard Language
-// please update this section to match this language and email me with corrections!
-// "all" is used here for example purposes, by convention it should be the ISO 639-1 code for the specified language
-// ***********************
+/**
+ * Burmese Keyboard Language
+ * please update this section to match this language and email me with corrections!
+ * my = ISO 639-1 code for Burmese
+ * thanks to @laminko (https://github.com/laminko);
+ * see https://github.com/Mottie/Keyboard/pull/507
+ * license for this file: WTFPL
+ */
 jQuery.keyboard.language.my = {
-	language: 'ဗမာ (Burmese)', // e.g. 'Русский (Russian)'
+	language: '\u1017\u1019\u102c (Burmese)', // e.g. 'Русский (Russian)'
 	display : {
 		'a'      : '\u2714:Accept (Shift+Enter)', // check mark - same action as accept
 		'accept' : 'Accept:Accept (Shift+Enter)',
@@ -12,9 +16,9 @@ jQuery.keyboard.language.my = {
 		'bksp'   : 'Bksp:Backspace',
 		'c'      : '\u2716:Cancel (Esc)', // big X, close - same action as cancel
 		'cancel' : 'Cancel:Cancel (Esc)',
-		'clear'  : 'C:ရှင်းလင်းရန်',             // clear num pad
+		'clear'  : 'C:\u101b\u103e\u1004\u103a\u1038\u101c\u1004\u103a\u1038\u101b\u1014\u103a', // clear num pad
 		'combo'  : '\u00f6:Toggle Combo Keys',
-		'dec'    : '.:ဒသမ',           // decimal point for num pad (optional), change '.' to ',' for European format
+		'dec'    : '.:\u1012\u101e\u1019',           // decimal point for num pad (optional), change '.' to ',' for European format
 		'e'      : '\u21b5:Enter',        // down, then left arrow - enter symbol
 		'enter'  : 'Enter:Enter',
 		'lock'   : '\u21ea Lock:Caps Lock', // caps lock
@@ -26,7 +30,7 @@ jQuery.keyboard.language.my = {
 		'tab'    : '\u21e5 Tab:Tab'       // \u21b9 is the true tab symbol (left & right arrows)
 	},
 	// Message added to the key title while hovering, if the mousewheel plugin exists
-	wheelMessage : 'အခြားခလုတ်များကို မြင်ရစေရန် မောက်စ်ဝှီးလ်ကို အသုံးပြုပါ'
+	wheelMessage : '\u1021\u1001\u103c\u102c\u1038\u1001\u101c\u102f\u1010\u103a\u1019\u103b\u102c\u1038\u1000\u102d\u102f \u1019\u103c\u1004\u103a\u101b\u1005\u1031\u101b\u1014\u103a \u1019\u1031\u102c\u1000\u103a\u1005\u103a\u101d\u103e\u102e\u1038\u101c\u103a\u1000\u102d\u102f \u1021\u101e\u102f\u1036\u1038\u1015\u103c\u102f\u1015\u102b'
 
 	// uncomment, then include changes to the comboRegex here
 	/*

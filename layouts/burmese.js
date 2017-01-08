@@ -1,4 +1,13 @@
-/* keyboard layout template (copy of "international" from the core plugin)
+/* Bermese keyboard layouts
+ * contains layout: 'burmese'
+ *
+ * To use:
+ *  Point to this js file into your page header: <script src="layouts/burmese.js"></script>
+ *  Initialize the keyboard using: $('input').keyboard({ layout: 'burmese' });
+ *
+ * thanks to @laminko (https://github.com/laminko);
+ * see https://github.com/Mottie/Keyboard/pull/507
+ * license for this file: WTFPL
  */
 jQuery.keyboard.layouts['burmese'] = {
 	'name' : 'burmese',
