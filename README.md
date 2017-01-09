@@ -139,6 +139,12 @@ Wiki: [Home](https://github.com/Mottie/Keyboard/wiki/Home) | [FAQ](https://githu
 
 Only the latest changes will be shown below, see the [wiki log](https://github.com/Mottie/Keyboard/wiki/Log) to view older versions.
 
+### Version 1.26.10 (1/8/2017)
+
+* Add Burmese language &amp; layout files. See [pull #507](https://github.com/Mottie/Keyboard/pull/507); thanks [@laminko](https://github.com/laminko)!
+* Update Burmese files.
+* Add Contributing & license files.
+
 ### Verison 1.26.9 (1/7/2017)
 
 * Core:
@@ -171,7 +177,3 @@ Only the latest changes will be shown below, see the [wiki log](https://github.c
     * This function is chainable: `keyboard.reveal().caret(4,5).insertText(' hola ').caret('end');` - this method **will* require setting the [`initialFocus` option](https://github.com/Mottie/Keyboard/wiki/Usability#initialfocus) to `false` to prevent issues with the caret position.
 * Typing:
   * Update to handle keyset changes with the new meta keyset names.
-
-### Version 1.26.7 (12/23/2016)
-
-* Core: prevent form submission on hidden input. Fixes [issue #500](https://github.com/Mottie/Keyboard/issues/500).
