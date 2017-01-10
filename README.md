@@ -139,6 +139,12 @@ Wiki: [Home](https://github.com/Mottie/Keyboard/wiki/Home) | [FAQ](https://githu
 
 Only the latest changes will be shown below, see the [wiki log](https://github.com/Mottie/Keyboard/wiki/Log) to view older versions.
 
+### Version 1.26.11 (1/10/2017)
+
+* Core: fix function bypass before keyboard visible.
+  * This set the initial keyset to display block, shifting the extender layout.
+  * Toggle button will now properly update.
+
 ### Version 1.26.10 (1/8/2017)
 
 * Add Burmese language &amp; layout files. See [pull #507](https://github.com/Mottie/Keyboard/pull/507); thanks [@laminko](https://github.com/laminko)!

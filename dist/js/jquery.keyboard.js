@@ -1,4 +1,4 @@
-/*! jQuery UI Virtual Keyboard v1.26.10 *//*
+/*! jQuery UI Virtual Keyboard v1.26.11 *//*
 Author: Jeremy Satterfield
 Maintained: Rob Garrison (Mottie on github)
 Licensed under the MIT License
@@ -42,7 +42,7 @@ http://www.opensource.org/licenses/mit-license.php
 	var $keyboard = $.keyboard = function (el, options) {
 	var o, base = this;
 
-	base.version = '1.26.10';
+	base.version = '1.26.11';
 
 	// Access to jQuery and DOM versions of element
 	base.$el = $(el);
@@ -213,7 +213,7 @@ http://www.opensource.org/licenses/mit-license.php
 	};
 
 	base.toggle = function () {
-		if (!base.isVisible()) { return; }
+		if (!base.hasKeyboard()) { return; }
 		var $toggle = base.$keyboard.find('.' + $keyboard.css.keyToggle),
 			locked = !base.enabled;
 		// prevent physical keyboard from working
@@ -264,8 +264,12 @@ http://www.opensource.org/licenses/mit-license.php
 		return cur === base.el;
 	};
 
+	base.hasKeyboard = function () {
+		return base.$keyboard && base.$keyboard.length > 0;
+	};
+
 	base.isVisible = function () {
-		return base.$keyboard && base.$keyboard.length ? base.$keyboard.is(':visible') : false;
+		return base.hasKeyboard() ? base.$keyboard.is(':visible') : false;
 	};
 
 	base.focusOn = function () {
@@ -486,7 +490,7 @@ http://www.opensource.org/licenses/mit-license.php
 		if (!((o.alwaysOpen || o.userClosed) && base.$preview)) {
 			base.makePreview();
 		}
-		if (!(base.$keyboard && base.$keyboard.length)) {
+		if (!base.hasKeyboard()) {
 			// custom layout - create a unique layout name based on the hash
 			if (o.layout === 'custom') {
 				o.layoutHash = 'custom' + base.customHash();
@@ -1152,7 +1156,7 @@ http://www.opensource.org/licenses/mit-license.php
 
 	// Insert text at caret/selection - thanks to Derek Wickwire for fixing this up!
 	base.insertText = function (txt) {
-		if (!base.isVisible()) { return; }
+		if (!base.$preview) { return; }
 		if (typeof o.beforeInsert === 'function') {
 			txt = o.beforeInsert(base.last.event, base, base.el, txt);
 		}
@@ -1205,7 +1209,7 @@ http://www.opensource.org/licenses/mit-license.php
 
 	// check max length
 	base.checkMaxLength = function () {
-		if (!base.isVisible()) { return; }
+		if (!base.$preview) { return; }
 		var start, caret,
 			val = base.$preview.val();
 		if (o.maxLength !== false && val.length > o.maxLength) {
@@ -1279,7 +1283,7 @@ http://www.opensource.org/licenses/mit-license.php
 	};
 
 	base.showSet = function (name) {
-		if (!base.isVisible()) { return; }
+		if (!base.hasKeyboard()) { return; }
 		o = base.options; // refresh options
 		var kbcss = $keyboard.css,
 			prefix = '.' + kbcss.keyPrefix,
@@ -2140,8 +2144,8 @@ http://www.opensource.org/licenses/mit-license.php
 	};
 
 	base.removeKeyboard = function () {
-		base.$allKeys = null;
-		base.$decBtn = null;
+		base.$allKeys = [];
+		base.$decBtn = [];
 		// base.$preview === base.$el when o.usePreview is false - fixes #442
 		if (o.usePreview) {
 			base.$preview.removeData('keyboard');
