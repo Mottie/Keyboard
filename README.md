@@ -53,15 +53,15 @@ A jQuery on-screen keyboard (OSK) plugin that works in the browser. Originally p
 
 ### Extensions
 
-* Alt-keys: Show alternate keys in a popup after long-clicking on a key.
-* Autocomplete: Integrate with jQuery UI's autocomplete widget.
-* Caret: Add a caret with custom styling.
-* Extender: Add a togglable layout (e.g. toggle number pad)
-* Keyset: Show shift, alt or meta keyset within the virtual keyboard - custom styling.
-* Mobile: Use with jQuery Mobile.
-* Navigate: Use arrow, home, end &amp; page up/down to navigate inside of the keyboard.
-* Scramble: Scramble the entire keyset or by row, once or every time the keyboard is opened for added security.
-* Typing: Allows you to simulate typing into the keyboard for demo purposes or to assist user input.
+* [Alt-keys](https://mottie.github.io/Keyboard/docs/altkeys-popup.html): Show alternate keys in a popup after long-clicking on a key.
+* [Autocomplete](https://mottie.github.io/Keyboard/index.html#autocomplete): Integrate with jQuery UI's autocomplete widget.
+* [Caret](https://mottie.github.io/Keyboard/index.html#caret): Add a caret with custom styling.
+* [Extender](https://mottie.github.io/Keyboard/docs/extender.html): Add a togglable layout (e.g. toggle number pad)
+* [Keyset](https://mottie.github.io/Keyboard/docs/preview-keyset.html): Show shift, alt or meta keyset within the virtual keyboard - custom styling.
+* [Mobile](https://mottie.github.io/Keyboard/docs/mobile.html): Use with jQuery Mobile &amp; jQuery [Mobile v1.4](https://mottie.github.io/Keyboard/docs/jquery-mobile-1.4.html).
+* [Navigate](https://mottie.github.io/Keyboard/docs/navigate.html): Use arrow, home, end &amp; page up/down to navigate inside of the keyboard.
+* [Scramble](https://mottie.github.io/Keyboard/docs/scramble.html): Scramble the entire keyset or by row, once or every time the keyboard is opened for added security.
+* [Typing](https://mottie.github.io/Keyboard/index.html#typing): Allows you to simulate typing into the keyboard for demo purposes or to assist user input.
 
 ## Dependencies
 
@@ -91,8 +91,6 @@ Wiki: [Home](https://github.com/Mottie/Keyboard/wiki/Home) | [FAQ](https://githu
 
 ## To Do
 
-* Waiting for requests :)
-* Add more regional keyboard layouts.
 * Add an input mask extension. I think I'll try to make it compatible with [this plugin](https://github.com/RobinHerbots/jquery.inputmask).
 * Allow attaching a keyboard to a contenteditable element.
 
