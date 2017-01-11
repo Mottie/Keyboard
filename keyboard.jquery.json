@@ -1,7 +1,7 @@
 {
   "name": "keyboard",
   "title": "Keyboard",
-  "version": "1.26.11",
+  "version": "1.26.12",
   "description": "Virtual Keyboard using jQuery UI",
   "author": {
     "name": "Jeremy Satterfield",

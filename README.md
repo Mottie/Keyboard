@@ -139,6 +139,12 @@ Wiki: [Home](https://github.com/Mottie/Keyboard/wiki/Home) | [FAQ](https://githu
 
 Only the latest changes will be shown below, see the [wiki log](https://github.com/Mottie/Keyboard/wiki/Log) to view older versions.
 
+### Version 1.26.12 (1/11/2017)
+
+* Core:
+  * `enterNavigation` include virtual shift to switch input.
+  * Fix click to switch input in IE11. See [issue #138](https://github.com/Mottie/Keyboard/issues/138).
+
 ### Version 1.26.11 (1/10/2017)
 
 * Core: fix function bypass before keyboard visible.
@@ -150,36 +156,3 @@ Only the latest changes will be shown below, see the [wiki log](https://github.c
 * Add Burmese language &amp; layout files. See [pull #507](https://github.com/Mottie/Keyboard/pull/507); thanks [@laminko](https://github.com/laminko)!
 * Update Burmese files.
 * Add Contributing & license files.
-
-### Verison 1.26.9 (1/7/2017)
-
-* Core:
-  * Chained functions stop when keyboard is hidden.
-  * Add `getKeySet` method. See [issue #504](https://github.com/Mottie/Keyboard/issues/504).
-* Docs:
-  * Update `typeIn` code for meta demo.
-
-### Verison 1.26.8 (1/5/2017)
-
-* Core:
-  * Meta keyset names no longer require a number. See [issue #504](https://github.com/Mottie/Keyboard/issues/504).
-    * Previously meta keyset name examples: `meta0`, `meta1`, ... `meta99`.
-    * Updated name examples: `meta0` (still allowed), `metakeys`, `meta_symbols`, `meta-greek`.
-    * The name **must** always start with `meta` followed by any of the following characters `A-Za-z0-9_-`.
-  * Update to allow the following functions to be chained:
-    * `checkMaxLength`
-    * `insertText`
-    * `redraw`
-    * `showKeySet`
-    * `toggle`
-  * The `redraw` function now accepts a layout parameter allowing the changing of the layout:
-    * Previously, you had to [get the `keyboard` object](https://github.com/Mottie/Keyboard/wiki/Usage#get-the-keyboard-object), set `keyboard.options.layouts = "new_layout";` then use `keyboard.redraw();`.
-    * Now you can get the `keyboard` object and use the following, `keyboard.redraw("new_layout");`.
-  * Add `caret` function:
-    * Previously you had to use `$.keyboard.caret(keyboard.$preview, start, end)` to set the caret position.
-    * In this update, you can get the `keyboard` object, then use `keyboard.caret(start, end)`.
-    * The target input is assumed to the the `keyboard.$preview` (updated to use `keyboard.$el` when `usePreview` is `false`).
-    * The `start` and `end` parameters match the `$.keyboard.caret()` function parameters - see [docs](https://github.com/Mottie/Keyboard/wiki/Methods#caret) for more details.
-    * This function is chainable: `keyboard.reveal().caret(4,5).insertText(' hola ').caret('end');` - this method **will* require setting the [`initialFocus` option](https://github.com/Mottie/Keyboard/wiki/Usability#initialfocus) to `false` to prevent issues with the caret position.
-* Typing:
-  * Update to handle keyset changes with the new meta keyset names.
