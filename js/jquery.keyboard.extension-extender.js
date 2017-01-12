@@ -47,26 +47,64 @@
 			reposition : true
 		};
 		return this.each( function() {
-			var opts,
-				base = $( this ).data( 'keyboard' );
+			var base = $( this ).data( 'keyboard' );
 
 			// make sure a keyboard is attached
 			if ( !base ) { return; }
 
 			// variables
-			opts = base.extender_options = $.extend( {}, defaults, options );
+			base.extender_options = $.extend(
+				{},
+				defaults,
+				base.extender_options, // restore prev options on layout update
+				options
+			);
+
+			// already initialized & switching layouts
+			if ( base.extender_namespace ) {
+				return base.extender_layoutSwitcher();
+			}
 
 			base.extender_namespace = base.namespace + 'extender';
 			base.extensionNamespace.push( base.extender_namespace );
 
+			base.extender_layoutSwitcher = function() {
+				base.extender_lastKeyset = base.last.keyset;
+				base.extender_bindEvents( false );
+				base.$el.one( $keyboard.events.kbBeforeVisible, function() {
+					// preserve active keysets; redraw resets them - see #510
+					base.shiftActive = base.extender_lastKeyset[ 0 ];
+					base.altActive = base.extender_lastKeyset[ 1 ];
+					base.metaActive = base.extender_lastKeyset[ 2 ];
+					base.showKeySet();
+					base.extender_setup();
+					base.extender_bindEvents();
+				});
+				base.redraw();
+			}
+
+			base.extender_bindEvents = function( bind ) {
+				var event = $keyboard.events.kbBeforeVisible + base.extender_namespace;
+				// setup extender
+				base.$el.unbind( event );
+				if ( bind !== false ) {
+					base.$el.bind( event, function() {
+						base.extender_setup();
+					});
+				}
+			};
+
 			base.extender_setup = function() {
-				var $kb,
-					layout = opts.layout;
+				var $extender,
+					layout = base.extender_options.layout;
 				if ( typeof $keyboard.builtLayouts[ layout ] === 'undefined' ) {
 					base.buildKeyboard( layout );
 				}
-				$kb = $keyboard.builtLayouts[ layout ].$keyboard.find( '.' + $keyboard.css.keySet + '-normal' ).clone();
-				$kb
+				$extender = $keyboard.builtLayouts[ layout ].$keyboard
+					// only use the "normal" layout in the extender
+					.find( '.' + $keyboard.css.keySet + '-normal' )
+					.clone();
+				$extender
 					.removeClass()
 					.removeAttr( 'name' )
 					.addClass( $keyboard.css.extender )
@@ -74,25 +112,32 @@
 					.removeAttr( 'data-pos' );
 
 				// show extender using inline-block - allows the removal of css float
-				$kb[ 0 ].style.display = opts.showing ? 'inline-block' : 'none';
+				$extender[ 0 ].style.display = base.extender_options.showing ?
+					'inline-block' :
+					'none';
 
 				// remove previous extender... just-in-case
 				base.$keyboard.find( 'div.' + $keyboard.css.extender ).remove();
-				base.$keyboard.append( $kb );
-				base.extender_toggle( opts.showing );
+				base.$keyboard.append( $extender );
+				base.extender_toggle( base.extender_options.showing );
 				base.bindKeys();
 			};
 
 			base.extender_toggle = function( set ) {
-				opts.showing = typeof set === 'undefined' ? !opts.showing : set;
+				base.extender_options.showing = typeof set === 'undefined' ?
+					!base.extender_options.showing : set;
 				base.$keyboard
 					.find( 'button.' + $keyboard.css.extender )
-					.toggleClass( base.options.css.buttonActive, opts.showing )
+					.toggleClass(
+						base.options.css.buttonActive,
+						base.extender_options.showing
+					)
 					.end()
-					.find( 'div.' + $keyboard.css.extender )[ 0 ].style.display = opts.showing ? 'inline-block' : 'none';
+					.find( 'div.' + $keyboard.css.extender )[ 0 ].style.display =
+						base.extender_options.showing ? 'inline-block' : 'none';
 
 				// force keyboard reposition
-				if ( opts.reposition ) {
+				if ( base.extender_options.reposition ) {
 					$( window ).trigger( 'resize' );
 				}
 			};
@@ -101,12 +146,8 @@
 			if ( base.options.alwaysOpen && base.isVisible() ) {
 				base.extender_setup();
 			}
-			// setup extender
-			base.$el
-				.unbind( $keyboard.events.kbBeforeVisible + base.extender_namespace )
-				.bind( $keyboard.events.kbBeforeVisible + base.extender_namespace, function() {
-					base.extender_setup();
-				});
+
+			base.extender_bindEvents();
 
 		});
 	};
