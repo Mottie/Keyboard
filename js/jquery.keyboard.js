@@ -946,7 +946,9 @@ http://www.opensource.org/licenses/mit-license.php
 			.bind('mouseenter mouseleave touchstart '.split(' ').join(base.namespace + ' '), function (e) {
 				if ((o.alwaysOpen || o.userClosed) && e.type !== 'mouseleave' && !base.isCurrent()) {
 					base.reveal();
-					base.$preview.focus();
+					if (!o.noFocus) {
+						base.$preview.focus();
+					}
 					$keyboard.caret(base.$preview, base.last);
 				}
 				if (!base.isCurrent()) {
