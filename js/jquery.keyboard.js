@@ -862,6 +862,7 @@ http://www.opensource.org/licenses/mit-license.php
 				}
 			})
 			.bind('keydown' + base.namespace, function (e) {
+				base.last.keyPress = e.which;
 				// ensure alwaysOpen keyboards are made active
 				if (o.alwaysOpen && !base.isCurrent()) {
 					base.reveal();
@@ -1026,6 +1027,7 @@ http://www.opensource.org/licenses/mit-license.php
 				}
 				last.$key = $key;
 				last.key = $key.attr('data-value');
+				last.keyPress = "";
 				// Start caret in IE when not focused (happens with each virtual keyboard button click
 				if (base.checkCaret) {
 					$keyboard.caret(base.$preview, last);
