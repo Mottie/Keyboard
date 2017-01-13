@@ -81,7 +81,7 @@
 					base.extender_bindEvents();
 				});
 				base.redraw();
-			}
+			};
 
 			base.extender_bindEvents = function( bind ) {
 				var event = $keyboard.events.kbBeforeVisible + base.extender_namespace;

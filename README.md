@@ -137,6 +137,15 @@ Wiki: [Home](https://github.com/Mottie/Keyboard/wiki/Home) | [FAQ](https://githu
 
 Only the latest changes will be shown below, see the [wiki log](https://github.com/Mottie/Keyboard/wiki/Log) to view older versions.
 
+### Version 1.26.13 (1/13/2017)
+
+* Core:
+  * Add kb.last.keyPress value.
+  * Fix noFocus being ignored.
+  * resolve initial focus issue. Fixes [issue #482](https://github.com/Mottie/Keyboard/issues/482).
+* AltKeysPopup:
+  * Allow reinitialize & add popupPosition callback. Fixes [issue #511](https://github.com/Mottie/Keyboard/issues/511).
+
 ### Version 1.26.12 (1/11/2017)
 
 * Core:
@@ -148,9 +157,3 @@ Only the latest changes will be shown below, see the [wiki log](https://github.c
 * Core: fix function bypass before keyboard visible.
   * This set the initial keyset to display block, shifting the extender layout.
   * Toggle button will now properly update.
-
-### Version 1.26.10 (1/8/2017)
-
-* Add Burmese language &amp; layout files. See [pull #507](https://github.com/Mottie/Keyboard/pull/507); thanks [@laminko](https://github.com/laminko)!
-* Update Burmese files.
-* Add Contributing & license files.
