@@ -52,6 +52,7 @@ http://www.opensource.org/licenses/mit-license.php
 	base.$el.data('keyboard', base);
 
 	base.init = function () {
+		base.initialized = false;
 		var k, position, tmp,
 			kbcss = $keyboard.css,
 			kbevents = $keyboard.events;
@@ -209,7 +210,7 @@ http://www.opensource.org/licenses/mit-license.php
 		if (o.alwaysOpen) {
 			base.reveal();
 		}
-
+		base.initialized = true;
 	};
 
 	base.toggle = function () {
@@ -280,6 +281,9 @@ http://www.opensource.org/licenses/mit-license.php
 		if (!base.isVisible()) {
 			clearTimeout(base.timer);
 			base.reveal();
+		} else {
+			// keyboard already open, make it the current keyboard
+			base.setCurrent();
 		}
 	};
 
@@ -359,7 +363,13 @@ http://www.opensource.org/licenses/mit-license.php
 		if (!base.isVisible()) {
 			base.$el.trigger($keyboard.events.kbBeforeVisible, [base, base.el]);
 		}
-		base.setCurrent();
+		if (
+			base.initialized ||
+			o.initialFocus ||
+			( !o.initialFocus && base.$el.hasClass($keyboard.css.initialFocus) )
+		) {
+			base.setCurrent();
+		}
 		// update keyboard - enabled or disabled?
 		base.toggle();
 
@@ -431,7 +441,7 @@ http://www.opensource.org/licenses/mit-license.php
 				// inside delay to get correct caret position
 				base.saveCaret(undef, undef, base.$el);
 			}
-			if (o.initialFocus) {
+			if (o.initialFocus || base.$el.hasClass($keyboard.css.initialFocus)) {
 				$keyboard.caret(base.$preview, base.last);
 			}
 			// save event time for keyboards with stayOpen: true
@@ -600,9 +610,11 @@ http://www.opensource.org/licenses/mit-license.php
 	};
 
 	base.saveCaret = function (start, end, $el) {
-		var p = $keyboard.caret($el || base.$preview, start, end);
-		base.last.start = typeof start === 'undefined' ? p.start : start;
-		base.last.end = typeof end === 'undefined' ? p.end : end;
+		if (base.isCurrent()) {
+			var p = $keyboard.caret($el || base.$preview, start, end);
+			base.last.start = typeof start === 'undefined' ? p.start : start;
+			base.last.end = typeof end === 'undefined' ? p.end : end;
+		}
 	};
 
 	base.setScroll = function () {
@@ -2239,6 +2251,8 @@ http://www.opensource.org/licenses/mit-license.php
 	$keyboard.css = {
 		// keyboard id suffix
 		idSuffix: '_keyboard',
+		// class name to set initial focus
+		initialFocus: 'keyboard-init-focus',
 		// element class names
 		input: 'ui-keyboard-input',
 		inputClone: 'ui-keyboard-preview-clone',
