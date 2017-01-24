@@ -1,5 +1,5 @@
-/*! jQuery UI Virtual Keyboard Autocomplete v1.11.0 *//*
- * for Keyboard v1.18+ only (9/14/2016)
+/*! jQuery UI Virtual Keyboard Autocomplete v1.11.1 *//*
+ * for Keyboard v1.18+ only (1/24/2017)
  *
  * By Rob Garrison (Mottie)
  * Licensed under the MIT License
@@ -106,6 +106,7 @@ $.fn.addAutocomplete = function(options) {
 						// see issue #95 - thanks banku!
 						base.last.start = v.length;
 						base.last.end = v.length;
+						base.last.val = v;
 					}
 				});
 		};
