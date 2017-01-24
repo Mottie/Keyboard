@@ -137,6 +137,13 @@ Wiki: [Home](https://github.com/Mottie/Keyboard/wiki/Home) | [FAQ](https://githu
 
 Only the latest changes will be shown below, see the [wiki log](https://github.com/Mottie/Keyboard/wiki/Log) to view older versions.
 
+### Version 1.26.14 (1/24/2017)
+
+* Core:
+  * Ensure autoaccept saves last value. Fixes [issue #515](https://github.com/Mottie/Keyboard/issues/515).
+* Autocomplete:
+  * Save selected value to `last` variable.
+
 ### Version 1.26.13 (1/13/2017)
 
 * Core:
@@ -151,9 +158,3 @@ Only the latest changes will be shown below, see the [wiki log](https://github.c
 * Core:
   * `enterNavigation` include virtual shift to switch input.
   * Fix click to switch input in IE11. See [issue #138](https://github.com/Mottie/Keyboard/issues/138).
-
-### Version 1.26.11 (1/10/2017)
-
-* Core: fix function bypass before keyboard visible.
-  * This set the initial keyset to display block, shifting the extender layout.
-  * Toggle button will now properly update.

@@ -1,4 +1,4 @@
-/*! jQuery UI Virtual Keyboard v1.26.13 *//*
+/*! jQuery UI Virtual Keyboard v1.26.14 *//*
 Author: Jeremy Satterfield
 Maintained: Rob Garrison (Mottie on github)
 Licensed under the MIT License
@@ -42,7 +42,7 @@ http://www.opensource.org/licenses/mit-license.php
 	var $keyboard = $.keyboard = function (el, options) {
 	var o, base = this;
 
-	base.version = '1.26.13';
+	base.version = '1.26.14';
 
 	// Access to jQuery and DOM versions of element
 	base.$el = $(el);
@@ -316,7 +316,8 @@ http://www.opensource.org/licenses/mit-license.php
 		$('.' + kbcss.keyboard).not('.' + kbcss.alwaysOpen).each(function(){
 			var kb = $(this).data('keyboard');
 			if (!$.isEmptyObject(kb)) {
-				kb.close(kb.options.autoAccept && kb.options.autoAcceptOnEsc ? 'true' : false);
+				// this closes previous keyboard when clicking another input - see #515
+				kb.close(kb.options.autoAccept ? 'true' : false);
 			}
 		});
 
