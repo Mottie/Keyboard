@@ -316,7 +316,8 @@ http://www.opensource.org/licenses/mit-license.php
 		$('.' + kbcss.keyboard).not('.' + kbcss.alwaysOpen).each(function(){
 			var kb = $(this).data('keyboard');
 			if (!$.isEmptyObject(kb)) {
-				kb.close(kb.options.autoAccept && kb.options.autoAcceptOnEsc ? 'true' : false);
+				// this closes previous keyboard when clicking another input - see #515
+				kb.close(kb.options.autoAccept ? 'true' : false);
 			}
 		});
 
