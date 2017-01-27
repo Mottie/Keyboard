@@ -1,5 +1,5 @@
-/*! jQuery UI Virtual Keyboard Autocomplete v1.11.1 *//*
- * for Keyboard v1.18+ only (1/24/2017)
+/*! jQuery UI Virtual Keyboard Autocomplete v1.11.2 *//*
+ * for Keyboard v1.18+ only (1/26/2017)
  *
  * By Rob Garrison (Mottie)
  * Licensed under the MIT License
@@ -133,7 +133,10 @@ $.fn.addAutocomplete = function(options) {
 			if (base.hasAutocomplete) {
 				base.$preview.bind('keydown' + namespace, function(e) {
 					// send keys to the autocomplete widget (arrow, pageup/down, etc)
-					base.$el.val( base.$preview.val() ).triggerHandler(e);
+					if (base.$preview && e.namespace !== base.$autocomplete.eventNamespace) {
+						e.namespace = base.$autocomplete.eventNamespace;
+						base.$el.triggerHandler(e);
+					}
 				});
 				var events = 'mouseup mousedown mouseleave touchstart touchend touchcancel '
 					.split(' ')
