@@ -4,7 +4,7 @@
 ██  ██ ██  ██   ██  ██ ██  ██   ██     ██ ██ ██ ██  ██ ██  ██ ██ ██▀▀   ▀▀▀▀██
 █████▀ ▀████▀   ██  ██ ▀████▀   ██     ██ ██ ██ ▀████▀ █████▀ ██ ██     █████▀
 */
-/*! jQuery UI Virtual Keyboard (1.26.14) - ALL Extensions + Mousewheel */
+/*! jQuery UI Virtual Keyboard (1.26.15) - ALL Extensions + Mousewheel */
 /*! jQuery UI Virtual Keyboard Alt Key Popup v1.1.1 *//*
  * for Keyboard v1.18+ only (1/10/2016)
  *
@@ -416,8 +416,8 @@
 
 }));
 
-/*! jQuery UI Virtual Keyboard Autocomplete v1.11.1 *//*
- * for Keyboard v1.18+ only (1/24/2017)
+/*! jQuery UI Virtual Keyboard Autocomplete v1.11.2 *//*
+ * for Keyboard v1.18+ only (1/26/2017)
  *
  * By Rob Garrison (Mottie)
  * Licensed under the MIT License
@@ -495,13 +495,6 @@ $.fn.addAutocomplete = function(options) {
 				.bind($.keyboard.events.kbVisible + namespace, function() {
 					base.autocomplete_setup();
 				})
-				.bind($.keyboard.events.kbChange + namespace, function() {
-					if (base.hasAutocomplete && base.isVisible()) {
-						base.$el
-							.val(base.$preview.val())
-							.trigger('keydown.' + o.events);
-					}
-				})
 				.bind($.keyboard.events.kbHidden + namespace, function() {
 					base.$el[o.data || 'autocomplete']('close');
 				})
@@ -516,17 +509,32 @@ $.fn.addAutocomplete = function(options) {
 					}
 				})
 				.bind(events + 'select' + namespace, function(e, ui) {
-					var v = ui.item && ui.item.value || '';
-					if (base.hasAutocomplete && v !== '') {
-						base.$preview
-							.val( v )
-							.focus();
-						// see issue #95 - thanks banku!
-						base.last.start = v.length;
-						base.last.end = v.length;
-						base.last.val = v;
-					}
+					base.autocomplete_getVal(ui.item);
 				});
+		};
+
+		base.autocomplete_getVal = function(val) {
+			var v;
+			switch (typeof val) {
+				case 'string':
+					v = val || '';
+					break;
+				case 'object':
+					v = val.label || val.value || '';
+					break;
+				default:
+					v = base.preview.value;
+			}
+			v = v.toString();
+			if (base.hasAutocomplete && v !== '') {
+				base.$preview
+					.val( v )
+					.focus();
+				// see issue #95 - thanks banku!
+				base.last.start = v.length;
+				base.last.end = v.length;
+				base.last.val = v;
+			}
 		};
 
 		// set up after keyboard is visible
@@ -543,7 +551,10 @@ $.fn.addAutocomplete = function(options) {
 			if (base.hasAutocomplete) {
 				base.$preview.bind('keydown' + namespace, function(e) {
 					// send keys to the autocomplete widget (arrow, pageup/down, etc)
-					base.$el.val( base.$preview.val() ).triggerHandler(e);
+					if (base.$preview && e.namespace !== base.$autocomplete.eventNamespace) {
+						e.namespace = base.$autocomplete.eventNamespace;
+						base.$el.triggerHandler(e);
+					}
 				});
 				var events = 'mouseup mousedown mouseleave touchstart touchend touchcancel '
 					.split(' ')

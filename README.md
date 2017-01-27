@@ -137,6 +137,12 @@ Wiki: [Home](https://github.com/Mottie/Keyboard/wiki/Home) | [FAQ](https://githu
 
 Only the latest changes will be shown below, see the [wiki log](https://github.com/Mottie/Keyboard/wiki/Log) to view older versions.
 
+### Version 1.26.15 (1/26/2017)
+
+* Autocomplete:
+  * Save the correct selected value. Fixes [issue #516](https://github.com/Mottie/Keyboard/issues/516).
+  * Prevent stackoverflow of triggered events.
+
 ### Version 1.26.14 (1/24/2017)
 
 * Core:
@@ -152,9 +158,3 @@ Only the latest changes will be shown below, see the [wiki log](https://github.c
   * resolve initial focus issue. Fixes [issue #482](https://github.com/Mottie/Keyboard/issues/482).
 * AltKeysPopup:
   * Allow reinitialize & add popupPosition callback. Fixes [issue #511](https://github.com/Mottie/Keyboard/issues/511).
-
-### Version 1.26.12 (1/11/2017)
-
-* Core:
-  * `enterNavigation` include virtual shift to switch input.
-  * Fix click to switch input in IE11. See [issue #138](https://github.com/Mottie/Keyboard/issues/138).
