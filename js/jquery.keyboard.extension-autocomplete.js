@@ -77,13 +77,6 @@ $.fn.addAutocomplete = function(options) {
 				.bind($.keyboard.events.kbVisible + namespace, function() {
 					base.autocomplete_setup();
 				})
-				.bind($.keyboard.events.kbChange + namespace, function() {
-					if (base.hasAutocomplete && base.isVisible()) {
-						base.$el
-							.val(base.$preview.val())
-							.trigger('keydown.' + o.events);
-					}
-				})
 				.bind($.keyboard.events.kbHidden + namespace, function() {
 					base.$el[o.data || 'autocomplete']('close');
 				})
@@ -98,17 +91,32 @@ $.fn.addAutocomplete = function(options) {
 					}
 				})
 				.bind(events + 'select' + namespace, function(e, ui) {
-					var v = ui.item && ui.item.value || '';
-					if (base.hasAutocomplete && v !== '') {
-						base.$preview
-							.val( v )
-							.focus();
-						// see issue #95 - thanks banku!
-						base.last.start = v.length;
-						base.last.end = v.length;
-						base.last.val = v;
-					}
+					base.autocomplete_getVal(ui.item);
 				});
+		};
+
+		base.autocomplete_getVal = function(val) {
+			var v;
+			switch (typeof val) {
+				case 'string':
+					v = val || '';
+					break;
+				case 'object':
+					v = val.label || val.value || '';
+					break;
+				default:
+					v = base.preview.value;
+			}
+			v = v.toString();
+			if (base.hasAutocomplete && v !== '') {
+				base.$preview
+					.val( v )
+					.focus();
+				// see issue #95 - thanks banku!
+				base.last.start = v.length;
+				base.last.end = v.length;
+				base.last.val = v;
+			}
 		};
 
 		// set up after keyboard is visible
