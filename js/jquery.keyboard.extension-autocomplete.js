@@ -80,6 +80,11 @@ $.fn.addAutocomplete = function(options) {
 				.bind($.keyboard.events.kbHidden + namespace, function() {
 					base.$el[o.data || 'autocomplete']('close');
 				})
+				.bind($.keyboard.events.kbChange + namespace, function() {
+					if (base.hasAutocomplete && base.isVisible()) {
+						base.$el.val(base.$preview.val());
+					}
+				})
 				.bind(events + 'open' + namespace, function() {
 					if (base.hasAutocomplete) {
 						// default to $keyboard if no position.of defined
