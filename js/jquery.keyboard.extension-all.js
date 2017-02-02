@@ -4,7 +4,7 @@
 ██  ██ ██  ██   ██  ██ ██  ██   ██     ██ ██ ██ ██  ██ ██  ██ ██ ██▀▀   ▀▀▀▀██
 █████▀ ▀████▀   ██  ██ ▀████▀   ██     ██ ██ ██ ▀████▀ █████▀ ██ ██     █████▀
 */
-/*! jQuery UI Virtual Keyboard (1.26.15) - ALL Extensions + Mousewheel */
+/*! jQuery UI Virtual Keyboard (1.26.16) - ALL Extensions + Mousewheel */
 /*! jQuery UI Virtual Keyboard Alt Key Popup v1.1.1 *//*
  * for Keyboard v1.18+ only (1/10/2016)
  *
@@ -497,6 +497,11 @@ $.fn.addAutocomplete = function(options) {
 				})
 				.bind($.keyboard.events.kbHidden + namespace, function() {
 					base.$el[o.data || 'autocomplete']('close');
+				})
+				.bind($.keyboard.events.kbChange + namespace, function() {
+					if (base.hasAutocomplete && base.isVisible()) {
+						base.$el.val(base.$preview.val());
+					}
 				})
 				.bind(events + 'open' + namespace, function() {
 					if (base.hasAutocomplete) {

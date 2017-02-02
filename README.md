@@ -137,6 +137,11 @@ Wiki: [Home](https://github.com/Mottie/Keyboard/wiki/Home) | [FAQ](https://githu
 
 Only the latest changes will be shown below, see the [wiki log](https://github.com/Mottie/Keyboard/wiki/Log) to view older versions.
 
+### Version 1.26.16 (2/2/2017)
+
+* Autocomplete:
+  * Pass value to main element in `usePreview`. Fixes [issue #517](https://github.com/Mottie/Keyboard/issues/517).
+
 ### Version 1.26.15 (1/26/2017)
 
 * Autocomplete:
@@ -149,12 +154,3 @@ Only the latest changes will be shown below, see the [wiki log](https://github.c
   * Ensure autoaccept saves last value. Fixes [issue #515](https://github.com/Mottie/Keyboard/issues/515).
 * Autocomplete:
   * Save selected value to `last` variable.
-
-### Version 1.26.13 (1/13/2017)
-
-* Core:
-  * Add kb.last.keyPress value.
-  * Fix noFocus being ignored.
-  * resolve initial focus issue. Fixes [issue #482](https://github.com/Mottie/Keyboard/issues/482).
-* AltKeysPopup:
-  * Allow reinitialize & add popupPosition callback. Fixes [issue #511](https://github.com/Mottie/Keyboard/issues/511).
