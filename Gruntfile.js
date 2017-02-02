@@ -230,6 +230,10 @@ module.exports = function(grunt) {
 		'uglify'
 	]);
 
+	function escapeRegExp(str) {
+		return str.replace(/[$()*+\-.\/?[\\\]^{|}]/g, "\\$&");
+	}
+
 	// update keyboard.jquery.json file version numbers to match the package.json version
 	grunt.registerTask( 'updateManifest', function() {
 		var i, project,
@@ -249,6 +253,16 @@ module.exports = function(grunt) {
 				project.devDependencies = pkg.devDependencies;
 			}
 			grunt.file.write( projectFile[i], JSON.stringify( project, null, 2 ) ); // serialize it back to file
+		}
+		// check internal version number
+		project = grunt.file.read('js/jquery.keyboard.js');
+		if (
+			new RegExp(escapeRegExp('/*! jQuery UI Virtual Keyboard v' + pkg.version)).test(project) &&
+			new RegExp(escapeRegExp("base.version = '" + pkg.version)).test(project)
+		) {
+			console.info('versions all match!');
+		} else {
+			grunt.log.writeln('\n**** version mismatch! ****'['red'].bold);
 		}
 	});
 
