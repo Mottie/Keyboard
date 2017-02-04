@@ -110,11 +110,12 @@ $.fn.addAutocomplete = function(options) {
 					v = val.label || val.value || '';
 					break;
 				default:
-					v = base.preview.value;
+					v = base.preview && base.preview.value || base.el.value;
 			}
 			v = v.toString();
 			if (base.hasAutocomplete && v !== '') {
-				base.$preview
+				// fallback to original input if undefined, see #520
+				(base.$preview || base.$el)
 					.val( v )
 					.focus();
 				// see issue #95 - thanks banku!
