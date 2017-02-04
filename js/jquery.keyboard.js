@@ -1650,7 +1650,7 @@ http://www.opensource.org/licenses/mit-license.php
 		if ($target.hasClass(kbcss.input)) {
 			var kb = $target.data('keyboard');
 			// only trigger on self
-			if (kb !== base && !kb.$el.hasClass(kbcss.isCurrent)) {
+			if (kb !== base && !kb.$el.hasClass(kbcss.isCurrent) && kb.options.openOn) {
 				kb.focusOn();
 			}
 		}
