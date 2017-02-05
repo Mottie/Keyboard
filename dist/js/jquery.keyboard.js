@@ -1,4 +1,4 @@
-/*! jQuery UI Virtual Keyboard v1.26.16 *//*
+/*! jQuery UI Virtual Keyboard v1.26.17 *//*
 Author: Jeremy Satterfield
 Maintained: Rob Garrison (Mottie on github)
 Licensed under the MIT License
@@ -42,7 +42,7 @@ http://www.opensource.org/licenses/mit-license.php
 	var $keyboard = $.keyboard = function (el, options) {
 	var o, base = this;
 
-	base.version = '1.26.16';
+	base.version = '1.26.17';
 
 	// Access to jQuery and DOM versions of element
 	base.$el = $(el);
@@ -1650,7 +1650,7 @@ http://www.opensource.org/licenses/mit-license.php
 		if ($target.hasClass(kbcss.input)) {
 			var kb = $target.data('keyboard');
 			// only trigger on self
-			if (kb !== base && !kb.$el.hasClass(kbcss.isCurrent)) {
+			if (kb !== base && !kb.$el.hasClass(kbcss.isCurrent) && kb.options.openOn) {
 				kb.focusOn();
 			}
 		}

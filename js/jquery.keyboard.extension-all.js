@@ -4,7 +4,7 @@
 ██  ██ ██  ██   ██  ██ ██  ██   ██     ██ ██ ██ ██  ██ ██  ██ ██ ██▀▀   ▀▀▀▀██
 █████▀ ▀████▀   ██  ██ ▀████▀   ██     ██ ██ ██ ▀████▀ █████▀ ██ ██     █████▀
 */
-/*! jQuery UI Virtual Keyboard (1.26.16) - ALL Extensions + Mousewheel */
+/*! jQuery UI Virtual Keyboard (1.26.17) - ALL Extensions + Mousewheel */
 /*! jQuery UI Virtual Keyboard Alt Key Popup v1.1.1 *//*
  * for Keyboard v1.18+ only (1/10/2016)
  *
@@ -528,11 +528,12 @@ $.fn.addAutocomplete = function(options) {
 					v = val.label || val.value || '';
 					break;
 				default:
-					v = base.preview.value;
+					v = base.preview && base.preview.value || base.el.value;
 			}
 			v = v.toString();
 			if (base.hasAutocomplete && v !== '') {
-				base.$preview
+				// fallback to original input if undefined, see #520
+				(base.$preview || base.$el)
 					.val( v )
 					.focus();
 				// see issue #95 - thanks banku!

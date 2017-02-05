@@ -137,6 +137,13 @@ Wiki: [Home](https://github.com/Mottie/Keyboard/wiki/Home) | [FAQ](https://githu
 
 Only the latest changes will be shown below, see the [wiki log](https://github.com/Mottie/Keyboard/wiki/Log) to view older versions.
 
+### Version 1.26.17 (2/4/2017)
+
+* Core:
+  * Fix empty `openOn`. See [issue #519](https://github.com/Mottie/Keyboard/issues/519).
+* Autocomplete:
+  * Get value from preview or original input. Fixes [issue #520](https://github.com/Mottie/Keyboard/issues/520).
+
 ### Version 1.26.16 (2/2/2017)
 
 * Autocomplete:
@@ -147,10 +154,3 @@ Only the latest changes will be shown below, see the [wiki log](https://github.c
 * Autocomplete:
   * Save the correct selected value. Fixes [issue #516](https://github.com/Mottie/Keyboard/issues/516).
   * Prevent stackoverflow of triggered events.
-
-### Version 1.26.14 (1/24/2017)
-
-* Core:
-  * Ensure autoaccept saves last value. Fixes [issue #515](https://github.com/Mottie/Keyboard/issues/515).
-* Autocomplete:
-  * Save selected value to `last` variable.
