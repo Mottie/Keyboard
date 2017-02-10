@@ -1427,7 +1427,11 @@ http://www.opensource.org/licenses/mit-license.php
 					return (o.combos.hasOwnProperty(accent)) ? o.combos[accent][letter] || s : s;
 				});
 				// add combo back
-				base.$preview.val($keyboard.caret(base.$preview).replaceStr(t2));
+				t = $keyboard.caret(base.$preview);
+				// prevent error if caret doesn't return a function
+				if (t && t.replaceStr) {
+					base.$preview.val(t.replaceStr(t2));
+				}
 				val = base.$preview.val();
 			}
 		}
