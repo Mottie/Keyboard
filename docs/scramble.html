@@ -10,7 +10,10 @@
 	<link href="css/font-awesome.min.css" rel="stylesheet">
 	<link href="css/demo.css" rel="stylesheet">
 	<style>
-	.spacer { height: 100px; }
+	.spacer { height: 75px; }
+	.spacer-big { height: 300px; }
+	#wrap { width: 90%; text-align: center; }
+	#wrap h4 { max-width: 50%; margin: 10px auto; }
 	</style>
 
 	<!-- jQuery & jQuery UI + theme (required) -->
@@ -36,26 +39,31 @@
 	<script>
 	$(function(){
 
-		$('#keyboard').keyboard().addScramble({
+		// Scramble each row separately, only once
+		$('#keyboard1').keyboard().addScramble({
 			targetKeys    : /[a-z\d]/i, // keys to randomize
-			byRow         : true,       // randomize by row, otherwise randomize all keys
-			randomizeOnce : true        // if false, randomize every time the keyboard opens
+			byRow         : true,       // randomize by row
+			randomizeOnce : true        // randomize once
 		});
 
+		// Scramble each row separately; do it every time the keyboard opens
 		$('#keyboard2')
 			.keyboard()
 			.addScramble({
-				byRow         : true,     // randomize by row, otherwise randomize all keys
-				randomizeOnce : false     // if false, randomize every time the keyboard opens
+				byRow         : true, // randomize by row
+				randomizeOnce : false // randomize every time the keyboard opens
 			});
 
+		// Scramble the entire keyset every time the keyboard opens
 		$('#keyboard3')
 			.keyboard()
 			.addScramble({
-				byRow         : false,    // randomize by row, otherwise randomize all keys
-				randomizeOnce : false     // if false, randomize every time the keyboard opens
+				byRow         : false, // randomize all keys
+				randomizeOnce : false  // randomize every time the keyboard opens
 			});
 
+		// Scramble each row separately, only once; but make the keys in each
+		// keyset match each other ("A" will be under "a" when shift is used)
 		$('#keyboard4')
 			.keyboard({
 				layout: 'international'
@@ -66,14 +74,24 @@
 				randomizeOnce : true      // if false, randomize every time the keyboard opens
 			});
 
+		// Scramble the targetKeys
+		$('#keyboard5')
+			.keyboard({
+				layout: 'num'
+			})
+			.addScramble({
+				targetKeys     : /[\d]/i, // numbers only
+				byRow          : false,   // do this or the zero doesn't scramble
+				// if randomizeOnce is true, the keys will be scramble the first time
+				// the keyboard becomes visible
+				// randomizeOnce  : false,
+				randomizeInput : true     // if true, randomize after user input
+			});
 
 	});
 	</script>
-
 </head>
-
 <body>
-
 	<nav class="navbar navbar-default">
 		<div class="container-fluid">
 			<div class="navbar-header">
@@ -120,29 +138,49 @@
 				</ul>
 
 				<ul class="nav navbar-nav navbar-right">
-					<li><a href="//github.com/Mottie/Keyboard"><span class="fa fa-github fa-lg" title="GitHub"></span></a></li>
-					<li><a href="//github.com/Mottie/Keyboard/archive/master.zip"><span class="fa fa-download fa-lg" title="Download"></span></a></li>
-					<li><a href="//github.com/Mottie/Keyboard/wiki"><span class="fa fa-file-text-o fa-lg" title="Documentation"></span></a></li>
-					<li><a href="//github.com/Mottie/Keyboard/issues"><span class="fa fa-bug fa-lg" title="Issues"></span></a></li>
+					<li><a href="https://github.com/Mottie/Keyboard"><span class="fa fa-github fa-lg" title="GitHub"></span></a></li>
+					<li><a href="https://github.com/Mottie/Keyboard/archive/master.zip"><span class="fa fa-download fa-lg" title="Download"></span></a></li>
+					<li><a href="https://github.com/Mottie/Keyboard/wiki"><span class="fa fa-file-text-o fa-lg" title="Documentation"></span></a></li>
+					<li><a href="https://github.com/Mottie/Keyboard/issues"><span class="fa fa-bug fa-lg" title="Issues"></span></a></li>
 				</ul>
 
 			</div><!-- /.navbar-collapse -->
 		</div><!-- /.container-fluid -->
 	</nav>
 
-	<h1><a href="//github.com/Mottie/Keyboard">Virtual Keyboard Scramble Demo</a></h1>
-	<h4>Note: Look at this demo source or refer to the <a href="//github.com/Mottie/Keyboard/wiki/Setup#wiki-scramble">documentation</a> on how to set up this extension.</h4>
+	<h1><a href="https://github.com/Mottie/Keyboard">Virtual Keyboard Scramble Demo</a></h1>
+	<h4>Note: Look at this demo source or refer to the <a href="https://github.com/Mottie/Keyboard/wiki/Setup#wiki-scramble">documentation</a> on how to set up this extension.</h4>
 
 	<div id="wrap"> <!-- wrapper only needed to center the input -->
 
 		<!-- keyboard input -->
-		<input id="keyboard" type="text" placeholder=" scramble once (by row)">
+		<h4>Scramble each row separately, only once</h4>
+		<input id="keyboard1" type="text">
 		<div class="spacer"></div>
-		<input id="keyboard2" type="text" placeholder=" scramble every time (by row)">
+
+		<h4>Scramble each row separately; do it every time the keyboard opens</h4>
+		<input id="keyboard2" type="text">
 		<div class="spacer"></div>
-		<input id="keyboard3" type="text" placeholder=" scramble every time (all keysets)">
+
+		<h4>Scramble the entire keyset every time the keyboard opens</h4>
+		<input id="keyboard3" type="text">
 		<div class="spacer"></div>
-		<input id="keyboard4" type="text" placeholder=" scramble once (by row; match sets)">
+
+		<h4>Scramble each row separately, only once; but make the keys in each
+			keyset match each other ("A" will be under "a" when shift is used)
+		</h4>
+		<input id="keyboard4" type="text">
+		<div class="spacer"></div>
+
+		<h4>Scramble the
+			<a href="https://github.com/Mottie/Keyboard/wiki/Setup#scramble">
+				<code>targetKeys</code>
+			</a>
+			(number keys only in this demo)
+			after every user input
+		</h4>
+		<input id="keyboard5" type="text">
+		<div class="spacer-big"></div>
 
 	</div> <!-- End wrapper -->
 
