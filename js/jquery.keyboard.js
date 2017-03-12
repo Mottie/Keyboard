@@ -191,7 +191,6 @@ http://www.opensource.org/licenses/mit-license.php
 				!base.$el.hasClass(kbcss.locked))) {
 			base.$el.addClass(kbcss.noKeyboard);
 		}
-
 		if (o.openOn) {
 			base.bindFocus();
 		}
@@ -1654,7 +1653,12 @@ http://www.opensource.org/licenses/mit-license.php
 		if ($target.hasClass(kbcss.input)) {
 			var kb = $target.data('keyboard');
 			// only trigger on self
-			if (kb !== base && !kb.$el.hasClass(kbcss.isCurrent) && kb.options.openOn) {
+			if (
+				kb !== base &&
+				!kb.$el.hasClass(kbcss.isCurrent) &&
+				kb.options.openOn &&
+				e.type === o.openOn
+			) {
 				kb.focusOn();
 			}
 		}
