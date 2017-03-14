@@ -135,11 +135,17 @@
 					.bind( start, function() {
 						clearTimeout( timer );
 						var $key = $( this ),
-							key = $key.attr( 'data-value' ) || '';
+							key = $key.attr( 'data-value' ) || '',
+							delay = base.altkeypopup_options.holdTime;
 						if ( key in $keyboard.altKeys ) {
-							timer = setTimeout( function() {
+							if (delay) {
+								timer = setTimeout( function() {
+									base.altKeyPopup_popup( key, $key );
+								}, delay );
+							} else {
+								// holdTime set to zero.. don't use a setTimeout
 								base.altKeyPopup_popup( key, $key );
-							}, base.altkeypopup_options.holdTime );
+							}
 						}
 					})
 					.bind( end, function() {
