@@ -1059,6 +1059,10 @@ http://www.opensource.org/licenses/mit-license.php
 					}
 					action = null; // prevent inserting action name
 				}
+				// stop processing if keyboard closed and keyaction did not return false - see #536
+				if (!base.hasKeyboard()) {
+					return false;
+				}
 				if (typeof action !== 'undefined' && action !== null) {
 					last.key = $(this).hasClass(kbcss.keyAction) ? action : last.key;
 					base.insertText(last.key);
