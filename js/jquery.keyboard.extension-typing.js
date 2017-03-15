@@ -69,7 +69,8 @@
 		var defaults = {
 			showTyping : true,
 			lockTypeIn : false,
-			delay      : 250
+			delay      : 250,
+			hoverDelay : 250
 		},
 		$keyboard = $.keyboard;
 		return this.each( function() {
@@ -128,11 +129,10 @@
 					.bind( 'mousedown' + namespace, function() {
 						base.typing_reset();
 					});
-			}
+			};
 
 			base.typing_setup = function() {
-				var kbevents = $keyboard.events,
-					namespace = base.typing_namespace;
+				var namespace = base.typing_namespace;
 				base.typing_setup_reset();
 				base.$el
 					.bind( $keyboard.events.kbBeforeVisible + namespace, function() {
@@ -341,7 +341,7 @@
 					if ( !base.isVisible() ) {
 						return; // keyboard was closed, abort!!
 					}
-					setTimeout( function() {
+					base.typing_timer = setTimeout( function() {
 						base.typeIn();
 					}, o.delay );
 				} else if ( o.len !== 0 ) {
@@ -350,7 +350,7 @@
 					base.typing_reset();
 					if ( $.isFunction( o.callback ) ) {
 						// ensure all typing animation is done before the callback
-						setTimeout( function() {
+						base.typing_timer = setTimeout( function() {
 							// if the user typed during the key simulation, the "o" variable
 							// may sometimes be undefined
 							if ( $.isFunction( o.callback ) ) {
@@ -367,20 +367,21 @@
 			// mouseover the key, add the text directly, then mouseout on the key
 			base.typing_simulateKey = function( el, txt, e ) {
 				var len = el.length;
+				if ( !base.isVisible() ) {
+					return;
+				}
 				if ( o.showTyping && len ) {
 					el.filter( ':visible' ).trigger( 'mouseenter' + base.namespace );
-				}
-				base.typing_timer = setTimeout( function() {
-					var len = el.length;
 					if ( o.showTyping && len ) {
 						setTimeout( function() {
 							el.trigger( 'mouseleave' + base.namespace );
-						}, o.delay/3 );
+						}, Math.min( o.hoverDelay, o.delay ) );
 					}
-					if ( !base.isVisible() ) {
-						return;
-					}
-					if ( !base.typing_event ) {
+				}
+				if ( !base.typing_event ) {
+					// delay required or initial tab does not get added
+					// in the main demo (international keyboard)
+					setTimeout( function() {
 						if (
 							txt in base.typing_keymap &&
 							base.typing_keymap[ txt ] in $keyboard.keyaction
@@ -393,8 +394,8 @@
 						}
 						base.checkCombos();
 						base.$el.trigger( $keyboard.events.kbChange, [ base, base.el ] );
-					}
 				}, o.delay/3 );
+				}
 			};
 
 			// visible event is fired before this extension is initialized, so check!
