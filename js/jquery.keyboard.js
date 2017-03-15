@@ -1377,8 +1377,13 @@ http://www.opensource.org/licenses/mit-license.php
 	// check for key combos (dead keys)
 	base.checkCombos = function () {
 		// return val for close function
-		if (!(base.isVisible() || base.$keyboard.hasClass($keyboard.css.hasFocus))) {
-			return base.$preview.val();
+		if ( !(
+			base.isVisible() || (
+				base.hasKeyboard() &&
+				base.$keyboard.hasClass( $keyboard.css.hasFocus )
+			)
+		) ) {
+			return ( base.$preview || base.$el ).val();
 		}
 		var r, t, t2,
 			// use base.$preview.val() instead of base.preview.value (val.length includes carriage returns in IE).
