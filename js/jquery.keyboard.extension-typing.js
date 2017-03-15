@@ -224,7 +224,7 @@
 						base.options.lockInput = o.lockTypeIn;
 						o.text = txt || o.text || '';
 						o.len = o.text.length;
-						o.delay = delay || 300;
+						o.delay = delay || o.delay;
 						o.current = 0; // position in text string
 						if ( callback ) {
 							o.callback = callback;
