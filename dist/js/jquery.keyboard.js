@@ -1,4 +1,4 @@
-/*! jQuery UI Virtual Keyboard v1.26.17 *//*
+/*! jQuery UI Virtual Keyboard v1.26.18 *//*
 Author: Jeremy Satterfield
 Maintained: Rob Garrison (Mottie on github)
 Licensed under the MIT License
@@ -42,7 +42,7 @@ http://www.opensource.org/licenses/mit-license.php
 	var $keyboard = $.keyboard = function (el, options) {
 	var o, base = this;
 
-	base.version = '1.26.17';
+	base.version = '1.26.18';
 
 	// Access to jQuery and DOM versions of element
 	base.$el = $(el);
@@ -191,7 +191,6 @@ http://www.opensource.org/licenses/mit-license.php
 				!base.$el.hasClass(kbcss.locked))) {
 			base.$el.addClass(kbcss.noKeyboard);
 		}
-
 		if (o.openOn) {
 			base.bindFocus();
 		}
@@ -1060,6 +1059,10 @@ http://www.opensource.org/licenses/mit-license.php
 					}
 					action = null; // prevent inserting action name
 				}
+				// stop processing if keyboard closed and keyaction did not return false - see #536
+				if (!base.hasKeyboard()) {
+					return false;
+				}
 				if (typeof action !== 'undefined' && action !== null) {
 					last.key = $(this).hasClass(kbcss.keyAction) ? action : last.key;
 					base.insertText(last.key);
@@ -1374,8 +1377,13 @@ http://www.opensource.org/licenses/mit-license.php
 	// check for key combos (dead keys)
 	base.checkCombos = function () {
 		// return val for close function
-		if (!(base.isVisible() || base.$keyboard.hasClass($keyboard.css.hasFocus))) {
-			return base.$preview.val();
+		if ( !(
+			base.isVisible() || (
+				base.hasKeyboard() &&
+				base.$keyboard.hasClass( $keyboard.css.hasFocus )
+			)
+		) ) {
+			return ( base.$preview || base.$el ).val();
 		}
 		var r, t, t2,
 			// use base.$preview.val() instead of base.preview.value (val.length includes carriage returns in IE).
@@ -1427,7 +1435,11 @@ http://www.opensource.org/licenses/mit-license.php
 					return (o.combos.hasOwnProperty(accent)) ? o.combos[accent][letter] || s : s;
 				});
 				// add combo back
-				base.$preview.val($keyboard.caret(base.$preview).replaceStr(t2));
+				t = $keyboard.caret(base.$preview);
+				// prevent error if caret doesn't return a function
+				if (t && t.replaceStr) {
+					base.$preview.val(t.replaceStr(t2));
+				}
 				val = base.$preview.val();
 			}
 		}
@@ -1650,7 +1662,12 @@ http://www.opensource.org/licenses/mit-license.php
 		if ($target.hasClass(kbcss.input)) {
 			var kb = $target.data('keyboard');
 			// only trigger on self
-			if (kb !== base && !kb.$el.hasClass(kbcss.isCurrent) && kb.options.openOn) {
+			if (
+				kb !== base &&
+				!kb.$el.hasClass(kbcss.isCurrent) &&
+				kb.options.openOn &&
+				e.type === o.openOn
+			) {
 				kb.focusOn();
 			}
 		}

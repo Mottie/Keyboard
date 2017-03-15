@@ -1,7 +1,7 @@
-/*
- * jQuery UI Virtual Keyboard Scramble Extension v1.6.2 for Keyboard v1.18+ (updated 11/28/2016)
+/*! jQuery UI Virtual Keyboard Scramble Extension v1.7.0 *//*
+ * for Keyboard v1.18+ (updated 3/15/2017)
  *
- * By Rob Garrison (aka Mottie & Fudgey)
+ * By Rob Garrison (aka Mottie)
  * Licensed under the MIT License
  *
  * Use this extension with the Virtual Keyboard to scramble the
@@ -22,8 +22,8 @@
  *   .addScramble();    // this keyboard extension
  *
  */
-/*jshint browser:true, jquery:true, unused:false */
-/*global require:false, define:false, module:false */
+/* jshint browser:true, jquery:true, unused:false */
+/* global require:false, define:false, module:false */
 ;(function(factory) {
 	if (typeof define === 'function' && define.amd) {
 		define(['jquery'], factory);

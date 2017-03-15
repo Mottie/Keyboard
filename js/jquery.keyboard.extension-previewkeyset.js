@@ -22,8 +22,8 @@
  *   .previewKeyset();    // this keyboard extension
  *
  */
-/*jshint browser:true, jquery:true, unused:false */
-/*global require:false, define:false, module:false */
+/* jshint browser:true, jquery:true, unused:false */
+/* global require:false, define:false, module:false */
 ;(function(factory) {
 	if (typeof define === 'function' && define.amd) {
 		define(['jquery'], factory);

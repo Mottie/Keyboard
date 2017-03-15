@@ -137,6 +137,29 @@ Wiki: [Home](https://github.com/Mottie/Keyboard/wiki/Home) | [FAQ](https://githu
 
 Only the latest changes will be shown below, see the [wiki log](https://github.com/Mottie/Keyboard/wiki/Log) to view older versions.
 
+### Version 1.26.18 (3/15/2017)
+
+* Core:
+  * Prevent JS error if caret doesn't return a function.
+  * Check event type before opening. Fixes [issue #527](https://github.com/Mottie/Keyboard/issues/527).
+  * Prevent JS error if keyaction closes the keyboard. Fixes [issue #526](https://github.com/Mottie/Keyboard/issues/526).
+  * Prevent checkCombos error after keyboard closes.
+* Docs:
+  * Stop using protocol relative urls.
+  * Update wiki links &amp; fix relative urls.
+  * Create a wiki page for each extension.
+* AltKeysPopup:
+  * Skip `setTimeout` when `holdTime` is zero. Fixes [issue #533](https://github.com/Mottie/Keyboard/issues/533).
+* Scramble:
+  * Add `randomizeInput` option. Fixes [issue #522](https://github.com/Mottie/Keyboard/issues/522).
+* Typing:
+  * Code cleanup.
+  * Fix `showTyping` when `false`.
+  * Allow setting `delay` to zero.
+  * Add `hoverDelay` option.
+* Meta:
+  * Update dependencies.
+
 ### Version 1.26.17 (2/4/2017)
 
 * Core:
@@ -148,9 +171,3 @@ Only the latest changes will be shown below, see the [wiki log](https://github.c
 
 * Autocomplete:
   * Pass value to main element in `usePreview`. Fixes [issue #517](https://github.com/Mottie/Keyboard/issues/517).
-
-### Version 1.26.15 (1/26/2017)
-
-* Autocomplete:
-  * Save the correct selected value. Fixes [issue #516](https://github.com/Mottie/Keyboard/issues/516).
-  * Prevent stackoverflow of triggered events.
