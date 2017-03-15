@@ -112,26 +112,36 @@
 			// save lockInput setting
 			o.savedLockInput = base.options.lockInput;
 
-			base.typing_setup = function() {
+			base.typing_setup_reset = function() {
 				var kbevents = $keyboard.events,
-					namespace = base.typing_namespace;
+					namespace = base.typing_namespace,
+					events = [ kbevents.kbHidden, kbevents.kbInactive, '' ]
+						.join( namespace + ' ' );
+				// reset "typeIn" when keyboard is closed
 				base.$el
 					.unbind( namespace )
-					.bind([ kbevents.kbHidden, kbevents.kbInactive, '' ].join( namespace + ' ' ), function() {
+					.bind( events, function() {
 						base.typing_reset();
-					})
-					.bind( $keyboard.events.kbBeforeVisible + namespace, function() {
-						base.typing_setup();
 					});
 				base.$allKeys
 					.unbind( namespace )
 					.bind( 'mousedown' + namespace, function() {
 						base.typing_reset();
 					});
+			}
+
+			base.typing_setup = function() {
+				var kbevents = $keyboard.events,
+					namespace = base.typing_namespace;
+				base.typing_setup_reset();
+				base.$el
+					.bind( $keyboard.events.kbBeforeVisible + namespace, function() {
+						base.typing_setup();
+					});
 				base.$preview
 					.unbind( namespace )
 					.bind( 'keyup' + namespace, function( e ) {
-						if ( o.init && o.lockTypeIn ) {
+						if ( o.init && o.lockTypeIn || !o.showTyping ) {
 							return false;
 						}
 						if ( e.which >= 37 && e.which <=40 ) {
@@ -154,7 +164,7 @@
 					})
 					// change keyset when either shift or alt is held down
 					.bind( 'keydown' + namespace, function( e ) {
-						if ( o.init && o.lockTypeIn ) {
+						if ( o.init && o.lockTypeIn || !o.showTyping ) {
 							return false;
 						}
 						e.temp = false; // prevent repetitive calls while keydown repeats.
@@ -296,16 +306,18 @@
 					// figure out which keyset the key is in then simulate clicking on
 					// that meta key, then on the key
 					if ( set.attr('name' ) ) {
-						// get meta key name
-						meta = set.attr( 'name' );
-						// show correct key set
-						base.shiftActive = /shift/.test( meta );
-						base.altActive = /alt/.test( meta );
-						base.metaActive = base.last.keyset[ 2 ] =
-							( meta ).match(/meta[\w-]+/) || false;
-						// make the plugin think we're passing it a jQuery object with a
-						// name
-						base.showSet( base.metaActive );
+						if ( o.showTyping ) {
+							// get meta key name
+							meta = set.attr( 'name' );
+							// show correct key set
+							base.shiftActive = /shift/.test( meta );
+							base.altActive = /alt/.test( meta );
+							base.metaActive = base.last.keyset[ 2 ] =
+								( meta ).match(/meta[\w-]+/) || false;
+							// make the plugin think we're passing it a jQuery object with a
+							// name
+							base.showSet( base.metaActive );
+						}
 						// Add the key
 						base.typing_simulateKey( key, txt, e );
 					} else {
@@ -355,12 +367,12 @@
 			// mouseover the key, add the text directly, then mouseout on the key
 			base.typing_simulateKey = function( el, txt, e ) {
 				var len = el.length;
-				if ( len ) {
+				if ( o.showTyping && len ) {
 					el.filter( ':visible' ).trigger( 'mouseenter' + base.namespace );
 				}
 				base.typing_timer = setTimeout( function() {
 					var len = el.length;
-					if ( len ) {
+					if ( o.showTyping && len ) {
 						setTimeout( function() {
 							el.trigger( 'mouseleave' + base.namespace );
 						}, o.delay/3 );
@@ -385,21 +397,21 @@
 				}, o.delay/3 );
 			};
 
-			if ( o.showTyping ) {
-				// visible event is fired before this extension is initialized, so
-				// check!
-				if ( base.options.alwaysOpen && base.isVisible() ) {
-					base.typing_setup();
-				} else {
-					// capture and simulate typing
-					base.$el
-						.unbind( $keyboard.events.kbBeforeVisible + base.typing_namespace )
-						.bind( $keyboard.events.kbBeforeVisible + base.typing_namespace, function() {
+			// visible event is fired before this extension is initialized, so check!
+			if ( o.showTyping && base.options.alwaysOpen && base.isVisible() ) {
+				base.typing_setup();
+			} else {
+				// capture and simulate typing
+				base.$el
+					.unbind( $keyboard.events.kbBeforeVisible + base.typing_namespace )
+					.bind( $keyboard.events.kbBeforeVisible + base.typing_namespace, function() {
+						if ( o.showTyping ) {
 							base.typing_setup();
-						});
-				}
+						} else {
+							base.typing_setup_reset();
+						}
+					});
 			}
-
 		});
 	};
 
