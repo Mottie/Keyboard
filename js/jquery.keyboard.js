@@ -167,7 +167,13 @@ http://www.opensource.org/licenses/mit-license.php
 		if (o.closeByClickEvent) {
 			bindings += 'click ';
 		}
-		tmp.bind(bindings.split(' ').join(base.namespace + ' '), base.checkClose);
+		// debounce bindings... see #542
+		tmp.bind(bindings.split(' ').join(base.namespace + ' '), function(e) {
+			clearTimeout(base.timer3);
+			base.timer3 = setTimeout(function() {
+				base.checkClose(e);
+			}, 1);
+		});
 
 		// Display keyboard on focus
 		base.$el
@@ -1622,7 +1628,6 @@ http://www.opensource.org/licenses/mit-license.php
 				.trigger((o.alwaysOpen) ? kbevents.kbInactive : kbevents.kbHidden, [base, base.el])
 				.blur();
 
-
 			// base is undefined if keyboard was destroyed - fixes #358
 			if (base) {
 				// add close event time
@@ -1632,7 +1637,7 @@ http://www.opensource.org/licenses/mit-license.php
 					base.removeKeyboard();
 					// rebind input focus - delayed to fix IE issue #72
 					base.timer = setTimeout(function () {
-						if(base){
+						if (base) {
 							base.bindFocus();
 						}
 					}, 500);
