@@ -1,5 +1,5 @@
-/*! jQuery UI Virtual Keyboard Autocomplete v1.11.2 *//*
- * for Keyboard v1.18+ only (1/26/2017)
+/*! jQuery UI Virtual Keyboard Autocomplete v1.11.3 *//*
+ * for Keyboard v1.18+ only (3/29/2017)
  *
  * By Rob Garrison (Mottie)
  * Licensed under the MIT License
@@ -125,6 +125,17 @@ $.fn.addAutocomplete = function(options) {
 			}
 		};
 
+		base.autocomplete_update = function(event) {
+			clearTimeout( base.$autocomplete.searching );
+			base.$autocomplete.searching = setTimeout(function() {
+				// only search if the value has changed
+				if ( base.$autocomplete.term !== base.$autocomplete.element.val() ) {
+					base.$autocomplete.selectedItem = null;
+					base.$autocomplete.search( null, event );
+				}
+			}, base.$autocomplete.options.delay );
+		}
+
 		// set up after keyboard is visible
 		base.autocomplete_setup = function() {
 			// look for autocomplete
@@ -141,23 +152,14 @@ $.fn.addAutocomplete = function(options) {
 					// send keys to the autocomplete widget (arrow, pageup/down, etc)
 					if (base.$preview && e.namespace !== base.$autocomplete.eventNamespace) {
 						e.namespace = base.$autocomplete.eventNamespace;
-						base.$el.triggerHandler(e);
+						base.autocomplete_update(event);
 					}
 				});
 				var events = 'mouseup mousedown mouseleave touchstart touchend touchcancel '
 					.split(' ')
 					.join(namespace + ' ');
 				base.$allKeys.bind(events, function(event) {
-					clearTimeout( base.$autocomplete.searching );
-					var evt = event;
-					base.$autocomplete.searching = setTimeout(function() {
-						// only search if the value has changed
-						if ( base.$autocomplete.term !== base.$autocomplete.element.val() ) {
-							base.$autocomplete.selectedItem = null;
-							base.$autocomplete.search( null, evt );
-						}
-					}, base.$autocomplete.options.delay );
-
+					base.autocomplete_update(event);
 				});
 			}
 		};
