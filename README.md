@@ -137,6 +137,15 @@ Wiki: [Home](https://github.com/Mottie/Keyboard/wiki/Home) | [FAQ](https://githu
 
 Only the latest changes will be shown below, see the [wiki log](https://github.com/Mottie/Keyboard/wiki/Log) to view older versions.
 
+### Version 1.26.19 (4/3/2017)
+
+* Core:
+  * Prevent max call stack error. Fixes [issue #542](https://github.com/Mottie/Keyboard/issues/542).
+* Docs:
+  * Update jQuery to v3.2.0.
+* Autocomplete:
+  * Physical keyboard typing works again. Previously, only a mouse move would cause an update.
+
 ### Version 1.26.18 (3/15/2017)
 
 * Core:
@@ -166,8 +175,3 @@ Only the latest changes will be shown below, see the [wiki log](https://github.c
   * Fix empty `openOn`. See [issue #519](https://github.com/Mottie/Keyboard/issues/519).
 * Autocomplete:
   * Get value from preview or original input. Fixes [issue #520](https://github.com/Mottie/Keyboard/issues/520).
-
-### Version 1.26.16 (2/2/2017)
-
-* Autocomplete:
-  * Pass value to main element in `usePreview`. Fixes [issue #517](https://github.com/Mottie/Keyboard/issues/517).

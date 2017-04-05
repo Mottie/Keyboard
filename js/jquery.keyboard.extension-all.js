@@ -4,7 +4,7 @@
 ██  ██ ██  ██   ██  ██ ██  ██   ██     ██ ██ ██ ██  ██ ██  ██ ██ ██▀▀   ▀▀▀▀██
 █████▀ ▀████▀   ██  ██ ▀████▀   ██     ██ ██ ██ ▀████▀ █████▀ ██ ██     █████▀
 */
-/*! jQuery UI Virtual Keyboard (1.26.18) - ALL Extensions + Mousewheel */
+/*! jQuery UI Virtual Keyboard (1.26.19) - ALL Extensions + Mousewheel */
 /*! jQuery UI Virtual Keyboard Alt Key Popup v1.1.2 *//*
  * for Keyboard v1.18+ only (3/15/2017)
  *
@@ -422,8 +422,8 @@
 
 }));
 
-/*! jQuery UI Virtual Keyboard Autocomplete v1.11.2 *//*
- * for Keyboard v1.18+ only (1/26/2017)
+/*! jQuery UI Virtual Keyboard Autocomplete v1.11.3 *//*
+ * for Keyboard v1.18+ only (3/29/2017)
  *
  * By Rob Garrison (Mottie)
  * Licensed under the MIT License
@@ -549,8 +549,39 @@ $.fn.addAutocomplete = function(options) {
 			}
 		};
 
+		base.autocomplete_update = function(event) {
+			clearTimeout( base.$autocomplete.searching );
+			base.$autocomplete.searching = setTimeout(function() {
+				// only search if the value has changed
+				if ( base.$autocomplete.term !== base.$autocomplete.element.val() ) {
+					base.$autocomplete.selectedItem = null;
+					base.$autocomplete.search( null, event );
+				}
+			}, base.$autocomplete.options.delay );
+		};
+
+		base.autocomplete_navKeys = {
+			8: 'backSpace',
+			9: 'tab',
+			13: 'enter',
+			20: 'capsLock',
+			27: 'escape',
+			32: 'space',
+			33: 'pageup',
+			34: 'pagedown',
+			35: 'end',
+			36: 'home',
+			37: 'left',
+			38: 'up',
+			39: 'right',
+			40: 'down',
+			45: 'insert',
+			46: 'delete'
+		};
+
 		// set up after keyboard is visible
 		base.autocomplete_setup = function() {
+			var key;
 			// look for autocomplete
 			base.$autocomplete = base.$el.data(base.autocomplete_options.data) ||
 				// data changes based on jQuery UI version
@@ -561,27 +592,33 @@ $.fn.addAutocomplete = function(options) {
 				false : (base.$autocomplete.options.disabled) ? false : true;
 			// only bind to keydown once
 			if (base.hasAutocomplete) {
-				base.$preview.bind('keydown' + namespace, function(e) {
+				base.$preview.bind('keydown' + namespace + ' keypress' + namespace, function(event) {
 					// send keys to the autocomplete widget (arrow, pageup/down, etc)
-					if (base.$preview && e.namespace !== base.$autocomplete.eventNamespace) {
-						e.namespace = base.$autocomplete.eventNamespace;
-						base.$el.triggerHandler(e);
+					if (base.$preview && event.namespace !== base.$autocomplete.eventNamespace) {
+						event.namespace = base.$autocomplete.eventNamespace.slice(1);
+						key = base.autocomplete_navKeys[event.which];
+						if (key) {
+							if (base.el !== base.preview) {
+								base.$el.triggerHandler(event);
+								if (key === 'enter') {
+									// update preview with the selected item
+									setTimeout(function(){
+										base.$preview.val(base.$autocomplete.selectedItem.value);
+										base.$preview.focus();
+									}, 100);
+								}
+							}
+						} else {
+							// only search when a non-navigation key is pressed
+							base.autocomplete_update(event);
+						}
 					}
 				});
 				var events = 'mouseup mousedown mouseleave touchstart touchend touchcancel '
 					.split(' ')
 					.join(namespace + ' ');
 				base.$allKeys.bind(events, function(event) {
-					clearTimeout( base.$autocomplete.searching );
-					var evt = event;
-					base.$autocomplete.searching = setTimeout(function() {
-						// only search if the value has changed
-						if ( base.$autocomplete.term !== base.$autocomplete.element.val() ) {
-							base.$autocomplete.selectedItem = null;
-							base.$autocomplete.search( null, evt );
-						}
-					}, base.$autocomplete.options.delay );
-
+					base.autocomplete_update(event);
 				});
 			}
 		};
