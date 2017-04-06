@@ -113,10 +113,6 @@ http://www.opensource.org/licenses/mit-license.php
 		base.$keyboard = [];
 		// keyboard enabled; set to false on destroy
 		base.enabled = true;
-		// make a copy of the original keyboard position
-		if (!$.isEmptyObject(o.position)) {
-			o.position.orig_at = o.position.at;
-		}
 
 		base.checkCaret = (o.lockInput || $keyboard.checkCaretSupport());
 
@@ -392,16 +388,7 @@ http://www.opensource.org/licenses/mit-license.php
 			base.$preview.width(base.width);
 		}
 
-		base.position = $.isEmptyObject(o.position) ? false : o.position;
-
-		// position after keyboard is visible (required for UI position utility) and appropriately sized
-		if ($.ui && $.ui.position && base.position) {
-			// get single target position || target stored in element data (multiple targets) || default @ element
-			base.position.of = base.position.of || base.$el.data('keyboardPosition') || base.$el;
-			base.position.collision = base.position.collision || 'flipfit flipfit';
-			o.position.at = o.usePreview ? o.position.orig_at : o.position.at2;
-			base.$keyboard.position(base.position);
-		}
+		base.reposition();
 
 		base.checkDecimal();
 
@@ -531,19 +518,6 @@ http://www.opensource.org/licenses/mit-license.php
 			}
 
 			base.makePreview();
-			// build preview display
-			if (o.usePreview) {
-				// restore original positioning (in case usePreview option is altered)
-				if (!$.isEmptyObject(o.position)) {
-					o.position.at = o.position.orig_at;
-				}
-			} else {
-				// No preview display, use element and reposition the keyboard under it.
-				if (!$.isEmptyObject(o.position)) {
-					o.position.at = o.position.at2;
-				}
-			}
-
 		}
 
 		base.$decBtn = base.$keyboard.find('.' + kbcss.keyPrefix + 'dec');
@@ -558,16 +532,35 @@ http://www.opensource.org/licenses/mit-license.php
 
 		base.bindKeys();
 
-		// adjust with window resize; don't check base.position
-		// here in case it is changed dynamically
+		// reposition keyboard on window resize
 		if (o.reposition && $.ui && $.ui.position && o.appendTo == 'body') {
 			$(window).bind('resize' + base.namespace, function () {
-				if (base.position && base.isVisible()) {
-					base.$keyboard.position(base.position);
-				}
+				base.reposition();
 			});
 		}
 
+	};
+
+	base.reposition = function () {
+		base.position = $.isEmptyObject(o.position) ? false : o.position;
+		// position after keyboard is visible (required for UI position utility)
+		// and appropriately sized
+		if ($.ui && $.ui.position && base.position) {
+			base.position.of =
+				// get single target position
+				base.position.of ||
+				// OR target stored in element data (multiple targets)
+				base.$el.data('keyboardPosition') ||
+				// OR default @ element
+				base.$el;
+			base.position.collision = base.position.collision || 'flipfit flipfit';
+			base.position.at = o.usePreview ? o.position.at : o.position.at2;
+			if (base.isVisible()) {
+				base.$keyboard.position(base.position);
+			}
+		}
+		// make chainable
+		return base;
 	};
 
 	base.makePreview = function () {
@@ -1378,6 +1371,9 @@ http://www.opensource.org/licenses/mit-license.php
 		}
 		base.last.keyset = [base.shiftActive, base.altActive, base.metaActive];
 		base.$el.trigger($keyboard.events.kbKeysetChange, [base, base.el]);
+		if (o.reposition) {
+			base.reposition();
+		}
 	};
 
 	// check for key combos (dead keys)
