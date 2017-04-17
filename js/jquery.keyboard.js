@@ -754,6 +754,11 @@ http://www.opensource.org/licenses/mit-license.php
 					k1 = k >= keyCodes.A && k <= keyCodes.Z,
 					k2 = k >= keyCodes.a && k <= keyCodes.z,
 					str = base.last.key = String.fromCharCode(k);
+				// check, that keypress wasn't rise by functional key
+				// space is first typing symbol in UTF8 table
+				if (k < keyCodes.space){ //see #549
+					return;
+				}
 				base.last.virtual = false;
 				base.last.event = e;
 				base.last.$key = []; // not a virtual keyboard key
