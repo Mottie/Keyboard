@@ -168,7 +168,7 @@
 								if ( event.type === 'keyup' ) {
 									clearTimeout( timer );
 									base.altkeypopup_blockingFlag = false;
-									return true;
+									return event.which !== $keyboard.navigationKeys.escape;
 								}
 								var tmp,
 									layout = $keyboard.builtLayouts[ base.layout ],
@@ -300,6 +300,7 @@
 					})
 					.bind( 'keyup' + base.altkeypopup_namespace, function( event ) {
 						if ( event.which === $keyboard.navigationKeys.escape ) {
+							event.which = 0; // prevent escClose from closing the keyboard
 							base.altKeyPopup_close();
 						} else {
 							base.altKeyPopup_navigate( event );

@@ -852,17 +852,19 @@ http://www.opensource.org/licenses/mit-license.php
 
 				base.last.preVal = '' + base.last.val;
 				base.last.val = base.$preview.val();
-				e.type = $keyboard.events.kbChange;
+
+				// don't alter "e" or the "keyup" event never finishes processing; fixes #552
+				var event = jQuery.Event( $keyboard.events.kbChange );
 				// base.last.key may be empty string (shift, enter, tab, etc) when keyboard is first visible
 				// use e.key instead, if browser supports it
-				e.action = base.last.key;
-				base.$el.trigger(e, [base, base.el]);
+				event.action = base.last.key;
+				base.$el.trigger(event, [base, base.el]);
 
 				// change callback is no longer bound to the input element as the callback could be
 				// called during an external change event with all the necessary parameters (issue #157)
 				if ($.isFunction(o.change)) {
-					e.type = $keyboard.events.inputChange;
-					o.change(e, base, base.el);
+					event.type = $keyboard.events.inputChange;
+					o.change(event, base, base.el);
 					return false;
 				}
 				if (o.acceptValid && o.autoAcceptOnValid) {
