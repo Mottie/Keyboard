@@ -264,6 +264,11 @@ module.exports = function(grunt) {
 		} else {
 			grunt.log.writeln('\n**** version mismatch! ****'['red'].bold);
 		}
+		// check internal version number
+		project = grunt.file.read('README.md');
+		if (!new RegExp(escapeRegExp('### Version ' + pkg.version)).test(project)) {
+			grunt.log.writeln('\n**** Missing Readme entry! ****'['red'].bold);
+		}
 	});
 
 };
