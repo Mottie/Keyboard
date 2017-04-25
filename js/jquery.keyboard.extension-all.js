@@ -4,7 +4,7 @@
 ██  ██ ██  ██   ██  ██ ██  ██   ██     ██ ██ ██ ██  ██ ██  ██ ██ ██▀▀   ▀▀▀▀██
 █████▀ ▀████▀   ██  ██ ▀████▀   ██     ██ ██ ██ ▀████▀ █████▀ ██ ██     █████▀
 */
-/*! jQuery UI Virtual Keyboard (1.26.19) - ALL Extensions + Mousewheel */
+/*! jQuery UI Virtual Keyboard (1.26.20) - ALL Extensions + Mousewheel */
 /*! jQuery UI Virtual Keyboard Alt Key Popup v1.1.2 *//*
  * for Keyboard v1.18+ only (3/15/2017)
  *
@@ -175,7 +175,7 @@
 								if ( event.type === 'keyup' ) {
 									clearTimeout( timer );
 									base.altkeypopup_blockingFlag = false;
-									return true;
+									return event.which !== $keyboard.navigationKeys.escape;
 								}
 								var tmp,
 									layout = $keyboard.builtLayouts[ base.layout ],
@@ -307,6 +307,7 @@
 					})
 					.bind( 'keyup' + base.altkeypopup_namespace, function( event ) {
 						if ( event.which === $keyboard.navigationKeys.escape ) {
+							event.which = 0; // prevent escClose from closing the keyboard
 							base.altKeyPopup_close();
 						} else {
 							base.altKeyPopup_navigate( event );
@@ -2087,10 +2088,8 @@ $.keyboard = $.keyboard || {};
 							// show correct key set
 							base.shiftActive = /shift/.test( meta );
 							base.altActive = /alt/.test( meta );
-							base.metaActive = base.last.keyset[ 2 ] =
-								( meta ).match(/meta[\w-]+/) || false;
-							// make the plugin think we're passing it a jQuery object with a
-							// name
+							base.metaActive = base.last.keyset[ 2 ] = /\bmeta/.test(meta) ?
+								( meta ).match(/meta[\w-]+/)[0] : false;
 							base.showSet( base.metaActive );
 						}
 						// Add the key

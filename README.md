@@ -137,6 +137,19 @@ Wiki: [Home](https://github.com/Mottie/Keyboard/wiki/Home) | [FAQ](https://githu
 
 Only the latest changes will be shown below, see the [wiki log](https://github.com/Mottie/Keyboard/wiki/Log) to view older versions.
 
+### Version 1.26.20 (4/24/2017)
+
+* Core:
+  * keyboard will reposition on keyset change. Fixes [issue #547](https://github.com/Mottie/Keyboard/issues/547).
+  * Restore keyup event. Fixes [issue #552](https://github.com/Mottie/Keyboard/issues/552).
+  * Fix active meta + shift/alt keys.
+* AltKeysPopup:
+  * Restore keyup event. Fixes [issue #552](https://github.com/Mottie/Keyboard/issues/552).
+* Typing:
+  * Fix active meta + shift/alt keys.
+* Meta:
+  * Update dependencies.
+
 ### Version 1.26.19 (4/3/2017)
 
 * Core:
@@ -168,10 +181,3 @@ Only the latest changes will be shown below, see the [wiki log](https://github.c
   * Add `hoverDelay` option.
 * Meta:
   * Update dependencies.
-
-### Version 1.26.17 (2/4/2017)
-
-* Core:
-  * Fix empty `openOn`. See [issue #519](https://github.com/Mottie/Keyboard/issues/519).
-* Autocomplete:
-  * Get value from preview or original input. Fixes [issue #520](https://github.com/Mottie/Keyboard/issues/520).

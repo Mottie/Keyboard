@@ -1,4 +1,4 @@
-/*! jQuery UI Virtual Keyboard v1.26.19 *//*
+/*! jQuery UI Virtual Keyboard v1.26.20 *//*
 Author: Jeremy Satterfield
 Maintained: Rob Garrison (Mottie on github)
 Licensed under the MIT License
@@ -42,7 +42,7 @@ http://www.opensource.org/licenses/mit-license.php
 	var $keyboard = $.keyboard = function (el, options) {
 	var o, base = this;
 
-	base.version = '1.26.19';
+	base.version = '1.26.20';
 
 	// Access to jQuery and DOM versions of element
 	base.$el = $(el);
@@ -113,10 +113,6 @@ http://www.opensource.org/licenses/mit-license.php
 		base.$keyboard = [];
 		// keyboard enabled; set to false on destroy
 		base.enabled = true;
-		// make a copy of the original keyboard position
-		if (!$.isEmptyObject(o.position)) {
-			o.position.orig_at = o.position.at;
-		}
 
 		base.checkCaret = (o.lockInput || $keyboard.checkCaretSupport());
 
@@ -392,16 +388,7 @@ http://www.opensource.org/licenses/mit-license.php
 			base.$preview.width(base.width);
 		}
 
-		base.position = $.isEmptyObject(o.position) ? false : o.position;
-
-		// position after keyboard is visible (required for UI position utility) and appropriately sized
-		if ($.ui && $.ui.position && base.position) {
-			// get single target position || target stored in element data (multiple targets) || default @ element
-			base.position.of = base.position.of || base.$el.data('keyboardPosition') || base.$el;
-			base.position.collision = base.position.collision || 'flipfit flipfit';
-			o.position.at = o.usePreview ? o.position.orig_at : o.position.at2;
-			base.$keyboard.position(base.position);
-		}
+		base.reposition();
 
 		base.checkDecimal();
 
@@ -531,19 +518,6 @@ http://www.opensource.org/licenses/mit-license.php
 			}
 
 			base.makePreview();
-			// build preview display
-			if (o.usePreview) {
-				// restore original positioning (in case usePreview option is altered)
-				if (!$.isEmptyObject(o.position)) {
-					o.position.at = o.position.orig_at;
-				}
-			} else {
-				// No preview display, use element and reposition the keyboard under it.
-				if (!$.isEmptyObject(o.position)) {
-					o.position.at = o.position.at2;
-				}
-			}
-
 		}
 
 		base.$decBtn = base.$keyboard.find('.' + kbcss.keyPrefix + 'dec');
@@ -558,16 +532,35 @@ http://www.opensource.org/licenses/mit-license.php
 
 		base.bindKeys();
 
-		// adjust with window resize; don't check base.position
-		// here in case it is changed dynamically
+		// reposition keyboard on window resize
 		if (o.reposition && $.ui && $.ui.position && o.appendTo == 'body') {
 			$(window).bind('resize' + base.namespace, function () {
-				if (base.position && base.isVisible()) {
-					base.$keyboard.position(base.position);
-				}
+				base.reposition();
 			});
 		}
 
+	};
+
+	base.reposition = function () {
+		base.position = $.isEmptyObject(o.position) ? false : o.position;
+		// position after keyboard is visible (required for UI position utility)
+		// and appropriately sized
+		if ($.ui && $.ui.position && base.position) {
+			base.position.of =
+				// get single target position
+				base.position.of ||
+				// OR target stored in element data (multiple targets)
+				base.$el.data('keyboardPosition') ||
+				// OR default @ element
+				base.$el;
+			base.position.collision = base.position.collision || 'flipfit flipfit';
+			base.position.at = o.usePreview ? o.position.at : o.position.at2;
+			if (base.isVisible()) {
+				base.$keyboard.position(base.position);
+			}
+		}
+		// make chainable
+		return base;
 	};
 
 	base.makePreview = function () {
@@ -859,17 +852,19 @@ http://www.opensource.org/licenses/mit-license.php
 
 				base.last.preVal = '' + base.last.val;
 				base.last.val = base.$preview.val();
-				e.type = $keyboard.events.kbChange;
+
+				// don't alter "e" or the "keyup" event never finishes processing; fixes #552
+				var event = jQuery.Event( $keyboard.events.kbChange );
 				// base.last.key may be empty string (shift, enter, tab, etc) when keyboard is first visible
 				// use e.key instead, if browser supports it
-				e.action = base.last.key;
-				base.$el.trigger(e, [base, base.el]);
+				event.action = base.last.key;
+				base.$el.trigger(event, [base, base.el]);
 
 				// change callback is no longer bound to the input element as the callback could be
 				// called during an external change event with all the necessary parameters (issue #157)
 				if ($.isFunction(o.change)) {
-					e.type = $keyboard.events.inputChange;
-					o.change(e, base, base.el);
+					event.type = $keyboard.events.inputChange;
+					o.change(event, base, base.el);
 					return false;
 				}
 				if (o.acceptValid && o.autoAcceptOnValid) {
@@ -1321,6 +1316,13 @@ http://www.opensource.org/licenses/mit-license.php
 		}
 		// check meta key set
 		if (base.metaActive) {
+			// remove "-shift" and "-alt" from meta name if it exists
+			if (base.shiftActive) {
+				name = (name || "").replace("-shift", "");
+			}
+			if (base.altActive) {
+				name = (name || "").replace("-alt", "");
+			}
 			// the name attribute contains the meta set name 'meta99'
 			key = (/^meta/i.test(name)) ? name : '';
 			// save active meta keyset name
@@ -1364,12 +1366,11 @@ http://www.opensource.org/licenses/mit-license.php
 			.find('.' + kbcss.keySet)
 			.hide()
 			.end()
-			.find('.' + kbcss.keyAction + prefix + key)
+			.find('.' + (kbcss.keyAction + prefix + key).replace("--", "-"))
 			.addClass(active);
 
 		// show keyset using inline-block ( extender layout will then line up )
 		base.$keyboard.find('.' + kbcss.keySet + key + base.rows[toShow])[0].style.display = 'inline-block';
-
 		if (base.metaActive) {
 			base.$keyboard.find(prefix + base.metaActive)
 				// base.metaActive contains the string "meta#" or false
@@ -1378,6 +1379,9 @@ http://www.opensource.org/licenses/mit-license.php
 		}
 		base.last.keyset = [base.shiftActive, base.altActive, base.metaActive];
 		base.$el.trigger($keyboard.events.kbKeysetChange, [base, base.el]);
+		if (o.reposition) {
+			base.reposition();
+		}
 	};
 
 	// check for key combos (dead keys)
