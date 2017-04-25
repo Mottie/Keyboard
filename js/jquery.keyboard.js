@@ -1316,6 +1316,13 @@ http://www.opensource.org/licenses/mit-license.php
 		}
 		// check meta key set
 		if (base.metaActive) {
+			// remove "-shift" and "-alt" from meta name if it exists
+			if (base.shiftActive) {
+				name = (name || "").replace("-shift", "");
+			}
+			if (base.altActive) {
+				name = (name || "").replace("-alt", "");
+			}
 			// the name attribute contains the meta set name 'meta99'
 			key = (/^meta/i.test(name)) ? name : '';
 			// save active meta keyset name
@@ -1359,12 +1366,11 @@ http://www.opensource.org/licenses/mit-license.php
 			.find('.' + kbcss.keySet)
 			.hide()
 			.end()
-			.find('.' + kbcss.keyAction + prefix + key)
+			.find('.' + (kbcss.keyAction + prefix + key).replace("--", "-"))
 			.addClass(active);
 
 		// show keyset using inline-block ( extender layout will then line up )
 		base.$keyboard.find('.' + kbcss.keySet + key + base.rows[toShow])[0].style.display = 'inline-block';
-
 		if (base.metaActive) {
 			base.$keyboard.find(prefix + base.metaActive)
 				// base.metaActive contains the string "meta#" or false

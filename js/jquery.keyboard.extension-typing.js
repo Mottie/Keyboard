@@ -312,10 +312,8 @@
 							// show correct key set
 							base.shiftActive = /shift/.test( meta );
 							base.altActive = /alt/.test( meta );
-							base.metaActive = base.last.keyset[ 2 ] =
-								( meta ).match(/meta[\w-]+/) || false;
-							// make the plugin think we're passing it a jQuery object with a
-							// name
+							base.metaActive = base.last.keyset[ 2 ] = /\bmeta/.test(meta) ?
+								( meta ).match(/meta[\w-]+/)[0] : false;
 							base.showSet( base.metaActive );
 						}
 						// Add the key
