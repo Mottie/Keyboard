@@ -16,10 +16,10 @@
   ],
   "license": "MIT",
   "dependencies": {
-    "jquery": ">=1.4.3"
+    "jquery": ">=3.2.1"
   },
   "optionalDependencies" : {
-    "jquery-ui": ">=1.9.2"
+    "jquery-ui": ">=1.12.1"
   },
   "keywords": [
     "customizable",
@@ -53,10 +53,10 @@
   "devDependencies": {
     "grunt": "^1.0.1",
     "grunt-cli": "^1.2.0",
-    "grunt-contrib-clean": "^1.0.0",
+    "grunt-contrib-clean": "^1.1.0",
     "grunt-contrib-concat": "^1.0.1",
     "grunt-contrib-copy": "^1.0.0",
-    "grunt-contrib-cssmin": "^2.0.0",
+    "grunt-contrib-cssmin": "^2.1.0",
     "grunt-contrib-jshint": "^1.1.0",
     "grunt-contrib-qunit": "^2.0.0",
     "grunt-contrib-uglify": "^2.3.0",
