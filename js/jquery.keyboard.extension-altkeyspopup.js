@@ -1,4 +1,4 @@
-/*! jQuery UI Virtual Keyboard Alt Key Popup v1.1.2 *//*
+/*! jQuery UI Virtual Keyboard Alt Key Popup v1.1.3 *//*
  * for Keyboard v1.18+ only (3/15/2017)
  *
  * By Rob Garrison (aka Mottie)
@@ -227,7 +227,7 @@
 					return;
 				}
 				var keys, $container, $keys, positionHoriz, positionVert, top,
-					popupWidth, popupHeight,
+					popupWidth, popupHeight, evts,
 					kbcss = $keyboard.css,
 					data = {
 						$kb      : base.$keyboard,
@@ -246,6 +246,12 @@
 					.bind( 'click touchstart', function() {
 						base.altKeyPopup_close();
 					});
+				evts = 'inactive hidden '
+					.split( ' ' )
+					.join( base.altkeypopup_namespace + ' ' );
+				base.$el.unbind( evts ).bind( evts, function() {
+					base.altKeyPopup_close();
+				});
 
 				// remove character added when key was initially pressed, unless it
 				// was a backspace key
