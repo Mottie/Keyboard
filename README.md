@@ -137,6 +137,11 @@ Wiki: [Home](https://github.com/Mottie/Keyboard/wiki/Home) | [FAQ](https://githu
 
 Only the latest changes will be shown below, see the [wiki log](https://github.com/Mottie/Keyboard/wiki/Log) to view older versions.
 
+### Version 1.26.22 (4/28/2017)
+
+* AltKeysPopup: remove old highlight on hover. Fixes [issue #556](https://github.com/Mottie/Keyboard/issues/556).
+* Navigation: properly highlight key on reveal. Fixes [issue #557](https://github.com/Mottie/Keyboard/issues/557).
+
 ### Version 1.26.21 (4/25/2017)
 
 * AltKeysPopup: properly close popup when keyboard hides. Fixes [issue #553](https://github.com/Mottie/Keyboard/issues/553).
@@ -153,12 +158,3 @@ Only the latest changes will be shown below, see the [wiki log](https://github.c
   * Fix active meta + shift/alt keys.
 * Meta:
   * Update dependencies.
-
-### Version 1.26.19 (4/3/2017)
-
-* Core:
-  * Prevent max call stack error. Fixes [issue #542](https://github.com/Mottie/Keyboard/issues/542).
-* Docs:
-  * Update jQuery to v3.2.0.
-* Autocomplete:
-  * Physical keyboard typing works again. Previously, only a mouse move would cause an update.
