@@ -1,5 +1,5 @@
-﻿/*! jQuery UI Virtual Keyboard Navigation v1.6.1 *//*
- * for Keyboard v1.18+ only (updated 7/7/2015)
+/*! jQuery UI Virtual Keyboard Navigation v1.6.2 *//*
+ * for Keyboard v1.18+ only (updated 4/28/2017)
  *
  * By Rob Garrison (aka Mottie & Fudgey)
  * Licensed under the MIT License
@@ -130,7 +130,10 @@ $.fn.addNavigation = function(options){
 			}
 		};
 
-		base.navigateKeys = function(key, row, indx){
+		base.navigateKeys = function(key, row, indx) {
+			if (!base.isVisible()) {
+				return;
+			}
 			indx = typeof indx === 'number' ? indx : o.position[1];
 			row = typeof row === 'number' ? row : o.position[0];
 			var kbcss = $.keyboard.css,
@@ -171,7 +174,7 @@ $.fn.addNavigation = function(options){
 		};
 
 		// visible event is fired before this extension is initialized, so check!
-		if (base.options.alwaysOpen && base.isVisible) {
+		if (base.options.alwaysOpen && base.isVisible()) {
 			base.$keyboard.find('.' + opts.css.buttonHover).removeClass(opts.css.buttonHover);
 			base.navigation_init();
 		}
