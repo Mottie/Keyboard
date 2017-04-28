@@ -1,5 +1,5 @@
-/*! jQuery UI Virtual Keyboard Alt Key Popup v1.1.3 *//*
- * for Keyboard v1.18+ only (3/15/2017)
+/*! jQuery UI Virtual Keyboard Alt Key Popup v1.1.4 *//*
+ * for Keyboard v1.18+ only (4/28/2017)
  *
  * By Rob Garrison (aka Mottie)
  * Licensed under the MIT License
@@ -285,10 +285,9 @@
 						base.altKeyPopup_close();
 					})
 					.bind( 'mouseover mouseleave', function( event ){
-						if ( event.type === 'mouseleave' ) {
-							// remove hover from physical keyboard highlighted key
-							$keys.removeClass( base.options.css.buttonHover );
-						} else {
+						// remove hover from physical keyboard highlighted key
+						$keys.removeClass( base.options.css.buttonHover );
+						if ( event.type !== 'mouseleave' ) {
 							$( this ).addClass( base.options.css.buttonHover );
 						}
 					});
