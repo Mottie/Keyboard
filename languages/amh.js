@@ -3,8 +3,8 @@
 // please update this section to match this language and email me with corrections!
 // "all" is used here for example purposes, by convention it should be the ISO 639-1 code for the specified language
 // ***********************
-jQuery.keyboard.language.all = {
-    language: 'ፊደል (Ethiopic)',
+jQuery.keyboard.language.amh = {
+    language: 'ፊደል (Fidal) Amharic and Gǝʿǝz',
     display: {
         'a': '\u2714:መቀበል (Shift+Enter)', // check mark - same action as accept
         'accept': 'Accept:መቀበል (Shift+Enter)',
