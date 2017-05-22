@@ -33,7 +33,7 @@
   "demo": "http://mottie.github.io/Keyboard/",
   "docs": "https://github.com/Mottie/Keyboard/wiki",
   "bugs": "https://github.com/Mottie/Keyboard/issues",
-  "main": "dist/js/jquery.keyboard.min.js",
+  "main": "dist/js/jquery.keyboard.js",
   "files": [
     "dist/**/*"
   ],
