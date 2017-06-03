@@ -725,10 +725,11 @@ http://www.opensource.org/licenses/mit-license.php
 	base.bindKeyboard = function () {
 		var evt,
 			keyCodes = $keyboard.keyCodes,
-			layout = $keyboard.builtLayouts[base.layout];
+			layout = $keyboard.builtLayouts[base.layout],
+			namespace = base.namespace + 'keybindings';
 		base.$preview
 			.unbind(base.namespace)
-			.bind('click' + base.namespace + ' touchstart' + base.namespace, function () {
+			.bind('click' + namespace + ' touchstart' + namespace, function () {
 				if (o.alwaysOpen && !base.isCurrent()) {
 					base.reveal();
 				}
@@ -740,7 +741,7 @@ http://www.opensource.org/licenses/mit-license.php
 				}, 150);
 
 			})
-			.bind('keypress' + base.namespace, function (e) {
+			.bind('keypress' + namespace, function (e) {
 				if (o.lockInput) {
 					return false;
 				}
@@ -809,7 +810,7 @@ http://www.opensource.org/licenses/mit-license.php
 				base.checkMaxLength();
 
 			})
-			.bind('keyup' + base.namespace, function (e) {
+			.bind('keyup' + namespace, function (e) {
 				if (!base.isCurrent()) { return; }
 				base.last.virtual = false;
 				switch (e.which) {
@@ -874,7 +875,7 @@ http://www.opensource.org/licenses/mit-license.php
 					}
 				}
 			})
-			.bind('keydown' + base.namespace, function (e) {
+			.bind('keydown' + namespace, function (e) {
 				base.last.keyPress = e.which;
 				// ensure alwaysOpen keyboards are made active
 				if (o.alwaysOpen && !base.isCurrent()) {
@@ -921,7 +922,7 @@ http://www.opensource.org/licenses/mit-license.php
 					break;
 				}
 			})
-			.bind('mouseup touchend '.split(' ').join(base.namespace + ' '), function () {
+			.bind('mouseup touchend '.split(' ').join(namespace + ' '), function () {
 				base.last.virtual = true;
 				base.saveCaret();
 			});
@@ -2193,6 +2194,7 @@ http://www.opensource.org/licenses/mit-license.php
 		if (o.usePreview) {
 			base.$preview.removeData('keyboard');
 		}
+		base.$preview.unbind(base.namespace + 'keybindings');
 		base.preview = null;
 		base.$preview = null;
 		base.$previewCopy = null;
