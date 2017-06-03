@@ -18,7 +18,7 @@
   "dependencies": {
     "jquery": ">=3.2.1"
   },
-  "optionalDependencies" : {
+  "optionalDependencies": {
     "jquery-ui": ">=1.12.1"
   },
   "keywords": [
@@ -42,7 +42,7 @@
     "url": "git://github.com/Mottie/keyboard.git"
   },
   "scripts": {
-    "authors" : "bash tools/authors.sh"
+    "authors": "bash tools/authors.sh"
   },
   "npmName": "virtual-keyboard",
   "npmFileMap": [
@@ -59,10 +59,10 @@
     "grunt-contrib-clean": "^1.1.0",
     "grunt-contrib-concat": "^1.0.1",
     "grunt-contrib-copy": "^1.0.0",
-    "grunt-contrib-cssmin": "^2.1.0",
+    "grunt-contrib-cssmin": "^2.2.0",
     "grunt-contrib-jshint": "^1.1.0",
     "grunt-contrib-qunit": "^2.0.0",
-    "grunt-contrib-uglify": "^2.3.0",
+    "grunt-contrib-uglify": "^3.0.1",
     "grunt-contrib-watch": "^1.0.0"
   }
 }
