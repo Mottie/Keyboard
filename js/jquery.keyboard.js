@@ -1,4 +1,4 @@
-/*! jQuery UI Virtual Keyboard v1.26.22 *//*
+/*! jQuery UI Virtual Keyboard v1.26.23 *//*
 Author: Jeremy Satterfield
 Maintained: Rob Garrison (Mottie on github)
 Licensed under the MIT License
@@ -42,7 +42,7 @@ http://www.opensource.org/licenses/mit-license.php
 	var $keyboard = $.keyboard = function (el, options) {
 	var o, base = this;
 
-	base.version = '1.26.22';
+	base.version = '1.26.23';
 
 	// Access to jQuery and DOM versions of element
 	base.$el = $(el);
@@ -756,7 +756,7 @@ http://www.opensource.org/licenses/mit-license.php
 					str = base.last.key = String.fromCharCode(k);
 				// check, that keypress wasn't rise by functional key
 				// space is first typing symbol in UTF8 table
-				if (k < keyCodes.space){ //see #549
+				if (k < keyCodes.space) { //see #549
 					return;
 				}
 				base.last.virtual = false;

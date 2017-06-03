@@ -137,6 +137,21 @@ Wiki: [Home](https://github.com/Mottie/Keyboard/wiki/Home) | [FAQ](https://githu
 
 Only the latest changes will be shown below, see the [wiki log](https://github.com/Mottie/Keyboard/wiki/Log) to view older versions.
 
+### Version 1.26.23 (6/2/2017)
+
+* Core:
+  * Remove keybindings from preview. Fixes [issue #565](https://github.com/Mottie/Keyboard/issues/565).
+  * Resolve [issue #549](https://github.com/Mottie/Keyboard/issues/549) - Raising keypress by functional keys is Firefox. See [pull #550](https://github.com/Mottie/Keyboard/pull/550); thanks [@Vick-edit](https://github.com/Vick-edit)!
+* Docs:
+  * Update jQuery.
+* Language:
+  * Add Ethiopic layout and Amharic language. See [pull #562](https://github.com/Mottie/Keyboard/pull/562); thanks [@PietroLiuzzo](https://github.com/PietroLiuzzo)!
+  * Update Ethiopic dist files.
+* Meta:
+  * Add AUTHORS file.
+  * Update dependencies & fix uglify options.
+  * package.json: provide the unminified code as main. See [pull #564](https://github.com/Mottie/Keyboard/pull/564); thanks [@simon04](https://github.com/simon04)!
+
 ### Version 1.26.22 (4/28/2017)
 
 * AltKeysPopup: remove old highlight on hover. Fixes [issue #556](https://github.com/Mottie/Keyboard/issues/556).
@@ -145,16 +160,3 @@ Only the latest changes will be shown below, see the [wiki log](https://github.c
 ### Version 1.26.21 (4/25/2017)
 
 * AltKeysPopup: properly close popup when keyboard hides. Fixes [issue #553](https://github.com/Mottie/Keyboard/issues/553).
-
-### Version 1.26.20 (4/24/2017)
-
-* Core:
-  * keyboard will reposition on keyset change. Fixes [issue #547](https://github.com/Mottie/Keyboard/issues/547).
-  * Restore keyup event. Fixes [issue #552](https://github.com/Mottie/Keyboard/issues/552).
-  * Fix active meta + shift/alt keys.
-* AltKeysPopup:
-  * Restore keyup event. Fixes [issue #552](https://github.com/Mottie/Keyboard/issues/552).
-* Typing:
-  * Fix active meta + shift/alt keys.
-* Meta:
-  * Update dependencies.
