@@ -2390,7 +2390,7 @@ http://www.opensource.org/licenses/mit-license.php
 			var tag = base.el.nodeName,
 				o = base.options;
 			// shift+enter in textareas
-			if (e.shiftKey || base.shiftActive) {
+			if (e.shiftKey) {
 				// textarea & input - enterMod + shift + enter = accept, then go to prev;
 				//  base.switchInput(goToNext, autoAccept)
 				// textarea & input - shift + enter = accept (no navigation)
