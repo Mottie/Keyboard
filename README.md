@@ -137,6 +137,10 @@ Wiki: [Home](https://github.com/Mottie/Keyboard/wiki/Home) | [FAQ](https://githu
 
 Only the latest changes will be shown below, see the [wiki log](https://github.com/Mottie/Keyboard/wiki/Log) to view older versions.
 
+### Version 1.26.24 (7/5/2017)
+
+* Revert virtual enter navigation commit. Fixes [issue #572](https://github.com/Mottie/Keyboard/issues/572).
+
 ### Version 1.26.23 (6/2/2017)
 
 * Core:
@@ -156,7 +160,3 @@ Only the latest changes will be shown below, see the [wiki log](https://github.c
 
 * AltKeysPopup: remove old highlight on hover. Fixes [issue #556](https://github.com/Mottie/Keyboard/issues/556).
 * Navigation: properly highlight key on reveal. Fixes [issue #557](https://github.com/Mottie/Keyboard/issues/557).
-
-### Version 1.26.21 (4/25/2017)
-
-* AltKeysPopup: properly close popup when keyboard hides. Fixes [issue #553](https://github.com/Mottie/Keyboard/issues/553).
