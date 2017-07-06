@@ -2225,6 +2225,7 @@ http://www.opensource.org/licenses/mit-license.php
 			].join(' ');
 		clearTimeout(base.timer);
 		clearTimeout(base.timer2);
+		clearTimeout(base.timer3);
 		if (base.$keyboard.length) {
 			base.removeKeyboard();
 		}
