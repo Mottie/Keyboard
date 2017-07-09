@@ -137,6 +137,10 @@ Wiki: [Home](https://github.com/Mottie/Keyboard/wiki/Home) | [FAQ](https://githu
 
 Only the latest changes will be shown below, see the [wiki log](https://github.com/Mottie/Keyboard/wiki/Log) to view older versions.
 
+### Version 1.26.25 (7/9/2017)
+
+* Clear timer3 timeout on keyboard destroy. See [pull #573](https://github.com/Mottie/Keyboard/pull/573); thanks [@martin-vavra](https://github.com/martin-vavra)!
+
 ### Version 1.26.24 (7/5/2017)
 
 * Revert virtual enter navigation commit. Fixes [issue #572](https://github.com/Mottie/Keyboard/issues/572).
@@ -155,8 +159,3 @@ Only the latest changes will be shown below, see the [wiki log](https://github.c
   * Add AUTHORS file.
   * Update dependencies & fix uglify options.
   * package.json: provide the unminified code as main. See [pull #564](https://github.com/Mottie/Keyboard/pull/564); thanks [@simon04](https://github.com/simon04)!
-
-### Version 1.26.22 (4/28/2017)
-
-* AltKeysPopup: remove old highlight on hover. Fixes [issue #556](https://github.com/Mottie/Keyboard/issues/556).
-* Navigation: properly highlight key on reveal. Fixes [issue #557](https://github.com/Mottie/Keyboard/issues/557).
