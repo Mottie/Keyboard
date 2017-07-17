@@ -75,7 +75,8 @@ $.fn.addNavigation = function(options){
 				position   : [0,0],     // set start position [row-number, key-index]
 				toggleMode : false,     // true = navigate the virtual keyboard, false = navigate in input/textarea
 				focusClass : 'hasFocus',// css class added when toggle mode is on
-				toggleKey  : null       // defaults to $.keyboard.navigationKeys.toggle value
+				toggleKey  : null,      // defaults to $.keyboard.navigationKeys.toggle value
+                rowLooping : false      // when you are at the left end position and hit the left cursor, you will appear at the other end
 			},
 			kbevents = $.keyboard.events;
 		if (!base) { return; }
@@ -130,6 +131,24 @@ $.fn.addNavigation = function(options){
 			}
 		};
 
+		base.getMaxIndex = function(vis, keyButton, row) {
+			return vis.find('.' + keyButton + '[data-pos^="' + row + ',"]').length - 1;
+		};
+
+		base.leftNavigateKey = function(indx, maxIndx) {
+            var rowLooping = base.navigation_options.rowLooping;
+            var newIndx = indx - 1;
+            return newIndx >= 0 ? newIndx : 
+                   rowLooping ? maxIndx : 0 ;
+		};
+
+		base.rightNavigateKey = function(indx, maxIndx) {
+            var rowLooping = base.navigation_options.rowLooping;
+            var newIndx = indx + 1;
+            return newIndx <= maxIndx ? newIndx : 
+                   rowLooping ? 0 : maxIndx ;
+		};
+		
 		base.navigateKeys = function(key, row, indx) {
 			if (!base.isVisible()) {
 				return;
@@ -139,7 +158,7 @@ $.fn.addNavigation = function(options){
 			var kbcss = $.keyboard.css,
 				vis = base.$keyboard.find('.' + kbcss.keySet + ':visible'),
 				maxRow = vis.find('.' + kbcss.endRow).length - 1,
-				maxIndx = vis.find('.' + kbcss.keyButton + '[data-pos^="' + row + ',"]').length - 1,
+				maxIndx = base.getMaxIndex(vis, kbcss.keyButton, row),
 				p = base.last,
 				l = base.$preview.val().length,
 				k = base.navigation_keys;
@@ -149,9 +168,9 @@ $.fn.addNavigation = function(options){
 				case k.pagedown : row = maxRow; break; // pageDown
 				case k.end      : indx = maxIndx; break; // End
 				case k.home     : indx = 0; break; // Home
-				case k.left     : indx += (indx > 0) ? -1 : 0; break; // Left
+                case k.left     : indx = base.leftNavigateKey(indx, maxIndx); break; // Left
 				case k.up       : row += (row > 0) ? -1 : 0; break; // Up
-				case k.right    : indx += 1; break; // Right
+                case k.right    : indx = base.rightNavigateKey(indx, maxIndx); break; // Right
 				case k.down     : row += (row + 1 > maxRow) ? 0 : 1; break; // Down
 				case k.caretrt  : p.start++; break; // caret right
 				case k.caretlt  : p.start--; break; // caret left
@@ -165,7 +184,7 @@ $.fn.addNavigation = function(options){
 			}
 
 			// get max index of new row
-			maxIndx = vis.find('.' + kbcss.keyButton + '[data-pos^="' + row + ',"]').length - 1;
+			maxIndx = base.getMaxIndex(vis, kbcss.keyButton, row)
 			if (indx > maxIndx) { indx = maxIndx; }
 
 			vis.find('.' + opts.css.buttonHover).removeClass(opts.css.buttonHover);
