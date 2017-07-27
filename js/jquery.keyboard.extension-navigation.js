@@ -76,7 +76,7 @@ $.fn.addNavigation = function(options){
 				toggleMode : false,     // true = navigate the virtual keyboard, false = navigate in input/textarea
 				focusClass : 'hasFocus',// css class added when toggle mode is on
 				toggleKey  : null,      // defaults to $.keyboard.navigationKeys.toggle value
-				rowLooping : false	// when you are at the left end position and hit the left cursor, you will appear at the other end
+				rowLooping : false      // when you are at the left end position and hit the left cursor, you will appear at the other end
 			},
 			kbevents = $.keyboard.events;
 		if (!base) { return; }
