@@ -131,35 +131,35 @@ $.fn.addNavigation = function(options){
 			}
 		};
 
-		base.getMaxIndex = function(vis, keyButton, row) {
-			return vis.find('.' + keyButton + '[data-pos^="' + row + ',"]').length - 1;
+		base.getMaxIndex = function(vis, row) {
+			return vis.find('.' + kbcss.keyButton + '[data-pos^="' + row + ',"]').length - 1;
 		};
 
 		base.leftNavigateKey = function(indx, maxIndx) {
 			var rowLooping = base.navigation_options.rowLooping;
 			var newIndx = indx - 1;
-			return newIndx >= 0 ? newIndx : 
+			return newIndx >= 0 ? newIndx :
 				rowLooping ? maxIndx : 0 ;
 		};
 
 		base.rightNavigateKey = function(indx, maxIndx) {
 			var rowLooping = base.navigation_options.rowLooping;
 			var newIndx = indx + 1;
-			return newIndx <= maxIndx ? newIndx : 
+			return newIndx <= maxIndx ? newIndx :
 				rowLooping ? 0 : maxIndx ;
 		};
-		
+
 		base.navigateKeys = function(key, row, indx) {
 			if (!base.isVisible()) {
 				return;
 			}
 			indx = typeof indx === 'number' ? indx : o.position[1];
 			row = typeof row === 'number' ? row : o.position[0];
-			var nextRow = row;
-			var kbcss = $.keyboard.css,
+			var nextMaxIndx,
+				kbcss = $.keyboard.css,
 				vis = base.$keyboard.find('.' + kbcss.keySet + ':visible'),
 				maxRow = vis.find('.' + kbcss.endRow).length - 1,
-				maxIndx = base.getMaxIndex(vis, kbcss.keyButton, row),
+				maxIndx = base.getMaxIndex(vis, row),
 				p = base.last,
 				l = base.$preview.val().length,
 				k = base.navigation_keys;
@@ -170,14 +170,17 @@ $.fn.addNavigation = function(options){
 				case k.end      : indx = maxIndx; break; // End
 				case k.home     : indx = 0; break; // Home
 				case k.left     : indx = base.leftNavigateKey(indx, maxIndx); break; // Left
-				case k.up       : 
-					nextRow += (row > 0) ? -1 : 0; 
-					var nextMaxIndx = base.getMaxIndex(vis, kbcss.keyButton, nextRow);
+				case k.up       :
+					row += (row > 0) ? -1 : 0;
+					nextMaxIndx = base.getMaxIndex(vis, row);
 					indx = indx === maxIndx ? nextMaxIndx : indx;
-					row = nextRow;
 					break; // Up
 				case k.right    : indx = base.rightNavigateKey(indx, maxIndx); break; // Right
-				case k.down     : row += (row + 1 > maxRow) ? 0 : 1; break; // Down
+				case k.down     :
+					row += (row + 1 > maxRow) ? 0 : 1;
+					nextMaxIndx = base.getMaxIndex(vis, row);
+					indx = indx === maxIndx ? nextMaxIndx : indx;
+					break; // Down
 				case k.caretrt  : p.start++; break; // caret right
 				case k.caretlt  : p.start--; break; // caret left
 			}
@@ -190,7 +193,7 @@ $.fn.addNavigation = function(options){
 			}
 
 			// get max index of new row
-			maxIndx = base.getMaxIndex(vis, kbcss.keyButton, row);
+			maxIndx = base.getMaxIndex(vis, row);
 			if (indx > maxIndx) { indx = maxIndx; }
 
 			vis.find('.' + opts.css.buttonHover).removeClass(opts.css.buttonHover);
