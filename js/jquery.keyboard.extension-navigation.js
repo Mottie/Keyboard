@@ -155,6 +155,7 @@ $.fn.addNavigation = function(options){
 			}
 			indx = typeof indx === 'number' ? indx : o.position[1];
 			row = typeof row === 'number' ? row : o.position[0];
+			var nextRow = row;
 			var kbcss = $.keyboard.css,
 				vis = base.$keyboard.find('.' + kbcss.keySet + ':visible'),
 				maxRow = vis.find('.' + kbcss.endRow).length - 1,
@@ -169,7 +170,12 @@ $.fn.addNavigation = function(options){
 				case k.end      : indx = maxIndx; break; // End
 				case k.home     : indx = 0; break; // Home
 				case k.left     : indx = base.leftNavigateKey(indx, maxIndx); break; // Left
-				case k.up       : row += (row > 0) ? -1 : 0; break; // Up
+				case k.up       : 
+					nextRow += (row > 0) ? -1 : 0; 
+					var nextMaxIndx = base.getMaxIndex(vis, kbcss.keyButton, nextRow);
+					indx = indx === maxIndx ? nextMaxIndx : indx;
+					row = nextRow;
+					break; // Up
 				case k.right    : indx = base.rightNavigateKey(indx, maxIndx); break; // Right
 				case k.down     : row += (row + 1 > maxRow) ? 0 : 1; break; // Down
 				case k.caretrt  : p.start++; break; // caret right
