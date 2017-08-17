@@ -132,6 +132,7 @@ $.fn.addNavigation = function(options){
 		};
 
 		base.getMaxIndex = function(vis, row) {
+			var kbcss = $.keyboard.css;
 			return vis.find('.' + kbcss.keyButton + '[data-pos^="' + row + ',"]').length - 1;
 		};
 
