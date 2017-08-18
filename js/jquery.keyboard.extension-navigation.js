@@ -78,7 +78,9 @@ $.fn.addNavigation = function(options){
 				toggleKey  : null,      // defaults to $.keyboard.navigationKeys.toggle value
 				rowLooping : false      // when you are at the left end position and hit the left cursor, you will appear at the other end
 			},
-			kbevents = $.keyboard.events;
+			kbevents = $.keyboard.events,
+			kbcss = $.keyboard.css;
+
 		if (!base) { return; }
 
 		base.navigation_options = o = $.extend({}, defaults, options);
@@ -92,7 +94,6 @@ $.fn.addNavigation = function(options){
 
 		// Setup
 		base.navigation_init = function(){
-			var kbcss = $.keyboard.css;
 			base.$keyboard.toggleClass(o.focusClass, o.toggleMode)
 				.find('.' + kbcss.keySet + ':visible')
 				.find('.' + kbcss.keyButton + '[data-pos="' + o.position[0] + ',' + o.position[1] + '"]')
@@ -110,8 +111,7 @@ $.fn.addNavigation = function(options){
 			if (typeof(key) === "undefined") {
 				return;
 			}
-			var k = base.navigation_keys,
-				kbcss = $.keyboard.css;
+			var k = base.navigation_keys;
 			if (key === ( o.toggleKey || k.toggle ) || disable) {
 				o.toggleMode = (disable) ? false : !o.toggleMode;
 				base.options.tabNavigation = (o.toggleMode) ? false : base.saveNav[0];
@@ -132,7 +132,6 @@ $.fn.addNavigation = function(options){
 		};
 
 		base.getMaxIndex = function(vis, row) {
-			var kbcss = $.keyboard.css;
 			return vis.find('.' + kbcss.keyButton + '[data-pos^="' + row + ',"]').length - 1;
 		};
 
@@ -157,7 +156,6 @@ $.fn.addNavigation = function(options){
 			indx = typeof indx === 'number' ? indx : o.position[1];
 			row = typeof row === 'number' ? row : o.position[0];
 			var nextMaxIndx,
-				kbcss = $.keyboard.css,
 				vis = base.$keyboard.find('.' + kbcss.keySet + ':visible'),
 				maxRow = vis.find('.' + kbcss.endRow).length - 1,
 				maxIndx = base.getMaxIndex(vis, row),
