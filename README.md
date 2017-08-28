@@ -87,7 +87,7 @@ A jQuery on-screen keyboard (OSK) plugin that works in the browser. Originally p
 
 ## TypeScript
 
-You can use it with TypeScript. Install `[TypeScript](https://www.typescriptlang.org/) and [@types/virtual-keyboard](https://www.npmjs.com/package/@types/virtual-keyboard) into dev dependencies for that.
+You can use it with TypeScript. Install [TypeScript](https://www.typescriptlang.org/) and [@types/virtual-keyboard](https://www.npmjs.com/package/@types/virtual-keyboard) into dev dependencies for that.
 
 ## Documentation
 
