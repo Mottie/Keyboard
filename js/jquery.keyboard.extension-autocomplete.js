@@ -197,18 +197,16 @@ $.fn.addAutocomplete = function(options) {
 					base.autocomplete_update(event);
 				});
 			}
+			if (!base.escCloseCallback.autocomplete) {
+				base.escCloseCallback.autocomplete = base.checkAutocompleteMenu;
+			}
 		};
 
-		base.origEscClose = base.escClose;
-
-		// replace original function with this one
-		base.escClose = function(e) {
+		base.checkAutocompleteMenu = function($target) {
 			// prevent selecting an item in autocomplete from closing keyboard
-			if ( base.hasAutocomplete && (
-				e.target.id === 'ui-active-menuitem' ||
-				$(e.target).closest('ul').hasClass('ui-autocomplete'))
-			) { return; }
-			base.origEscClose(e);
+			// return a "shouldStayOpen" boolean state for this extension
+			return base.hasAutocomplete &&
+				$target.closest('ul').hasClass('ui-autocomplete');
 		};
 
 		base.autocomplete_init();

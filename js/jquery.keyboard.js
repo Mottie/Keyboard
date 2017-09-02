@@ -1690,15 +1690,30 @@ http://www.opensource.org/licenses/mit-license.php
 		}
 	};
 
+	// callback functions called to check if the keyboard needs to be closed
+	// e.g. on escape or clicking outside the keyboard
+	base.escCloseCallback = {
+		// keep keyboard open if alwaysOpen or stayOpen is true - fixes mutliple
+		// always open keyboards or single stay open keyboard
+		keepOpen: function($target) {
+			return !base.isOpen;
+		}
+	};
+
 	base.escClose = function (e) {
 		if (e && e.type === 'keyup') {
 			return (e.which === $keyboard.keyCodes.escape && !o.ignoreEsc) ?
 				base.close(o.autoAccept && o.autoAcceptOnEsc ? 'true' : false) :
 				'';
 		}
-		// keep keyboard open if alwaysOpen or stayOpen is true - fixes mutliple always open keyboards or
-		// single stay open keyboard
-		if (!base.isOpen) {
+		var shouldStayOpen = false,
+			$target = $(e.target);
+		$.each(base.escCloseCallback, function(i, callback) {
+			if (typeof callback === 'function') {
+				shouldStayOpen = shouldStayOpen || callback($target);
+			}
+		});
+		if (shouldStayOpen) {
 			return;
 		}
 		// ignore autoaccept if using escape - good idea?
