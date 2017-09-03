@@ -1185,13 +1185,13 @@ http://www.opensource.org/licenses/mit-license.php
 
 	// Insert text at caret/selection - thanks to Derek Wickwire for fixing this up!
 	base.insertText = function (txt) {
-		if (!base.$preview) { return; }
+		if (!base.$preview) { return base; }
 		if (typeof o.beforeInsert === 'function') {
 			txt = o.beforeInsert(base.last.event, base, base.el, txt);
 		}
 		if (typeof txt === 'undefined' || txt === false) {
 			base.last.key = '';
-			return;
+			return base;
 		}
 		var bksp, t,
 			isBksp = txt === '\b',
