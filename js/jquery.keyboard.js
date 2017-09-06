@@ -1221,6 +1221,7 @@ http://www.opensource.org/licenses/mit-license.php
 
 	base.execCommand = function(cmd, str) {
 		document.execCommand(cmd, false, str);
+		base.el.normalize();
 		if (o.reposition) {
 			base.reposition();
 		}
@@ -1646,7 +1647,7 @@ http://www.opensource.org/licenses/mit-license.php
 			}
 			var kb,
 				stopped = false,
-				all = $('button, input, select, textarea, a')
+				all = $('button, input, select, textarea, a, [contenteditable]')
 					.filter(':visible')
 					.not(':disabled'),
 				indx = all.index(base.$el) + (goToNext ? 1 : -1);
@@ -2502,8 +2503,8 @@ http://www.opensource.org/licenses/mit-license.php
 				o = base.options;
 			// shift+enter in textareas
 			if (e.shiftKey) {
-				// textarea & input - enterMod + shift + enter = accept, then go to prev;
-				//  base.switchInput(goToNext, autoAccept)
+				// textarea, input & contenteditable - enterMod + shift + enter = accept,
+				//  then go to prev; base.switchInput(goToNext, autoAccept)
 				// textarea & input - shift + enter = accept (no navigation)
 				return (o.enterNavigation) ? base.switchInput(!e[o.enterMod], true) : base.close(true);
 			}
@@ -2517,7 +2518,7 @@ http://www.opensource.org/licenses/mit-license.php
 				// IE8 fix (space + \n) - fixes #71 thanks Blookie!
 				base.insertText(($keyboard.msie ? ' ' : '') + '\n');
 			}
-			if (base.isContentEditable) {
+			if (base.isContentEditable && !o.enterNavigation) {
 				// prevent adding nested divs with <br>; the nbsp is needed to add a
 				// text node so the caret can move right
 				// modified from https://stackoverflow.com/a/20398548/145346
@@ -2585,10 +2586,10 @@ http://www.opensource.org/licenses/mit-license.php
 		tab: function (base) {
 			var tag = base.el.nodeName,
 				o = base.options;
-			if (tag === 'INPUT') {
+			if (tag !== 'TEXTAREA') {
 				if (o.tabNavigation) {
 					return base.switchInput(!base.shiftActive, true);
-				} else {
+				} else if (tag === 'INPUT') {
 					// ignore tab key in input
 					return false;
 				}
