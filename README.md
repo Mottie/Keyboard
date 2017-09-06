@@ -21,6 +21,7 @@ A jQuery on-screen keyboard (OSK) plugin that works in the browser. Originally p
 
 ### Ease of setup
 
+* Attach a keyboard to inputs, textareas or contenteditable elements.
 * Add custom keyboard layouts easily.
 * Multiple region specific keyboard layouts included in a separate directory. This is a work in progress and slowly growing.
 * Add up to four standard key sets to each layout that use the shift and alt keys (default, shift, alt and alt-shift).
@@ -34,7 +35,7 @@ A jQuery on-screen keyboard (OSK) plugin that works in the browser. Originally p
 * Easily type in characters with diacritics. Here are some default combination examples:
     * `'` + vowel ( vowel with acute accent, e.g. `'` + `e` = `é` )
     * `` ` `` + vowel ( vowel with grave accent, e.g., `` ` `` + `e` = `è` )
-    * `"` + vowel ( vowel with diaeresis, e.g., `"` + `e` = `ë` )
+    * `"` + vowel ( vowel with diaresis, e.g., `"` + `e` = `ë` )
     * `^` + vowel ( vowel with circumflex accent, e.g., `^` + `e` = `ê` )
     * `~` + certain letters ( letter with tilde, e.g. `~` + `n` = `ñ`, `~` + `o` = `õ` )
 * Enable, disable or add more diacritic functionality as desired.
@@ -100,17 +101,17 @@ Wiki: [Home](https://github.com/Mottie/Keyboard/wiki/Home) | [FAQ](https://githu
 
 ## Known Problems
 
-* This plugin currently supports input and textarea elements. It does not yet support content editable elements.
+* <del>This plugin currently supports input and textarea elements. It does not yet support content editable elements</del>.
 * *Mobile*: If the key press lags behind by one character, it is likely due to the mousewheel plugin. Disable it. See issues [#379](https://github.com/Mottie/Keyboard/issues/379) &amp; [#411](https://github.com/Mottie/Keyboard/issues/411).
 * *IE* and *Opera*:
     * In a text area with multiple carriage returns, the caret positioning will be off when repositioning it with the mouse.
     * Using the right and left arrow keys to navigate through a text area with multiple carriage returns is problematic. The caret doesn't behave like in other browsers when moving from one line to the next. You can always reposition the caret using the mouse.
 * *Opera*: When pressing the tab key while inside a textarea, all browsers but Opera add the tab to the virtual keyboard textarea.
-* *Safari*: See the QWERTY Text Area demo with a locked input. While using the virtual keyboard to type, it enters the text in backwards! This is because textareas with a "readonly" attribute always returns zero for the caret postion.
+* *Safari*: See the QWERTY Text Area demo with a locked input. While using the virtual keyboard to type, it enters the text in backwards! This is because textareas with a "readonly" attribute always returns zero for the caret position.
 * *Typing Extension*:
     * When pressing "Alt", the key set will change to the alt key set, but the focus will be moved to the browser menu. Pressing it quickly a second time will return the focus. This is built into the browser and it isn't possible (as far as I know) to automatically restore the window focus the first time alt is pressed.
     * Holding down the Alt key and trying to type is also not possible since the Windows OS is assuming you are trying to type a shortcut key to access the browser menu. You can still click the keys in the alt key set with the mouse.
-    * Simulated typing on the keyboard breaks when the CapLock is on. Still looking for a cross-browser solution.
+    * Simulated typing on the keyboard breaks when the CapsLock is on. Still looking for a cross-browser solution.
 
 ## Contributing
 
@@ -141,6 +142,23 @@ Wiki: [Home](https://github.com/Mottie/Keyboard/wiki/Home) | [FAQ](https://githu
 
 Only the latest changes will be shown below, see the [wiki log](https://github.com/Mottie/Keyboard/wiki/Log) to view older versions.
 
+### Version 1.27.0-beta (9/6/2017)
+
+* Core:
+  * Restore minimum jQuery to v1.4.3. Fixes [issue #586](https://github.com/Mottie/Keyboard/issues/586).
+  * Prevent max call stack size error. Fixes [issue #542](https://github.com/Mottie/Keyboard/issues/542).
+  * Always return keyboard object.
+  * Add *contenteditable* support
+    * Fixes issues [#208](https://github.com/Mottie/Keyboard/issues/208) &amp; [#540](https://github.com/Mottie/Keyboard/issues/540).
+    * The `usePreview` option has been disabled (for now).
+    * Use the same [public API](https://github.com/Mottie/Keyboard/wiki/Methods) to manipulate contenteditable, textarea and input elements.
+    * Note: Not all extensions or options have been tested on contenteditable elements. Please report any issues.
+* Navigation:
+  * Fix `getMaxIndex` function &amp; define `kbcss` only once. See [PR #588](https://github.com/Mottie/Keyboard/pull/588); thanks [@tlu200](https://github.com/tlu200)!
+* Misc:
+  * Update Typescript section; See [PR #592](https://github.com/Mottie/Keyboard/pull/592); thanks [@bsurai](https://github.com/bsurai)!
+  
+
 ### Version 1.26.26 (7/27/2017)
 
 * Navigation:
@@ -150,7 +168,3 @@ Only the latest changes will be shown below, see the [wiki log](https://github.c
 ### Version 1.26.25 (7/9/2017)
 
 * Clear timer3 timeout on keyboard destroy. See [pull #573](https://github.com/Mottie/Keyboard/pull/573); thanks [@martin-vavra](https://github.com/martin-vavra)!
-
-### Version 1.26.24 (7/5/2017)
-
-* Revert virtual enter navigation commit. Fixes [issue #572](https://github.com/Mottie/Keyboard/issues/572).

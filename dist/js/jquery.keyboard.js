@@ -1,4 +1,4 @@
-/*! jQuery UI Virtual Keyboard v1.26.26 *//*
+/*! jQuery UI Virtual Keyboard v1.27.0-beta *//*
 Author: Jeremy Satterfield
 Maintained: Rob Garrison (Mottie on github)
 Licensed under the MIT License
@@ -42,7 +42,7 @@ http://www.opensource.org/licenses/mit-license.php
 	var $keyboard = $.keyboard = function (el, options) {
 	var o, base = this;
 
-	base.version = '1.26.26';
+	base.version = '1.27.0-beta';
 
 	// Access to jQuery and DOM versions of element
 	base.$el = $(el);
@@ -93,6 +93,9 @@ http://www.opensource.org/licenses/mit-license.php
 		base.wheel = $.isFunction($.fn.mousewheel);
 		// special character in regex that need to be escaped
 		base.escapeRegex = /[-\/\\^$*+?.()|[\]{}]/g;
+		// detect contenteditable
+		base.isContentEditable = !/(input|textarea)/i.test(base.el.nodeName) &&
+			base.el.isContentEditable;
 
 		// keyCode of keys always allowed to be typed
 		k = $keyboard.keyCodes;
@@ -115,6 +118,11 @@ http://www.opensource.org/licenses/mit-license.php
 		base.enabled = true;
 
 		base.checkCaret = (o.lockInput || $keyboard.checkCaretSupport());
+
+		// disable problematic usePreview for contenteditable
+		if (base.isContentEditable) {
+			o.usePreview = false;
+		}
 
 		base.last = {
 			start: 0,
@@ -198,11 +206,15 @@ http://www.opensource.org/licenses/mit-license.php
 		}
 
 		// Add placeholder if not supported by the browser
-		if (!base.watermark && base.$el.val() === '' && base.inPlaceholder !== '' &&
-			base.$el.attr('placeholder') !== '') {
-			base.$el
-				.addClass(kbcss.placeholder) // css watermark style (darker text)
-				.val(base.inPlaceholder);
+		if (
+			!base.watermark &&
+			base.getValue(base.$el) === '' &&
+			base.inPlaceholder !== '' &&
+			base.$el.attr('placeholder') !== ''
+		) {
+			// css watermark style (darker text)
+			base.$el.addClass(kbcss.placeholder);
+			base.setValue(base.inPlaceholder, base.$el);
 		}
 
 		base.$el.trigger(kbevents.kbInit, [base, base.el]);
@@ -219,14 +231,16 @@ http://www.opensource.org/licenses/mit-license.php
 		var $toggle = base.$keyboard.find('.' + $keyboard.css.keyToggle),
 			locked = !base.enabled;
 		// prevent physical keyboard from working
-		base.$preview.prop('readonly', locked || base.options.lockInput);
+		base.preview.readonly = locked || base.options.lockInput;
 		// disable all buttons
 		base.$keyboard
 			.toggleClass($keyboard.css.keyDisabled, locked)
 			.find('.' + $keyboard.css.keyButton)
 			.not($toggle)
-			.prop('disabled', locked)
-			.attr('aria-disabled', locked);
+			.attr('aria-disabled', locked)
+			.each(function() {
+				this.disabled = locked;
+			});
 		$toggle.toggleClass($keyboard.css.keyDisabled, locked);
 		// stop auto typing
 		if (locked && base.typing_options) {
@@ -274,6 +288,18 @@ http://www.opensource.org/licenses/mit-license.php
 		return base.hasKeyboard() ? base.$keyboard.is(':visible') : false;
 	};
 
+	base.setFocus = function () {
+		var $el = base.$preview || base.$el;
+		if (!o.noFocus) {
+			$el.focus();
+		}
+		if (base.isContentEditable) {
+			$keyboard.setEditableCaret($el, base.last.start, base.last.end);
+		} else {
+			$keyboard.caret($el, base.last);
+		}
+	};
+
 	base.focusOn = function () {
 		if (!base && base.el.active) {
 			// keyboard was destroyed
@@ -298,8 +324,8 @@ http://www.opensource.org/licenses/mit-license.php
 		if (base.$keyboard.length) {
 
 			base.last.preVal = '' + base.last.val;
-			base.last.val = base.$preview && base.$preview.val() || base.$el.val();
-			base.$el.val( base.last.val );
+			base.saveLastChange();
+			base.setValue(base.last.val, base.$el);
 
 			base.removeKeyboard();
 			base.shiftActive = base.altActive = base.metaActive = false;
@@ -342,14 +368,17 @@ http://www.opensource.org/licenses/mit-license.php
 		}
 
 		// clear watermark
-		if (!base.watermark && base.el.value === base.inPlaceholder) {
-			base.$el
-				.removeClass(kbcss.placeholder)
-				.val('');
+		if (!base.watermark && base.getValue() === base.inPlaceholder) {
+			base.$el.removeClass(kbcss.placeholder);
+			base.setValue('', base.$el);
 		}
 		// save starting content, in case we cancel
-		base.originalContent = base.$el.val();
-		base.$preview.val(base.originalContent);
+		base.originalContent = base.isContentEditable ?
+			base.$el.html() :
+			base.getValue(base.$el);
+		if (base.el !== base.preview && !base.isContentEditable) {
+			base.setValue(base.originalContent);
+		}
 
 		// disable/enable accept button
 		if (o.acceptValid) {
@@ -610,16 +639,29 @@ http://www.opensource.org/licenses/mit-license.php
 
 	base.saveCaret = function (start, end, $el) {
 		if (base.isCurrent()) {
-			var p = $keyboard.caret($el || base.$preview, start, end);
+			var p;
+			if (typeof start === 'undefined') {
+				// grab & save current caret position
+				p = $.keyboard.caret($el || base.$preview);
+			} else {
+				p = $keyboard.caret($el || base.$preview, start, end);
+			}
 			base.last.start = typeof start === 'undefined' ? p.start : start;
 			base.last.end = typeof end === 'undefined' ? p.end : end;
+		}
+	};
+
+	base.saveLastChange = function (val) {
+		base.last.val = val || base.getValue(base.$preview || base.$el);
+		if (base.isContentEditable) {
+			base.last.elms = base.el.cloneNode(true);
 		}
 	};
 
 	base.setScroll = function () {
 		// Set scroll so caret & current text is in view
 		// needed for virtual keyboard typing, NOT manual typing - fixes #23
-		if (base.last.virtual) {
+		if (!base.isContentEditable && base.last.virtual) {
 
 			var scrollWidth, clientWidth, adjustment, direction,
 				isTextarea = base.preview.nodeName === 'TEXTAREA',
@@ -857,7 +899,7 @@ http://www.opensource.org/licenses/mit-license.php
 				base.checkMaxLength();
 
 				base.last.preVal = '' + base.last.val;
-				base.last.val = base.$preview.val();
+				base.saveLastChange();
 
 				// don't alter "e" or the "keyup" event never finishes processing; fixes #552
 				var event = jQuery.Event( $keyboard.events.kbChange );
@@ -874,7 +916,10 @@ http://www.opensource.org/licenses/mit-license.php
 					return false;
 				}
 				if (o.acceptValid && o.autoAcceptOnValid) {
-					if ($.isFunction(o.validate) && o.validate(base, base.$preview.val())) {
+					if (
+						$.isFunction(o.validate) &&
+						o.validate(base, base.getValue(base.$preview))
+					) {
 						base.$preview.blur();
 						base.accept();
 					}
@@ -939,9 +984,7 @@ http://www.opensource.org/licenses/mit-license.php
 				base.reveal();
 				$(document).trigger('checkkeyboard' + base.namespace);
 			}
-			if (!o.noFocus && base.$preview) {
-				base.$preview.focus();
-			}
+			base.setFocus();
 		});
 
 		// If preventing paste, block context menu (right click)
@@ -965,10 +1008,7 @@ http://www.opensource.org/licenses/mit-license.php
 			.bind('mouseenter mouseleave touchstart '.split(' ').join(base.namespace + ' '), function (e) {
 				if ((o.alwaysOpen || o.userClosed) && e.type !== 'mouseleave' && !base.isCurrent()) {
 					base.reveal();
-					if (!o.noFocus) {
-						base.$preview.focus();
-					}
-					$keyboard.caret(base.$preview, base.last);
+					base.setFocus();
 				}
 				if (!base.isCurrent()) {
 					return;
@@ -1043,16 +1083,11 @@ http://www.opensource.org/licenses/mit-license.php
 				last.eventTime = timer;
 				last.event = e;
 				last.virtual = true;
-				if (!o.noFocus) {
-					base.$preview.focus();
-				}
 				last.$key = $key;
 				last.key = $key.attr('data-value');
 				last.keyPress = "";
 				// Start caret in IE when not focused (happens with each virtual keyboard button click
-				if (base.checkCaret) {
-					$keyboard.caret(base.$preview, last);
-				}
+				base.setFocus();
 				if (/^meta/.test(action)) {
 					action = 'meta';
 				}
@@ -1085,7 +1120,7 @@ http://www.opensource.org/licenses/mit-license.php
 				e.action = last.key;
 				base.$el.trigger(e, [base, base.el]);
 				last.preVal = '' + last.val;
-				last.val = base.$preview.val();
+				base.saveLastChange();
 
 				if ($.isFunction(o.change)) {
 					e.type = $keyboard.events.inputChange;
@@ -1126,7 +1161,10 @@ http://www.opensource.org/licenses/mit-license.php
 				base.mouseRepeat = [false, ''];
 				clearTimeout(base.repeater); // make sure key repeat stops!
 				if (o.acceptValid && o.autoAcceptOnValid) {
-					if ($.isFunction(o.validate) && o.validate(base, base.$preview.val())) {
+					if (
+						$.isFunction(o.validate) &&
+						o.validate(base, base.getValue())
+					) {
 						base.$preview.blur();
 						base.accept();
 					}
@@ -1181,20 +1219,49 @@ http://www.opensource.org/licenses/mit-license.php
 			});
 	};
 
+	base.execCommand = function(cmd, str) {
+		document.execCommand(cmd, false, str);
+		base.el.normalize();
+		if (o.reposition) {
+			base.reposition();
+		}
+	};
+
+	base.getValue = function ($el) {
+		$el = $el || base.$preview;
+		return $el[base.isContentEditable ? 'text' : 'val']();
+	};
+
+	base.setValue = function (txt, $el) {
+		$el = $el || base.$preview;
+		if (base.isContentEditable) {
+			if (txt !== $el.text()) {
+				$keyboard.replaceContent($el, txt);
+				base.saveCaret();
+			}
+		} else {
+			$el.val(txt);
+		}
+		return base;
+	};
+
 	// Insert text at caret/selection - thanks to Derek Wickwire for fixing this up!
 	base.insertText = function (txt) {
-		if (!base.$preview) { return; }
+		if (!base.$preview) { return base; }
 		if (typeof o.beforeInsert === 'function') {
 			txt = o.beforeInsert(base.last.event, base, base.el, txt);
 		}
 		if (typeof txt === 'undefined' || txt === false) {
 			base.last.key = '';
-			return;
+			return base;
+		}
+		if (base.isContentEditable) {
+			return base.insertContentEditable(txt);
 		}
 		var bksp, t,
 			isBksp = txt === '\b',
 			// use base.$preview.val() instead of base.preview.value (val.length includes carriage returns in IE).
-			val = base.$preview.val(),
+			val = base.getValue(),
 			pos = $keyboard.caret(base.$preview),
 			len = val.length; // save original content length
 
@@ -1227,10 +1294,17 @@ http://www.opensource.org/licenses/mit-license.php
 		val = val.substr(0, pos.start - (bksp ? 1 : 0)) + txt + val.substr(pos.end);
 		t = pos.start + (bksp ? -1 : txt.length);
 
-		base.$preview.val(val);
+		base.setValue(val);
 		base.saveCaret(t, t); // save caret in case of bksp
 		base.setScroll();
 		// see #506.. allow chaining of insertText
+		return base;
+	};
+
+	base.insertContentEditable = function (txt) {
+		base.$preview.focus();
+		base.execCommand('insertText', txt);
+		base.saveCaret();
 		return base;
 	};
 
@@ -1238,7 +1312,7 @@ http://www.opensource.org/licenses/mit-license.php
 	base.checkMaxLength = function () {
 		if (!base.$preview) { return; }
 		var start, caret,
-			val = base.$preview.val();
+			val = base.getValue();
 		if (o.maxLength !== false && val.length > o.maxLength) {
 			start = $keyboard.caret(base.$preview).start;
 			caret = Math.min(start, o.maxLength);
@@ -1248,8 +1322,7 @@ http://www.opensource.org/licenses/mit-license.php
 				val = base.last.val;
 				caret = start - 1; // move caret back one
 			}
-
-			base.$preview.val(val.substring(0, o.maxLength));
+			base.setValue(val.substring(0, o.maxLength));
 			// restore caret on change, otherwise it ends up at the end.
 			base.saveCaret(caret, caret);
 		}
@@ -1399,11 +1472,12 @@ http://www.opensource.org/licenses/mit-license.php
 				base.$keyboard.hasClass( $keyboard.css.hasFocus )
 			)
 		) ) {
-			return ( base.$preview || base.$el ).val();
+			return base.getValue(base.$preview || base.$el);
 		}
-		var r, t, t2,
-			// use base.$preview.val() instead of base.preview.value (val.length includes carriage returns in IE).
-			val = base.$preview.val(),
+		var r, t, t2, repl,
+			// use base.$preview.val() instead of base.preview.value
+			// (val.length includes carriage returns in IE).
+			val = base.getValue(),
 			pos = $keyboard.caret(base.$preview),
 			layout = $keyboard.builtLayouts[base.layout],
 			len = val.length; // save original content length
@@ -1447,16 +1521,23 @@ http://www.opensource.org/licenses/mit-license.php
 				// target last two characters
 				$keyboard.caret(base.$preview, t, pos.end);
 				// do combo replace
-				t2 = ($keyboard.caret(base.$preview).text || '').replace(base.regex, function (s, accent, letter) {
-					return (o.combos.hasOwnProperty(accent)) ? o.combos[accent][letter] || s : s;
-				});
-				// add combo back
 				t = $keyboard.caret(base.$preview);
+				repl = function (txt) {
+					return (txt || '').replace(base.regex, function (s, accent, letter) {
+						return (o.combos.hasOwnProperty(accent)) ? o.combos[accent][letter] || s : s;
+					});
+				};
+				t2 = repl(t.text);
+				// add combo back
 				// prevent error if caret doesn't return a function
-				if (t && t.replaceStr) {
-					base.$preview.val(t.replaceStr(t2));
+				if (t && t.replaceStr && t2 !== t.text) {
+					if (base.isContentEditable) {
+						$keyboard.replaceContent(el, repl);
+					} else {
+						base.setValue(t.replaceStr(t2));
+					}
 				}
-				val = base.$preview.val();
+				val = base.getValue();
 			}
 		}
 
@@ -1487,17 +1568,16 @@ http://www.opensource.org/licenses/mit-license.php
 		// save changes, then reposition caret
 		pos.start += val.length - len;
 		pos.end += val.length - len;
-		base.$preview.val(val);
+
+		base.setValue(val);
 		base.saveCaret(pos.start, pos.end);
 		// set scroll to keep caret in view
 		base.setScroll();
-
 		base.checkMaxLength();
 
 		if (o.acceptValid) {
 			base.checkValid();
 		}
-
 		return val; // return text, used for keyboard closing section
 	};
 
@@ -1507,7 +1587,7 @@ http://www.opensource.org/licenses/mit-license.php
 			$accept = base.$keyboard.find('.' + kbcss.keyPrefix + 'accept'),
 			valid = true;
 		if ($.isFunction(o.validate)) {
-			valid = o.validate(base, base.$preview.val(), false);
+			valid = o.validate(base, base.getValue(), false);
 		}
 		// toggle accept button classes; defined in the css
 		$accept
@@ -1567,7 +1647,7 @@ http://www.opensource.org/licenses/mit-license.php
 			}
 			var kb,
 				stopped = false,
-				all = $('button, input, select, textarea, a')
+				all = $('button, input, select, textarea, a, [contenteditable]')
 					.filter(':visible')
 					.not(':disabled'),
 				indx = all.index(base.$el) + (goToNext ? 1 : -1);
@@ -1605,7 +1685,7 @@ http://www.opensource.org/licenses/mit-license.php
 			clearTimeout(base.throttled);
 			var kbcss = $keyboard.css,
 				kbevents = $keyboard.events,
-				val = (accepted) ? base.checkCombos() : base.originalContent;
+				val = accepted ? base.checkCombos() : base.originalContent;
 			// validate input if accepted
 			if (accepted && $.isFunction(o.validate) && !o.validate(base, val, true)) {
 				val = base.originalContent;
@@ -1616,13 +1696,16 @@ http://www.opensource.org/licenses/mit-license.php
 			}
 			base.isCurrent(false);
 			base.isOpen = o.alwaysOpen || o.userClosed;
-			// update value for always open keyboards
-			base.$preview.val(val);
+			if (base.isContentEditable && !accepted) {
+				// base.originalContent stores the HTML
+				base.$el.html(val);
+			} else {
+				base.setValue(val, base.$el);
+			}
 			base.$el
 				.removeClass(kbcss.isCurrent + ' ' + kbcss.inputAutoAccepted)
 				// add 'ui-keyboard-autoaccepted' to inputs - see issue #66
 				.addClass((accepted || false) ? accepted === true ? '' : kbcss.inputAutoAccepted : '')
-				.val(val)
 				// trigger default change event - see issue #146
 				.trigger(kbevents.inputChange);
 			// don't trigger an empty event - see issue #463
@@ -1653,9 +1736,8 @@ http://www.opensource.org/licenses/mit-license.php
 					}, 500);
 				}
 				if (!base.watermark && base.el.value === '' && base.inPlaceholder !== '') {
-					base.$el
-						.addClass(kbcss.placeholder)
-						.val(base.inPlaceholder);
+					base.$el.addClass(kbcss.placeholder);
+					base.setValue(base.inPlaceholder, base.$el);
 				}
 			}
 		}
@@ -1670,9 +1752,13 @@ http://www.opensource.org/licenses/mit-license.php
 		if (base.opening) {
 			return;
 		}
-		base.escClose(e);
 		var kbcss = $.keyboard.css,
-			$target = $(e.target);
+			name = e.target.nodeName,
+			$target = name === 'INPUT' || name === 'TEXTAREA' ?
+				$(e.target) :
+				// clicking on an element inside of a contenteditable
+				$(e.target).closest('[contenteditable]');
+		base.escClose(e, $target);
 		// needed for IE to allow switching between keyboards smoothly
 		if ($target.hasClass(kbcss.input)) {
 			var kb = $target.data('keyboard');
@@ -1688,21 +1774,36 @@ http://www.opensource.org/licenses/mit-license.php
 		}
 	};
 
-	base.escClose = function (e) {
+	// callback functions called to check if the keyboard needs to be closed
+	// e.g. on escape or clicking outside the keyboard
+	base.escCloseCallback = {
+		// keep keyboard open if alwaysOpen or stayOpen is true - fixes mutliple
+		// always open keyboards or single stay open keyboard
+		keepOpen: function($target) {
+			return !base.isOpen;
+		}
+	};
+
+	base.escClose = function (e, $el) {
 		if (e && e.type === 'keyup') {
 			return (e.which === $keyboard.keyCodes.escape && !o.ignoreEsc) ?
 				base.close(o.autoAccept && o.autoAcceptOnEsc ? 'true' : false) :
 				'';
 		}
-		// keep keyboard open if alwaysOpen or stayOpen is true - fixes mutliple always open keyboards or
-		// single stay open keyboard
-		if (!base.isOpen) {
+		var shouldStayOpen = false,
+			$target = $el || $(e.target);
+		$.each(base.escCloseCallback, function(i, callback) {
+			if (typeof callback === 'function') {
+				shouldStayOpen = shouldStayOpen || callback($target);
+			}
+		});
+		if (shouldStayOpen) {
 			return;
 		}
 		// ignore autoaccept if using escape - good idea?
-		if (!base.isCurrent() && base.isOpen || base.isOpen && e.target !== base.el) {
+		if (!base.isCurrent() && base.isOpen || base.isOpen && $target[0] !== base.el) {
 			// don't close if stayOpen is set; but close if a different keyboard is being opened
-			if ((o.stayOpen || o.userClosed) && !$(e.target).hasClass($keyboard.css.input)) {
+			if ((o.stayOpen || o.userClosed) && !$target.hasClass($keyboard.css.input)) {
 				return;
 			}
 			// stop propogation in IE - an input getting focus doesn't open a keyboard if one is already open
@@ -1710,9 +1811,9 @@ http://www.opensource.org/licenses/mit-license.php
 				e.preventDefault();
 			}
 			if (o.closeByClickEvent) {
-				// only close the keyboard if the user is clicking on an input or if he causes a click
+				// only close the keyboard if the user is clicking on an input or if they cause a click
 				// event (touchstart/mousedown will not force the close with this setting)
-				var name = e.target.nodeName.toLowerCase();
+				var name = $target[0].nodeName.toLowerCase();
 				if (name === 'input' || name === 'textarea' || e.type === 'click') {
 					base.close(o.autoAccept ? 'true' : false);
 				}
@@ -2347,15 +2448,21 @@ http://www.opensource.org/licenses/mit-license.php
 			base.showSet();
 		},
 		bksp: function (base) {
-			// the script looks for the '\b' string and initiates a backspace
-			base.insertText('\b');
+			if (base.isContentEditable) {
+				base.execCommand('delete');
+				// save new caret position
+				base.saveCaret();
+			} else {
+				// the script looks for the '\b' string and initiates a backspace
+				base.insertText('\b');
+			}
 		},
 		cancel: function (base) {
 			base.close();
 			return false; // return false prevents further processing
 		},
 		clear: function (base) {
-			base.$preview.val('');
+			base.$preview[base.isContentEditable ? 'text' : 'val']('');
 			if (base.$decBtn.length) {
 				base.checkDecimal();
 			}
@@ -2378,8 +2485,12 @@ http://www.opensource.org/licenses/mit-license.php
 			base.insertText((base.decimal) ? '.' : ',');
 		},
 		del: function (base) {
-			// the script looks for the '{d}' string and initiates a delete
-			base.insertText('{d}');
+			if (base.isContentEditable) {
+				base.execCommand('forwardDelete');
+			} else {
+				// the script looks for the '{d}' string and initiates a delete
+				base.insertText('{d}');
+			}
 		},
 		// resets to base keyset (deprecated because "default" is a reserved word)
 		'default': function (base) {
@@ -2392,8 +2503,8 @@ http://www.opensource.org/licenses/mit-license.php
 				o = base.options;
 			// shift+enter in textareas
 			if (e.shiftKey) {
-				// textarea & input - enterMod + shift + enter = accept, then go to prev;
-				//  base.switchInput(goToNext, autoAccept)
+				// textarea, input & contenteditable - enterMod + shift + enter = accept,
+				//  then go to prev; base.switchInput(goToNext, autoAccept)
 				// textarea & input - shift + enter = accept (no navigation)
 				return (o.enterNavigation) ? base.switchInput(!e[o.enterMod], true) : base.close(true);
 			}
@@ -2406,6 +2517,16 @@ http://www.opensource.org/licenses/mit-license.php
 			if (tag === 'TEXTAREA' && $(e.target).closest('button').length) {
 				// IE8 fix (space + \n) - fixes #71 thanks Blookie!
 				base.insertText(($keyboard.msie ? ' ' : '') + '\n');
+			}
+			if (base.isContentEditable && !o.enterNavigation) {
+				// prevent adding nested divs with <br>; the nbsp is needed to add a
+				// text node so the caret can move right
+				// modified from https://stackoverflow.com/a/20398548/145346
+				base.execCommand('insertHTML', '<br>&nbsp;');
+				// move caret after a delay to allow rendering of HTML
+				setTimeout(function() {
+					$keyboard.keyaction.right(base);
+				}, 0);
 			}
 		},
 		// caps lock key
@@ -2441,8 +2562,9 @@ http://www.opensource.org/licenses/mit-license.php
 			return false;
 		},
 		right: function (base) {
-			var p = $keyboard.caret(base.$preview);
-			if (p.start + 1 <= base.$preview.val().length) {
+			var p = $keyboard.caret(base.$preview),
+				len = base.$preview[base.isContentEditable ? 'text' : 'val']().length;
+			if (p.start + 1 <= len) {
 				// move both start and end of caret (prevents text selection) && save caret position
 				base.last.start = base.last.end = p.start + 1;
 				$keyboard.caret(base.$preview, base.last);
@@ -2454,8 +2576,8 @@ http://www.opensource.org/licenses/mit-license.php
 			base.showSet();
 		},
 		sign: function (base) {
-			if (/^\-?\d*\.?\d*$/.test(base.$preview.val())) {
-				base.$preview.val((base.$preview.val() * -1));
+			if (/^\-?\d*\.?\d*$/.test(base.getValue())) {
+				base.setValue(base.getValue() * -1);
 			}
 		},
 		space: function (base) {
@@ -2464,10 +2586,10 @@ http://www.opensource.org/licenses/mit-license.php
 		tab: function (base) {
 			var tag = base.el.nodeName,
 				o = base.options;
-			if (tag === 'INPUT') {
+			if (tag !== 'TEXTAREA') {
 				if (o.tabNavigation) {
 					return base.switchInput(!base.shiftActive, true);
-				} else {
+				} else if (tag === 'INPUT') {
 					// ignore tab key in input
 					return false;
 				}
@@ -2866,7 +2988,7 @@ http://www.opensource.org/licenses/mit-license.php
 				// READ ONLY
 				isAction : [boolean] true if key is an action key
 				name     : [string]  key class name suffix ( prefix = 'ui-keyboard-' );
-				                     may include decimal ascii value of character
+														 may include decimal ascii value of character
 				value    : [string]  text inserted (non-action keys)
 				title    : [string]  title attribute of key
 				action   : [string]  keyaction name
@@ -2920,16 +3042,15 @@ http://www.opensource.org/licenses/mit-license.php
 		return $keyboard.checkCaret;
 	};
 
-	$keyboard.caret = function ($el, param1, param2) {
-		if (!$el || !$el.length || $el.is(':hidden') || $el.css('visibility') === 'hidden') {
+	$keyboard.caret = function($el, param1, param2) {
+		if (!$el.length || $el.is(':hidden') || $el.css('visibility') === 'hidden') {
 			return {};
 		}
-		var start, end, txt, pos,
-			kb = $el.data('keyboard'),
-			noFocus = kb && kb.options.noFocus;
-		if (!noFocus) {
-			$el.focus();
-		}
+		var start, end, txt, pos, range, sel,
+			kb = $el.data( 'keyboard' ),
+			noFocus = kb && kb.options.noFocus,
+			formEl = /(textarea|input)/i.test($el[0].nodeName);
+		if (!noFocus) { $el.focus(); }
 		// set caret position
 		if (typeof param1 !== 'undefined') {
 			// allow setting caret using ( $el, { start: x, end: y } )
@@ -2943,35 +3064,131 @@ http://www.opensource.org/licenses/mit-license.php
 			if (typeof param1 === 'number' && typeof param2 === 'number') {
 				start = param1;
 				end = param2;
-			} else if (param1 === 'start') {
+			} else if ( param1 === 'start' ) {
 				start = end = 0;
-			} else if (typeof param1 === 'string') {
+			} else if ( typeof param1 === 'string' ) {
 				// unknown string setting, move caret to end
-				start = end = $el.val().length;
+				start = end = $el[formEl ? 'val' : 'text']().length;
 			}
 
 			// *** SET CARET POSITION ***
 			// modify the line below to adapt to other caret plugins
-			return $el.caret(start, end, noFocus);
+			return formEl ?
+				$el.caret( start, end, noFocus ) :
+				$keyboard.setEditableCaret( $el, start, end );
 		}
 		// *** GET CARET POSITION ***
 		// modify the line below to adapt to other caret plugins
-		pos = $el.caret();
+		if (formEl) {
+			// modify the line below to adapt to other caret plugins
+			pos = $el.caret();
+		} else {
+			// contenteditable
+			pos = $keyboard.getEditableCaret($el[0]);
+		}
 		start = pos.start;
 		end = pos.end;
 
 		// *** utilities ***
-		txt = ($el[0].value || $el.text() || '');
+		txt = formEl && $el[0].value || $el.text() || '';
+		return {
+			start : start,
+			end : end,
+			// return selected text
+			text : txt.substring( start, end ),
+			// return a replace selected string method
+			replaceStr : function( str ) {
+				return txt.substring( 0, start ) + str + txt.substring( end, txt.length );
+			}
+		};
+	};
+
+	// modified from https://stackoverflow.com/a/13950376/145346
+	$keyboard.getEditableCaret = function (el) {
+		var start, end,
+			range = window.getSelection().getRangeAt(0),
+			preSelectionRange = range.cloneRange();
+		preSelectionRange.selectNodeContents(el);
+		preSelectionRange.setEnd(range.startContainer, range.startOffset);
+		start = preSelectionRange.toString().length;
+		end = start + range.toString().length;
 		return {
 			start: start,
 			end: end,
-			// return selected text
-			text: txt.substring(start, end),
-			// return a replace selected string method
-			replaceStr: function (str) {
-				return txt.substring(0, start) + str + txt.substring(end, txt.length);
-			}
+			text: el.textContent.substring(start, end)
 		};
+	};
+
+	// modified from https://stackoverflow.com/a/13950376/145346
+	$keyboard.setEditableCaret = function (el, start, end) {
+		el = $(el)[0];
+		var node, i, nextCharIndex, sel,
+			charIndex = 0,
+			nodeStack = [el],
+			foundStart = false,
+			stop = false,
+			range = document.createRange();
+		range.setStart(el, 0);
+		range.collapse(true);
+		while (!stop && (node = nodeStack.pop())) {
+			if (node.nodeType === 3) {
+				nextCharIndex = charIndex + node.length;
+				if (!foundStart && start >= charIndex && start <= nextCharIndex) {
+					range.setStart(node, start - charIndex);
+					foundStart = true;
+				}
+				if (foundStart && end >= charIndex && end <= nextCharIndex) {
+					range.setEnd(node, end - charIndex);
+					stop = true;
+				}
+				charIndex = nextCharIndex;
+			} else {
+				i = node.childNodes.length;
+				while (i--) {
+					nodeStack.push(node.childNodes[i]);
+				}
+			}
+		}
+		sel = window.getSelection();
+		sel.removeAllRanges();
+		sel.addRange(range);
+		return {
+			start: start,
+			end: end,
+			text: el.textContent.substring(start, end)
+		};
+	};
+
+	$keyboard.replaceContent = function (el, param) {
+		el = $(el)[0];
+		var node, i, str, nextCharIndex,
+			type = typeof param,
+			caret = $keyboard.getEditableCaret(el).start,
+			charIndex = 0,
+			nodeStack = [el];
+		while ((node = nodeStack.pop())) {
+			if (node && node.nodeType === 3) {
+				if (type === 'function') {
+					if (caret >= charIndex && caret <= charIndex + node.length) {
+						node.textContent = param(node.textContent);
+					}
+				} else if (type === 'string') {
+					// maybe not the best method, but it works for simple changes
+					str = param.substring(charIndex, charIndex + node.length);
+					if (str !== node.textContent) {
+						node.textContent = str;
+					}
+				}
+				charIndex += node.length;
+			} else if (node && node.childNodes) {
+				i = node.childNodes.length;
+				while (i--) {
+					nodeStack.push(node.childNodes[i]);
+				}
+			}
+		}
+		i = $keyboard.getEditableCaret(el);
+		$keyboard.setEditableCaret(el, i.start, i.start);
 	};
 
 	$.fn.keyboard = function (options) {
