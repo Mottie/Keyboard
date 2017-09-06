@@ -7,6 +7,31 @@ jQuery(function($) {
 
 	$('.version').html( '(v' + $('#text').getkeyboard().version + ')' );
 
+	// Contenteditable
+	// ********************
+	$('#contenteditable').keyboard({
+		usePreview: false,
+		useCombos: false,
+		autoAccept: true,
+		layout: 'custom',
+		customLayout: {
+			'normal': [
+				'` 1 2 3 4 5 6 7 8 9 0 - = {del} {b}',
+				'{tab} q w e r t y u i o p [ ] \\',
+				'a s d f g h j k l ; \' {enter}',
+				'{shift} z x c v b n m , . / {shift}',
+				'{accept} {space} {combo} {left} {right}'
+			],
+			'shift': [
+				'~ ! @ # $ % ^ & * ( ) _ + {del} {b}',
+				'{tab} Q W E R T Y U I O P { } |',
+				'A S D F G H J K L : " {enter}',
+				'{shift} Z X C V B N M < > ? {shift}',
+				'{accept} {space} {combo} {left} {right}'
+			]
+		}
+	});
+
 	// QWERTY Password
 	// ********************
 	$('#password').keyboard({
@@ -410,18 +435,22 @@ jQuery(function($) {
 	// ********************
 	$('.ui-keyboard-input').bind('visible hidden beforeClose accepted canceled restricted', function(e, keyboard, el, status){
 		var c = $('#console'),
+			focused = false,
+			val = keyboard.isContentEditable ? el.textContent : el.value,
 			t = '<li><span class="keyboard">' + $(el).parent().find('h2 .tooltip-tipsy').text() + '</span>';
 			switch (e.type){
-				case 'visible'  : t += ' keyboard is <span class="event">visible</span>'; break;
+				case 'visible'  : t += ' keyboard is <span class="event">visible</span>'; focused = true; break;
 				case 'hidden'   : t += ' keyboard is now <span class="event">hidden</span>'; break;
-				case 'accepted' : t += ' content "<span class="content">' + el.value + '</span>" was <span class="event">accepted</span>' + ($(el).is('[type=password]') ? ', yeah... not so secure :(' : ''); break;
+				case 'accepted' : t += ' content "<span class="content">' + val + '</span>" was <span class="event">accepted</span>' + ($(el).is('[type=password]') ? ', yeah... not so secure :(' : ''); break;
 				case 'canceled' : t += ' content was <span class="event ignored">ignored</span>'; break;
-				case 'restricted'  : t += ' The "' + String.fromCharCode(e.keyCode) + '" key is <span class="event ignored">restricted</span>!'; break;
+				case 'restricted'  : t += ' The "' + String.fromCharCode(e.keyCode) + '" key is <span class="event ignored">restricted</span>!'; focused = true; break;
 				case 'beforeClose' : t += ' keyboard is about to <span class="event">close</span>, contents were <span class="event ' + (status ? 'accepted">accepted' : 'ignored">ignored') + '</span>'; break;
 			}
 		t += '</li>';
 		c.append(t);
 		if (c.find('li').length > 3) { c.find('li').eq(0).remove(); }
+		// demo stuff only
+		keyboard.$el.closest('.block').toggleClass('focused', focused);
 	});
 
 	// Show code

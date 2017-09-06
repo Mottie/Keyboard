@@ -117,6 +117,51 @@
 		Click on the keyboard title, then scroll down to see its code
 	</h5>
 
+	<div class="block">
+		<h2>
+			<span class="tooltip-tipsy" title="Click, then scroll down to see this code">Custom: Contenteditable</span>
+		</h2>
+		<div id="contenteditable" contenteditable="true">This
+is a <em>content editable</em> div with a custom keyboard
+<strong>layout</strong>. Press <kbd>Enter</kbd> to add new lines.</div>
+		<br>
+		<small>
+			* Contenteditable support (v1.27.0-beta).<br>
+			* <code>usePreview</code> disabled.<br>
+			* Custom layout used.
+		</small>
+		<div class="code ui-corner-all">
+			<h4>HTML</h4>
+			<pre class="prettyprint lang-html">&lt;div id="contenteditable" contenteditable="true"&gt;This
+is a &lt;em&gt;content editable&lt;/em&gt; div with a custom keyboard
+&lt;strong&gt;layout&lt;/strong&gt;. Press &lt;kbd&gt;Enter&lt;/kbd&gt; to add new lines.&lt;/div&gt;</pre>
+			<h4>Script</h4>
+			<pre class="prettyprint lang-js">$('#contenteditable').keyboard({
+	usePreview: true, // disabled for contenteditable
+	useCombos: false,
+	autoAccept: true,
+	layout: 'custom',
+	customLayout: {
+		'normal': [
+			'` 1 2 3 4 5 6 7 8 9 0 - = {del} {b}',
+			'{tab} q w e r t y u i o p [ ] \\',
+			'a s d f g h j k l ; \' {enter}',
+			'{shift} z x c v b n m , . / {shift}',
+			'{accept} {space} {combo} {left} {right}'
+		],
+		'shift': [
+			'~ ! @ # $ % ^ & * ( ) _ + {del} {b}',
+			'{tab} Q W E R T Y U I O P { } |',
+			'A S D F G H J K L : " {enter}',
+			'{shift} Z X C V B N M < > ? {shift}',
+			'{accept} {space} {combo} {left} {right}'
+		]
+	}
+})
+.addTyping();</pre>
+		</div>
+	</div>
+
 	<div class="block" id="autocomplete">
 		<h2>
 			<span class="tooltip-tipsy" title="Click, then scroll down to see this code">QWERTY Text</span>
@@ -574,14 +619,14 @@ meta
 		customLayout: {
 			'normal' : [
 				'a e i o u y c',
-				'` \' " ~ {sp:1} {dec}',
+				'` \' " ~ ^ {dec} {combo}',
 				'{tab} {enter} {bksp}',
 				'{space}',
 				'{accept} {cancel} {shift}'
 			],
 			'shift' : [
 				'A E I O U Y C',
-				'` \' " ~ {sp:1} {dec}',
+				'` \' " ~ ^ {dec} {combo}',
 				'{t} {sp:1} {e} {sp:1} {b}',
 				'{space}',
 				'{a} {sp:1} {c} {sp:1} {s}'

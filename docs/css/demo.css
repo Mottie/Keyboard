@@ -41,7 +41,7 @@ h2 img { margin-bottom: 7px; }
 #console .ignored { color: #f00; }
 #console .content { color: RoyalBlue; }
 
-.block { width: 270px; display: inline-block; height: 170px; margin: 15px; padding-bottom: 30px; text-align: center; vertical-align: top; position: relative; }
+.block { width: 270px; display: inline-block; min-height: 180px; margin: 15px; padding-bottom: 30px; text-align: center; vertical-align: top; position: relative; }
 .block2 { margin: 0 auto; text-align: center; }
 textarea, input { width: 260px; background: #333; color: #ddd; border: #777 1px solid; padding: 5px 0; }
 .hiddenInput { display: inline-block; width: 240px; }
