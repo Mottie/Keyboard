@@ -23,10 +23,7 @@
   "homepage": "https://github.com/Mottie/Keyboard",
   "main": [
     "dist/js/jquery.keyboard.js",
-    "css/keyboard.css",
-    "layouts/keyboard-layouts-combined.js",
-    "layouts/keyboard-layouts-greywyvern.js",
-    "layouts/keyboard-layouts-microsoft.js"
+    "css/keyboard.css"
   ],
   "ignore": [
     "js/*.js",
