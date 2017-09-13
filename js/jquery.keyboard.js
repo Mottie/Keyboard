@@ -363,7 +363,7 @@ http://www.opensource.org/licenses/mit-license.php
 
 		// build keyboard if it doesn't exist; or attach keyboard if it was removed, but not cleared
 		if (!base.$keyboard || base.$keyboard &&
-			(!base.$keyboard.length || $.contains(document.body, base.$keyboard[0]))) {
+			(!base.$keyboard.length || $.contains(base.el.ownerDocument.body, base.$keyboard[0]))) {
 			base.startup();
 		}
 
@@ -982,7 +982,7 @@ http://www.opensource.org/licenses/mit-license.php
 			e.stopPropagation();
 			if (!base.isCurrent()) {
 				base.reveal();
-				$(document).trigger('checkkeyboard' + base.namespace);
+				$(base.el.ownerDocument).trigger('checkkeyboard' + base.namespace);
 			}
 			base.setFocus();
 		});
@@ -1220,7 +1220,7 @@ http://www.opensource.org/licenses/mit-license.php
 	};
 
 	base.execCommand = function(cmd, str) {
-		document.execCommand(cmd, false, str);
+		base.el.ownerDocument.execCommand(cmd, false, str);
 		base.el.normalize();
 		if (o.reposition) {
 			base.reposition();
@@ -3106,7 +3106,7 @@ http://www.opensource.org/licenses/mit-license.php
 	// modified from https://stackoverflow.com/a/13950376/145346
 	$keyboard.getEditableCaret = function (el) {
 		var start, end,
-			range = window.getSelection().getRangeAt(0),
+			range = el.ownerDocument.getSelection().getRangeAt(0),
 			preSelectionRange = range.cloneRange();
 		preSelectionRange.selectNodeContents(el);
 		preSelectionRange.setEnd(range.startContainer, range.startOffset);
@@ -3127,7 +3127,7 @@ http://www.opensource.org/licenses/mit-license.php
 			nodeStack = [el],
 			foundStart = false,
 			stop = false,
-			range = document.createRange();
+			range = el.ownerDocument.createRange();
 		range.setStart(el, 0);
 		range.collapse(true);
 		while (!stop && (node = nodeStack.pop())) {
@@ -3149,7 +3149,7 @@ http://www.opensource.org/licenses/mit-license.php
 				}
 			}
 		}
-		sel = window.getSelection();
+		sel = el.ownerDocument.getSelection();
 		sel.removeAllRanges();
 		sel.addRange(range);
 		return {
@@ -3215,9 +3215,9 @@ http://www.opensource.org/licenses/mit-license.php
 			return this;
 		}
 		var selRange, range, stored_range, txt, val,
-			selection = document.selection,
 			$el = this,
 			el = $el[0],
+			selection = el.ownerDocument.selection,
 			sTop = el.scrollTop,
 			ss = false,
 			supportCaret = true;
