@@ -3219,7 +3219,12 @@ http://www.opensource.org/licenses/mit-license.php
 	 */
 
 	$.fn.caret = function (start, end, noFocus) {
-		if (typeof this[0] === 'undefined' || this.is(':hidden') || this.css('visibility') === 'hidden') {
+		if (
+			typeof this[0] === 'undefined' ||
+			this.is(':hidden') ||
+			this.css('visibility') === 'hidden' ||
+			!/(INPUT|TEXTAREA)/.test(this[0].nodeName)
+		) {
 			return this;
 		}
 		var selRange, range, stored_range, txt, val,
