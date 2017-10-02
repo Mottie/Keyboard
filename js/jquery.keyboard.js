@@ -2563,7 +2563,7 @@ http://www.opensource.org/licenses/mit-license.php
 		},
 		right: function (base) {
 			var p = $keyboard.caret(base.$preview),
-				len = base.$preview[base.isContentEditable ? 'text' : 'val']().length;
+				len = base.getValue().length;
 			if (p.start + 1 <= len) {
 				// move both start and end of caret (prevents text selection) && save caret position
 				base.last.start = base.last.end = p.start + 1;
