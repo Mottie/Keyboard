@@ -1,4 +1,4 @@
-/*! jQuery UI Virtual Keyboard v1.27.0-beta *//*
+/*! jQuery UI Virtual Keyboard v1.27.1-beta *//*
 Author: Jeremy Satterfield
 Maintained: Rob Garrison (Mottie on github)
 Licensed under the MIT License
@@ -42,7 +42,7 @@ http://www.opensource.org/licenses/mit-license.php
 	var $keyboard = $.keyboard = function (el, options) {
 	var o, base = this;
 
-	base.version = '1.27.0-beta';
+	base.version = '1.27.1-beta';
 
 	// Access to jQuery and DOM versions of element
 	base.$el = $(el);
@@ -363,7 +363,7 @@ http://www.opensource.org/licenses/mit-license.php
 
 		// build keyboard if it doesn't exist; or attach keyboard if it was removed, but not cleared
 		if (!base.$keyboard || base.$keyboard &&
-			(!base.$keyboard.length || $.contains(document.body, base.$keyboard[0]))) {
+			(!base.$keyboard.length || $.contains(base.el.ownerDocument.body, base.$keyboard[0]))) {
 			base.startup();
 		}
 
@@ -982,7 +982,7 @@ http://www.opensource.org/licenses/mit-license.php
 			e.stopPropagation();
 			if (!base.isCurrent()) {
 				base.reveal();
-				$(document).trigger('checkkeyboard' + base.namespace);
+				$(base.el.ownerDocument).trigger('checkkeyboard' + base.namespace);
 			}
 			base.setFocus();
 		});
@@ -1220,7 +1220,7 @@ http://www.opensource.org/licenses/mit-license.php
 	};
 
 	base.execCommand = function(cmd, str) {
-		document.execCommand(cmd, false, str);
+		base.el.ownerDocument.execCommand(cmd, false, str);
 		base.el.normalize();
 		if (o.reposition) {
 			base.reposition();
@@ -1957,12 +1957,13 @@ http://www.opensource.org/licenses/mit-license.php
 		}
 
 		data.name = base.processName(txt.name);
-
-		if (keys.map !== '') {
-			$keyboard.builtLayouts[base.layout].mappedKeys[keys.map] = keys.name;
-			$keyboard.builtLayouts[base.layout].acceptedKeys.push(keys.name);
-		} else if (regKey) {
-			$keyboard.builtLayouts[base.layout].acceptedKeys.push(keys.name);
+		if (keys.name !== '') {
+			if (keys.map !== '') {
+				$keyboard.builtLayouts[base.layout].mappedKeys[keys.map] = keys.name;
+				$keyboard.builtLayouts[base.layout].acceptedKeys.push(keys.name);
+			} else if (regKey) {
+				$keyboard.builtLayouts[base.layout].acceptedKeys.push(keys.name);
+			}
 		}
 
 		if (regKey) {
@@ -2563,7 +2564,7 @@ http://www.opensource.org/licenses/mit-license.php
 		},
 		right: function (base) {
 			var p = $keyboard.caret(base.$preview),
-				len = base.$preview[base.isContentEditable ? 'text' : 'val']().length;
+				len = base.getValue().length;
 			if (p.start + 1 <= len) {
 				// move both start and end of caret (prevents text selection) && save caret position
 				base.last.start = base.last.end = p.start + 1;
@@ -2576,8 +2577,16 @@ http://www.opensource.org/licenses/mit-license.php
 			base.showSet();
 		},
 		sign: function (base) {
-			if (/^\-?\d*\.?\d*$/.test(base.getValue())) {
-				base.setValue(base.getValue() * -1);
+			if (/^[+-]?\d*\.?\d*$/.test(base.getValue())) {
+				var caret,
+					p = $keyboard.caret(base.$preview),
+					val = base.getValue();
+				base.setValue(val * -1);
+				caret = base.getValue().length - val.length;
+				base.last.start = p.start + caret;
+				base.last.end = p.end + caret;
+				$keyboard.caret(base.$preview, base.last);
+				base.setScroll();
 			}
 		},
 		space: function (base) {
@@ -3106,7 +3115,7 @@ http://www.opensource.org/licenses/mit-license.php
 	// modified from https://stackoverflow.com/a/13950376/145346
 	$keyboard.getEditableCaret = function (el) {
 		var start, end,
-			range = window.getSelection().getRangeAt(0),
+			range = el.ownerDocument.getSelection().getRangeAt(0),
 			preSelectionRange = range.cloneRange();
 		preSelectionRange.selectNodeContents(el);
 		preSelectionRange.setEnd(range.startContainer, range.startOffset);
@@ -3127,7 +3136,7 @@ http://www.opensource.org/licenses/mit-license.php
 			nodeStack = [el],
 			foundStart = false,
 			stop = false,
-			range = document.createRange();
+			range = el.ownerDocument.createRange();
 		range.setStart(el, 0);
 		range.collapse(true);
 		while (!stop && (node = nodeStack.pop())) {
@@ -3149,7 +3158,7 @@ http://www.opensource.org/licenses/mit-license.php
 				}
 			}
 		}
-		sel = window.getSelection();
+		sel = el.ownerDocument.getSelection();
 		sel.removeAllRanges();
 		sel.addRange(range);
 		return {
@@ -3211,13 +3220,18 @@ http://www.opensource.org/licenses/mit-license.php
 	 */
 
 	$.fn.caret = function (start, end, noFocus) {
-		if (typeof this[0] === 'undefined' || this.is(':hidden') || this.css('visibility') === 'hidden') {
+		if (
+			typeof this[0] === 'undefined' ||
+			this.is(':hidden') ||
+			this.css('visibility') === 'hidden' ||
+			!/(INPUT|TEXTAREA)/.test(this[0].nodeName)
+		) {
 			return this;
 		}
 		var selRange, range, stored_range, txt, val,
-			selection = document.selection,
 			$el = this,
 			el = $el[0],
+			selection = el.ownerDocument.selection,
 			sTop = el.scrollTop,
 			ss = false,
 			supportCaret = true;
