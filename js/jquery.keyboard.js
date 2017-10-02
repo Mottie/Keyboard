@@ -1957,12 +1957,13 @@ http://www.opensource.org/licenses/mit-license.php
 		}
 
 		data.name = base.processName(txt.name);
-
-		if (keys.map !== '') {
-			$keyboard.builtLayouts[base.layout].mappedKeys[keys.map] = keys.name;
-			$keyboard.builtLayouts[base.layout].acceptedKeys.push(keys.name);
-		} else if (regKey) {
-			$keyboard.builtLayouts[base.layout].acceptedKeys.push(keys.name);
+		if (keys.name !== '') {
+			if (keys.map !== '') {
+				$keyboard.builtLayouts[base.layout].mappedKeys[keys.map] = keys.name;
+				$keyboard.builtLayouts[base.layout].acceptedKeys.push(keys.name);
+			} else if (regKey) {
+				$keyboard.builtLayouts[base.layout].acceptedKeys.push(keys.name);
+			}
 		}
 
 		if (regKey) {
