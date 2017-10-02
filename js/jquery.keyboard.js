@@ -2576,8 +2576,16 @@ http://www.opensource.org/licenses/mit-license.php
 			base.showSet();
 		},
 		sign: function (base) {
-			if (/^\-?\d*\.?\d*$/.test(base.getValue())) {
-				base.setValue(base.getValue() * -1);
+			if (/^[+-]?\d*\.?\d*$/.test(base.getValue())) {
+				var caret,
+					p = $keyboard.caret(base.$preview),
+					val = base.getValue();
+				base.setValue(val * -1);
+				caret = base.getValue().length - val.length;
+				base.last.start = p.start + caret;
+				base.last.end = p.end + caret;
+				$keyboard.caret(base.$preview, base.last);
+				base.setScroll();
 			}
 		},
 		space: function (base) {
