@@ -633,9 +633,15 @@ http://www.opensource.org/licenses/mit-license.php
 	// Added in v1.26.8 to allow chaining of the caret function, e.g.
 	// keyboard.reveal().caret(4,5).insertText('test').caret('end');
 	base.caret = function(param1, param2) {
-		var result = $keyboard.caret(base.$preview, param1, param2);
+		var result = $keyboard.caret(base.$preview, param1, param2),
+			wasSetCaret = result instanceof jQuery;
+		// Caret was set, save last position & make chainable
+		if (wasSetCaret) {
+			base.saveCaret(result.start, result.end);
+			return base;
+		}
 		// return caret position if using .caret()
-		return result instanceof jQuery ? base : result;
+		return result;
 	};
 
 	base.saveCaret = function (start, end, $el) {
