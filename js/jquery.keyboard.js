@@ -490,7 +490,9 @@ http://www.opensource.org/licenses/mit-license.php
 		// some languages include a dash, e.g. 'en-gb' or 'fr-ca'
 		// allow o.language to be a string or array...
 		// array is for future expansion where a layout can be set for multiple languages
-		lang = ($.isArray(lang) ? lang[0] : lang).split('-')[0];
+		lang = ($.isArray(lang) ? lang[0] : lang);
+		base.language = lang;
+		lang = lang.split('-')[0];
 
 		// set keyboard language
 		o.display = $.extend(true, {},
