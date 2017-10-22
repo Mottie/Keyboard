@@ -5,8 +5,8 @@
 jQuery.keyboard.language.ar = {
 	language: '\u0627\u0644\u0639\u0631\u0628\u064a\u0629 (Arabic)',
 	display : {
-		'a'      : '\u2714:Accept (Shift+Enter)', // check mark - same action as accept
-		'accept' : 'Accept:Accept (Shift+Enter)',
+		'a'      : '\u2714:موافق (Shift+Enter)', // check mark - same action as accept
+		'accept' : 'Accept:موافق (Shift+Enter)',
 		'alt'    : 'AltGr:Alternate Graphemes',
 		'b'      : '\u2190:Backspace',    // Left arrow (same as &larr;)
 		'bksp'   : 'Bksp:Backspace',
