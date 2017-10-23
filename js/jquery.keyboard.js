@@ -551,6 +551,11 @@ http://www.opensource.org/licenses/mit-license.php
 			base.makePreview();
 		}
 
+		// Add layout and laguage data-attibutes
+		base.$keyboard
+			.attr('data-' + kbcss.keyboard + '-layout', o.layout)
+			.attr('data-' + kbcss.keyboard + '-language', base.language);
+
 		base.$decBtn = base.$keyboard.find('.' + kbcss.keyPrefix + 'dec');
 		// add enter to allowed keys; fixes #190
 		if (o.enterNavigation || base.el.nodeName === 'TEXTAREA') {
