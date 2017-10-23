@@ -1024,7 +1024,7 @@ http://www.opensource.org/licenses/mit-license.php
 					base.reveal();
 					base.setFocus();
 				}
-				if (!base.isCurrent()) {
+				if (!base.isCurrent() || this.disabled) {
 					return;
 				}
 				var $keys, txt,
@@ -1074,7 +1074,7 @@ http://www.opensource.org/licenses/mit-license.php
 				$keyboard.events.kbRepeater, function (e) {
 				e.preventDefault();
 				// prevent errors when external triggers attempt to 'type' - see issue #158
-				if (!base.$keyboard.is(':visible')) {
+				if (!base.$keyboard.is(':visible') || this.disabled) {
 					return false;
 				}
 				var action, $keys,
