@@ -143,6 +143,12 @@ Wiki: [Home](https://github.com/Mottie/Keyboard/wiki/Home) | [FAQ](https://githu
 
 Only the latest changes will be shown below, see the [wiki log](https://github.com/Mottie/Keyboard/wiki/Log) to view older versions.
 
+### Version 1.27.3-beta (11/7/2017)
+
+* Core:
+  * Add missing wrapBR parameter.
+  * Save caret after inserting a line break. Backspacing on this line break causes other issues that will be addressed later.
+
 ### Version 1.27.2-beta (11/6/2017)
 
 * Core:
@@ -190,10 +196,3 @@ Only the latest changes will be shown below, see the [wiki log](https://github.c
   * Fix `getMaxIndex` function &amp; define `kbcss` only once. See [PR #588](https://github.com/Mottie/Keyboard/pull/588); thanks [@tlu200](https://github.com/tlu200)!
 * Misc:
   * Update Typescript section; See [PR #592](https://github.com/Mottie/Keyboard/pull/592); thanks [@bsurai](https://github.com/bsurai)!
-  
-
-### Version 1.26.26 (7/27/2017)
-
-* Navigation:
-  * Add `rowLooping` option. See [pull #576](https://github.com/Mottie/Keyboard/pull/576); thanks [@bsurai](https://github.com/bsurai)!
-  * When last key in a row is selected, moving up and down now stays on the last key in the row. See [pull #583](https://github.com/Mottie/Keyboard/pull/583) &amp; [issue #581](https://github.com/Mottie/Keyboard/issues/581); thanks [@bsurai](https://github.com/bsurai)!
