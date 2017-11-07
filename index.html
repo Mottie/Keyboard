@@ -136,7 +136,16 @@ is a <em>content editable</em> div with a custom keyboard
 is a &lt;em&gt;content editable&lt;/em&gt; div with a custom keyboard
 &lt;strong&gt;layout&lt;/strong&gt;. Press &lt;kbd&gt;Enter&lt;/kbd&gt; to add new lines.&lt;/div&gt;</pre>
 			<h4>Script</h4>
-			<pre class="prettyprint lang-js">$('#contenteditable').keyboard({
+			<pre class="prettyprint lang-js">$.keyboard.keyaction.undo = function (base) {
+	base.execCommand('undo');
+	return false;
+};
+$.keyboard.keyaction.redo = function (base) {
+	base.execCommand('redo');
+	return false;
+};
+
+$('#contenteditable').keyboard({
 	usePreview: true, // disabled for contenteditable
 	useCombos: false,
 	autoAccept: true,
@@ -147,15 +156,20 @@ is a &lt;em&gt;content editable&lt;/em&gt; div with a custom keyboard
 			'{tab} q w e r t y u i o p [ ] \\',
 			'a s d f g h j k l ; \' {enter}',
 			'{shift} z x c v b n m , . / {shift}',
-			'{accept} {space} {combo} {left} {right}'
+			'{accept} {space} {left} {right} {undo:Undo} {redo:Redo}'
 		],
 		'shift': [
 			'~ ! @ # $ % ^ & * ( ) _ + {del} {b}',
 			'{tab} Q W E R T Y U I O P { } |',
 			'A S D F G H J K L : " {enter}',
 			'{shift} Z X C V B N M < > ? {shift}',
-			'{accept} {space} {combo} {left} {right}'
+			'{accept} {space} {left} {right} {undo:Undo} {redo:Redo}'
 		]
+	},
+	display: {
+		del: '\u2326:Delete',
+		redo: '↻',
+		undo: '↺'
 	}
 })
 .addTyping();</pre>
