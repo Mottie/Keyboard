@@ -16,6 +16,10 @@
 .ui-keyboard div {
 	font-size: 1.1em;
 }
+.ui-keyboard[contenteditable] {
+	white-space: pre;
+}
+
 .ui-keyboard-button {
 	height: 2em;
 	min-width: 2em;
