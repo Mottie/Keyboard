@@ -3166,7 +3166,7 @@ http://www.opensource.org/licenses/mit-license.php
 					// wrap BRs if not solo child
 					len !== 1 ||
 					// Or if BR is wrapped by a span
-					len === 1 && !$keyboard.isBlock(el.parentNode)
+					len === 1 && !$keyboard.isBlock(container, el.parentNode)
 				) {
 					$(el).addClass($keyboard.css.divWrapperCE).wrap('<div>');
 				}
