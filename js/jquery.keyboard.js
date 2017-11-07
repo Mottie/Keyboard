@@ -2542,15 +2542,14 @@ http://www.opensource.org/licenses/mit-license.php
 			}
 			if (base.isContentEditable && !o.enterNavigation) {
 				base.execCommand('insertHTML', '<div><br class="' + $keyboard.css.divWrapperCE + '"></div>');
-				/* This code will cause the caret to position inside of the <div> and all
-				subsequent inserting of <br>s will cause the same <br> to be more deeply nested
-				in divs... for now we'll keep the caret in the same position - see the wiki
-				page for more details: https://github.com/Mottie/Keyboard/wiki/Contenteditable#limitations
+				// Using backspace on wrapped BRs will now shift the textnode inside of the wrapped BR
+				// Although not ideal, the caret is moved after the block - see the wiki page for
+				// more details: https://github.com/Mottie/Keyboard/wiki/Contenteditable#limitations
 				// move caret after a delay to allow rendering of HTML
 				setTimeout(function() {
 					$keyboard.keyaction.right(base);
+					base.saveCaret();
 				}, 0);
-				*/
 			}
 		},
 		// caps lock key
