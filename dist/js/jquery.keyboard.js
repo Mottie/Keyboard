@@ -1,4 +1,4 @@
-/*! jQuery UI Virtual Keyboard v1.27.1-beta *//*
+/*! jQuery UI Virtual Keyboard v1.27.2-beta *//*
 Author: Jeremy Satterfield
 Maintained: Rob Garrison (Mottie on github)
 Licensed under the MIT License
@@ -42,7 +42,7 @@ http://www.opensource.org/licenses/mit-license.php
 	var $keyboard = $.keyboard = function (el, options) {
 	var o, base = this;
 
-	base.version = '1.27.1-beta';
+	base.version = '1.27.2-beta';
 
 	// Access to jQuery and DOM versions of element
 	base.$el = $(el);
@@ -336,7 +336,8 @@ http://www.opensource.org/licenses/mit-license.php
 	};
 
 	base.reveal = function (redraw) {
-		var alreadyOpen = base.isOpen,
+		var temp,
+			alreadyOpen = base.isOpen,
 			kbcss = $keyboard.css;
 		base.opening = !alreadyOpen;
 		// remove all 'extra' keyboards by calling close function
@@ -428,7 +429,8 @@ http://www.opensource.org/licenses/mit-license.php
 			parseInt(base.$preview.css('font-size'), 10) + 4;
 
 		if (o.caretToEnd) {
-			base.saveCaret(base.originalContent.length, base.originalContent.length);
+			temp = base.isContentEditable ? $keyboard.getEditableLength(base.el) : base.originalContent.length;
+			base.saveCaret(temp, temp);
 		}
 
 		// IE caret haxx0rs
@@ -490,7 +492,9 @@ http://www.opensource.org/licenses/mit-license.php
 		// some languages include a dash, e.g. 'en-gb' or 'fr-ca'
 		// allow o.language to be a string or array...
 		// array is for future expansion where a layout can be set for multiple languages
-		lang = ($.isArray(lang) ? lang[0] : lang).split('-')[0];
+		lang = ($.isArray(lang) ? lang[0] : lang);
+		base.language = lang;
+		lang = lang.split('-')[0];
 
 		// set keyboard language
 		o.display = $.extend(true, {},
@@ -548,6 +552,11 @@ http://www.opensource.org/licenses/mit-license.php
 
 			base.makePreview();
 		}
+
+		// Add layout and laguage data-attibutes
+		base.$keyboard
+			.attr('data-' + kbcss.keyboard + '-layout', o.layout)
+			.attr('data-' + kbcss.keyboard + '-language', base.language);
 
 		base.$decBtn = base.$keyboard.find('.' + kbcss.keyPrefix + 'dec');
 		// add enter to allowed keys; fixes #190
@@ -633,8 +642,15 @@ http://www.opensource.org/licenses/mit-license.php
 	// Added in v1.26.8 to allow chaining of the caret function, e.g.
 	// keyboard.reveal().caret(4,5).insertText('test').caret('end');
 	base.caret = function(param1, param2) {
-		$keyboard.caret(base.$preview, param1, param2);
-		return base;
+		var result = $keyboard.caret(base.$preview, param1, param2),
+			wasSetCaret = result instanceof jQuery;
+		// Caret was set, save last position & make chainable
+		if (wasSetCaret) {
+			base.saveCaret(result.start, result.end);
+			return base;
+		}
+		// return caret position if using .caret()
+		return result;
 	};
 
 	base.saveCaret = function (start, end, $el) {
@@ -642,7 +658,7 @@ http://www.opensource.org/licenses/mit-license.php
 			var p;
 			if (typeof start === 'undefined') {
 				// grab & save current caret position
-				p = $.keyboard.caret($el || base.$preview);
+				p = $keyboard.caret($el || base.$preview);
 			} else {
 				p = $keyboard.caret($el || base.$preview, start, end);
 			}
@@ -1010,7 +1026,7 @@ http://www.opensource.org/licenses/mit-license.php
 					base.reveal();
 					base.setFocus();
 				}
-				if (!base.isCurrent()) {
+				if (!base.isCurrent() || this.disabled) {
 					return;
 				}
 				var $keys, txt,
@@ -1060,7 +1076,7 @@ http://www.opensource.org/licenses/mit-license.php
 				$keyboard.events.kbRepeater, function (e) {
 				e.preventDefault();
 				// prevent errors when external triggers attempt to 'type' - see issue #158
-				if (!base.$keyboard.is(':visible')) {
+				if (!base.$keyboard.is(':visible') || this.disabled) {
 					return false;
 				}
 				var action, $keys,
@@ -1312,8 +1328,9 @@ http://www.opensource.org/licenses/mit-license.php
 	base.checkMaxLength = function () {
 		if (!base.$preview) { return; }
 		var start, caret,
-			val = base.getValue();
-		if (o.maxLength !== false && val.length > o.maxLength) {
+			val = base.getValue(),
+			len = base.isContentEditable ? $keyboard.getEditableLength(base.el) : val.length;
+		if (o.maxLength !== false && len > o.maxLength) {
 			start = $keyboard.caret(base.$preview).start;
 			caret = Math.min(start, o.maxLength);
 
@@ -1480,7 +1497,9 @@ http://www.opensource.org/licenses/mit-license.php
 			val = base.getValue(),
 			pos = $keyboard.caret(base.$preview),
 			layout = $keyboard.builtLayouts[base.layout],
-			len = val.length; // save original content length
+			max = base.isContentEditable ? $keyboard.getEditableLength(base.el) : val.length,
+			// save original content length
+			len = max;
 		// return if val is empty; fixes #352
 		if (val === '') {
 			// check valid on empty string - see #429
@@ -1566,8 +1585,8 @@ http://www.opensource.org/licenses/mit-license.php
 		}
 
 		// save changes, then reposition caret
-		pos.start += val.length - len;
-		pos.end += val.length - len;
+		pos.start += max - len;
+		pos.end += max - len;
 
 		base.setValue(val);
 		base.saveCaret(pos.start, pos.end);
@@ -2406,6 +2425,8 @@ http://www.opensource.org/licenses/mit-license.php
 		keySpacer: 'ui-keyboard-spacer', // empty keys
 		keyToggle: 'ui-keyboard-toggle',
 		keyDisabled: 'ui-keyboard-disabled',
+		// Class for BRs with a div wrapper inside of contenteditable
+		divWrapperCE: 'ui-keyboard-div-wrapper',
 		// states
 		locked: 'ui-keyboard-lockedinput',
 		alwaysOpen: 'ui-keyboard-always-open',
@@ -2520,14 +2541,16 @@ http://www.opensource.org/licenses/mit-license.php
 				base.insertText(($keyboard.msie ? ' ' : '') + '\n');
 			}
 			if (base.isContentEditable && !o.enterNavigation) {
-				// prevent adding nested divs with <br>; the nbsp is needed to add a
-				// text node so the caret can move right
-				// modified from https://stackoverflow.com/a/20398548/145346
-				base.execCommand('insertHTML', '<br>&nbsp;');
+				base.execCommand('insertHTML', '<div><br class="' + $keyboard.css.divWrapperCE + '"></div>');
+				/* This code will cause the caret to position inside of the <div> and all
+				subsequent inserting of <br>s will cause the same <br> to be more deeply nested
+				in divs... for now we'll keep the caret in the same position - see the wiki
+				page for more details: https://github.com/Mottie/Keyboard/wiki/Contenteditable#limitations
 				// move caret after a delay to allow rendering of HTML
 				setTimeout(function() {
 					$keyboard.keyaction.right(base);
 				}, 0);
+				*/
 			}
 		},
 		// caps lock key
@@ -2564,10 +2587,11 @@ http://www.opensource.org/licenses/mit-license.php
 		},
 		right: function (base) {
 			var p = $keyboard.caret(base.$preview),
-				len = base.getValue().length;
-			if (p.start + 1 <= len) {
-				// move both start and end of caret (prevents text selection) && save caret position
-				base.last.start = base.last.end = p.start + 1;
+				len = base.isContentEditable ? $keyboard.getEditableLength(base.el) : base.getValue().length;
+			if (p.end + 1 <= len) {
+				// move both start and end of caret to end position 
+				// (prevents text selection) && save caret position
+				base.last.start = base.last.end = p.end + 1;
 				$keyboard.caret(base.$preview, base.last);
 				base.setScroll();
 			}
@@ -2580,9 +2604,10 @@ http://www.opensource.org/licenses/mit-license.php
 			if (/^[+-]?\d*\.?\d*$/.test(base.getValue())) {
 				var caret,
 					p = $keyboard.caret(base.$preview),
-					val = base.getValue();
+					val = base.getValue(),
+					len = base.isContentEditable ? $keyboard.getEditableLength(base.el) : val.length;
 				base.setValue(val * -1);
-				caret = base.getValue().length - val.length;
+				caret = len - val.length;
 				base.last.start = p.start + caret;
 				base.last.end = p.end + caret;
 				$keyboard.caret(base.$preview, base.last);
@@ -2925,6 +2950,10 @@ http://www.opensource.org/licenses/mit-license.php
 		// When appendLocally is false, the keyboard will be appended to this object
 		appendTo: 'body',
 
+		// Wrap all <br>s inside of a contenteditable in a div; without wrapping, the caret
+		// position will not be accurate
+		wrapBRs: true,
+
 		// If false, the shift key will remain active until the next key is (mouse) clicked on; if true it will
 		// stay active until pressed again
 		stickyShift: true,
@@ -3055,7 +3084,7 @@ http://www.opensource.org/licenses/mit-license.php
 		if (!$el.length || $el.is(':hidden') || $el.css('visibility') === 'hidden') {
 			return {};
 		}
-		var start, end, txt, pos, range, sel,
+		var start, end, txt, pos,
 			kb = $el.data( 'keyboard' ),
 			noFocus = kb && kb.options.noFocus,
 			formEl = /(textarea|input)/i.test($el[0].nodeName);
@@ -3077,7 +3106,7 @@ http://www.opensource.org/licenses/mit-license.php
 				start = end = 0;
 			} else if ( typeof param1 === 'string' ) {
 				// unknown string setting, move caret to end
-				start = end = $el[formEl ? 'val' : 'text']().length;
+				start = end = 'end';
 			}
 
 			// *** SET CARET POSITION ***
@@ -3112,71 +3141,219 @@ http://www.opensource.org/licenses/mit-license.php
 		};
 	};
 
-	// modified from https://stackoverflow.com/a/13950376/145346
-	$keyboard.getEditableCaret = function (el) {
-		var start, end,
-			range = el.ownerDocument.getSelection().getRangeAt(0),
-			preSelectionRange = range.cloneRange();
-		preSelectionRange.selectNodeContents(el);
-		preSelectionRange.setEnd(range.startContainer, range.startOffset);
-		start = preSelectionRange.toString().length;
-		end = start + range.toString().length;
+	$keyboard.isTextNode = function(el) {
+		return el && el.nodeType === 3;
+	};
+
+	$keyboard.isBlock = function(el, node) {
+		var win = el.ownerDocument.defaultView;
+		if (
+			node && node.nodeType === 1 && node !== el &&
+			win.getComputedStyle(node).display === 'block'
+		) {
+			return 1;
+		}
+		return 0;
+	};
+
+	// Wrap all BR's inside of contenteditable
+	$keyboard.wrapBRs = function(container) {
+		var $el = $(container).find('br:not(.' + $keyboard.css.divWrapperCE + ')');
+		if ($el.length) {
+			$.each($el, function(i, el) {
+				var len = el.parentNode.childNodes.length;
+				if (
+					// wrap BRs if not solo child
+					len !== 1 ||
+					// Or if BR is wrapped by a span
+					len === 1 && !$keyboard.isBlock(el.parentNode)
+				) {
+					$(el).addClass($keyboard.css.divWrapperCE).wrap('<div>');
+				}
+			});
+		}
+	};
+
+	$keyboard.getEditableCaret = function(container) {
+		container = $(container)[0];
+		if (!container.isContentEditable) { return {}; }
+		var end, text,
+			options = ($(container).data('keyboard') || {}).options,
+			doc = container.ownerDocument,
+			range = doc.getSelection().getRangeAt(0),
+			result = pathToNode(range.startContainer, range.startOffset),
+			start = result.position;
+		if (options.wrapBRs !== false) {
+			$keyboard.wrapBRs(container);
+		}
+		function pathToNode(endNode, offset) {
+			var node, adjust,
+				txt = '',
+				done = false,
+				position = 0,
+				nodes = jQuery.makeArray(container.childNodes);
+			
+			function checkBlock(val) {
+				if (val) {
+					position += val;
+					txt += options && options.replaceCR || '\n';
+				}
+			}
+
+			while (!done && nodes.length) {
+				node = nodes.shift();
+				if (node === endNode) {
+					done = true;
+				}
+
+				// Add one if previous sibling was a block node (div, p, etc)
+				adjust = $keyboard.isBlock(container, node.previousSibling);
+				checkBlock(adjust);
+
+				if ($keyboard.isTextNode(node)) {
+					position += done ? offset : node.length;
+					txt += node.textContent;
+					if (done) {
+						return {position: position, text: txt};
+					}
+				} else if (!done && node.childNodes) {
+					nodes = jQuery.makeArray(node.childNodes).concat(nodes);
+				}
+				// Add one if we're inside a block node (div, p, etc)
+				// and previous sibling was a text node
+				adjust = $keyboard.isTextNode(node.previousSibling) && $keyboard.isBlock(container, node);
+				checkBlock(adjust);
+			}
+			return {position: position, text: txt};
+		}
+		// check of start and end are the same
+		if (range.endContainer === range.startContainer && range.endOffset === range.startOffset) {
+			end = start;
+			text = '';
+		} else {
+			result = pathToNode(range.endContainer, range.endOffset);
+			end = result.position;
+			text = result.text.substring(start, end);
+		}
 		return {
 			start: start,
 			end: end,
-			text: el.textContent.substring(start, end)
+			text: text
 		};
 	};
 
-	// modified from https://stackoverflow.com/a/13950376/145346
-	$keyboard.setEditableCaret = function (el, start, end) {
-		el = $(el)[0];
-		var node, i, nextCharIndex, sel,
-			charIndex = 0,
-			nodeStack = [el],
-			foundStart = false,
-			stop = false,
-			range = el.ownerDocument.createRange();
-		range.setStart(el, 0);
-		range.collapse(true);
-		while (!stop && (node = nodeStack.pop())) {
-			if (node.nodeType === 3) {
-				nextCharIndex = charIndex + node.length;
-				if (!foundStart && start >= charIndex && start <= nextCharIndex) {
-					range.setStart(node, start - charIndex);
-					foundStart = true;
+	$keyboard.getEditableLength = function(container) {
+		var result = $keyboard.setEditableCaret(container, 'getMax');
+		// if not a number, the container is not a contenteditable element
+		return typeof result === 'number' ? result : null;
+	};
+
+	$keyboard.setEditableCaret = function(container, start, end) {
+		container = $(container)[0];
+		if (!container.isContentEditable) { return {}; }
+		var doc = container.ownerDocument,
+			range = doc.createRange(),
+			sel = doc.getSelection(),
+			options = ($(container).data('keyboard') || {}).options,
+			s = start,
+			e = end,
+			text = '',
+			result = findNode(start === 'getMax' ? 'end' : start);
+		function findNode(offset) {
+			if (offset === 'end') {
+				// Set some value > content length; but return max
+				offset = container.innerHTML.length;
+			} else if (offset < 0) {
+				offset = 0;
+			}
+			var node, check,
+				txt = '',
+				done = false,
+				position = 0,
+				last = 0,
+				max = 0,
+				nodes = jQuery.makeArray(container.childNodes);
+			function updateText(val) {
+				txt += val ? options && options.replaceCR || "\n" : "";
+				return val > 0;
+			}
+			function checkDone(adj) {
+				var val = position + adj;
+				last = max;
+				max += adj;
+				if (offset - val >= 0) {
+					position = val;
+					return offset - position <= 0;
 				}
-				if (foundStart && end >= charIndex && end <= nextCharIndex) {
-					range.setEnd(node, end - charIndex);
-					stop = true;
+				return offset - val <= 0;
+			}
+			while (!done && nodes.length) {
+				node = nodes.shift();
+				// Add one if the previous sibling was a block node (div, p, etc)
+				check = $keyboard.isBlock(container, node.previousSibling);
+				if (updateText(check) && checkDone(check)) {
+					done = true;
 				}
-				charIndex = nextCharIndex;
-			} else {
-				i = node.childNodes.length;
-				while (i--) {
-					nodeStack.push(node.childNodes[i]);
+				// Add one if we're inside a block node (div, p, etc)
+				check = $keyboard.isTextNode(node.previousSibling) && $keyboard.isBlock(container, node);
+				if (updateText(check) && checkDone(check)) {
+					done = true;
+				}
+				if ($keyboard.isTextNode(node)) {
+					txt += node.textContent;
+					if (checkDone(node.length)) {
+						check = offset - position === 0 && position - last > 1 ? node.length : offset - position;
+						return {
+							node: node,
+							offset: check,
+							position: offset,
+							text: txt
+						};
+					}
+				} else if (!done && node.childNodes) {
+					nodes = jQuery.makeArray(node.childNodes).concat(nodes);
 				}
 			}
+			return nodes.length ?
+				{node: node, offset: offset - position, position: offset, text: txt} :
+				// Offset is larger than content, return max
+				{node: node, offset: node.length, position: max, text: txt};
 		}
-		sel = el.ownerDocument.getSelection();
-		sel.removeAllRanges();
-		sel.addRange(range);
+		if (result.node) {
+			s = result.position; // Adjust if start > content length
+			if (start === 'getMax') {
+				return s;
+			}
+			range.setStart(result.node, result.offset);
+			// Only find end if > start and is defined... this allows passing
+			// setEditableCaret(el, 'end') or setEditableCaret(el, 10, 'end');
+			if (typeof end !== "undefined" && end !== start) {
+				result = findNode(end);
+			}
+			if (result.node) {
+				e = result.position; // Adjust if end > content length
+				range.setEnd(result.node, result.offset);
+				text = s === e ? "" : result.text.substring(s, e);
+			}
+			sel.removeAllRanges();
+			sel.addRange(range);
+		}
 		return {
-			start: start,
-			end: end,
-			text: el.textContent.substring(start, end)
+			start: s,
+			end: e,
+			text: text
 		};
 	};
 
 	$keyboard.replaceContent = function (el, param) {
 		el = $(el)[0];
-		var node, i, str, nextCharIndex,
+		var node, i, str,
 			type = typeof param,
 			caret = $keyboard.getEditableCaret(el).start,
 			charIndex = 0,
 			nodeStack = [el];
 		while ((node = nodeStack.pop())) {
-			if (node && node.nodeType === 3) {
+			if ($keyboard.isTextNode(node)) {
 				if (type === 'function') {
 					if (caret >= charIndex && caret <= charIndex + node.length) {
 						node.textContent = param(node.textContent);

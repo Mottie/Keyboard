@@ -143,6 +143,27 @@ Wiki: [Home](https://github.com/Mottie/Keyboard/wiki/Home) | [FAQ](https://githu
 
 Only the latest changes will be shown below, see the [wiki log](https://github.com/Mottie/Keyboard/wiki/Log) to view older versions.
 
+### Version 1.27.2-beta (11/6/2017)
+
+* Core:
+  * Fix caret chaining.
+  * Save caret position when positioned by dev. See [issue #611](https://github.com/Mottie/Keyboard/issues/611).
+  * Save current language to `kb.language`.
+  * Add language and layout data-attribute to wrapper.
+  * Fix toggle disabled state.
+  * Fix contenteditable problems:
+    * Automatically wrap unnested `<br>`s.
+    * Add `wrapBRs` option, set to `true`, to allow disabling the wrapping of breaks; but it is not recommended.
+    * Update caret positioning algorithm to account for `<br>`s and block elements.
+    * Add `$.keyboard.getEditableLength` function to return the calculated content length; accounting for `<br>`s and block elements.
+    * The enter action now adds a wrapped `<br>`.
+    * Changed right arrow to move right from the text selection end, instead of start.
+    * Added a [Contenteditable wiki page](https://github.com/Mottie/Keyboard/wiki/Contenteditable) with more details.
+    * New line breaks are inserted *after* the current caret position (see wiki page).
+* CSS: Add `white-space: pre;` to keyboard css file for contenteditable elements.
+* Readme: Add link to Ember version.
+* Demo: Add undo and redo actions to Contenteditable layout.
+
 ### Version 1.27.1-beta (10/2/2017)
 
 * Core:
