@@ -99,7 +99,7 @@ Wiki: [Home](https://github.com/Mottie/Keyboard/wiki/Home) | [FAQ](https://githu
 ## To Do
 
 * Add an input mask extension. I think I'll try to make it compatible with [this plugin](https://github.com/RobinHerbots/jquery.inputmask).
-* Allow attaching a keyboard to a contenteditable element.
+* <del>Allow attaching a keyboard to a contenteditable element</del>. Added v1.27.0.
 
 ## Known Problems
 
@@ -147,6 +147,11 @@ Wiki: [Home](https://github.com/Mottie/Keyboard/wiki/Home) | [FAQ](https://githu
 
 Only the latest changes will be shown below, see the [wiki log](https://github.com/Mottie/Keyboard/wiki/Log) to view older versions.
 
+### Version 1.27.0 (11/22/2017)
+
+* Core: Replace references to jQuery with $. Fixes [issue #622](https://github.com/Mottie/Keyboard/issues/622)
+* Readme: Add license scan report and status. See [PR #625](https://github.com/Mottie/Keyboard/pull/625).
+
 ### Version 1.27.3-beta (11/7/2017)
 
 * Core:
@@ -173,30 +178,3 @@ Only the latest changes will be shown below, see the [wiki log](https://github.c
 * CSS: Add `white-space: pre;` to keyboard css file for contenteditable elements.
 * Readme: Add link to Ember version.
 * Demo: Add undo and redo actions to Contenteditable layout.
-
-### Version 1.27.1-beta (10/2/2017)
-
-* Core:
-  * Fix contenteditable inside iframes.
-  * Clean up caret right action function.
-  * Preserve caret on sign change. See [issue #607](https://github.com/Mottie/Keyboard/issues/607).
-  * Prevent caret function call on non form elements. Fixes [issue #607](https://github.com/Mottie/Keyboard/issues/607).
-  * Prevent adding empty strings into acceptedKeys array. Fixes [issue #606](https://github.com/Mottie/Keyboard/issues/606).
-* Meta:
-  * Remove extra filetypes from bower main entry. Fixes [issue #600](https://github.com/Mottie/Keyboard/issues/600).
-
-### Version 1.27.0-beta (9/6/2017)
-
-* Core:
-  * Restore minimum jQuery to v1.4.3. Fixes [issue #586](https://github.com/Mottie/Keyboard/issues/586).
-  * Prevent max call stack size error. Fixes [issue #542](https://github.com/Mottie/Keyboard/issues/542).
-  * Always return keyboard object.
-  * Add *contenteditable* support
-    * Fixes issues [#208](https://github.com/Mottie/Keyboard/issues/208) &amp; [#540](https://github.com/Mottie/Keyboard/issues/540).
-    * The `usePreview` option has been disabled (for now).
-    * Use the same [public API](https://github.com/Mottie/Keyboard/wiki/Methods) to manipulate contenteditable, textarea and input elements.
-    * Note: Not all extensions or options have been tested on contenteditable elements. Please report any issues.
-* Navigation:
-  * Fix `getMaxIndex` function &amp; define `kbcss` only once. See [PR #588](https://github.com/Mottie/Keyboard/pull/588); thanks [@tlu200](https://github.com/tlu200)!
-* Misc:
-  * Update Typescript section; See [PR #592](https://github.com/Mottie/Keyboard/pull/592); thanks [@bsurai](https://github.com/bsurai)!

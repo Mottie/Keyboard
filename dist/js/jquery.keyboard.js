@@ -1,4 +1,4 @@
-/*! jQuery UI Virtual Keyboard v1.27.3-beta *//*
+/*! jQuery UI Virtual Keyboard v1.27.0 *//*
 Author: Jeremy Satterfield
 Maintained: Rob Garrison (Mottie on github)
 Licensed under the MIT License
@@ -42,7 +42,7 @@ http://www.opensource.org/licenses/mit-license.php
 	var $keyboard = $.keyboard = function (el, options) {
 	var o, base = this;
 
-	base.version = '1.27.3-beta';
+	base.version = '1.27.0';
 
 	// Access to jQuery and DOM versions of element
 	base.$el = $(el);
@@ -643,7 +643,7 @@ http://www.opensource.org/licenses/mit-license.php
 	// keyboard.reveal().caret(4,5).insertText('test').caret('end');
 	base.caret = function(param1, param2) {
 		var result = $keyboard.caret(base.$preview, param1, param2),
-			wasSetCaret = result instanceof jQuery;
+			wasSetCaret = result instanceof $;
 		// Caret was set, save last position & make chainable
 		if (wasSetCaret) {
 			base.saveCaret(result.start, result.end);
@@ -918,7 +918,7 @@ http://www.opensource.org/licenses/mit-license.php
 				base.saveLastChange();
 
 				// don't alter "e" or the "keyup" event never finishes processing; fixes #552
-				var event = jQuery.Event( $keyboard.events.kbChange );
+				var event = $.Event( $keyboard.events.kbChange );
 				// base.last.key may be empty string (shift, enter, tab, etc) when keyboard is first visible
 				// use e.key instead, if browser supports it
 				event.action = base.last.key;
@@ -3190,7 +3190,7 @@ http://www.opensource.org/licenses/mit-license.php
 				txt = '',
 				done = false,
 				position = 0,
-				nodes = jQuery.makeArray(container.childNodes);
+				nodes = $.makeArray(container.childNodes);
 			
 			function checkBlock(val) {
 				if (val) {
@@ -3216,7 +3216,7 @@ http://www.opensource.org/licenses/mit-license.php
 						return {position: position, text: txt};
 					}
 				} else if (!done && node.childNodes) {
-					nodes = jQuery.makeArray(node.childNodes).concat(nodes);
+					nodes = $.makeArray(node.childNodes).concat(nodes);
 				}
 				// Add one if we're inside a block node (div, p, etc)
 				// and previous sibling was a text node
@@ -3271,7 +3271,7 @@ http://www.opensource.org/licenses/mit-license.php
 				position = 0,
 				last = 0,
 				max = 0,
-				nodes = jQuery.makeArray(container.childNodes);
+				nodes = $.makeArray(container.childNodes);
 			function updateText(val) {
 				txt += val ? options && options.replaceCR || "\n" : "";
 				return val > 0;
@@ -3310,7 +3310,7 @@ http://www.opensource.org/licenses/mit-license.php
 						};
 					}
 				} else if (!done && node.childNodes) {
-					nodes = jQuery.makeArray(node.childNodes).concat(nodes);
+					nodes = $.makeArray(node.childNodes).concat(nodes);
 				}
 			}
 			return nodes.length ?
