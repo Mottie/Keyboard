@@ -1,4 +1,4 @@
-/*! jQuery UI Virtual Keyboard v1.27.0 *//*
+/*! jQuery UI Virtual Keyboard v1.27.1 *//*
 Author: Jeremy Satterfield
 Maintained: Rob Garrison (Mottie on github)
 Licensed under the MIT License
@@ -42,7 +42,7 @@ http://www.opensource.org/licenses/mit-license.php
 	var $keyboard = $.keyboard = function (el, options) {
 	var o, base = this;
 
-	base.version = '1.27.0';
+	base.version = '1.27.1';
 
 	// Access to jQuery and DOM versions of element
 	base.$el = $(el);
@@ -1274,7 +1274,8 @@ http://www.opensource.org/licenses/mit-license.php
 		if (base.isContentEditable) {
 			return base.insertContentEditable(txt);
 		}
-		var bksp, t,
+		var t,
+			bksp = false,
 			isBksp = txt === '\b',
 			// use base.$preview.val() instead of base.preview.value (val.length includes carriage returns in IE).
 			val = base.getValue(),
@@ -1299,17 +1300,19 @@ http://www.opensource.org/licenses/mit-license.php
 			}
 		}
 
+		t = pos.start;
 		if (txt === '{d}') {
 			txt = '';
-			t = pos.start;
 			pos.end += 1;
 		}
 
-		bksp = isBksp && pos.start === pos.end;
-		txt = isBksp ? '' : txt;
-		val = val.substr(0, pos.start - (bksp ? 1 : 0)) + txt + val.substr(pos.end);
-		t = pos.start + (bksp ? -1 : txt.length);
-
+		if (isBksp) {
+			txt = '';
+			bksp = isBksp && t === pos.end && t > 0;
+		}
+		val = val.substr(0, t - (bksp ? 1 : 0)) + txt + val.substr(pos.end);
+		t += bksp ? -1 : txt.length;
+	
 		base.setValue(val);
 		base.saveCaret(t, t); // save caret in case of bksp
 		base.setScroll();
@@ -2076,7 +2079,7 @@ http://www.opensource.org/licenses/mit-license.php
 			// set keyboard language
 			base.updateLanguage();
 		}
-		var row, $row, currentSet,
+		var index, row, $row, currentSet,
 			kbcss = $keyboard.css,
 			sets = 0,
 			layout = $keyboard.builtLayouts[name || base.layout || o.layout] = {
@@ -2096,6 +2099,13 @@ http://www.opensource.org/licenses/mit-license.php
 					'role': 'textbox'
 				})
 				.hide();
+
+		// allow adding "{space}" as an accepted key - Fixes #627
+		index = $.inArray('{space}', acceptedKeys);
+		if (index > -1) {
+			acceptedKeys[index] = ' ';
+		}
+
 		// verify layout or setup custom keyboard
 		if ((internal && o.layout === 'custom') || !$keyboard.layouts.hasOwnProperty(o.layout)) {
 			o.layout = 'custom';
