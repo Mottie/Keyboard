@@ -1274,7 +1274,8 @@ http://www.opensource.org/licenses/mit-license.php
 		if (base.isContentEditable) {
 			return base.insertContentEditable(txt);
 		}
-		var bksp, t,
+		var t,
+			bksp = false,
 			isBksp = txt === '\b',
 			// use base.$preview.val() instead of base.preview.value (val.length includes carriage returns in IE).
 			val = base.getValue(),
@@ -1299,17 +1300,19 @@ http://www.opensource.org/licenses/mit-license.php
 			}
 		}
 
+		t = pos.start;
 		if (txt === '{d}') {
 			txt = '';
-			t = pos.start;
 			pos.end += 1;
 		}
 
-		bksp = isBksp && pos.start === pos.end;
-		txt = isBksp ? '' : txt;
-		val = val.substr(0, pos.start - (bksp ? 1 : 0)) + txt + val.substr(pos.end);
-		t = pos.start + (bksp ? -1 : txt.length);
-
+		if (isBksp) {
+			txt = '';
+			bksp = isBksp && t === pos.end && t > 0;
+		}
+		val = val.substr(0, t - (bksp ? 1 : 0)) + txt + val.substr(pos.end);
+		t += bksp ? -1 : txt.length;
+	
 		base.setValue(val);
 		base.saveCaret(t, t); // save caret in case of bksp
 		base.setScroll();
