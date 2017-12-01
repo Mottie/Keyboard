@@ -2079,7 +2079,7 @@ http://www.opensource.org/licenses/mit-license.php
 			// set keyboard language
 			base.updateLanguage();
 		}
-		var row, $row, currentSet,
+		var index, row, $row, currentSet,
 			kbcss = $keyboard.css,
 			sets = 0,
 			layout = $keyboard.builtLayouts[name || base.layout || o.layout] = {
@@ -2099,6 +2099,13 @@ http://www.opensource.org/licenses/mit-license.php
 					'role': 'textbox'
 				})
 				.hide();
+
+		// allow adding "{space}" as an accepted key - Fixes #627
+		index = $.inArray('{space}', acceptedKeys);
+		if (index > -1) {
+			acceptedKeys[index] = ' ';
+		}
+
 		// verify layout or setup custom keyboard
 		if ((internal && o.layout === 'custom') || !$keyboard.layouts.hasOwnProperty(o.layout)) {
 			o.layout = 'custom';
