@@ -103,7 +103,7 @@ Wiki: [Home](https://github.com/Mottie/Keyboard/wiki/Home) | [FAQ](https://githu
 
 ## Known Problems
 
-* <del>This plugin currently supports input and textarea elements. It does not yet support content editable elements</del>.
+* *ALL*: Only inputs of type "text", "search", "url", "telephone" and "password" <strong>support caret positioning</strong> ([ref](https://html.spec.whatwg.org/#do-not-apply)). Using this keyboard with any other input type will break  the caret left/right, backspace and delete keys (see [issue #241](https://github.com/Mottie/Keyboard/issues/241) for details).
 * *Mobile*: If the key press lags behind by one character, it is likely due to the mousewheel plugin. Disable it. See issues [#379](https://github.com/Mottie/Keyboard/issues/379) &amp; [#411](https://github.com/Mottie/Keyboard/issues/411).
 * *IE* and *Opera*:
     * In a text area with multiple carriage returns, the caret positioning will be off when repositioning it with the mouse.
