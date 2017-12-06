@@ -3311,7 +3311,7 @@ http://www.opensource.org/licenses/mit-license.php
 				if ($keyboard.isTextNode(node)) {
 					txt += node.textContent;
 					if (checkDone(node.length)) {
-						check = offset - position === 0 && position - last > 1 ? node.length : offset - position;
+						check = offset - position === 0 && position - last >= 1 ? node.length : offset - position;
 						return {
 							node: node,
 							offset: check,
