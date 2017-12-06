@@ -3326,7 +3326,7 @@ http://www.opensource.org/licenses/mit-license.php
 			return nodes.length ?
 				{node: node, offset: offset - position, position: offset, text: txt} :
 				// Offset is larger than content, return max
-				{node: node, offset: node.length, position: max, text: txt};
+				{node: node, offset: node && node.length || 0, position: max, text: txt};
 		}
 		if (result.node) {
 			s = result.position; // Adjust if start > content length
