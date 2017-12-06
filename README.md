@@ -147,6 +147,12 @@ Wiki: [Home](https://github.com/Mottie/Keyboard/wiki/Home) | [FAQ](https://githu
 
 Only the latest changes will be shown below, see the [wiki log](https://github.com/Mottie/Keyboard/wiki/Log) to view older versions.
 
+### Version 1.27.2 (12/6/2017)
+
+* Core:
+  * Prevent JS error on empty contenteditable.
+  * Fix contenteditable caret position at beginning of line.
+
 ### Version 1.27.1 (12/1/2017)
 
 * Core:
@@ -157,9 +163,3 @@ Only the latest changes will be shown below, see the [wiki log](https://github.c
 
 * Core: Replace references to jQuery with $. Fixes [issue #622](https://github.com/Mottie/Keyboard/issues/622).
 * Readme: Add license scan report and status. See [PR #625](https://github.com/Mottie/Keyboard/pull/625).
-
-### Version 1.27.3-beta (11/7/2017)
-
-* Core:
-  * Add missing wrapBR parameter.
-  * Save caret after inserting a line break. Backspacing on this line break causes other issues that will be addressed later.
