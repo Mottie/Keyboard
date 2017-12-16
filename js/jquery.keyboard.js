@@ -1835,7 +1835,8 @@ http://www.opensource.org/licenses/mit-license.php
 			if (o.closeByClickEvent) {
 				// only close the keyboard if the user is clicking on an input or if they cause a click
 				// event (touchstart/mousedown will not force the close with this setting)
-				var name = $target[0].nodeName.toLowerCase();
+
+				var name = $target[0] && $target[0].nodeName.toLowerCase();
 				if (name === 'input' || name === 'textarea' || e.type === 'click') {
 					base.close(o.autoAccept ? 'true' : false);
 				}
