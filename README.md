@@ -147,6 +147,11 @@ Wiki: [Home](https://github.com/Mottie/Keyboard/wiki/Home) | [FAQ](https://githu
 
 Only the latest changes will be shown below, see the [wiki log](https://github.com/Mottie/Keyboard/wiki/Log) to view older versions.
 
+### Version 1.27.3 (12/16/2017)
+
+* Core: Prevent JS error while checking `closeByClickEvent`. Fixes [issue #634](https://github.com/Mottie/Keyboard/issues/634).
+* Meta: Update dependencies.
+
 ### Version 1.27.2 (12/6/2017)
 
 * Core:
@@ -158,8 +163,3 @@ Only the latest changes will be shown below, see the [wiki log](https://github.c
 * Core:
   * Prevent bksp wrap to end. Fixes [issue #628](https://github.com/Mottie/Keyboard/issues/628).
   * Allow using {space} in restrictInclude option. Fixes [issue #627](https://github.com/Mottie/Keyboard/issues/627).
-
-### Version 1.27.0 (11/22/2017)
-
-* Core: Replace references to jQuery with $. Fixes [issue #622](https://github.com/Mottie/Keyboard/issues/622).
-* Readme: Add license scan report and status. See [PR #625](https://github.com/Mottie/Keyboard/pull/625).

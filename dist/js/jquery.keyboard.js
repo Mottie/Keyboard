@@ -1,4 +1,4 @@
-/*! jQuery UI Virtual Keyboard v1.27.2 *//*
+/*! jQuery UI Virtual Keyboard v1.27.3 *//*
 Author: Jeremy Satterfield
 Maintained: Rob Garrison (Mottie on github)
 Licensed under the MIT License
@@ -42,7 +42,7 @@ http://www.opensource.org/licenses/mit-license.php
 	var $keyboard = $.keyboard = function (el, options) {
 	var o, base = this;
 
-	base.version = '1.27.2';
+	base.version = '1.27.3';
 
 	// Access to jQuery and DOM versions of element
 	base.$el = $(el);
@@ -1312,7 +1312,7 @@ http://www.opensource.org/licenses/mit-license.php
 		}
 		val = val.substr(0, t - (bksp ? 1 : 0)) + txt + val.substr(pos.end);
 		t += bksp ? -1 : txt.length;
-	
+
 		base.setValue(val);
 		base.saveCaret(t, t); // save caret in case of bksp
 		base.setScroll();
@@ -1835,7 +1835,8 @@ http://www.opensource.org/licenses/mit-license.php
 			if (o.closeByClickEvent) {
 				// only close the keyboard if the user is clicking on an input or if they cause a click
 				// event (touchstart/mousedown will not force the close with this setting)
-				var name = $target[0].nodeName.toLowerCase();
+
+				var name = $target[0] && $target[0].nodeName.toLowerCase();
 				if (name === 'input' || name === 'textarea' || e.type === 'click') {
 					base.close(o.autoAccept ? 'true' : false);
 				}
@@ -2598,7 +2599,7 @@ http://www.opensource.org/licenses/mit-license.php
 			var p = $keyboard.caret(base.$preview),
 				len = base.isContentEditable ? $keyboard.getEditableLength(base.el) : base.getValue().length;
 			if (p.end + 1 <= len) {
-				// move both start and end of caret to end position 
+				// move both start and end of caret to end position
 				// (prevents text selection) && save caret position
 				base.last.start = base.last.end = p.end + 1;
 				$keyboard.caret(base.$preview, base.last);
@@ -3201,7 +3202,7 @@ http://www.opensource.org/licenses/mit-license.php
 				done = false,
 				position = 0,
 				nodes = $.makeArray(container.childNodes);
-			
+
 			function checkBlock(val) {
 				if (val) {
 					position += val;
