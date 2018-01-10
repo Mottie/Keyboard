@@ -1,5 +1,5 @@
-/*! jQuery UI Virtual Keyboard Autocomplete v1.11.3 *//*
- * for Keyboard v1.18+ only (3/29/2017)
+/*! jQuery UI Virtual Keyboard Autocomplete v1.11.4 *//*
+ * for Keyboard v1.18+ only (2018-01-10)
  *
  * By Rob Garrison (Mottie)
  * Licensed under the MIT License
@@ -179,8 +179,10 @@ $.fn.addAutocomplete = function(options) {
 								if (key === 'enter') {
 									// update preview with the selected item
 									setTimeout(function(){
-										base.$preview.val(base.$autocomplete.selectedItem.value);
-										base.$preview.focus();
+										if (base.$autocomplete) {
+											base.$preview.val(base.$autocomplete.selectedItem.value);
+											base.$preview.focus();
+										}
 									}, 100);
 								}
 							}
@@ -207,6 +209,17 @@ $.fn.addAutocomplete = function(options) {
 			// return a "shouldStayOpen" boolean state for this extension
 			return base.hasAutocomplete &&
 				$target.closest('ul').hasClass('ui-autocomplete');
+		};
+
+		base.autocomplete_destroy = function() {
+			clearTimeout(base.$autocomplete.searching);
+			base.hasAutocomplete = false;
+			base.$el.unbind(namespace);
+			if (base.$preview) {
+				base.$preview.unbind(namespace);
+				base.$allKeys.unbind(namespace);
+			}
+			delete base.$autocomplete;
 		};
 
 		base.autocomplete_init();
