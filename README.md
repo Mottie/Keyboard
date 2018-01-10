@@ -147,19 +147,18 @@ Wiki: [Home](https://github.com/Mottie/Keyboard/wiki/Home) | [FAQ](https://githu
 
 Only the latest changes will be shown below, see the [wiki log](https://github.com/Mottie/Keyboard/wiki/Log) to view older versions.
 
-### Version 1.27.3 (12/16/2017)
+### Version 1.27.4 (2018-01-10)
+
+* Core: Pass correct clicked target to close event. Fixes [issue #639](https://github.com/Mottie/Keyboard/issues/639).
+* Autocomplete: Add destroy method
+
+### Version 1.27.3 (2017-12-16)
 
 * Core: Prevent JS error while checking `closeByClickEvent`. Fixes [issue #634](https://github.com/Mottie/Keyboard/issues/634).
 * Meta: Update dependencies.
 
-### Version 1.27.2 (12/6/2017)
+### Version 1.27.2 (2017-12-06)
 
 * Core:
   * Prevent JS error on empty contenteditable.
   * Fix contenteditable caret position at beginning of line.
-
-### Version 1.27.1 (12/1/2017)
-
-* Core:
-  * Prevent bksp wrap to end. Fixes [issue #628](https://github.com/Mottie/Keyboard/issues/628).
-  * Allow using {space} in restrictInclude option. Fixes [issue #627](https://github.com/Mottie/Keyboard/issues/627).

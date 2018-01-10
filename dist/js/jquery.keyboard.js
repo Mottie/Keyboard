@@ -1,4 +1,4 @@
-/*! jQuery UI Virtual Keyboard v1.27.3 *//*
+/*! jQuery UI Virtual Keyboard v1.27.4 *//*
 Author: Jeremy Satterfield
 Maintained: Rob Garrison (Mottie on github)
 Licensed under the MIT License
@@ -42,7 +42,7 @@ http://www.opensource.org/licenses/mit-license.php
 	var $keyboard = $.keyboard = function (el, options) {
 	var o, base = this;
 
-	base.version = '1.27.3';
+	base.version = '1.27.4';
 
 	// Access to jQuery and DOM versions of element
 	base.$el = $(el);
@@ -1776,10 +1776,8 @@ http://www.opensource.org/licenses/mit-license.php
 		}
 		var kbcss = $.keyboard.css,
 			name = e.target.nodeName,
-			$target = name === 'INPUT' || name === 'TEXTAREA' ?
-				$(e.target) :
-				// clicking on an element inside of a contenteditable
-				$(e.target).closest('[contenteditable]');
+			$contenteditable = $(e.target).closest('[contenteditable]'),
+			$target = $contenteditable.length ?  $contenteditable : $(e.target);
 		base.escClose(e, $target);
 		// needed for IE to allow switching between keyboards smoothly
 		if ($target.hasClass(kbcss.input)) {
@@ -1835,7 +1833,6 @@ http://www.opensource.org/licenses/mit-license.php
 			if (o.closeByClickEvent) {
 				// only close the keyboard if the user is clicking on an input or if they cause a click
 				// event (touchstart/mousedown will not force the close with this setting)
-
 				var name = $target[0] && $target[0].nodeName.toLowerCase();
 				if (name === 'input' || name === 'textarea' || e.type === 'click') {
 					base.close(o.autoAccept ? 'true' : false);
