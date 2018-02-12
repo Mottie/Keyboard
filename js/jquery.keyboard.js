@@ -3088,7 +3088,7 @@ http://www.opensource.org/licenses/mit-license.php
 	};
 
 	$keyboard.caret = function($el, param1, param2) {
-		if (!$el.length || $el.is(':hidden') || $el.css('visibility') === 'hidden') {
+		if (!$el || !$el.length || $el.is(':hidden') || $el.css('visibility') === 'hidden') {
 			return {};
 		}
 		var start, end, txt, pos,
