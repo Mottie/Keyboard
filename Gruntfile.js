@@ -10,10 +10,10 @@ module.exports = function(grunt) {
 		'█████▀ ▀████▀   ██  ██ ▀████▀   ██     ██ ██ ██ ▀████▀ █████▀ ██ ██     █████▀\n*/\n',
 
 	hintOpts = {
-		"jquery": true,
-		"browser": true,
-		"sub": true, // used by layouts
-		"-W100": true // ignore "This character may get silently deleted by one or more browsers."
+		'jquery': true,
+		'browser': true,
+		'sub': true, // used by layouts
+		'-W100': true // ignore "This character may get silently deleted by one or more browsers."
 	};
 
 	// Project configuration.
@@ -232,7 +232,7 @@ module.exports = function(grunt) {
 	]);
 
 	function escapeRegExp(str) {
-		return str.replace(/[$()*+\-.\/?[\\\]^{|}]/g, "\\$&");
+		return str.replace(/[$()*+\-.\/?[\\\]^{|}]/g, '\\$&');
 	}
 
 	// update keyboard.jquery.json file version numbers to match the package.json version
@@ -259,7 +259,7 @@ module.exports = function(grunt) {
 		project = grunt.file.read('js/jquery.keyboard.js');
 		if (
 			new RegExp(escapeRegExp('/*! jQuery UI Virtual Keyboard v' + pkg.version)).test(project) &&
-			new RegExp(escapeRegExp("base.version = '" + pkg.version)).test(project)
+			new RegExp(escapeRegExp('base.version = \'' + pkg.version)).test(project)
 		) {
 			console.info('versions all match!');
 		} else {

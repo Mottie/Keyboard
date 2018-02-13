@@ -42,7 +42,8 @@
     "url": "git://github.com/Mottie/keyboard.git"
   },
   "scripts": {
-    "authors": "bash tools/authors.sh"
+    "authors": "bash tools/authors.sh",
+    "lint": "eslint *.js || true"
   },
   "npmName": "virtual-keyboard",
   "npmFileMap": [

@@ -176,8 +176,8 @@ $.fn.addMobile = function(options){
 			// Using this instead of the jQuery Mobile buttonMarkup because it is expecting <a>'s instead of <button>
 			// theme:'a', shadow:'true', inline:'true', corners:'false'
 			return css + ' ' + (btn && btn.cssClass ? btn.cssClass + '-' + (t.theme || '') : '') +
-				(t.shadow == 'true' ? ' ui-shadow' : '') +
-				(t.corners == 'true' ? ' ui-corner-all' : '');
+				(t.shadow == 'true' ? ' ui-shadow' : '') + // eslint-disable-line eqeqeq
+				(t.corners == 'true' ? ' ui-corner-all' : ''); // eslint-disable-line eqeqeq
 		};
 
 		base.mobile_init();

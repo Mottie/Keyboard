@@ -299,7 +299,7 @@
 				base.options.ignoreEsc = true;
 				$( document )
 					.unbind( base.altkeypopup_namespace )
-					.bind( 'keydown' + base.altkeypopup_namespace, function( event ) {
+					.bind( 'keydown' + base.altkeypopup_namespace, function() {
 						// keep home & end from scrolling the page
 						return false;
 					})
@@ -353,7 +353,7 @@
 				});
 
 				// adjust position as needed using popupPosition callback function
-				if ( typeof base.altkeypopup_options.popupPosition === "function" ) {
+				if ( typeof base.altkeypopup_options.popupPosition === 'function' ) {
 					base.altkeypopup_options.popupPosition(base, data);
 				}
 

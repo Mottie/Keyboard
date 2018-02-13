@@ -34,7 +34,7 @@
 	};
 
 	// add {extender} keyaction
-	$keyboard.keyaction.extender = function( base, el ) {
+	$keyboard.keyaction.extender = function( base ) {
 		base.extender_toggle();
 		return false;
 	};

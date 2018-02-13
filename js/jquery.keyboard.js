@@ -354,9 +354,8 @@ http://www.opensource.org/licenses/mit-license.php
 				!base.$el.hasClass(kbcss.locked))) {
 			base.$el.addClass(kbcss.noKeyboard);
 			return;
-		} else {
-			base.$el.removeClass(kbcss.noKeyboard);
 		}
+		base.$el.removeClass(kbcss.noKeyboard);
 
 		// Unbind focus to prevent recursion - openOn may be empty if keyboard is opened externally
 		if (o.openOn) {
@@ -572,7 +571,7 @@ http://www.opensource.org/licenses/mit-license.php
 		base.bindKeys();
 
 		// reposition keyboard on window resize
-		if (o.reposition && $.ui && $.ui.position && o.appendTo == 'body') {
+		if (o.reposition && $.ui && $.ui.position && o.appendTo === 'body') {
 			$(window).bind('resize' + base.namespace, function () {
 				base.reposition();
 			});
@@ -1102,7 +1101,7 @@ http://www.opensource.org/licenses/mit-license.php
 				last.virtual = true;
 				last.$key = $key;
 				last.key = $key.attr('data-value');
-				last.keyPress = "";
+				last.keyPress = '';
 				// Start caret in IE when not focused (happens with each virtual keyboard button click
 				base.setFocus();
 				if (/^meta/.test(action)) {
@@ -1418,10 +1417,10 @@ http://www.opensource.org/licenses/mit-license.php
 		if (base.metaActive) {
 			// remove "-shift" and "-alt" from meta name if it exists
 			if (base.shiftActive) {
-				name = (name || "").replace("-shift", "");
+				name = (name || '').replace('-shift', '');
 			}
 			if (base.altActive) {
-				name = (name || "").replace("-alt", "");
+				name = (name || '').replace('-alt', '');
 			}
 			// the name attribute contains the meta set name 'meta99'
 			key = (/^meta/i.test(name)) ? name : '';
@@ -1466,7 +1465,7 @@ http://www.opensource.org/licenses/mit-license.php
 			.find('.' + kbcss.keySet)
 			.hide()
 			.end()
-			.find('.' + (kbcss.keyAction + prefix + key).replace("--", "-"))
+			.find('.' + (kbcss.keyAction + prefix + key).replace('--', '-'))
 			.addClass(active);
 
 		// show keyset using inline-block ( extender layout will then line up )
@@ -1776,7 +1775,6 @@ http://www.opensource.org/licenses/mit-license.php
 			return;
 		}
 		var kbcss = $.keyboard.css,
-			name = e.target.nodeName,
 			$contenteditable = $(e.target).closest('[contenteditable]'),
 			$target = $contenteditable.length ?  $contenteditable : $(e.target);
 		base.escClose(e, $target);
@@ -1800,7 +1798,7 @@ http://www.opensource.org/licenses/mit-license.php
 	base.escCloseCallback = {
 		// keep keyboard open if alwaysOpen or stayOpen is true - fixes mutliple
 		// always open keyboards or single stay open keyboard
-		keepOpen: function($target) {
+		keepOpen: function() {
 			return !base.isOpen;
 		}
 	};
@@ -1878,9 +1876,8 @@ http://www.opensource.org/licenses/mit-license.php
 				);
 			}
 			return newName.join('');
-		} else {
-			return name;
 		}
+		return name;
 	};
 
 	base.processKeys = function (name) {
@@ -3056,7 +3053,7 @@ http://www.opensource.org/licenses/mit-license.php
 		// value ( like this "keyboard.$preview.val('');" ), if desired. The validate function is called after
 		// each input, the 'isClosing' value will be false; when the accept button is clicked,
 		// 'isClosing' is true
-		validate: function (keyboard, value, isClosing) {
+		validate: function (/* keyboard, value, isClosing */) {
 			return true;
 		}
 
@@ -3285,7 +3282,7 @@ http://www.opensource.org/licenses/mit-license.php
 				max = 0,
 				nodes = $.makeArray(container.childNodes);
 			function updateText(val) {
-				txt += val ? options && options.replaceCR || "\n" : "";
+				txt += val ? options && options.replaceCR || '\n' : '';
 				return val > 0;
 			}
 			function checkDone(adj) {
@@ -3338,13 +3335,13 @@ http://www.opensource.org/licenses/mit-license.php
 			range.setStart(result.node, result.offset);
 			// Only find end if > start and is defined... this allows passing
 			// setEditableCaret(el, 'end') or setEditableCaret(el, 10, 'end');
-			if (typeof end !== "undefined" && end !== start) {
+			if (typeof end !== 'undefined' && end !== start) {
 				result = findNode(end);
 			}
 			if (result.node) {
 				e = result.position; // Adjust if end > content length
 				range.setEnd(result.node, result.offset);
-				text = s === e ? "" : result.text.substring(s, e);
+				text = s === e ? '' : result.text.substring(s, e);
 			}
 			sel.removeAllRanges();
 			sel.addRange(range);
@@ -3447,46 +3444,45 @@ http://www.opensource.org/licenses/mit-license.php
 			}
 			el.scrollTop = sTop;
 			return this;
-		} else {
-			if (/(email|number)/i.test(el.type)) {
-				// fix suggested by raduanastase (https://github.com/Mottie/Keyboard/issues/105#issuecomment-40456535)
-				start = end = $el.val().length;
-			} else if (ss) {
-				start = el.selectionStart;
-				end = el.selectionEnd;
-			} else if (selection) {
-				if (el.nodeName === 'TEXTAREA') {
-					val = $el.val();
-					range = selection.createRange();
-					stored_range = range.duplicate();
-					stored_range.moveToElementText(el);
-					stored_range.setEndPoint('EndToEnd', range);
-					// thanks to the awesome comments in the rangy plugin
-					start = stored_range.text.replace(/\r/g, '\n').length;
-					end = start + range.text.replace(/\r/g, '\n').length;
-				} else {
-					val = $el.val().replace(/\r/g, '\n');
-					range = selection.createRange().duplicate();
-					range.moveEnd('character', val.length);
-					start = (range.text === '' ? val.length : val.lastIndexOf(range.text));
-					range = selection.createRange().duplicate();
-					range.moveStart('character', -val.length);
-					end = range.text.length;
-				}
-			} else {
-				// caret positioning not supported
-				start = end = (el.value || '').length;
-			}
-			txt = (el.value || '');
-			return {
-				start: start,
-				end: end,
-				text: txt.substring(start, end),
-				replace: function (str) {
-					return txt.substring(0, start) + str + txt.substring(end, txt.length);
-				}
-			};
 		}
+		if (/(email|number)/i.test(el.type)) {
+			// fix suggested by raduanastase (https://github.com/Mottie/Keyboard/issues/105#issuecomment-40456535)
+			start = end = $el.val().length;
+		} else if (ss) {
+			start = el.selectionStart;
+			end = el.selectionEnd;
+		} else if (selection) {
+			if (el.nodeName === 'TEXTAREA') {
+				val = $el.val();
+				range = selection.createRange();
+				stored_range = range.duplicate();
+				stored_range.moveToElementText(el);
+				stored_range.setEndPoint('EndToEnd', range);
+				// thanks to the awesome comments in the rangy plugin
+				start = stored_range.text.replace(/\r/g, '\n').length;
+				end = start + range.text.replace(/\r/g, '\n').length;
+			} else {
+				val = $el.val().replace(/\r/g, '\n');
+				range = selection.createRange().duplicate();
+				range.moveEnd('character', val.length);
+				start = (range.text === '' ? val.length : val.lastIndexOf(range.text));
+				range = selection.createRange().duplicate();
+				range.moveStart('character', -val.length);
+				end = range.text.length;
+			}
+		} else {
+			// caret positioning not supported
+			start = end = (el.value || '').length;
+		}
+		txt = (el.value || '');
+		return {
+			start: start,
+			end: end,
+			text: txt.substring(start, end),
+			replace: function (str) {
+				return txt.substring(0, start) + str + txt.substring(end, txt.length);
+			}
+		};
 	};
 
 	return $keyboard;

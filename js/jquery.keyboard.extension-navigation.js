@@ -90,7 +90,7 @@ $.fn.addNavigation = function(options){
 
 		// save navigation settings - disabled when the toggled
 		base.saveNav = [ base.options.tabNavigation, base.options.enterNavigation ];
-		base.allNavKeys = $.map(k, function(v,i){ return v; });
+		base.allNavKeys = $.map(k, function(v){ return v; });
 
 		// Setup
 		base.navigation_init = function(){
@@ -108,7 +108,7 @@ $.fn.addNavigation = function(options){
 		};
 
 		base.checkKeys = function(key, disable){
-			if (typeof(key) === "undefined") {
+			if (typeof(key) === 'undefined') {
 				return;
 			}
 			var k = base.navigation_keys;
