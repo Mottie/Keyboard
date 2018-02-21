@@ -2997,6 +2997,7 @@ http://www.opensource.org/licenses/mit-license.php
 		// Event (namespaced) on the input to reveal the keyboard. To disable it, just set it to ''.
 		openOn: 'focus',
 
+		// enable the keyboard on readonly inputs
 		activeOnReadonly: false,
 
 		// Event (namepaced) for when the character is added to the input (clicking on the keyboard)
