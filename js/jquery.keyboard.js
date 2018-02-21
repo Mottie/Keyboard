@@ -197,8 +197,7 @@ http://www.opensource.org/licenses/mit-license.php
 				});
 		}
 		// add disabled/readonly class - dynamically updated on reveal
-		if (base.$el.is(':disabled') || (!base.options.activeOnReadonly &&
-				base.$el.attr('readonly') && !base.$el.hasClass(kbcss.locked))) {
+		if (base.isUnavailable()) {
 			base.$el.addClass(kbcss.noKeyboard);
 		}
 		if (o.openOn) {
@@ -269,6 +268,16 @@ http://www.opensource.org/licenses/mit-license.php
 		base.isCurrent(true);
 		base.isOpen = true;
 	};
+
+	base.isUnavailable = function() {
+		return (
+			base.$el.is(':disabled') || (
+				!base.options.activeOnReadonly &&
+				base.$el.attr('readonly') &&
+				!base.$el.hasClass(kbcss.locked)
+			)
+		);
+	}
 
 	base.isCurrent = function (set) {
 		var cur = $keyboard.currentKeyboard || false;
@@ -350,9 +359,7 @@ http://www.opensource.org/licenses/mit-license.php
 		});
 
 		// Don't open if disabled
-		if (base.$el.is(':disabled') || (!base.options.activeOnReadonly && base.$el.attr('readonly') &&
-				!base.$el.hasClass(kbcss.locked))) {
-			base.$el.addClass(kbcss.noKeyboard);
+		if (base.isUnavailable()) {
 			return;
 		}
 		base.$el.removeClass(kbcss.noKeyboard);
