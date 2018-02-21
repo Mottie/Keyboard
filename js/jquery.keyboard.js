@@ -197,8 +197,8 @@ http://www.opensource.org/licenses/mit-license.php
 				});
 		}
 		// add disabled/readonly class - dynamically updated on reveal
-		if (base.$el.is(':disabled') || (base.$el.attr('readonly') &&
-				!base.$el.hasClass(kbcss.locked))) {
+		if (base.$el.is(':disabled') || (!base.options.activeOnReadonly &&
+				base.$el.attr('readonly') && !base.$el.hasClass(kbcss.locked))) {
 			base.$el.addClass(kbcss.noKeyboard);
 		}
 		if (o.openOn) {
@@ -350,7 +350,8 @@ http://www.opensource.org/licenses/mit-license.php
 		});
 
 		// Don't open if disabled
-		if (base.$el.is(':disabled') || (base.$el.attr('readonly') && !base.$el.hasClass(kbcss.locked))) {
+		if (base.$el.is(':disabled') || (!base.options.activeOnReadonly && base.$el.attr('readonly') &&
+				!base.$el.hasClass(kbcss.locked))) {
 			base.$el.addClass(kbcss.noKeyboard);
 			return;
 		} else {
@@ -2995,6 +2996,8 @@ http://www.opensource.org/licenses/mit-license.php
 
 		// Event (namespaced) on the input to reveal the keyboard. To disable it, just set it to ''.
 		openOn: 'focus',
+
+		activeOnReadonly: false,
 
 		// Event (namepaced) for when the character is added to the input (clicking on the keyboard)
 		keyBinding: 'mousedown touchstart',
