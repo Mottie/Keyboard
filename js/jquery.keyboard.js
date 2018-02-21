@@ -274,7 +274,7 @@ http://www.opensource.org/licenses/mit-license.php
 			base.$el.is(':disabled') || (
 				!base.options.activeOnReadonly &&
 				base.$el.attr('readonly') &&
-				!base.$el.hasClass(kbcss.locked)
+				!base.$el.hasClass($keyboard.css.locked)
 			)
 		);
 	}
