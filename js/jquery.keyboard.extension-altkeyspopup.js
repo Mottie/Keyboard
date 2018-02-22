@@ -130,9 +130,9 @@
 				base.options.repeatRate = 0;
 
 				// add hold key functionality for popups
-				base.$allKeys
-					.unbind( base.altkeypopup_namespace )
-					.bind( start, function() {
+				base
+					.unbindButton( base.altkeypopup_namespace )
+					.bindButton( start, function() {
 						clearTimeout( timer );
 						var $key = $( this ),
 							key = $key.attr( 'data-value' ) || '',
@@ -148,7 +148,7 @@
 							}
 						}
 					})
-					.bind( end, function() {
+					.bindButton( end, function() {
 						clearTimeout( timer );
 					});
 
@@ -164,56 +164,63 @@
 						'keypress keydown keyup '
 							.split( ' ' )
 							.join( base.altkeypopup_namespace + ' ' ),
-							function( event ) {
-								if ( event.type === 'keyup' ) {
-									clearTimeout( timer );
-									base.altkeypopup_blockingFlag = false;
-									return event.which !== $keyboard.navigationKeys.escape;
-								}
-								var tmp,
-									layout = $keyboard.builtLayouts[ base.layout ],
-									keyCodes = $keyboard.keyCodes,
-									$key = $( event.target ),
-									k = event.charCode || event.which,
-									key = String.fromCharCode( k );
-
-								if ( event.type === 'keydown' && key in $keyboard.altKeys ) {
-									tmp = base.altkeypopup_blockingFlag;
-									base.altkeypopup_blockingFlag = true;
-									// return true on initial keydown or keypress never fires
-									// then return false to prevent repeat key
-									return !tmp;
-								} else if ( base.altkeypopup_blockingFlag ) {
-									if (
-										( k >= keyCodes.a && k <= keyCodes.z ) &&
-										!event.shiftKey
-									) {
-										key = key.toLowerCase();
-									}
-									// find mapped key, if any
-									if (
-										layout.hasMappedKeys &&
-										layout.mappedKeys.hasOwnProperty( key )
-									) {
-										key = layout.mappedKeys[ key ];
-									}
-									if ( key in $keyboard.altKeys ) {
-										timer = setTimeout( function(){
-											if ( base.altkeypopup_blockingFlag ) {
-												base.altKeyPopup_popup( key, $key );
-											}
-										}, base.altkeypopup_options.holdTime );
-									}
-									return true;
-								}
+						function( event ) {
+							if ( event.type === 'keyup' ) {
+								clearTimeout( timer );
+								base.altkeypopup_blockingFlag = false;
+								return event.which !== $keyboard.navigationKeys.escape;
 							}
+							var tmp,
+								layout = $keyboard.builtLayouts[ base.layout ],
+								keyCodes = $keyboard.keyCodes,
+								$key = $( event.target ),
+								k = event.charCode || event.which,
+								key = String.fromCharCode( k );
+
+							if ( event.type === 'keydown' && key in $keyboard.altKeys ) {
+								tmp = base.altkeypopup_blockingFlag;
+								base.altkeypopup_blockingFlag = true;
+								// return true on initial keydown or keypress never fires
+								// then return false to prevent repeat key
+								return !tmp;
+							} else if ( base.altkeypopup_blockingFlag ) {
+								if (
+									( k >= keyCodes.a && k <= keyCodes.z ) &&
+									!event.shiftKey
+								) {
+									key = key.toLowerCase();
+								}
+								// find mapped key, if any
+								if (
+									layout.hasMappedKeys &&
+									layout.mappedKeys.hasOwnProperty( key )
+								) {
+									key = layout.mappedKeys[ key ];
+								}
+								if ( key in $keyboard.altKeys ) {
+									timer = setTimeout( function(){
+										if ( base.altkeypopup_blockingFlag ) {
+											base.altKeyPopup_popup( key, $key );
+										}
+									}, base.altkeypopup_options.holdTime );
+								}
+								return true;
+							}
+						}
 					);
 			};
 
 			base.altKeyPopup_close = function() {
 				base.altkeypopup_blockingFlag = false;
 				base.altKeyPopup_$overlay = null;
-				base.$keyboard.find( '.' + $keyboard.css.altKeyOverlay ).remove();
+				setTimeout(function() {
+					if (base.$keyboard.length) {
+						var $el = base.$keyboard.find( '.' + $keyboard.css.altKeyOverlay );
+						if ($el) {
+							$el.remove();
+						}
+					}
+				}, 1);
 				$( document ).unbind( base.altkeypopup_namespace );
 				base.$preview.focus();
 				// restore ignoreEsc option
@@ -271,17 +278,8 @@
 				$keys = $container
 					.appendTo( base.altKeyPopup_$overlay )
 					.children()
-					.bind( 'mousedown touchstart', function( event ) {
-						var action = $( this ).attr( 'data-action' );
-						// make action keys work in popup
-						if (
-							action in $keyboard.keyaction &&
-							$.isFunction($keyboard.keyaction[ action ] )
-						) {
-							$keyboard.keyaction[ action ]( base, this, event );
-						} else {
-							base.insertText( action );
-						}
+					.bind( 'mousedown touchstart', function() {
+						// action/value now processed by core functions
 						base.altKeyPopup_close();
 					})
 					.bind( 'mouseover mouseleave', function( event ){

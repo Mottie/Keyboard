@@ -124,9 +124,9 @@
 					.bind( events, function() {
 						base.typing_reset();
 					});
-				base.$allKeys
-					.unbind( namespace )
-					.bind( 'mousedown' + namespace, function() {
+				base
+					.unbindButton( namespace )
+					.bindButton( 'mousedown' + namespace, function() {
 						base.typing_reset();
 					});
 			};

@@ -195,7 +195,7 @@ $.fn.addAutocomplete = function(options) {
 				var events = 'mouseup mousedown mouseleave touchstart touchend touchcancel '
 					.split(' ')
 					.join(namespace + ' ');
-				base.$allKeys.bind(events, function(event) {
+				base.bindButton(events, function(event) {
 					base.autocomplete_update(event);
 				});
 			}
@@ -217,7 +217,7 @@ $.fn.addAutocomplete = function(options) {
 			base.$el.unbind(namespace);
 			if (base.$preview) {
 				base.$preview.unbind(namespace);
-				base.$allKeys.unbind(namespace);
+				base.unbindButton(namespace);
 			}
 			delete base.$autocomplete;
 		};

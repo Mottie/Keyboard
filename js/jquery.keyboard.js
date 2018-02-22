@@ -1022,13 +1022,42 @@ http://www.opensource.org/licenses/mit-license.php
 
 	};
 
+	base.bindButton = function(events, handler) {
+		var button = '.' + $keyboard.css.keyButton,
+			callback = function(e) {
+				e.stopPropagation();
+				// save closest keyboard wrapper/input to check in checkClose function
+				e.$target = $(this).closest('.' + $keyboard.css.keyboard + ', .' + $keyboard.css.input);
+				handler.call(this, e);
+			}
+		if ($.fn.on) {
+			// jQuery v1.7+
+			base.$keyboard.on(events, button, callback);
+		} else if ($.fn.delegate) {
+			// jQuery v1.4.2 - 3.0.0
+			base.$keyboard.delegate(button, events, callback);
+		}
+		return base;
+	};
+
+	base.unbindButton = function(namespace) {
+		if ($.fn.off) {
+			// jQuery v1.7+
+			base.$keyboard.off(namespace);
+		} else if ($.fn.undelegate) {
+			// jQuery v1.4.2 - 3.0.0 (namespace only added in v1.6)
+			base.$keyboard.undelegate('.' + $keyboard.css.keyButton, namespace);
+		}
+		return base;
+	}
+
 	base.bindKeys = function () {
 		var kbcss = $keyboard.css;
-		base.$allKeys = base.$keyboard.find('button.' + kbcss.keyButton)
-			.unbind(base.namespace + ' ' + base.namespace + 'kb')
+		base
+			.unbindButton(base.namespace + ' ' + base.namespace + 'kb')
 			// Change hover class and tooltip - moved this touchstart before option.keyBinding touchstart
 			// to prevent mousewheel lag/duplication - Fixes #379 & #411
-			.bind('mouseenter mouseleave touchstart '.split(' ').join(base.namespace + ' '), function (e) {
+			.bindButton('mouseenter mouseleave touchstart '.split(' ').join(base.namespace + ' '), function (e) {
 				if ((o.alwaysOpen || o.userClosed) && e.type !== 'mouseleave' && !base.isCurrent()) {
 					base.reveal();
 					base.setFocus();
@@ -1079,7 +1108,7 @@ http://www.opensource.org/licenses/mit-license.php
 				}
 			})
 			// keyBinding = 'mousedown touchstart' by default
-			.bind(o.keyBinding.split(' ').join(base.namespace + ' ') + base.namespace + ' ' +
+			.bindButton(o.keyBinding.split(' ').join(base.namespace + ' ') + base.namespace + ' ' +
 				$keyboard.events.kbRepeater, function (e) {
 				e.preventDefault();
 				// prevent errors when external triggers attempt to 'type' - see issue #158
@@ -1088,8 +1117,7 @@ http://www.opensource.org/licenses/mit-license.php
 				}
 				var action, $keys,
 					last = base.last,
-					key = this,
-					$key = $(key),
+					$key = $(this),
 					// prevent mousedown & touchstart from both firing events at the same time - see #184
 					timer = new Date().getTime();
 
@@ -1139,7 +1167,8 @@ http://www.opensource.org/licenses/mit-license.php
 				// set caret if caret moved by action function; also, attempt to fix issue #131
 				$keyboard.caret(base.$preview, last);
 				base.checkCombos();
-				e.type = $keyboard.events.kbChange;
+				e = $.extend({}, e, $.Event($keyboard.events.kbChange));
+				e.target = base.el;
 				e.action = last.key;
 				base.$el.trigger(e, [base, base.el]);
 				last.preVal = '' + last.val;
@@ -1155,7 +1184,7 @@ http://www.opensource.org/licenses/mit-license.php
 			})
 			// using 'kb' namespace for mouse repeat functionality to keep it separate
 			// I need to trigger a 'repeater.keyboard' to make it work
-			.bind('mouseup' + base.namespace + ' ' + 'mouseleave touchend touchmove touchcancel '.split(' ')
+			.bindButton('mouseup' + base.namespace + ' ' + 'mouseleave touchend touchmove touchcancel '.split(' ')
 				.join(base.namespace + 'kb '), function (e) {
 				base.last.virtual = true;
 				var offset,
@@ -1195,13 +1224,16 @@ http://www.opensource.org/licenses/mit-license.php
 				return false;
 			})
 			// prevent form submits when keyboard is bound locally - issue #64
-			.bind('click' + base.namespace, function () {
+			.bindButton('click' + base.namespace, function () {
 				return false;
 			})
-			// no mouse repeat for action keys (shift, ctrl, alt, meta, etc)
-			.not('.' + kbcss.keyAction)
 			// Allow mousewheel to scroll through other keysets of the same (non-action) key
-			.bind('mousewheel' + base.namespace, function (e, delta) {
+			.bindButton('mousewheel' + base.namespace, function (e, delta) {
+				var $btn = $(this);
+				// no mouse repeat for action keys (shift, ctrl, alt, meta, etc)
+				if (!$btn || $btn.hasClass(kbcss.keyAction)) {
+					return;
+				}
 				if (o.useWheel && base.wheel) {
 					// deltaY used by newer versions of mousewheel plugin
 					delta = delta || e.deltaY;
@@ -1219,22 +1251,29 @@ http://www.opensource.org/licenses/mit-license.php
 						n = 0;
 					}
 					base.last.wheelIndex = n;
-					$(this).html(txt[n]);
+					$btn.html(txt[n]);
 					return false;
 				}
 			})
-			// mouse repeated action key exceptions
-			.add('.' + kbcss.keyPrefix + ('tab bksp space enter'.split(' ')
-				.join(',.' + kbcss.keyPrefix)), base.$keyboard)
-			.bind('mousedown touchstart '.split(' ').join(base.namespace + 'kb '), function () {
+			.bindButton('mousedown touchstart '.split(' ').join(base.namespace + 'kb '), function () {
+				var $btn = $(this);
+				// no mouse repeat for action keys (shift, ctrl, alt, meta, etc)
+				if (
+					!$btn || (
+						$btn.hasClass(kbcss.keyAction) &&
+						// mouse repeated action key exceptions
+						!$btn.is('.' + kbcss.keyPrefix + ('tab bksp space enter'.split(' ').join(',.' + kbcss.keyPrefix)))
+					)
+				) {
+					return;
+				}
 				if (o.repeatRate !== 0) {
-					var key = $(this);
 					// save the key, make sure we are repeating the right one (fast typers)
-					base.mouseRepeat = [true, key];
+					base.mouseRepeat = [true, $btn];
 					setTimeout(function () {
 						// don't repeat keys if it is disabled - see #431
-						if (base && base.mouseRepeat[0] && base.mouseRepeat[1] === key && !key[0].disabled) {
-							base.repeatKey(key);
+						if (base && base.mouseRepeat[0] && base.mouseRepeat[1] === $btn && !$btn[0].disabled) {
+							base.repeatKey($btn);
 						}
 					}, o.repeatDelay);
 				}
@@ -1782,11 +1821,12 @@ http://www.opensource.org/licenses/mit-license.php
 			return;
 		}
 		var kbcss = $.keyboard.css,
-			$contenteditable = $(e.target).closest('[contenteditable]'),
-			$target = $contenteditable.length ?  $contenteditable : $(e.target);
-		base.escClose(e, $target);
+			$target = e.$target || $(e.target).closest('.' + $keyboard.css.keyboard + ', .' + $keyboard.css.input);
+		if (!$target.length) {
+			$target = $(e.target);
+		}
 		// needed for IE to allow switching between keyboards smoothly
-		if ($target.hasClass(kbcss.input)) {
+		if ($target.length && $target[0].className.indexOf(kbcss.keyboard) > -1) {
 			var kb = $target.data('keyboard');
 			// only trigger on self
 			if (
@@ -1797,6 +1837,8 @@ http://www.opensource.org/licenses/mit-license.php
 			) {
 				kb.focusOn();
 			}
+		} else {
+			base.escClose(e, $target);
 		}
 	};
 
@@ -1811,13 +1853,16 @@ http://www.opensource.org/licenses/mit-license.php
 	};
 
 	base.escClose = function (e, $el) {
+		if (!base.isOpen) {
+			return;
+		}
 		if (e && e.type === 'keyup') {
 			return (e.which === $keyboard.keyCodes.escape && !o.ignoreEsc) ?
 				base.close(o.autoAccept && o.autoAcceptOnEsc ? 'true' : false) :
 				'';
 		}
 		var shouldStayOpen = false,
-			$target = $el || $(e.target);
+			$target = $el.length && $el || $(e.target);
 		$.each(base.escCloseCallback, function(i, callback) {
 			if (typeof callback === 'function') {
 				shouldStayOpen = shouldStayOpen || callback($target);
@@ -2327,7 +2372,6 @@ http://www.opensource.org/licenses/mit-license.php
 	};
 
 	base.removeKeyboard = function () {
-		base.$allKeys = [];
 		base.$decBtn = [];
 		// base.$preview === base.$el when o.usePreview is false - fixes #442
 		if (o.usePreview) {
