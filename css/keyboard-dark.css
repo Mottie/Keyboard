@@ -165,6 +165,10 @@ button.ui-keyboard-toggle.ui-keyboard-disabled span {
 	max-width: 22em;
 	/* 10 buttons */
 }
+.ui-keyboard.ui-keyboard-popup-open .ui-keyboard-keyset .ui-keyboard-button {
+	/* Disable keys under overlay while popup is open - see #654 */
+	pointer-events: none;
+}
 
 /*** Caret extension definition ***/
 /* margin-top => is added to the caret height (top & bottom) */

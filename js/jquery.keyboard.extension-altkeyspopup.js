@@ -24,8 +24,9 @@
 	var $keyboard = $.keyboard;
 
 	$.extend( $keyboard.css, {
-		altKeyPopup   : 'ui-keyboard-popup',
-		altKeyOverlay : 'ui-keyboard-overlay'
+		altKeyPopup     : 'ui-keyboard-popup',
+		altKeyOverlay   : 'ui-keyboard-overlay',
+		altKeyPopupOpen : 'ui-keyboard-popup-open'
 	});
 
 	$keyboard.altKeys = $.extend({
@@ -215,6 +216,7 @@
 				base.altKeyPopup_$overlay = null;
 				setTimeout(function() {
 					if (base.$keyboard.length) {
+						base.$keyboard.removeClass($keyboard.css.altKeyPopupOpen);
 						var $el = base.$keyboard.find( '.' + $keyboard.css.altKeyOverlay );
 						if ($el) {
 							$el.remove();
@@ -256,6 +258,7 @@
 				evts = 'inactive hidden '
 					.split( ' ' )
 					.join( base.altkeypopup_namespace + ' ' );
+				base.$keyboard.addClass($keyboard.css.altKeyPopupOpen);
 				base.$el.unbind( evts ).bind( evts, function() {
 					base.altKeyPopup_close();
 				});
