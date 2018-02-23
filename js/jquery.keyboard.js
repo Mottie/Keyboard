@@ -389,7 +389,7 @@ http://www.opensource.org/licenses/mit-license.php
 		}
 
 		// disable/enable accept button
-		if (o.acceptValid) {
+		if (o.acceptValid && o.checkValidOnInit) {
 			base.checkValid();
 		}
 
@@ -2980,6 +2980,9 @@ http://www.opensource.org/licenses/mit-license.php
 		acceptValid: false,
 		// Auto-accept when input is valid; requires `acceptValid` set `true` & validate callback
 		autoAcceptOnValid: false,
+		// Check validation on keyboard initialization. If false, the "Accept" key state (color)
+		// will not change to show if the content is valid, or not
+		checkValidOnInit: true,
 
 		// if acceptValid is true & the validate function returns a false, this option will cancel
 		// a keyboard close only after the accept button is pressed
