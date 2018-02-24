@@ -1,4 +1,4 @@
-/*! jQuery UI Virtual Keyboard v1.27.4 *//*
+/*! jQuery UI Virtual Keyboard v1.28.0 *//*
 Author: Jeremy Satterfield
 Maintained: Rob Garrison (Mottie on github)
 Licensed under the MIT License
@@ -42,7 +42,7 @@ http://www.opensource.org/licenses/mit-license.php
 	var $keyboard = $.keyboard = function (el, options) {
 	var o, base = this;
 
-	base.version = '1.27.4';
+	base.version = '1.28.0';
 
 	// Access to jQuery and DOM versions of element
 	base.$el = $(el);
@@ -277,7 +277,7 @@ http://www.opensource.org/licenses/mit-license.php
 				!base.$el.hasClass($keyboard.css.locked)
 			)
 		);
-	}
+	};
 
 	base.isCurrent = function (set) {
 		var cur = $keyboard.currentKeyboard || false;
@@ -1029,7 +1029,7 @@ http://www.opensource.org/licenses/mit-license.php
 				// save closest keyboard wrapper/input to check in checkClose function
 				e.$target = $(this).closest('.' + $keyboard.css.keyboard + ', .' + $keyboard.css.input);
 				handler.call(this, e);
-			}
+			};
 		if ($.fn.on) {
 			// jQuery v1.7+
 			base.$keyboard.on(events, button, callback);
@@ -1049,7 +1049,7 @@ http://www.opensource.org/licenses/mit-license.php
 			base.$keyboard.undelegate('.' + $keyboard.css.keyButton, namespace);
 		}
 		return base;
-	}
+	};
 
 	base.bindKeys = function () {
 		var kbcss = $keyboard.css;
