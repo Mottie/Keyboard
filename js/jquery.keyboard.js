@@ -960,11 +960,11 @@ http://www.opensource.org/licenses/mit-license.php
 					base.tab = true;
 					return false;
 				}
-
-				if (o.lockInput) {
-					return false;
+				if (o.lockInput || e.timeStamp === base.last.timeStamp) {
+					return !o.lockInput;
 				}
 
+				base.last.timeStamp = e.timeStamp; // fixes #659
 				base.last.virtual = false;
 				switch (e.which) {
 
