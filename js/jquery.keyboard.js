@@ -1826,7 +1826,7 @@ http://www.opensource.org/licenses/mit-license.php
 			$target = $(e.target);
 		}
 		// needed for IE to allow switching between keyboards smoothly
-		if ($target.length && $target[0].className.indexOf(kbcss.keyboard) > -1) {
+		if ($target.length && $target.hasClass(kbcss.keyboard)) {
 			var kb = $target.data('keyboard');
 			// only trigger on self
 			if (
