@@ -147,6 +147,15 @@ Wiki: [Home](https://github.com/Mottie/Keyboard/wiki/Home) | [FAQ](https://githu
 
 Only the latest changes will be shown below, see the [wiki log](https://github.com/Mottie/Keyboard/wiki/Log) to view older versions.
 
+### Version 1.28.1 (2018-03-26)
+
+* Core:
+  * Prevent double key action. Fixes [issue #659](https://github.com/Mottie/Keyboard/issues/659).
+  * Use hasClass instead of indexOf. Fixes [issue #660](https://github.com/Mottie/Keyboard/issues/660). See [pull #661](https://github.com/Mottie/Keyboard/pull/661); Thanks [@revgum](https://github.com/revgum)!
+* Meta:
+  * Remove lock files and update gitignore.
+  * Update authors list.
+
 ### Version 1.28.0 (2018-02-23)
 
 * Core:
@@ -170,8 +179,3 @@ Only the latest changes will be shown below, see the [wiki log](https://github.c
 
 * Core: Pass correct clicked target to close event. Fixes [issue #639](https://github.com/Mottie/Keyboard/issues/639).
 * Autocomplete: Add destroy method
-
-### Version 1.27.3 (2017-12-16)
-
-* Core: Prevent JS error while checking `closeByClickEvent`. Fixes [issue #634](https://github.com/Mottie/Keyboard/issues/634).
-* Meta: Update dependencies.
