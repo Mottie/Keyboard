@@ -1,5 +1,5 @@
-/*! jQuery UI Virtual Keyboard Alt Key Popup v1.1.4 *//*
- * for Keyboard v1.18+ only (4/28/2017)
+/*! jQuery UI Virtual Keyboard Alt Key Popup v1.1.5 *//*
+ * for Keyboard v1.18+ only (2018-02-23)
  *
  * By Rob Garrison (aka Mottie)
  * Licensed under the MIT License
