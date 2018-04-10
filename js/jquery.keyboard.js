@@ -1934,7 +1934,8 @@ http://www.opensource.org/licenses/mit-license.php
 
 	base.processKeys = function (name) {
 		var tmp,
-			parts = name.split(':'),
+			// Don't split colons followed by //, e.g. https://; Fixes #555
+			parts = name.split(/:(?!\/\/)/),
 			data = {
 				name: null,
 				map: '',
