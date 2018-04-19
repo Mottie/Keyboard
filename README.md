@@ -147,6 +147,14 @@ Wiki: [Home](https://github.com/Mottie/Keyboard/wiki/Home) | [FAQ](https://githu
 
 Only the latest changes will be shown below, see the [wiki log](https://github.com/Mottie/Keyboard/wiki/Log) to view older versions.
 
+### Version 1.28.2 (2018-04-19)
+
+* Core:
+  * Allow urls in display option. See [issue #555](https://github.com/Mottie/Keyboard/issues/555).
+* AltKeys:
+  * Switch to using `event.key`. Fixes [issue #664](https://github.com/Mottie/Keyboard/issues/664).
+  * Marked as breaking change (v2.0.0 of the extension) as this will only work in modern browsers.
+
 ### Version 1.28.1 (2018-03-26)
 
 * Core:
@@ -174,8 +182,3 @@ Only the latest changes will be shown below, see the [wiki log](https://github.c
   * Update dependencies.
   * Update Authors.
   * Add rudimentary linting.
-
-### Version 1.27.4 (2018-01-10)
-
-* Core: Pass correct clicked target to close event. Fixes [issue #639](https://github.com/Mottie/Keyboard/issues/639).
-* Autocomplete: Add destroy method

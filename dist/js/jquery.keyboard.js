@@ -1,4 +1,4 @@
-/*! jQuery UI Virtual Keyboard v1.28.1 *//*
+/*! jQuery UI Virtual Keyboard v1.28.2 *//*
 Author: Jeremy Satterfield
 Maintained: Rob Garrison (Mottie on github)
 Licensed under the MIT License
@@ -42,7 +42,7 @@ http://www.opensource.org/licenses/mit-license.php
 	var $keyboard = $.keyboard = function (el, options) {
 	var o, base = this;
 
-	base.version = '1.28.1';
+	base.version = '1.28.2';
 
 	// Access to jQuery and DOM versions of element
 	base.$el = $(el);
@@ -1934,7 +1934,8 @@ http://www.opensource.org/licenses/mit-license.php
 
 	base.processKeys = function (name) {
 		var tmp,
-			parts = name.split(':'),
+			// Don't split colons followed by //, e.g. https://; Fixes #555
+			parts = name.split(/:(?!\/\/)/),
 			data = {
 				name: null,
 				map: '',
