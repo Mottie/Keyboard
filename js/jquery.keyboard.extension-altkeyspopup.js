@@ -1,9 +1,11 @@
-/*! jQuery UI Virtual Keyboard Alt Key Popup v1.1.5 *//*
- * for Keyboard v1.18+ only (2018-02-23)
+/*! jQuery UI Virtual Keyboard Alt Key Popup v2.0.0 *//*
+ * for Keyboard v1.18+ only (2018-04-19)
  *
  * By Rob Garrison (aka Mottie)
  * Licensed under the MIT License
  *
+ * Note: Use of `event.key` requires a modern browser
+ * (https://caniuse.com/#feat=keyboardevent-key)
 */
 /* jshint browser:true, jquery:true, unused:false */
 /* global require:false, define:false, module:false */
@@ -76,16 +78,6 @@
 		'(' : '\u300a \u3010 \u3014', // « 【 〔
 		')' : '\u300b \u3011 \u3015'  // » 】 〕
 	}, $keyboard.altKeys );
-
-	// physical keyboard navigation inside popup
-	$keyboard.navigationKeys = $.extend({
-		enter      : 13,
-		escape     : 27,
-		end        : 35,
-		home       : 36,
-		left       : 37,
-		right      : 39,
-	}, $keyboard.navigationKeys );
 
 	$.fn.addAltKeyPopup = function( options ) {
 		//Set the default values, use comma to separate the settings, example:
@@ -169,28 +161,24 @@
 							if ( event.type === 'keyup' ) {
 								clearTimeout( timer );
 								base.altkeypopup_blockingFlag = false;
-								return event.which !== $keyboard.navigationKeys.escape;
+								return event.key !== 'Escape';
 							}
-							var tmp,
-								layout = $keyboard.builtLayouts[ base.layout ],
-								keyCodes = $keyboard.keyCodes,
+							var layout = $keyboard.builtLayouts[ base.layout ],
 								$key = $( event.target ),
-								k = event.charCode || event.which,
-								key = String.fromCharCode( k );
+								origKey = event.key,
+								key = event.key;
 
 							if ( event.type === 'keydown' && key in $keyboard.altKeys ) {
-								tmp = base.altkeypopup_blockingFlag;
-								base.altkeypopup_blockingFlag = true;
+								// Compare typed key to prevent blocking issues reported in #664
+								if ( base.altkeypopup_blockingFlag === origKey ) {
+									return false;
+								}
+								base.altkeypopup_blockingFlag = origKey;
 								// return true on initial keydown or keypress never fires
 								// then return false to prevent repeat key
-								return !tmp;
-							} else if ( base.altkeypopup_blockingFlag ) {
-								if (
-									( k >= keyCodes.a && k <= keyCodes.z ) &&
-									!event.shiftKey
-								) {
-									key = key.toLowerCase();
-								}
+								return true;
+							}
+							if ( base.altkeypopup_blockingFlag ) {
 								// find mapped key, if any
 								if (
 									layout.hasMappedKeys &&
@@ -199,8 +187,9 @@
 									key = layout.mappedKeys[ key ];
 								}
 								if ( key in $keyboard.altKeys ) {
-									timer = setTimeout( function(){
-										if ( base.altkeypopup_blockingFlag ) {
+									clearTimeout( timer );
+									timer = setTimeout( function() {
+										if ( base.altkeypopup_blockingFlag === origKey ) {
 											base.altKeyPopup_popup( key, $key );
 										}
 									}, base.altkeypopup_options.holdTime );
@@ -305,7 +294,7 @@
 						return false;
 					})
 					.bind( 'keyup' + base.altkeypopup_namespace, function( event ) {
-						if ( event.which === $keyboard.navigationKeys.escape ) {
+						if ( event.key === 'Escape' ) {
 							event.which = 0; // prevent escClose from closing the keyboard
 							base.altKeyPopup_close();
 						} else {
@@ -380,17 +369,17 @@
 				}
 
 				indx = base.altKeyPopup_currentIndex;
-				if ( event.which === k.enter ) {
+				if ( event.key === 'Enter' ) {
 					base.insertText( $keys.eq( indx ).attr( 'data-value' ) );
 					base.altKeyPopup_close();
 					return true;
 				}
 
-				switch( event.which ) {
-					case k.end   : indx = max; break; // End
-					case k.home  : indx = 0; break; // Home
-					case k.left  : indx -= 1; break; // Left
-					case k.right : indx += 1; break; // Right
+				switch( event.key ) {
+					case 'End': indx = max; break;
+					case 'Home': indx = 0; break;
+					case 'ArrowLeft': indx -= 1; break;
+					case 'ArrowRight': indx += 1; break;
 				}
 				if ( indx < 0 ) { indx = 0; }
 				if ( indx > max ) { indx = max; }
