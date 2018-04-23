@@ -456,6 +456,7 @@ http://www.opensource.org/licenses/mit-license.php
 		if (alreadyOpen || redraw) {
 			// restore caret position (userClosed)
 			$keyboard.caret(base.$preview, base.last);
+			base.opening = false;
 			return base;
 		}
 
