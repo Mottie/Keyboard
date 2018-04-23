@@ -147,6 +147,13 @@ Wiki: [Home](https://github.com/Mottie/Keyboard/wiki/Home) | [FAQ](https://githu
 
 Only the latest changes will be shown below, see the [wiki log](https://github.com/Mottie/Keyboard/wiki/Log) to view older versions.
 
+### Version 1.28.3 (2018-04-23)
+
+* Core:
+  * Clear opening flag. Fixes [issue #668](https://github.com/Mottie/Keyboard/issues/668).
+* Meta:
+  * Update dependencies.
+
 ### Version 1.28.2 (2018-04-19)
 
 * Core:
@@ -163,22 +170,3 @@ Only the latest changes will be shown below, see the [wiki log](https://github.c
 * Meta:
   * Remove lock files and update gitignore.
   * Update authors list.
-
-### Version 1.28.0 (2018-02-23)
-
-* Core:
-  * An `activeOnReadonly` option to open the keyboard. See [issue #653](https://github.com/Mottie/Keyboard/issues/653); Thanks [@BastienVerschaete](https://github.com/BastienVerschaete)!
-  * Combine keyboard checks. See [issue #653](https://github.com/Mottie/Keyboard/issues/653).
-  * Fix undefined variable.
-  * Remove `$allKeys` variable; use delegated binding. See [issue #649](https://github.com/Mottie/Keyboard/issues/649).
-  * Add `checkValidOnInit` option. Fixes [issue #650](https://github.com/Mottie/Keyboard/issues/650).
-* Docs:
-  * Update jQuery.
-* AltKeys:
-  * Disable keysets when popup is open. See [issue #654](https://github.com/Mottie/Keyboard/issues/654).
-* Autocomplete:
-  * Prevent exception with browser autocompletion. See [issue #651](https://github.com/Mottie/Keyboard/issues/651); Thanks [@vkurlyan](https://github.com/vkurlyan)!
-* Meta:
-  * Update dependencies.
-  * Update Authors.
-  * Add rudimentary linting.
