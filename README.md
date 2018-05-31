@@ -3,7 +3,7 @@ A jQuery on-screen keyboard (OSK) plugin that works in the browser. Originally p
 [![Bower Version][bower-image]][bower-url] [![NPM Version][npm-image]][npm-url] [![devDependency Status][david-dev-image]][david-dev-url] [![Join the chat at https://gitter.im/Mottie/Keyboard][gitter-image]][gitter]
 [![FOSSA Status](https://app.fossa.io/api/projects/git%2Bgithub.com%2FMottie%2FKeyboard.svg?type=shield)](https://app.fossa.io/projects/git%2Bgithub.com%2FMottie%2FKeyboard?ref=badge_shield)
 
-## Features ([Demo](http://mottie.github.com/Keyboard/))
+## Features ([Demo](https://mottie.github.io/Keyboard/))
 
 ### Ease of use
 
@@ -87,6 +87,7 @@ A jQuery on-screen keyboard (OSK) plugin that works in the browser. Originally p
   * [Ember](https://github.com/SleepyWerewolf/ember-virtual-keyboard) by [SleepyWerewolf](https://github.com/SleepyWerewolf).
   * [React.js](https://github.com/Utzel-Butzel/react-virtual-keyboard) by [Utzel-Butzel](https://github.com/Utzel-Butzel).
   * [Ruby On Rails](https://github.com/scicasoft/virtual_keyboard) by [scicasoft](https://github.com/scicasoft) via `gem install virtual_keyboard`.
+  * [VR Toolbox](https://steamcommunity.com/games/488040/announcements/detail/1431432753528769455).
 
 ## TypeScript
 

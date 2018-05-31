@@ -23,7 +23,7 @@
   "homepage": "http://wowmotty.blogspot.com/2010/11/jquery-ui-keyboard-widget.html",
   "bugs": "https://github.com/Mottie/Keyboard/issues",
   "docs": "https://github.com/Mottie/Keyboard/wiki",
-  "demo": "http://mottie.github.com/Keyboard/",
+  "demo": "https://mottie.github.io/Keyboard/",
   "dependencies": {
     "jquery": ">=1.4.3"
   },
