@@ -1,6 +1,6 @@
+<img alt="keyboard logo" align="right" src="./docs/css/images/keyboard-logo.png">A jQuery on-screen keyboard (OSK) plugin that works in the browser.<br>
 
-<img alt="keyboard logo" align="right" src="./docs/css/images/keyboard-logo.png">
-A jQuery on-screen keyboard (OSK) plugin that works in the browser. Originally posted by Jeremy Satterfield in his [blog](http://jsatt.blogspot.com/2010/01/on-screen-keyboard-widget-using-jquery.html), [jQuery plugins](http://plugins.jquery.com/project/virtual_keyboard) and on [Snipplr](http://snipplr.com/view/21577/virtual-keyboard-widget/). Currently maintained by [Mottie](https://github.com/Mottie/Keyboard).
+Originally posted by Jeremy Satterfield in his [blog](http://jsatt.blogspot.com/2010/01/on-screen-keyboard-widget-using-jquery.html), [jQuery plugins](http://plugins.jquery.com/project/virtual_keyboard) and on [Snipplr](http://snipplr.com/view/21577/virtual-keyboard-widget/). Currently maintained by [Mottie](https://github.com/Mottie/Keyboard).
 
 [![Bower Version][bower-image]][bower-url] [![NPM Version][npm-image]][npm-url] [![devDependency Status][david-dev-image]][david-dev-url] [![Join the chat at https://gitter.im/Mottie/Keyboard][gitter-image]][gitter]
 [![FOSSA Status](https://app.fossa.io/api/projects/git%2Bgithub.com%2FMottie%2FKeyboard.svg?type=shield)](https://app.fossa.io/projects/git%2Bgithub.com%2FMottie%2FKeyboard?ref=badge_shield)
