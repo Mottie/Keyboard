@@ -4,7 +4,7 @@ Originally posted by Jeremy Satterfield in his [blog](http://jsatt.blogspot.com/
 
 [![Bower Version][bower-image]][bower-url] [![NPM Version][npm-image]][npm-url] [![devDependency Status][david-dev-image]][david-dev-url] [![Join the chat at https://gitter.im/Mottie/Keyboard][gitter-image]][gitter]
 [![FOSSA Status](https://app.fossa.io/api/projects/git%2Bgithub.com%2FMottie%2FKeyboard.svg?type=shield)](https://app.fossa.io/projects/git%2Bgithub.com%2FMottie%2FKeyboard?ref=badge_shield)
-
+<img align="right" height="200" src="https://s15.postimg.cc/fyj6bu9dn/image.png">
 ## Features ([Demo](https://mottie.github.io/Keyboard/))
 
 ### Ease of use
