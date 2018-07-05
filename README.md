@@ -150,6 +150,11 @@ Wiki: [Home](https://github.com/Mottie/Keyboard/wiki/Home) | [FAQ](https://githu
 
 Only the latest changes will be shown below, see the [wiki log](https://github.com/Mottie/Keyboard/wiki/Log) to view older versions.
 
+### Version 1.28.4 (2018-07-05)
+
+* Scramble:
+  * Use `crypto.getRandomValues` for scramble. See [pull #678](https://github.com/Mottie/Keyboard/pull/678); thanks [@lsching17](https://github.com/lsching17)!
+
 ### Version 1.28.3 (2018-04-23)
 
 * Core:
@@ -164,12 +169,3 @@ Only the latest changes will be shown below, see the [wiki log](https://github.c
 * AltKeys:
   * Switch to using `event.key`. Fixes [issue #664](https://github.com/Mottie/Keyboard/issues/664).
   * Marked as breaking change (v2.0.0 of the extension) as this will only work in modern browsers.
-
-### Version 1.28.1 (2018-03-26)
-
-* Core:
-  * Prevent double key action. Fixes [issue #659](https://github.com/Mottie/Keyboard/issues/659).
-  * Use hasClass instead of indexOf. Fixes [issue #660](https://github.com/Mottie/Keyboard/issues/660). See [pull #661](https://github.com/Mottie/Keyboard/pull/661); Thanks [@revgum](https://github.com/revgum)!
-* Meta:
-  * Remove lock files and update gitignore.
-  * Update authors list.
