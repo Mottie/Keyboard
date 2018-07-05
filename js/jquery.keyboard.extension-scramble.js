@@ -1,5 +1,5 @@
-/*! jQuery UI Virtual Keyboard Scramble Extension v1.7.0 *//*
- * for Keyboard v1.18+ (updated 3/15/2017)
+/*! jQuery UI Virtual Keyboard Scramble Extension v1.7.1 *//*
+ * for Keyboard v1.18+ (updated 2018-07-05)
  *
  * By Rob Garrison (aka Mottie)
  * Licensed under the MIT License
@@ -143,15 +143,13 @@ $.keyboard = $.keyboard || {};
 
 				var cryptoObj = window.crypto || window.msCrypto;
 
-				if (cryptoObj!==undefined){
+				if (cryptoObj !== undefined) {
 					var random_array = new Uint32Array(1);
-					cryptoObj.getRandomValues(random_array)
+					cryptoObj.getRandomValues(random_array);
 					return random_array[0] % max;
-				} else {
-					//fallback
-					return Math.floor(Math.random() * max);
 				}
-
+				// fallback
+				return Math.floor(Math.random() * max);
 			};
 
 			// modified from Fisher-Yates shuffle ( http://bost.ocks.org/mike/shuffle/ )
