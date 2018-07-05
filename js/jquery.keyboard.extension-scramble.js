@@ -138,6 +138,22 @@ $.keyboard = $.keyboard || {};
 				}
 			};
 
+			// get a random uint from 0 ... max-1
+			base.getRandomUInt = function(max) {
+
+				var cryptoObj = window.crypto || window.msCrypto;
+
+				if (cryptoObj!==undefined){
+					var random_array = new Uint32Array(1);
+					cryptoObj.getRandomValues(random_array)
+					return random_array[0] % max;
+				} else {
+					//fallback
+					return Math.floor(Math.random() * max);
+				}
+
+			};
+
 			// modified from Fisher-Yates shuffle ( http://bost.ocks.org/mike/shuffle/ )
 			// to allow not shuffling specifically mapped array elements
 			base.shuffle = function(array, map) {
@@ -146,7 +162,7 @@ $.keyboard = $.keyboard || {};
 				// While there remain elements to shuffle...
 				while (index > 0) {
 					// Pick a remaining element...
-					random = Math.floor(Math.random() * index);
+					random = base.getRandomUInt(index);
 					if (map[index - 1] === false) {
 						index--;
 					}
