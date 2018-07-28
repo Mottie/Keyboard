@@ -1,4 +1,4 @@
-/*! jQuery UI Virtual Keyboard v1.28.4 *//*
+/*! jQuery UI Virtual Keyboard v1.28.5 *//*
 Author: Jeremy Satterfield
 Maintained: Rob Garrison (Mottie on github)
 Licensed under the MIT License
@@ -42,7 +42,7 @@ http://www.opensource.org/licenses/mit-license.php
 	var $keyboard = $.keyboard = function (el, options) {
 	var o, base = this;
 
-	base.version = '1.28.4';
+	base.version = '1.28.5';
 
 	// Access to jQuery and DOM versions of element
 	base.$el = $(el);
@@ -1292,8 +1292,8 @@ http://www.opensource.org/licenses/mit-license.php
 					interm = false;
 				}, time);
 			}
-		}
-	}
+		};
+	};
 
 	base.execCommand = function(cmd, str) {
 		base.el.ownerDocument.execCommand(cmd, false, str);

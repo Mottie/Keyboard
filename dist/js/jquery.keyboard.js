@@ -1,4 +1,4 @@
-/*! jQuery UI Virtual Keyboard v1.28.4 *//*
+/*! jQuery UI Virtual Keyboard v1.28.5 *//*
 Author: Jeremy Satterfield
 Maintained: Rob Garrison (Mottie on github)
 Licensed under the MIT License
@@ -42,7 +42,7 @@ http://www.opensource.org/licenses/mit-license.php
 	var $keyboard = $.keyboard = function (el, options) {
 	var o, base = this;
 
-	base.version = '1.28.4';
+	base.version = '1.28.5';
 
 	// Access to jQuery and DOM versions of element
 	base.$el = $(el);
@@ -133,7 +133,7 @@ http://www.opensource.org/licenses/mit-license.php
 			layout: '',
 			virtual: true,
 			keyset: [false, false, false], // [shift, alt, meta]
-			wheel_$Keys: null,
+			wheel_$Keys: [],
 			wheelIndex: 0,
 			wheelLayers: []
 		};
@@ -569,7 +569,7 @@ http://www.opensource.org/licenses/mit-license.php
 		base.$decBtn = base.$keyboard.find('.' + kbcss.keyPrefix + 'dec');
 		// add enter to allowed keys; fixes #190
 		if (o.enterNavigation || base.el.nodeName === 'TEXTAREA') {
-			base.alwaysAllowed.push(13);
+			base.alwaysAllowed.push($keyboard.keyCodes.enter);
 		}
 
 		base.bindKeyboard();
@@ -1099,7 +1099,7 @@ http://www.opensource.org/licenses/mit-license.php
 					if (o.useWheel && base.wheel) {
 						last.wheelIndex = 0;
 						last.wheelLayers = [];
-						last.wheel_$Keys = null;
+						last.wheel_$Keys = [];
 						$this
 							.attr('title', function (i, t) {
 								return (t === o.wheelMessage) ? '' : t;
@@ -1116,7 +1116,7 @@ http://www.opensource.org/licenses/mit-license.php
 				if (!base.$keyboard.is(':visible') || this.disabled) {
 					return false;
 				}
-				var action, $keys,
+				var action,
 					last = base.last,
 					$key = $(this),
 					// prevent mousedown & touchstart from both firing events at the same time - see #184
@@ -1124,9 +1124,8 @@ http://www.opensource.org/licenses/mit-license.php
 
 				if (o.useWheel && base.wheel) {
 					// get keys from other layers/keysets (shift, alt, meta, etc) that line up by data-position
-					$keys = last.wheel_$Keys;
 					// target mousewheel selected key
-					$key = $keys && last.wheelIndex > -1 ? $keys.eq(last.wheelIndex) : $key;
+					$key = last.wheel_$Keys && last.wheelIndex > -1 ? last.wheel_$Keys.eq(last.wheelIndex) : $key;
 				}
 				action = $key.attr('data-action');
 				if (timer - (last.eventTime || 0) < o.preventDoubleEventTime) {
@@ -1229,10 +1228,10 @@ http://www.opensource.org/licenses/mit-license.php
 				return false;
 			})
 			// Allow mousewheel to scroll through other keysets of the same (non-action) key
-			.bindButton('mousewheel' + base.namespace, function (e, delta) {
+			.bindButton('mousewheel' + base.namespace, base.throttleEvent(function (e, delta) {
 				var $btn = $(this);
 				// no mouse repeat for action keys (shift, ctrl, alt, meta, etc)
-				if (!$btn || $btn.hasClass(kbcss.keyAction)) {
+				if (!$btn || $btn.hasClass(kbcss.keyAction) || base.last.wheel_$Keys[0] !== this) {
 					return;
 				}
 				if (o.useWheel && base.wheel) {
@@ -1255,7 +1254,7 @@ http://www.opensource.org/licenses/mit-license.php
 					$btn.html(txt[n]);
 					return false;
 				}
-			})
+			}, 30))
 			.bindButton('mousedown touchstart '.split(' ').join(base.namespace + 'kb '), function () {
 				var $btn = $(this);
 				// no mouse repeat for action keys (shift, ctrl, alt, meta, etc)
@@ -1280,6 +1279,20 @@ http://www.opensource.org/licenses/mit-license.php
 				}
 				return false;
 			});
+	};
+
+	// No call on tailing event
+	base.throttleEvent = function(cb, time) {
+		var interm;
+		return function() {
+			if (!interm) {
+				cb.apply(this, arguments);
+				interm = true;
+				setTimeout(function() {
+					interm = false;
+				}, time);
+			}
+		};
 	};
 
 	base.execCommand = function(cmd, str) {
@@ -1620,9 +1633,11 @@ http://www.opensource.org/licenses/mit-license.php
 					// escape any special characters
 					return v.replace(base.escapeRegex, '\\$&');
 				});
+				if (base.alwaysAllowed.indexOf($keyboard.keyCodes.enter) > -1) {
+					t2.push('\\n'); // Fixes #686
+				}
 				r = layout.acceptedKeysRegex = new RegExp('(' + t2.join('|') + ')', 'g');
 			}
-
 			// only save matching keys
 			t2 = val.match(r);
 			if (t2) {
@@ -1802,7 +1817,7 @@ http://www.opensource.org/licenses/mit-license.php
 						if (base) {
 							base.bindFocus();
 						}
-					}, 500);
+					}, 200);
 				}
 				if (!base.watermark && base.el.value === '' && base.inPlaceholder !== '') {
 					base.$el.addClass(kbcss.placeholder);

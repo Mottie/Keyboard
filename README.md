@@ -150,6 +150,16 @@ Wiki: [Home](https://github.com/Mottie/Keyboard/wiki/Home) | [FAQ](https://githu
 
 Only the latest changes will be shown below, see the [wiki log](https://github.com/Mottie/Keyboard/wiki/Log) to view older versions.
 
+### Version 1.28.5 (2018-07-28)
+
+* Core:
+  * Add mousewheel throttle & key check. See [issue #665](https://github.com/Mottie/Keyboard/issues/665).
+  * Include enter when restrictInput true; fixes [issue #686](https://github.com/Mottie/Keyboard/issues/686).
+  * Reduce rebinding focus delay. See [issue #677](https://github.com/Mottie/Keyboard/issues/677).
+* Meta:
+  * Add `CHANGELOG.md` file pointing to the wiki pages. See [issue #685](https://github.com/Mottie/Keyboard/issues/685).
+  * Update dependencies.
+
 ### Version 1.28.4 (2018-07-05)
 
 * Scramble:
@@ -161,11 +171,3 @@ Only the latest changes will be shown below, see the [wiki log](https://github.c
   * Clear opening flag. Fixes [issue #668](https://github.com/Mottie/Keyboard/issues/668).
 * Meta:
   * Update dependencies.
-
-### Version 1.28.2 (2018-04-19)
-
-* Core:
-  * Allow urls in display option. See [issue #555](https://github.com/Mottie/Keyboard/issues/555).
-* AltKeys:
-  * Switch to using `event.key`. Fixes [issue #664](https://github.com/Mottie/Keyboard/issues/664).
-  * Marked as breaking change (v2.0.0 of the extension) as this will only work in modern browsers.
