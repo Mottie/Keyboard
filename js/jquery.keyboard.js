@@ -1817,7 +1817,7 @@ http://www.opensource.org/licenses/mit-license.php
 						if (base) {
 							base.bindFocus();
 						}
-					}, 500);
+					}, 200);
 				}
 				if (!base.watermark && base.el.value === '' && base.inPlaceholder !== '') {
 					base.$el.addClass(kbcss.placeholder);
