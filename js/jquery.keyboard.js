@@ -569,7 +569,7 @@ http://www.opensource.org/licenses/mit-license.php
 		base.$decBtn = base.$keyboard.find('.' + kbcss.keyPrefix + 'dec');
 		// add enter to allowed keys; fixes #190
 		if (o.enterNavigation || base.el.nodeName === 'TEXTAREA') {
-			base.alwaysAllowed.push(13);
+			base.alwaysAllowed.push($keyboard.keyCodes.enter);
 		}
 
 		base.bindKeyboard();
@@ -1633,9 +1633,11 @@ http://www.opensource.org/licenses/mit-license.php
 					// escape any special characters
 					return v.replace(base.escapeRegex, '\\$&');
 				});
+				if (base.alwaysAllowed.indexOf($keyboard.keyCodes.enter) > -1) {
+					t2.push('\\n'); // Fixes #686
+				}
 				r = layout.acceptedKeysRegex = new RegExp('(' + t2.join('|') + ')', 'g');
 			}
-
 			// only save matching keys
 			t2 = val.match(r);
 			if (t2) {
