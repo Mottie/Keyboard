@@ -157,7 +157,9 @@
 							base.showSet();
 							// Alt key will shift focus to the menu - doesn't work in Windows
 							setTimeout( function() {
-								base.$preview.focus();
+								if (base.$preview) {
+									base.$preview.focus();
+								}
 							}, 200 );
 							return;
 						}
