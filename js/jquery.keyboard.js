@@ -890,7 +890,7 @@ http://www.opensource.org/licenses/mit-license.php
 					// Added a flag to prevent from tabbing into an input, keyboard opening, then adding the tab
 					// to the keyboard preview area on keyup. Sadly it still happens if you don't release the tab
 					// key immediately because keydown event auto-repeats
-					if (base.tab && o.tabNavigation && !o.lockInput) {
+					if (base.tab && !o.lockInput) {
 						base.shiftActive = e.shiftKey;
 						// when switching inputs, the tab keyaction returns false
 						var notSwitching = $keyboard.keyaction.tab(base);
