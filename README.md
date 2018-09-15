@@ -150,6 +150,15 @@ Wiki: [Home](https://github.com/Mottie/Keyboard/wiki/Home) | [FAQ](https://githu
 
 Only the latest changes will be shown below, see the [wiki log](https://github.com/Mottie/Keyboard/wiki/Log) to view older versions.
 
+### Version 1.28.6 (2018-09-15)
+
+* Core:
+  * Fix tab key insertion in textarea.
+* Typing:
+  * Prevent occasional focus error.
+* Meta:
+  * Update dependencies.
+
 ### Version 1.28.5 (2018-07-28)
 
 * Core:
@@ -164,10 +173,3 @@ Only the latest changes will be shown below, see the [wiki log](https://github.c
 
 * Scramble:
   * Use `crypto.getRandomValues` for scramble. See [pull #678](https://github.com/Mottie/Keyboard/pull/678); thanks [@lsching17](https://github.com/lsching17)!
-
-### Version 1.28.3 (2018-04-23)
-
-* Core:
-  * Clear opening flag. Fixes [issue #668](https://github.com/Mottie/Keyboard/issues/668).
-* Meta:
-  * Update dependencies.

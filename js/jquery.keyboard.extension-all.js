@@ -4,7 +4,7 @@
 ██  ██ ██  ██   ██  ██ ██  ██   ██     ██ ██ ██ ██  ██ ██  ██ ██ ██▀▀   ▀▀▀▀██
 █████▀ ▀████▀   ██  ██ ▀████▀   ██     ██ ██ ██ ▀████▀ █████▀ ██ ██     █████▀
 */
-/*! jQuery UI Virtual Keyboard (1.28.5) - ALL Extensions + Mousewheel */
+/*! jQuery UI Virtual Keyboard (1.28.6) - ALL Extensions + Mousewheel */
 /*! jQuery UI Virtual Keyboard Alt Key Popup v2.0.0 *//*
  * for Keyboard v1.18+ only (2018-04-19)
  *
@@ -1983,7 +1983,9 @@ $.keyboard = $.keyboard || {};
 							base.showSet();
 							// Alt key will shift focus to the menu - doesn't work in Windows
 							setTimeout( function() {
-								base.$preview.focus();
+								if (base.$preview) {
+									base.$preview.focus();
+								}
 							}, 200 );
 							return;
 						}

@@ -1,4 +1,4 @@
-/*! jQuery UI Virtual Keyboard v1.28.5 *//*
+/*! jQuery UI Virtual Keyboard v1.28.6 *//*
 Author: Jeremy Satterfield
 Maintained: Rob Garrison (Mottie on github)
 Licensed under the MIT License
@@ -42,7 +42,7 @@ http://www.opensource.org/licenses/mit-license.php
 	var $keyboard = $.keyboard = function (el, options) {
 	var o, base = this;
 
-	base.version = '1.28.5';
+	base.version = '1.28.6';
 
 	// Access to jQuery and DOM versions of element
 	base.$el = $(el);
@@ -890,7 +890,7 @@ http://www.opensource.org/licenses/mit-license.php
 					// Added a flag to prevent from tabbing into an input, keyboard opening, then adding the tab
 					// to the keyboard preview area on keyup. Sadly it still happens if you don't release the tab
 					// key immediately because keydown event auto-repeats
-					if (base.tab && o.tabNavigation && !o.lockInput) {
+					if (base.tab && !o.lockInput) {
 						base.shiftActive = e.shiftKey;
 						// when switching inputs, the tab keyaction returns false
 						var notSwitching = $keyboard.keyaction.tab(base);
