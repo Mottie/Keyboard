@@ -32,7 +32,7 @@ In this section, text that appears on the keyboard and in the tooltips will need
 ```
 
 * The `'a'` should not be modified!
-  * This is the key used by the keyboard plugin to indiciate that a smaller version of the accept key is being used.
+  * This is the key used by the keyboard plugin to indicate that a smaller version of the accept key is being used.
   * The full version equivalent would be `'accept'`, but really there is no difference between the two. You can make the text of the `'a'` key exactly match the `'accept'` key.
 * The `\u2714` is the javascript unicode hex value for a [check mark](http://www.fileformat.info/info/unicode/char/2714/index.htm).
   * The reason the unicode is used here is because of issues of files being converted to file types other than UTF-8 will corrupt the symbols.
@@ -112,7 +112,7 @@ Now lets say you want to add the combination `|0` (vertical bar + zero) to creat
 
 ### Combo regular expression (`comboRegex`)
 
-The default `comboxRegex` is as follows:
+The default `comboRegex` is as follows:
 
 ```js
 comboRegex : /([`\'~\^\"ao])([a-z])/mig,
