@@ -1125,7 +1125,7 @@ http://www.opensource.org/licenses/mit-license.php
 				if (o.useWheel && base.wheel) {
 					// get keys from other layers/keysets (shift, alt, meta, etc) that line up by data-position
 					// target mousewheel selected key
-					$key = last.wheel_$Keys && last.wheelIndex > -1 ? last.wheel_$Keys.eq(last.wheelIndex) : $key;
+					$key = last.wheel_$Keys.length && last.wheelIndex > -1 ? last.wheel_$Keys.eq(last.wheelIndex) : $key;
 				}
 				action = $key.attr('data-action');
 				if (timer - (last.eventTime || 0) < o.preventDoubleEventTime) {
