@@ -1,4 +1,4 @@
-/*! jQuery UI Virtual Keyboard v1.28.6 *//*
+/*! jQuery UI Virtual Keyboard v1.28.7 *//*
 Author: Jeremy Satterfield
 Maintained: Rob Garrison (Mottie on github)
 Licensed under the MIT License
@@ -42,7 +42,7 @@ http://www.opensource.org/licenses/mit-license.php
 	var $keyboard = $.keyboard = function (el, options) {
 	var o, base = this;
 
-	base.version = '1.28.6';
+	base.version = '1.28.7';
 
 	// Access to jQuery and DOM versions of element
 	base.$el = $(el);
@@ -1125,7 +1125,7 @@ http://www.opensource.org/licenses/mit-license.php
 				if (o.useWheel && base.wheel) {
 					// get keys from other layers/keysets (shift, alt, meta, etc) that line up by data-position
 					// target mousewheel selected key
-					$key = last.wheel_$Keys && last.wheelIndex > -1 ? last.wheel_$Keys.eq(last.wheelIndex) : $key;
+					$key = last.wheel_$Keys.length && last.wheelIndex > -1 ? last.wheel_$Keys.eq(last.wheelIndex) : $key;
 				}
 				action = $key.attr('data-action');
 				if (timer - (last.eventTime || 0) < o.preventDoubleEventTime) {

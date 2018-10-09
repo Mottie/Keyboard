@@ -150,6 +150,14 @@ Wiki: [Home](https://github.com/Mottie/Keyboard/wiki/Home) | [FAQ](https://githu
 
 Only the latest changes will be shown below, see the [wiki log](https://github.com/Mottie/Keyboard/wiki/Log) to view older versions.
 
+### Version 1.28.7 (2018-10-09)
+
+* Core:
+  * Fix JS Error. Closes [issue #699](https://github.com/Mottie/Keyboard/issues/699).
+* Readme:
+  * Fix Usability (spelling error). See [PR #694](https://github.com/Mottie/Keyboard/pull/694); thanks [@0xflotus](https://github.com/0xflotus)!
+  * Fix comboRegex (spelling error). See [PR #695](https://github.com/Mottie/Keyboard/pull/695); thanks [@0xflotus](https://github.com/0xflotus)!
+
 ### Version 1.28.6 (2018-09-15)
 
 * Core:
@@ -168,8 +176,3 @@ Only the latest changes will be shown below, see the [wiki log](https://github.c
 * Meta:
   * Add `CHANGELOG.md` file pointing to the wiki pages. See [issue #685](https://github.com/Mottie/Keyboard/issues/685).
   * Update dependencies.
-
-### Version 1.28.4 (2018-07-05)
-
-* Scramble:
-  * Use `crypto.getRandomValues` for scramble. See [pull #678](https://github.com/Mottie/Keyboard/pull/678); thanks [@lsching17](https://github.com/lsching17)!
