@@ -2,7 +2,7 @@
 
 Originally posted by Jeremy Satterfield in his [blog](http://jsatt.blogspot.com/2010/01/on-screen-keyboard-widget-using-jquery.html), [jQuery plugins](http://plugins.jquery.com/project/virtual_keyboard) and on [Snipplr](http://snipplr.com/view/21577/virtual-keyboard-widget/). Currently maintained by [Mottie](https://github.com/Mottie/Keyboard).
 
-[![Bower Version][bower-image]][bower-url] [![NPM Version][npm-image]][npm-url] [![devDependency Status][david-dev-image]][david-dev-url] [![Join the chat at https://gitter.im/Mottie/Keyboard][gitter-image]][gitter]
+[![NPM Version][npm-image]][npm-url] [![devDependency Status][david-dev-image]][david-dev-url] [![Join the chat at https://gitter.im/Mottie/Keyboard][gitter-image]][gitter]
 [![FOSSA Status](https://app.fossa.io/api/projects/git%2Bgithub.com%2FMottie%2FKeyboard.svg?type=shield)](https://app.fossa.io/projects/git%2Bgithub.com%2FMottie%2FKeyboard?ref=badge_shield)
 
 ## Features ([Demo](https://mottie.github.io/Keyboard/))
@@ -15,7 +15,7 @@ Originally posted by Jeremy Satterfield in his [blog](http://jsatt.blogspot.com/
 
 ### Ease of installation
 
-* Grab the files as a zip, or from npm or bower - see the [installation](#installation) section below.
+* Grab the files as a zip, or from npm - see the [installation](#installation) section below.
 * In a minimal setup, the keyboard works by including:
   * jQuery
   * jQuery UI theme
@@ -82,10 +82,9 @@ Originally posted by Jeremy Satterfield in his [blog](http://jsatt.blogspot.com/
 
 * Download a [zip](https://github.com/Mottie/Keyboard/archive/master.zip) or [tar.gz](https://github.com/Mottie/Keyboard/archive/master.tar.gz) with all files, for use in the browser.
 * Use the files from [CDNJS](https://cdnjs.com/libraries/virtual-keyboard).
-* Install using [bower](https://github.com/bower/bower) via `bower install keyboard`.
 * Install using [npm](https://www.npmjs.com/) via `npm install virtual-keyboard`.
 * Use with:
-  * [AngularJs](https://github.com/antonio-spinelli/ng-virtual-keyboard) by [antonio-spinelli](https://github.com/antonio-spinelli) via `bower install ng-virtual-keyboard`.
+  * [AngularJs](https://github.com/antonio-spinelli/ng-virtual-keyboard) by [antonio-spinelli](https://github.com/antonio-spinelli) via `npm install ng-virtual-keyboard`.
   * [Ember](https://github.com/SleepyWerewolf/ember-virtual-keyboard) by [SleepyWerewolf](https://github.com/SleepyWerewolf).
   * [React.js](https://github.com/Utzel-Butzel/react-virtual-keyboard) by [Utzel-Butzel](https://github.com/Utzel-Butzel).
   * [Ruby On Rails](https://github.com/scicasoft/virtual_keyboard) by [scicasoft](https://github.com/scicasoft) via `gem install virtual_keyboard`.
@@ -138,11 +137,8 @@ Wiki: [Home](https://github.com/Mottie/Keyboard/wiki/Home) | [FAQ](https://githu
 [npm-image]: https://img.shields.io/npm/v/virtual-keyboard.svg
 [david-dev-url]: https://david-dm.org/Mottie/keyboard?type=dev
 [david-dev-image]: https://david-dm.org/Mottie/keyboard/dev-status.svg
-[bower-url]: http://bower.io/search/?q=keyboard
-[bower-image]: https://img.shields.io/bower/v/keyboard.svg
 [gitter-image]: https://badges.gitter.im/Join%20Chat.svg
 [gitter]: https://gitter.im/Mottie/Keyboard?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge
-
 
 [![FOSSA Status](https://app.fossa.io/api/projects/git%2Bgithub.com%2FMottie%2FKeyboard.svg?type=large)](https://app.fossa.io/projects/git%2Bgithub.com%2FMottie%2FKeyboard?ref=badge_large)
 
