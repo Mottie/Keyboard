@@ -84,10 +84,11 @@ Originally posted by Jeremy Satterfield in his [blog](http://jsatt.blogspot.com/
 * Use the files from [CDNJS](https://cdnjs.com/libraries/virtual-keyboard).
 * Install using [npm](https://www.npmjs.com/) via `npm install virtual-keyboard`.
 * Use with:
-  * [AngularJs](https://github.com/antonio-spinelli/ng-virtual-keyboard) by [antonio-spinelli](https://github.com/antonio-spinelli) via `npm install ng-virtual-keyboard`.
-  * [Ember](https://github.com/SleepyWerewolf/ember-virtual-keyboard) by [SleepyWerewolf](https://github.com/SleepyWerewolf).
-  * [React.js](https://github.com/Utzel-Butzel/react-virtual-keyboard) by [Utzel-Butzel](https://github.com/Utzel-Butzel).
-  * [Ruby On Rails](https://github.com/scicasoft/virtual_keyboard) by [scicasoft](https://github.com/scicasoft) via `gem install virtual_keyboard`.
+  * Angular [ng-virtual-keyboard](https://github.com/antonio-spinelli/ng-virtual-keyboard) by [antonio-spinelli](https://github.com/antonio-spinelli) via `npm install ng-virtual-keyboard`.
+  * [ember-virtual-keyboard](https://github.com/SleepyWerewolf/ember-virtual-keyboard) by [SleepyWerewolf](https://github.com/SleepyWerewolf).
+  * [react-virtual-keyboard](https://github.com/Utzel-Butzel/react-virtual-keyboard) by [Utzel-Butzel](https://github.com/Utzel-Butzel) via `npm install react-virtual-keyboard`.
+  * [VueVirtualKeyboard](https://github.com/relzhong/vue-virtual-keyboard) by [relzhong](https://github.com/relzhong) via `npm install --save vue-virtual-keyboard`.
+  * Ruby on Rails [virtual_keyboard](https://github.com/scicasoft/virtual_keyboard) by [scicasoft](https://github.com/scicasoft) via `gem install virtual_keyboard`.
   * [VR Toolbox](https://steamcommunity.com/games/488040/announcements/detail/1431432753528769455).
 
 ## TypeScript
