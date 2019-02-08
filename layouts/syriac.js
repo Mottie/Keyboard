@@ -72,12 +72,5 @@ jQuery.keyboard.layouts['syriac-latin'] = {
 		"A S D F G H J K L Ë Ä Ġ {enter}",
 		"{shift} {empty} Z X C V B N M Ž Č , {shift}",
 		"{accept} {alt} {space} {alt} {cancel}"
-	],
-	"alt" : [
-		"{empty} {empty} {empty} {empty} {empty} {empty} {empty} {empty} {empty} {empty} {empty} {empty} {empty} {bksp}",
-		"{tab} {empty} {empty} {empty} {empty} {empty} {empty} {empty} {empty} {empty} {empty} {empty} {empty} {empty}",
-		"{empty} {empty} {empty} {empty} {empty} {empty} {empty} {empty} {empty} {empty} {empty} {enter}",
-		"{shift} {empty} {empty} {empty} {empty} {empty} {empty} {empty} {empty} {empty} {empty} {empty} {shift}",
-		"{accept} {alt} {space} {alt} {cancel}"
 	]
 };
