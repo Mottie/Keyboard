@@ -64,7 +64,7 @@ jQuery.keyboard.layouts['syriac-latin'] = {
 		"{tab} q w e r t y u i o p ṭ ṯ",
 		"a s d f g h j k l ë ä ġ {enter}",
 		"{shift} X z x c v b n m ž č . {shift}",
-		"{accept} {alt} {space} {alt} {cancel}"
+		"{accept} {space} {cancel}"
 	],
 	"shift" : [
 		"8 9 0 ! \" % ? Ḏ Ḥ Ḍ Ṣ Š {bksp}",
