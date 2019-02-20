@@ -238,7 +238,7 @@ module.exports = function(grunt) {
 	// update keyboard.jquery.json file version numbers to match the package.json version
 	grunt.registerTask( 'updateManifest', function() {
 		var i, project,
-			projectFile = [ 'keyboard.jquery.json', 'bower.json' ],
+			projectFile = [ 'keyboard.jquery.json' ],
 			len = projectFile.length;
 		for ( i = 0; i < len; i++ ) {
 			if ( !grunt.file.exists( projectFile[ i ] ) ) {
@@ -249,9 +249,6 @@ module.exports = function(grunt) {
 			if (i === 0 ) {
 				// only update version in keyboard.jquery.json
 				project.version = pkg.version;
-			} else if (i === 1) {
-				// update devDependencies in bower
-				project.devDependencies = pkg.devDependencies;
 			}
 			grunt.file.write( projectFile[i], JSON.stringify( project, null, 2 ) ); // serialize it back to file
 		}

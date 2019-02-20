@@ -1,4 +1,4 @@
-/*! jQuery UI Virtual Keyboard v1.28.7 *//*
+/*! jQuery UI Virtual Keyboard v1.28.8 *//*
 Author: Jeremy Satterfield
 Maintained: Rob Garrison (Mottie on github)
 Licensed under the MIT License
@@ -42,7 +42,7 @@ http://www.opensource.org/licenses/mit-license.php
 	var $keyboard = $.keyboard = function (el, options) {
 	var o, base = this;
 
-	base.version = '1.28.7';
+	base.version = '1.28.8';
 
 	// Access to jQuery and DOM versions of element
 	base.$el = $(el);
@@ -1354,7 +1354,7 @@ http://www.opensource.org/licenses/mit-license.php
 
 		if (base.preview.nodeName === 'TEXTAREA') {
 			// This makes sure the caret moves to the next line after clicking on enter (manual typing works fine)
-			if ($keyboard.msie && val.substr(pos.start, 1) === '\n') {
+			if ($keyboard.msie && val.substring(pos.start, pos.start + 1) === '\n') {
 				pos.start += 1;
 				pos.end += 1;
 			}
@@ -1370,7 +1370,7 @@ http://www.opensource.org/licenses/mit-license.php
 			txt = '';
 			bksp = isBksp && t === pos.end && t > 0;
 		}
-		val = val.substr(0, t - (bksp ? 1 : 0)) + txt + val.substr(pos.end);
+		val = val.substring(0, t - (bksp ? 1 : 0)) + txt + val.substring(pos.end);
 		t += bksp ? -1 : txt.length;
 
 		base.setValue(val);
@@ -1582,7 +1582,7 @@ http://www.opensource.org/licenses/mit-license.php
 			pos.end = pos.start = len;
 		}
 		// This makes sure the caret moves to the next line after clicking on enter (manual typing works fine)
-		if ($keyboard.msie && val.substr(pos.start, 1) === '\n') {
+		if ($keyboard.msie && val.substring(pos.start, pos.start + 1) === '\n') {
 			pos.start += 1;
 			pos.end += 1;
 		}
@@ -1952,11 +1952,18 @@ http://www.opensource.org/licenses/mit-license.php
 		var tmp,
 			// Don't split colons followed by //, e.g. https://; Fixes #555
 			parts = name.split(/:(?!\/\/)/),
+			htmlIndex = name.indexOf('</'),
+			colonIndex = name.indexOf(':', name.indexOf('<')),
 			data = {
 				name: null,
 				map: '',
 				title: ''
 			};
+		if (htmlIndex > -1 && (colonIndex < 0 || colonIndex > htmlIndex)) {
+			// html includes colons; see #701
+			data.name = name;
+			return data;
+		}
 		/* map defined keys
 		format 'key(A):Label_for_key_(ignore_parentheses_here)'
 			'key' = key that is seen (can any character(s); but it might need to be escaped using '\'

@@ -147,6 +147,22 @@ Wiki: [Home](https://github.com/Mottie/Keyboard/wiki/Home) | [FAQ](https://githu
 
 Only the latest changes will be shown below, see the [wiki log](https://github.com/Mottie/Keyboard/wiki/Log) to view older versions.
 
+### Version 1.28.8 (2019-02-19)
+
+* Core:
+  * Replace `substr` with `substring`.
+  * Ignore colons within HTML; allows adding a style attr to display HTML.
+* Language/Layout:
+  * Add Syriac support. See [issue #723](https://github.com/Mottie/Keyboard/pull/723); thanks [@sixtyfive](https://github.com/sixtyfive)!
+  * Remove extra `{alt}` in syriac-latin layout.
+* Navigation:
+  * Prevent JS error when keyboard is closed. Fixes [issue #724](https://github.com/Mottie/Keyboard/issues/724).
+* Readme:
+  * Remove references to bower.
+  * Add VueVirtualKeyboard link.
+* Meta:
+  * Update dependencies.
+
 ### Version 1.28.7 (2018-10-09)
 
 * Core:
@@ -162,14 +178,4 @@ Only the latest changes will be shown below, see the [wiki log](https://github.c
 * Typing:
   * Prevent occasional focus error.
 * Meta:
-  * Update dependencies.
-
-### Version 1.28.5 (2018-07-28)
-
-* Core:
-  * Add mousewheel throttle & key check. See [issue #665](https://github.com/Mottie/Keyboard/issues/665).
-  * Include enter when restrictInput true; fixes [issue #686](https://github.com/Mottie/Keyboard/issues/686).
-  * Reduce rebinding focus delay. See [issue #677](https://github.com/Mottie/Keyboard/issues/677).
-* Meta:
-  * Add `CHANGELOG.md` file pointing to the wiki pages. See [issue #685](https://github.com/Mottie/Keyboard/issues/685).
   * Update dependencies.
