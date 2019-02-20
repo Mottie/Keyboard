@@ -1354,7 +1354,7 @@ http://www.opensource.org/licenses/mit-license.php
 
 		if (base.preview.nodeName === 'TEXTAREA') {
 			// This makes sure the caret moves to the next line after clicking on enter (manual typing works fine)
-			if ($keyboard.msie && val.substr(pos.start, 1) === '\n') {
+			if ($keyboard.msie && val.substring(pos.start, pos.start + 1) === '\n') {
 				pos.start += 1;
 				pos.end += 1;
 			}
@@ -1370,7 +1370,7 @@ http://www.opensource.org/licenses/mit-license.php
 			txt = '';
 			bksp = isBksp && t === pos.end && t > 0;
 		}
-		val = val.substr(0, t - (bksp ? 1 : 0)) + txt + val.substr(pos.end);
+		val = val.substring(0, t - (bksp ? 1 : 0)) + txt + val.substring(pos.end);
 		t += bksp ? -1 : txt.length;
 
 		base.setValue(val);
@@ -1582,7 +1582,7 @@ http://www.opensource.org/licenses/mit-license.php
 			pos.end = pos.start = len;
 		}
 		// This makes sure the caret moves to the next line after clicking on enter (manual typing works fine)
-		if ($keyboard.msie && val.substr(pos.start, 1) === '\n') {
+		if ($keyboard.msie && val.substring(pos.start, pos.start + 1) === '\n') {
 			pos.start += 1;
 			pos.end += 1;
 		}
