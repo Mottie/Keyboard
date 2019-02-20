@@ -1952,11 +1952,18 @@ http://www.opensource.org/licenses/mit-license.php
 		var tmp,
 			// Don't split colons followed by //, e.g. https://; Fixes #555
 			parts = name.split(/:(?!\/\/)/),
+			htmlIndex = name.indexOf('</'),
+			colonIndex = name.indexOf(':', name.indexOf('<')),
 			data = {
 				name: null,
 				map: '',
 				title: ''
 			};
+		if (htmlIndex > -1 && (colonIndex < 0 || colonIndex > htmlIndex)) {
+			// html includes colons; see #701
+			data.name = name;
+			return data;
+		}
 		/* map defined keys
 		format 'key(A):Label_for_key_(ignore_parentheses_here)'
 			'key' = key that is seen (can any character(s); but it might need to be escaped using '\'
