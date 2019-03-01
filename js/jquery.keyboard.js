@@ -568,7 +568,7 @@ http://www.opensource.org/licenses/mit-license.php
 
 		base.$decBtn = base.$keyboard.find('.' + kbcss.keyPrefix + 'dec');
 		// add enter to allowed keys; fixes #190
-		if (o.enterNavigation || base.el.nodeName === 'TEXTAREA') {
+		if (o.enterNavigation || base.el.nodeName.toUpperCase() === 'TEXTAREA') {
 			base.alwaysAllowed.push($keyboard.keyCodes.enter);
 		}
 
@@ -688,7 +688,7 @@ http://www.opensource.org/licenses/mit-license.php
 		if (!base.isContentEditable && base.last.virtual) {
 
 			var scrollWidth, clientWidth, adjustment, direction,
-				isTextarea = base.preview.nodeName === 'TEXTAREA',
+				isTextarea = base.preview.nodeName.toUpperCase() === 'TEXTAREA',
 				value = base.last.val.substring(0, Math.max(base.last.start, base.last.end));
 
 			if (!base.$previewCopy) {
@@ -1352,7 +1352,7 @@ http://www.opensource.org/licenses/mit-license.php
 			pos.end = pos.start = len;
 		}
 
-		if (base.preview.nodeName === 'TEXTAREA') {
+		if (base.preview.nodeName.toUpperCase() === 'TEXTAREA') {
 			// This makes sure the caret moves to the next line after clicking on enter (manual typing works fine)
 			if ($keyboard.msie && val.substring(pos.start, pos.start + 1) === '\n') {
 				pos.start += 1;
@@ -2072,30 +2072,34 @@ http://www.opensource.org/licenses/mit-license.php
 
 		data.html = '<span class="' + kbcss.keyText + '">' +
 			// this prevents HTML from being added to the key
-			keys.name.replace(/[\u00A0-\u9999]/gim, function (i) {
+			keys.name.replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/[\u00A0-\u9999]/gim, function (i) {
 				return '&#' + i.charCodeAt(0) + ';';
 			}) +
 			'</span>';
 
-		data.$key = base.keyBtn
-			.clone()
-			.attr({
-				'data-value': regKey ? keys.name : keys.action, // value
-				'data-name': keys.action,
-				'data-pos': base.temp[1] + ',' + base.temp[2],
-				'data-action': keys.action,
-				'data-html': data.html
-			})
-			// add 'ui-keyboard-' + data.name for all keys
-			//  (e.g. 'Bksp' will have 'ui-keyboard-bskp' class)
-			// any non-alphanumeric characters will be replaced with
-			//  their decimal unicode value
-			//  (e.g. '~' is a regular key, class = 'ui-keyboard-126'
-			//  (126 is the unicode decimal value - same as &#126;)
-			//  See https://en.wikipedia.org/wiki/List_of_Unicode_characters#Control_codes
-			.addClass(keyClass)
-			.html(data.html)
-			.appendTo(base.temp[0]);
+		try{
+			data.$key = base.keyBtn
+				.clone()
+				.attr({
+					'data-value': regKey ? keys.name : keys.action, // value
+					'data-name': keys.action,
+					'data-pos': base.temp[1] + ',' + base.temp[2],
+					'data-action': keys.action,
+					'data-html': data.html
+				})
+				// add 'ui-keyboard-' + data.name for all keys
+				//  (e.g. 'Bksp' will have 'ui-keyboard-bskp' class)
+				// any non-alphanumeric characters will be replaced with
+				//  their decimal unicode value
+				//  (e.g. '~' is a regular key, class = 'ui-keyboard-126'
+				//  (126 is the unicode decimal value - same as &#126;)
+				//  See https://en.wikipedia.org/wiki/List_of_Unicode_characters#Control_codes
+				.addClass(keyClass)
+				.html(data.html)
+				.appendTo(base.temp[0]);
+		}catch(e){
+			console.log(data.html);
+		}
 
 		if (keys.map) {
 			data.$key.attr('data-mapped', keys.map);
@@ -2602,7 +2606,7 @@ http://www.opensource.org/licenses/mit-license.php
 		},
 		// el is the pressed key (button) object; it is null when the real keyboard enter is pressed
 		enter: function (base, el, e) {
-			var tag = base.el.nodeName,
+			var tag = base.el.nodeName.toUpperCase(),
 				o = base.options;
 			// shift+enter in textareas
 			if (e.shiftKey) {
@@ -2612,7 +2616,7 @@ http://www.opensource.org/licenses/mit-license.php
 				return (o.enterNavigation) ? base.switchInput(!e[o.enterMod], true) : base.close(true);
 			}
 			// input only - enterMod + enter to navigate
-			if (o.enterNavigation && (tag !== 'TEXTAREA' || e[o.enterMod])) {
+			if (o.enterNavigation && (tag.toUpperCase() !== 'TEXTAREA' || e[o.enterMod])) {
 				return base.switchInput(!e[o.enterMod], o.autoAccept ? 'true' : false);
 			}
 			// pressing virtual enter button inside of a textarea - add a carriage return
@@ -2698,7 +2702,7 @@ http://www.opensource.org/licenses/mit-license.php
 			base.insertText(' ');
 		},
 		tab: function (base) {
-			var tag = base.el.nodeName,
+			var tag = base.el.nodeName.toUpperCase(),
 				o = base.options;
 			if (tag !== 'TEXTAREA') {
 				if (o.tabNavigation) {
@@ -3487,7 +3491,7 @@ http://www.opensource.org/licenses/mit-license.php
 			typeof this[0] === 'undefined' ||
 			this.is(':hidden') ||
 			this.css('visibility') === 'hidden' ||
-			!/(INPUT|TEXTAREA)/.test(this[0].nodeName)
+			!/(INPUT|TEXTAREA)/i.test(this[0].nodeName)
 		) {
 			return this;
 		}
@@ -3530,7 +3534,7 @@ http://www.opensource.org/licenses/mit-license.php
 			start = el.selectionStart;
 			end = el.selectionEnd;
 		} else if (selection) {
-			if (el.nodeName === 'TEXTAREA') {
+			if (el.nodeName.toUpperCase() === 'TEXTAREA') {
 				val = $el.val();
 				range = selection.createRange();
 				stored_range = range.duplicate();
