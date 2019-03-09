@@ -1,4 +1,4 @@
-/*! jQuery UI Virtual Keyboard v1.28.8 *//*
+/*! jQuery UI Virtual Keyboard v1.28.9 *//*
 Author: Jeremy Satterfield
 Maintained: Rob Garrison (Mottie on github)
 Licensed under the MIT License
@@ -42,7 +42,7 @@ http://www.opensource.org/licenses/mit-license.php
 	var $keyboard = $.keyboard = function (el, options) {
 	var o, base = this;
 
-	base.version = '1.28.8';
+	base.version = '1.28.9';
 
 	// Access to jQuery and DOM versions of element
 	base.$el = $(el);
@@ -93,8 +93,11 @@ http://www.opensource.org/licenses/mit-license.php
 		base.wheel = $.isFunction($.fn.mousewheel);
 		// special character in regex that need to be escaped
 		base.escapeRegex = /[-\/\\^$*+?.()|[\]{}]/g;
+		base.isTextArea = base.el.nodeName.toLowerCase() === 'textarea';
+		base.isInput = base.el.nodeName.toLowerCase() === 'input';
 		// detect contenteditable
-		base.isContentEditable = !/(input|textarea)/i.test(base.el.nodeName) &&
+		base.isContentEditable = !base.isTextArea &&
+			!base.isInput &&
 			base.el.isContentEditable;
 
 		// keyCode of keys always allowed to be typed
@@ -520,7 +523,9 @@ http://www.opensource.org/licenses/mit-license.php
 		o.rtl = layouts[o.layout] && layouts[o.layout].rtl || kblang[lang] && kblang[lang].rtl || false;
 
 		// save default regex (in case loading another layout changes it)
-		base.regex = kblang[lang] && kblang[lang].comboRegex || $keyboard.comboRegex;
+		if (kblang[lang] && kblang[lang].comboRegex) {
+			base.regex = kblang[lang].comboRegex;
+		}
 		// determine if US '.' or European ',' system being used
 		base.decimal = /^\./.test(o.display.dec);
 		base.$el
@@ -568,7 +573,7 @@ http://www.opensource.org/licenses/mit-license.php
 
 		base.$decBtn = base.$keyboard.find('.' + kbcss.keyPrefix + 'dec');
 		// add enter to allowed keys; fixes #190
-		if (o.enterNavigation || base.el.nodeName === 'TEXTAREA') {
+		if (o.enterNavigation || base.isTextArea) {
 			base.alwaysAllowed.push($keyboard.keyCodes.enter);
 		}
 
@@ -688,7 +693,6 @@ http://www.opensource.org/licenses/mit-license.php
 		if (!base.isContentEditable && base.last.virtual) {
 
 			var scrollWidth, clientWidth, adjustment, direction,
-				isTextarea = base.preview.nodeName === 'TEXTAREA',
 				value = base.last.val.substring(0, Math.max(base.last.start, base.last.end));
 
 			if (!base.$previewCopy) {
@@ -704,7 +708,7 @@ http://www.opensource.org/licenses/mit-license.php
 					.addClass($keyboard.css.inputClone);
 				// prevent submitting content on form submission
 				base.$previewCopy[0].disabled = true;
-				if (!isTextarea) {
+				if (!base.isTextArea) {
 					// make input zero-width because we need an accurate scrollWidth
 					base.$previewCopy.css({
 						'white-space': 'pre',
@@ -720,7 +724,7 @@ http://www.opensource.org/licenses/mit-license.php
 				}
 			}
 
-			if (isTextarea) {
+			if (base.isTextArea) {
 				// need the textarea scrollHeight, so set the clone textarea height to be the line height
 				base.$previewCopy
 					.height(base.lineHeight)
@@ -1352,7 +1356,7 @@ http://www.opensource.org/licenses/mit-license.php
 			pos.end = pos.start = len;
 		}
 
-		if (base.preview.nodeName === 'TEXTAREA') {
+		if (base.isTextArea) {
 			// This makes sure the caret moves to the next line after clicking on enter (manual typing works fine)
 			if ($keyboard.msie && val.substring(pos.start, pos.start + 1) === '\n') {
 				pos.start += 1;
@@ -2602,8 +2606,7 @@ http://www.opensource.org/licenses/mit-license.php
 		},
 		// el is the pressed key (button) object; it is null when the real keyboard enter is pressed
 		enter: function (base, el, e) {
-			var tag = base.el.nodeName,
-				o = base.options;
+			var o = base.options;
 			// shift+enter in textareas
 			if (e.shiftKey) {
 				// textarea, input & contenteditable - enterMod + shift + enter = accept,
@@ -2612,12 +2615,12 @@ http://www.opensource.org/licenses/mit-license.php
 				return (o.enterNavigation) ? base.switchInput(!e[o.enterMod], true) : base.close(true);
 			}
 			// input only - enterMod + enter to navigate
-			if (o.enterNavigation && (tag !== 'TEXTAREA' || e[o.enterMod])) {
+			if (o.enterNavigation && (!base.isTextArea || e[o.enterMod])) {
 				return base.switchInput(!e[o.enterMod], o.autoAccept ? 'true' : false);
 			}
 			// pressing virtual enter button inside of a textarea - add a carriage return
 			// e.target is span when clicking on text and button at other times
-			if (tag === 'TEXTAREA' && $(e.target).closest('button').length) {
+			if (base.isTextArea && $(e.target).closest('button').length) {
 				// IE8 fix (space + \n) - fixes #71 thanks Blookie!
 				base.insertText(($keyboard.msie ? ' ' : '') + '\n');
 			}
@@ -2698,12 +2701,11 @@ http://www.opensource.org/licenses/mit-license.php
 			base.insertText(' ');
 		},
 		tab: function (base) {
-			var tag = base.el.nodeName,
-				o = base.options;
-			if (tag !== 'TEXTAREA') {
+			var o = base.options;
+			if (!base.isTextArea) {
 				if (o.tabNavigation) {
 					return base.switchInput(!base.shiftActive, true);
-				} else if (tag === 'INPUT') {
+				} else if (base.isInput) {
 					// ignore tab key in input
 					return false;
 				}
@@ -3487,7 +3489,7 @@ http://www.opensource.org/licenses/mit-license.php
 			typeof this[0] === 'undefined' ||
 			this.is(':hidden') ||
 			this.css('visibility') === 'hidden' ||
-			!/(INPUT|TEXTAREA)/.test(this[0].nodeName)
+			!/(INPUT|TEXTAREA)/i.test(this[0].nodeName)
 		) {
 			return this;
 		}
@@ -3530,7 +3532,7 @@ http://www.opensource.org/licenses/mit-license.php
 			start = el.selectionStart;
 			end = el.selectionEnd;
 		} else if (selection) {
-			if (el.nodeName === 'TEXTAREA') {
+			if (el.nodeName.toUpperCase() === 'TEXTAREA') {
 				val = $el.val();
 				range = selection.createRange();
 				stored_range = range.duplicate();

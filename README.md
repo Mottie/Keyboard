@@ -147,6 +147,15 @@ Wiki: [Home](https://github.com/Mottie/Keyboard/wiki/Home) | [FAQ](https://githu
 
 Only the latest changes will be shown below, see the [wiki log](https://github.com/Mottie/Keyboard/wiki/Log) to view older versions.
 
+### Version 1.28.9 (2019-03-09)
+
+* Core:
+  * Prevent overriding modified regex. Only if no language definition regex exists. See [issue #731](https://github.com/Mottie/Keyboard/issues/731).
+  * Add `base.isTextArea` & `base.isInput`; closes [pull #727](https://github.com/Mottie/Keyboard/pull/727); thanks [@DawidSu](https://github.com/DawidSu)
+* Language:
+  * Add untranslated Czech language file. See [issue #731](https://github.com/Mottie/Keyboard/issues/731).
+  * Update layouts dist (missing Syriac files).
+
 ### Version 1.28.8 (2019-02-19)
 
 * Core:
@@ -170,12 +179,3 @@ Only the latest changes will be shown below, see the [wiki log](https://github.c
 * Readme:
   * Fix Usability (spelling error). See [PR #694](https://github.com/Mottie/Keyboard/pull/694); thanks [@0xflotus](https://github.com/0xflotus)!
   * Fix comboRegex (spelling error). See [PR #695](https://github.com/Mottie/Keyboard/pull/695); thanks [@0xflotus](https://github.com/0xflotus)!
-
-### Version 1.28.6 (2018-09-15)
-
-* Core:
-  * Fix tab key insertion in textarea.
-* Typing:
-  * Prevent occasional focus error.
-* Meta:
-  * Update dependencies.
