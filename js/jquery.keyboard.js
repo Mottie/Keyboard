@@ -520,7 +520,10 @@ http://www.opensource.org/licenses/mit-license.php
 		o.rtl = layouts[o.layout] && layouts[o.layout].rtl || kblang[lang] && kblang[lang].rtl || false;
 
 		// save default regex (in case loading another layout changes it)
-		base.regex = kblang[lang] && kblang[lang].comboRegex || $keyboard.comboRegex;
+		if (kblang[lang] && kblang[lang].comboRegex) {
+			base.regex = kblang[lang].comboRegex;
+		}
+		console.log(lang, base.regex )
 		// determine if US '.' or European ',' system being used
 		base.decimal = /^\./.test(o.display.dec);
 		base.$el
