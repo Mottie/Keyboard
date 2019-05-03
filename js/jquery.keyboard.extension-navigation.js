@@ -1,5 +1,5 @@
-/*! jQuery UI Virtual Keyboard Navigation v1.6.2 *//*
- * for Keyboard v1.18+ only (updated 4/28/2017)
+/*! jQuery UI Virtual Keyboard Navigation v1.7.0 *//*
+ * for Keyboard v1.18+ only (updated 2019-05-02)
  *
  * By Rob Garrison (aka Mottie & Fudgey)
  * Licensed under the MIT License
@@ -227,7 +227,7 @@ $.fn.addNavigation = function(options) {
 					if (isNaN(key) && key in $.keyboard.keyaction) {
 						// defined navigation_keys string name is a defined keyaction
 						$.keyboard.keyaction[key]( base, this, e );
-					} else if ($.isFunction(key)) {
+					} else if (typeof key === 'function') {
 						// custom function defined in navigation_keys
 						key(base);
 					} else {

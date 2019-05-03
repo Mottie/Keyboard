@@ -1,5 +1,5 @@
-/*! jQuery UI Virtual Keyboard Typing Simulator v1.11.1 *//*
- * for Keyboard v1.18+ only (3/15/2017)
+/*! jQuery UI Virtual Keyboard Typing Simulator v1.12.0 *//*
+ * for Keyboard v1.18+ only (2019-05-02)
  *
  * By Rob Garrison (aka Mottie)
  * Licensed under the MIT License
@@ -348,12 +348,12 @@
 					// o.len is zero when the user typed on the actual keyboard during
 					// simulation
 					base.typing_reset();
-					if ( $.isFunction( o.callback ) ) {
+					if ( typeof o.callback === 'function' ) {
 						// ensure all typing animation is done before the callback
 						base.typing_timer = setTimeout( function() {
 							// if the user typed during the key simulation, the "o" variable
 							// may sometimes be undefined
-							if ( $.isFunction( o.callback ) ) {
+							if ( typeof o.callback === 'function' ) {
 								o.callback( base );
 							}
 						}, o.delay );

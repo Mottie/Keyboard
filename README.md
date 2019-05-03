@@ -151,6 +151,7 @@ Only the latest changes will be shown below, see the [wiki log](https://github.c
 
 * Core:
   * Update to work with jQuery v3.4+.
+  * Remove focus binding on destroy.
 * Docs:
   * Update jQuery & UI (using slim & custom jQuery UI).
 

@@ -1,5 +1,5 @@
-/*! jQuery UI Virtual Keyboard Scramble Extension v1.7.1 *//*
- * for Keyboard v1.18+ (updated 2018-07-05)
+/*! jQuery UI Virtual Keyboard Scramble Extension v1.8.0 *//*
+ * for Keyboard v1.18+ (updated 2019-05-02)
  *
  * By Rob Garrison (aka Mottie)
  * Licensed under the MIT License
@@ -245,7 +245,7 @@ $.keyboard = $.keyboard || {};
 							kb.$keyboard = kb.scramble_setup(kb.$keyboard);
 						});
 				}
-				if ( $.isFunction( o.orig_create ) ) {
+				if ( typeof o.orig_create === 'function' ) {
 					o.orig_create( base );
 				}
 			};
@@ -265,12 +265,12 @@ $.keyboard = $.keyboard || {};
 							$keyboard    : base.$keyboard.clone()
 						};
 					}
-					if ($.isFunction(o.init)) {
+					if (typeof o.init === 'function') {
 						o.init(base);
 					}
 				}, 0);
 			} else {
-				if ($.isFunction(o.init)) {
+				if (typeof o.init === 'function') {
 					o.init(base);
 				}
 			}
