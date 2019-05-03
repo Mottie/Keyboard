@@ -147,11 +147,13 @@ Wiki: [Home](https://github.com/Mottie/Keyboard/wiki/Home) | [FAQ](https://githu
 
 Only the latest changes will be shown below, see the [wiki log](https://github.com/Mottie/Keyboard/wiki/Log) to view older versions.
 
-### Version 1.29.0 (2019-05-02)
+### Version 1.29.0 &ndash; 1.29.1 (2019-05-02)
 
 * Core:
   * Update to work with jQuery v3.4+.
   * Remove focus binding on destroy.
+* Extensions:
+  * Updated navigation, scramble & typing extensions to work with jQuery 3.4+.
 * Docs:
   * Update jQuery & UI (using slim & custom jQuery UI).
 

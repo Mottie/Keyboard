@@ -4,7 +4,7 @@
 ██  ██ ██  ██   ██  ██ ██  ██   ██     ██ ██ ██ ██  ██ ██  ██ ██ ██▀▀   ▀▀▀▀██
 █████▀ ▀████▀   ██  ██ ▀████▀   ██     ██ ██ ██ ▀████▀ █████▀ ██ ██     █████▀
 */
-/*! jQuery UI Virtual Keyboard (1.29.0) - ALL Extensions + Mousewheel */
+/*! jQuery UI Virtual Keyboard (1.29.1) - ALL Extensions + Mousewheel */
 /*! jQuery UI Virtual Keyboard Alt Key Popup v2.0.0 *//*
  * for Keyboard v1.18+ only (2018-04-19)
  *
@@ -1201,8 +1201,8 @@ $.fn.addMobile = function(options){
 
 }));
 
-/*! jQuery UI Virtual Keyboard Navigation v1.6.2 *//*
- * for Keyboard v1.18+ only (updated 4/28/2017)
+/*! jQuery UI Virtual Keyboard Navigation v1.7.0 *//*
+ * for Keyboard v1.18+ only (updated 2019-05-02)
  *
  * By Rob Garrison (aka Mottie & Fudgey)
  * Licensed under the MIT License
@@ -1430,7 +1430,7 @@ $.fn.addNavigation = function(options) {
 					if (isNaN(key) && key in $.keyboard.keyaction) {
 						// defined navigation_keys string name is a defined keyaction
 						$.keyboard.keyaction[key]( base, this, e );
-					} else if ($.isFunction(key)) {
+					} else if (typeof key === 'function') {
 						// custom function defined in navigation_keys
 						key(base);
 					} else {
@@ -1542,8 +1542,8 @@ $.fn.previewKeyset = function( options ) {
 
 }));
 
-/*! jQuery UI Virtual Keyboard Scramble Extension v1.7.1 *//*
- * for Keyboard v1.18+ (updated 2018-07-05)
+/*! jQuery UI Virtual Keyboard Scramble Extension v1.8.0 *//*
+ * for Keyboard v1.18+ (updated 2019-05-02)
  *
  * By Rob Garrison (aka Mottie)
  * Licensed under the MIT License
@@ -1789,7 +1789,7 @@ $.keyboard = $.keyboard || {};
 							kb.$keyboard = kb.scramble_setup(kb.$keyboard);
 						});
 				}
-				if ( $.isFunction( o.orig_create ) ) {
+				if ( typeof o.orig_create === 'function' ) {
 					o.orig_create( base );
 				}
 			};
@@ -1809,12 +1809,12 @@ $.keyboard = $.keyboard || {};
 							$keyboard    : base.$keyboard.clone()
 						};
 					}
-					if ($.isFunction(o.init)) {
+					if (typeof o.init === 'function') {
 						o.init(base);
 					}
 				}, 0);
 			} else {
-				if ($.isFunction(o.init)) {
+				if (typeof o.init === 'function') {
 					o.init(base);
 				}
 			}
@@ -1824,8 +1824,8 @@ $.keyboard = $.keyboard || {};
 
 }));
 
-/*! jQuery UI Virtual Keyboard Typing Simulator v1.11.1 *//*
- * for Keyboard v1.18+ only (3/15/2017)
+/*! jQuery UI Virtual Keyboard Typing Simulator v1.12.0 *//*
+ * for Keyboard v1.18+ only (2019-05-02)
  *
  * By Rob Garrison (aka Mottie)
  * Licensed under the MIT License
@@ -2174,12 +2174,12 @@ $.keyboard = $.keyboard || {};
 					// o.len is zero when the user typed on the actual keyboard during
 					// simulation
 					base.typing_reset();
-					if ( $.isFunction( o.callback ) ) {
+					if ( typeof o.callback === 'function' ) {
 						// ensure all typing animation is done before the callback
 						base.typing_timer = setTimeout( function() {
 							// if the user typed during the key simulation, the "o" variable
 							// may sometimes be undefined
-							if ( $.isFunction( o.callback ) ) {
+							if ( typeof o.callback === 'function' ) {
 								o.callback( base );
 							}
 						}, o.delay );
