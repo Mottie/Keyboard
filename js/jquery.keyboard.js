@@ -90,7 +90,7 @@ http://www.opensource.org/licenses/mit-license.php
 		// flag indication that a keyboard is open
 		base.isOpen = false;
 		// is mousewheel plugin loaded?
-		base.wheel = typeof $.fn.mousewheel === 'function'
+		base.wheel = typeof $.fn.mousewheel === 'function';
 		// special character in regex that need to be escaped
 		base.escapeRegex = /[-\/\\^$*+?.()|[\]{}]/g;
 		base.isTextArea = base.el.nodeName.toLowerCase() === 'textarea';
@@ -2434,6 +2434,9 @@ http://www.opensource.org/licenses/mit-license.php
 		clearTimeout(base.timer3);
 		if (base.$keyboard.length) {
 			base.removeKeyboard();
+		}
+		if (base.options.openOn) {
+			base.removeBindings(base.options.openOn);
 		}
 		base.removeBindings(base.namespace);
 		base.removeBindings(base.namespace + 'callbacks');
