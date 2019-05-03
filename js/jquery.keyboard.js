@@ -90,7 +90,7 @@ http://www.opensource.org/licenses/mit-license.php
 		// flag indication that a keyboard is open
 		base.isOpen = false;
 		// is mousewheel plugin loaded?
-		base.wheel = $.isFunction($.fn.mousewheel);
+		base.wheel = typeof $.fn.mousewheel === 'function'
 		// special character in regex that need to be escaped
 		base.escapeRegex = /[-\/\\^$*+?.()|[\]{}]/g;
 		base.isTextArea = base.el.nodeName.toLowerCase() === 'textarea';
@@ -154,7 +154,7 @@ http://www.opensource.org/licenses/mit-license.php
 			kbevents.kbBeforeClose,
 			kbevents.inputRestricted
 		], function (i, callback) {
-			if ($.isFunction(o[callback])) {
+			if (typeof o[callback] === 'function') {
 				// bind callback functions within options to triggered events
 				base.$el.bind(callback + base.namespace + 'callbacks', o[callback]);
 			}
@@ -503,7 +503,7 @@ http://www.opensource.org/licenses/mit-license.php
 		// some languages include a dash, e.g. 'en-gb' or 'fr-ca'
 		// allow o.language to be a string or array...
 		// array is for future expansion where a layout can be set for multiple languages
-		lang = ($.isArray(lang) ? lang[0] : lang);
+		lang = (Object.prototype.toString.call(lang) === '[object Array]' ? lang[0] : lang);
 		base.language = lang;
 		lang = lang.split('-')[0];
 
@@ -549,7 +549,7 @@ http://www.opensource.org/licenses/mit-license.php
 
 			base.updateLanguage();
 			if (typeof $keyboard.builtLayouts[base.layout] === 'undefined') {
-				if ($.isFunction(o.create)) {
+				if (typeof o.create === 'function') {
 					// create must call buildKeyboard() function; or create it's own keyboard
 					base.$keyboard = o.create(base);
 				} else if (!base.$keyboard.length) {
@@ -938,14 +938,14 @@ http://www.opensource.org/licenses/mit-license.php
 
 				// change callback is no longer bound to the input element as the callback could be
 				// called during an external change event with all the necessary parameters (issue #157)
-				if ($.isFunction(o.change)) {
+				if (typeof o.change === 'function') {
 					event.type = $keyboard.events.inputChange;
 					o.change(event, base, base.el);
 					return false;
 				}
 				if (o.acceptValid && o.autoAcceptOnValid) {
 					if (
-						$.isFunction(o.validate) &&
+						typeof o.validate === 'function' &&
 						o.validate(base, base.getValue(base.$preview))
 					) {
 						base.$preview.blur();
@@ -1149,7 +1149,7 @@ http://www.opensource.org/licenses/mit-license.php
 				// keyaction is added as a string, override original action & text
 				if (action === last.key && typeof $keyboard.keyaction[action] === 'string') {
 					last.key = action = $keyboard.keyaction[action];
-				} else if (action in $keyboard.keyaction && $.isFunction($keyboard.keyaction[action])) {
+				} else if (action in $keyboard.keyaction && typeof $keyboard.keyaction[action] === 'function') {
 					// stop processing if action returns false (close & cancel)
 					if ($keyboard.keyaction[action](base, this, e) === false) {
 						return false;
@@ -1178,7 +1178,7 @@ http://www.opensource.org/licenses/mit-license.php
 				last.preVal = '' + last.val;
 				base.saveLastChange();
 
-				if ($.isFunction(o.change)) {
+				if (typeof o.change === 'function') {
 					e.type = $keyboard.events.inputChange;
 					o.change(e, base, base.el);
 					// return false to prevent reopening keyboard if base.accept() was called
@@ -1218,7 +1218,7 @@ http://www.opensource.org/licenses/mit-license.php
 				clearTimeout(base.repeater); // make sure key repeat stops!
 				if (o.acceptValid && o.autoAcceptOnValid) {
 					if (
-						$.isFunction(o.validate) &&
+						typeof o.validate === 'function' &&
 						o.validate(base, base.getValue())
 					) {
 						base.$preview.blur();
@@ -1674,7 +1674,7 @@ http://www.opensource.org/licenses/mit-license.php
 		var kbcss = $keyboard.css,
 			$accept = base.$keyboard.find('.' + kbcss.keyPrefix + 'accept'),
 			valid = true;
-		if ($.isFunction(o.validate)) {
+		if (typeof o.validate === 'function') {
 			valid = o.validate(base, base.getValue(), false);
 		}
 		// toggle accept button classes; defined in the css
@@ -1726,7 +1726,7 @@ http://www.opensource.org/licenses/mit-license.php
 	// goToNext = true, then go to next input; if false go to prev
 	// isAccepted is from autoAccept option or true if user presses shift+enter
 	base.switchInput = function (goToNext, isAccepted) {
-		if ($.isFunction(o.switchInput)) {
+		if (typeof o.switchInput === 'function') {
 			o.switchInput(base, goToNext, isAccepted);
 		} else {
 			// base.$keyboard may be an empty array - see #275 (apod42)
@@ -1775,7 +1775,7 @@ http://www.opensource.org/licenses/mit-license.php
 				kbevents = $keyboard.events,
 				val = accepted ? base.checkCombos() : base.originalContent;
 			// validate input if accepted
-			if (accepted && $.isFunction(o.validate) && !o.validate(base, val, true)) {
+			if (accepted && typeof o.validate === 'function' && !o.validate(base, val, true)) {
 				val = base.originalContent;
 				accepted = false;
 				if (o.cancelClose) {
