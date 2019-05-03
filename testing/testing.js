@@ -222,7 +222,7 @@ jQuery(function($){
 						setTimeout(function(){
 							keyboard.destroy(function(){
 								assert.equal( el.className, 'testing-abc', 'Destory removed all added class names' );
-								assert.equal( $.isEmptyObject( $._data( el ) ), true, 'Destory removed all data & bindings' );
+								assert.equal( $.isEmptyObject( $._data( el ).events ), true, 'Destory removed all data & bindings' );
 								assert.equal( typeof $('#test input').getkeyboard(), 'undefined', 'Cleared up data' );
 								done();
 							});

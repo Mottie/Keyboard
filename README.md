@@ -147,6 +147,13 @@ Wiki: [Home](https://github.com/Mottie/Keyboard/wiki/Home) | [FAQ](https://githu
 
 Only the latest changes will be shown below, see the [wiki log](https://github.com/Mottie/Keyboard/wiki/Log) to view older versions.
 
+### Version 1.29.0 (2019-05-02)
+
+* Core:
+  * Update to work with jQuery v3.4+.
+* Docs:
+  * Update jQuery & UI (using slim & custom jQuery UI).
+
 ### Version 1.28.9 (2019-03-09)
 
 * Core:
@@ -171,11 +178,3 @@ Only the latest changes will be shown below, see the [wiki log](https://github.c
   * Add VueVirtualKeyboard link.
 * Meta:
   * Update dependencies.
-
-### Version 1.28.7 (2018-10-09)
-
-* Core:
-  * Fix JS Error. Closes [issue #699](https://github.com/Mottie/Keyboard/issues/699).
-* Readme:
-  * Fix Usability (spelling error). See [PR #694](https://github.com/Mottie/Keyboard/pull/694); thanks [@0xflotus](https://github.com/0xflotus)!
-  * Fix comboRegex (spelling error). See [PR #695](https://github.com/Mottie/Keyboard/pull/695); thanks [@0xflotus](https://github.com/0xflotus)!
