@@ -19,6 +19,9 @@ jQuery(function($){
 					case 'text':
 						valid = $key.find('span').html() === v;
 						break;
+					case 'html':
+						valid = $key.find('.ui-keyboard-text').html() === v;
+						break;
 					default:
 						valid = $key.attr(k) === v;
 				}
@@ -127,7 +130,7 @@ jQuery(function($){
 		QUnit.test( 'addKey', function(assert) {
 			var tmp,
 				k = kb.addKey;
-			assert.expect(7);
+			assert.expect(8);
 			assert.equal( true, compare( k('accept', 'accept'), {
 					'data-name': 'accept',
 					'data-value': 'accept',
@@ -199,6 +202,16 @@ jQuery(function($){
 					'text': 'xyαβξz'
 				}),
 				'unicode testing'
+			);
+			tmp = 'keyX';
+			kb.options.display.keyX = '<span class="keyX" style="color:red">Blah</span>';
+			assert.equal( true, compare( k(tmp, tmp), {
+					'data-name': 'keyX',
+					'data-value': 'keyX',
+					'hasClass': 'ui-keyboard-keyX',
+					'html': kb.options.display.keyX
+				}),
+				'html in display testing'
 			);
 
 		});
