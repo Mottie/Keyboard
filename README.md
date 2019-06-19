@@ -147,6 +147,15 @@ Wiki: [Home](https://github.com/Mottie/Keyboard/wiki/Home) | [FAQ](https://githu
 
 Only the latest changes will be shown below, see the [wiki log](https://github.com/Mottie/Keyboard/wiki/Log) to view older versions.
 
+### Version 1.30.0 (2019-06-18)
+
+* Core:
+  * The `display` option for action keys will now allow html (including colons), e.g. `<span style="color:red">Panic!</span>`.
+* Language:
+  * Add Czech translation. See [PR #742](https://github.com/Mottie/Keyboard/pull/742); thanks [@xmorave2](https://github.com/xmorave2)!
+* Meta:
+  * Updated Qunit & jQuery migrate.
+
 ### Version 1.29.0 &ndash; 1.29.1 (2019-05-02)
 
 * Core:
@@ -165,19 +174,3 @@ Only the latest changes will be shown below, see the [wiki log](https://github.c
 * Language:
   * Add untranslated Czech language file. See [issue #731](https://github.com/Mottie/Keyboard/issues/731).
   * Update layouts dist (missing Syriac files).
-
-### Version 1.28.8 (2019-02-19)
-
-* Core:
-  * Replace `substr` with `substring`.
-  * Ignore colons within HTML; allows adding a style attr to display HTML.
-* Language/Layout:
-  * Add Syriac support. See [issue #723](https://github.com/Mottie/Keyboard/pull/723); thanks [@sixtyfive](https://github.com/sixtyfive)!
-  * Remove extra `{alt}` in syriac-latin layout.
-* Navigation:
-  * Prevent JS error when keyboard is closed. Fixes [issue #724](https://github.com/Mottie/Keyboard/issues/724).
-* Readme:
-  * Remove references to bower.
-  * Add VueVirtualKeyboard link.
-* Meta:
-  * Update dependencies.

@@ -1,4 +1,4 @@
-/*! jQuery UI Virtual Keyboard v1.29.1 *//*
+/*! jQuery UI Virtual Keyboard v1.30.0 *//*
 Author: Jeremy Satterfield
 Maintained: Rob Garrison (Mottie on github)
 Licensed under the MIT License
@@ -42,7 +42,7 @@ http://www.opensource.org/licenses/mit-license.php
 	var $keyboard = $.keyboard = function (el, options) {
 	var o, base = this;
 
-	base.version = '1.29.1';
+	base.version = '1.30.0';
 
 	// Access to jQuery and DOM versions of element
 	base.$el = $(el);
@@ -1953,21 +1953,21 @@ http://www.opensource.org/licenses/mit-license.php
 	};
 
 	base.processKeys = function (name) {
-		var tmp,
-			// Don't split colons followed by //, e.g. https://; Fixes #555
-			parts = name.split(/:(?!\/\/)/),
+		var tmp, parts,
 			htmlIndex = name.indexOf('</'),
-			colonIndex = name.indexOf(':', name.indexOf('<')),
 			data = {
-				name: null,
+				name: name,
 				map: '',
 				title: ''
 			};
-		if (htmlIndex > -1 && (colonIndex < 0 || colonIndex > htmlIndex)) {
-			// html includes colons; see #701
-			data.name = name;
+		if (htmlIndex > -1) {
+			// If it looks like HTML, skip processing; see #743
+			// html may include colons; see #701
 			return data;
 		}
+		// Don't split colons followed by //, e.g. https://; Fixes #555
+		parts = name.split(/:(?!\/\/)/);
+
 		/* map defined keys
 		format 'key(A):Label_for_key_(ignore_parentheses_here)'
 			'key' = key that is seen (can any character(s); but it might need to be escaped using '\'
@@ -2074,12 +2074,8 @@ http://www.opensource.org/licenses/mit-license.php
 		// add the wide class
 		keyClass += (keys.name.length > 2 ? ' ' + kbcss.keyWide : '') + ' ' + o.css.buttonDefault;
 
-		data.html = '<span class="' + kbcss.keyText + '">' +
-			// this prevents HTML from being added to the key
-			keys.name.replace(/[\u00A0-\u9999]/gim, function (i) {
-				return '&#' + i.charCodeAt(0) + ';';
-			}) +
-			'</span>';
+		// Allow HTML in the key.name
+		data.html = '<span class="' + kbcss.keyText + '">' + keys.name + '</span>';
 
 		data.$key = base.keyBtn
 			.clone()
