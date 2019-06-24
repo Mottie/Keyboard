@@ -147,6 +147,11 @@ Wiki: [Home](https://github.com/Mottie/Keyboard/wiki/Home) | [FAQ](https://githu
 
 Only the latest changes will be shown below, see the [wiki log](https://github.com/Mottie/Keyboard/wiki/Log) to view older versions.
 
+### Version 1.30.1 (2019-06-24)
+
+* Core:
+  * Fix focus when keyboard is set as current. Fixes [issue #744](https://github.com/Mottie/Keyboard/issues/744).
+
 ### Version 1.30.0 (2019-06-18)
 
 * Core:
