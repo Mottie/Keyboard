@@ -267,6 +267,7 @@ http://www.opensource.org/licenses/mit-license.php
 		$('.' + kbcss.hasFocus).removeClass(kbcss.hasFocus);
 
 		base.$el.addClass(kbcss.isCurrent);
+		base.$preview.focus();
 		base.$keyboard.addClass(kbcss.hasFocus);
 		base.isCurrent(true);
 		base.isOpen = true;
