@@ -19,10 +19,10 @@ jQuery.keyboard.layouts['ms-Oriya'] = {
 		"{accept} {alt} {space} {alt} {cancel}"
 	],
 	"alt" : [
-		"\u0b67 \u0b68 \u0b69 \u0b6a \u0b6b \u0b6c \u0b6d \u0b6e \u0b6f \u0b66 {empty} {empty} {bksp}",
-		"{tab} {empty} {empty} {empty} {empty} {empty} {empty} {empty} {empty} {empty} {empty} \u0b5c {empty}",
-		"{empty} {empty} {empty} {empty} {empty} {empty} {empty} {empty} {empty} {empty} {empty} {enter}",
-		"{shift} {empty} {empty} {empty} {empty} {empty} {empty} {empty} {empty} {empty} {empty} {shift}",
+		"\u0b67 \u0b68 \u0b69 \u0b6a \u0b6b \u0b6c \u0b6d \u0b6e \u0b6f \u0b66 {empty} \u0b44 {bksp}",
+		"{tab} {empty} {empty} {empty} \u0b63 {empty} {empty} {empty} {empty} {empty} {empty} \u0b5c {empty}",
+		"{empty} {empty} {empty} \u0b62 {empty} {empty} {empty} {empty} {empty} {empty} {empty} {enter}",
+		"{shift} {empty} {empty} \u0b70 {empty} {empty} \u0b35 {empty} {empty} \u0965 {empty} {shift}",
 		"{accept} {alt} {space} {alt} {cancel}"
 	],
 	"alt-shift" : [
