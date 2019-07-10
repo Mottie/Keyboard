@@ -8,7 +8,7 @@ jQuery.keyboard.layouts['ms-Tamil'] = {
 		"\u0bca 1 2 3 4 5 6 7 8 9 0 - {empty} {bksp}",
 		"{tab} \u0bcc \u0bc8 \u0bbe \u0bc0 \u0bc2 \u0baa \u0bb9 \u0b95 \u0ba4 \u0b9c \u0b9f \u0b9e",
 		"\u0bcb \u0bc7 \u0bcd \u0bbf \u0bc1 \u0baa \u0bb0 \u0b95 \u0ba4 \u0b9a \u0b9f {enter}",
-		"{shift} \u0bc6 {empty} \u0bae \u0ba8 \u0bb5 \u0bb2 \u0bb8 , . / {shift}",
+		"{shift} \u0bc6 {empty} \u0bae \u0ba8 \u0bb5 \u0bb2 \u0bb8 , . \u0baf {shift}",
 		"{accept} {alt} {space} {alt} {cancel}"
 	],
 	"shift" : [
