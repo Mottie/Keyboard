@@ -5,7 +5,7 @@ jQuery.keyboard.layouts['ms-Oriya'] = {
 	"name" : "ms-Oriya",
 	"lang" : ["or"],
 	"normal" : [
-		"1 2 3 4 5 6 7 8 9 0 0 \u0b43 {bksp}",
+		"1 2 3 4 5 6 7 8 9 0 \u002d \u0b43 {bksp}",
 		"{tab} \u0b4c \u0b48 \u0b3e \u0b40 \u0b42 \u0b2c \u0b39 \u0b17 \u0b26 \u0b1c \u0b21 \u0b3c",
 		"\u0b4b \u0b47 \u0b4d \u0b3f \u0b41 \u0b2a \u0b30 \u0b15 \u0b24 \u0b1a \u0b1f {enter}",
 		"{shift} \u0b5f \u0b02 \u0b2e \u0b28 \u0b2c \u0b32 \u0b38 , \u0964 \u0b2f {shift}",
