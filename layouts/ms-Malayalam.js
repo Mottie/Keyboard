@@ -8,7 +8,7 @@ jQuery.keyboard.layouts['ms-Malayalam'] = {
 		"\u0d4a 1 2 3 4 5 6 7 8 9 0 - \u0d43 {bksp}",
 		"{tab} \u0d4c \u0d48 \u0d3e \u0d40 \u0d42 \u0d2c \u0d39 \u0d17 \u0d26 \u0d1c \u0d21 {empty}",
 		"\u0d4b \u0d47 \u0d4d \u0d3f \u0d41 \u0d2a \u0d30 \u0d15 \u0d24 \u0d1a \u0d1f {enter}",
-		"{shift} \u0d46 \u0d02 \u0d2e \u0d28 \u0d35 \u0d32 \u0d38 , . / {shift}",
+		"{shift} \u0d46 \u0d02 \u0d2e \u0d28 \u0d35 \u0d32 \u0d38 , . \u0d2f {shift}",
 		"{accept} {alt} {space} {alt} {cancel}"
 	],
 	"shift" : [
