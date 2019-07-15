@@ -8,7 +8,7 @@ jQuery.keyboard.layouts['ms-Nepali'] = {
 		"\u091e \u091c\u094d\u091e \u0918 \u0919 \u091d \u091b \u091f \u0920 \u0921 \u0922 \u0923 ( . {bksp}",
 		"{tab} \u0924\u094d\u0930 \u0927 \u092d \u091a \u0924 \u0925 \u0917 \u0937 \u092f \u0909 \u0943 \u0947 \u094d\u0930",
 		"\u092c \u0915 \u092e \u093e \u0928 \u091c \u0935 \u092a \u093f \u0938 \u0941 {enter}",
-		"{shift} \u0936 \u0939 \u0905 \u0916 \u0926 \u0932 \u092b , \u0964 / {shift}",
+		"{shift} \u0936 \u0939 \u0905 \u0916 \u0926 \u0932 \u092b , \u0964 \u0930 {shift}",
 		"{accept} {alt} {space} {alt} {cancel}"
 	],
 	"shift" : [
