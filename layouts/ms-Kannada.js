@@ -8,7 +8,7 @@ jQuery.keyboard.layouts['ms-Kannada'] = {
 		"\u0cca 1 2 3 4 5 6 7 8 9 0 - \u0cc3 {bksp}",
 		"{tab} \u0ccc \u0cc8 \u0cbe \u0cc0 \u0cc2 \u0cac \u0cb9 \u0c97 \u0ca6 \u0c9c \u0ca1 {empty}",
 		"\u0ccb \u0cc7 \u0ccd \u0cbf \u0cc1 \u0caa \u0cb0 \u0c95 \u0ca4 \u0c9a \u0c9f {enter}",
-		"{shift} \u0cc6 \u0c82 \u0cae \u0ca8 \u0cb5 \u0cb2 \u0cb8 , . / {shift}",
+		"{shift} \u0cc6 \u0c82 \u0cae \u0ca8 \u0cb5 \u0cb2 \u0cb8 , . \u0caf {shift}",
 		"{accept} {alt} {space} {alt} {cancel}"
 	],
 	"shift" : [
