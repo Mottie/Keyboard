@@ -8,7 +8,7 @@ jQuery.keyboard.layouts['ms-Punjabi'] = {
 		"{empty} 1 2 3 4 5 6 7 8 9 0 - {empty} {bksp}",
 		"{tab} \u0a4c \u0a48 \u0a3e \u0a40 \u0a42 \u0a2c \u0a39 \u0a17 \u0a26 \u0a1c \u0a21 \u0a3c",
 		"\u0a4b \u0a47 \u0a4d \u0a3f \u0a41 \u0a2a \u0a30 \u0a15 \u0a24 \u0a1a \u0a1f {enter}",
-		"{shift} \u0a70 \u0a2e \u0a28 \u0a35 \u0a32 \u0a38 , . / {shift}",
+		"{shift} \u0a70 \u0a2e \u0a28 \u0a35 \u0a32 \u0a38 , . \u0a2f {shift}",
 		"{accept} {alt} {space} {alt} {cancel}"
 	],
 	"shift" : [
@@ -28,7 +28,7 @@ jQuery.keyboard.layouts['ms-Punjabi'] = {
 	"alt-shift" : [
 		"{empty} {empty} {empty} {empty} {empty} {empty} {empty} {empty} {empty} {empty} {empty} {empty} {empty} {bksp}",
 		"{tab} {empty} {empty} {empty} {empty} {empty} {empty} {empty} {empty} {empty} {empty} {empty} {empty}",
-		"{empty} {empty} {empty} {empty} {empty} {empty} {empty} {empty} {empty} {empty} {empty} {enter}",
+		"{empty} {empty} {empty} \u0a72 \u0a73 {empty} {empty} {empty} {empty} {empty} {empty} {enter}",
 		"{shift} \u0a74 {empty} {empty} {empty} {empty} {empty} {empty} {empty} {empty} {shift}",
 		"{accept} {alt} {space} {alt} {cancel}"
 	]
