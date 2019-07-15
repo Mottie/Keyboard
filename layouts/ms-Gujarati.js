@@ -8,7 +8,7 @@ jQuery.keyboard.layouts['ms-Gujarati'] = {
 		"{empty} 1 2 3 4 5 6 7 8 9 0 - \u0ac3 {bksp}",
 		"{tab} \u0acc \u0ac8 \u0abe \u0ac0 \u0ac2 \u0aac \u0ab9 \u0a97 \u0aa6 \u0a9c \u0aa1 \u0abc \u0ac9",
 		"\u0acb \u0ac7 \u0acd \u0abf \u0ac1 \u0aaa \u0ab0 \u0a95 \u0aa4 \u0a9a \u0a9f {enter}",
-		"{shift} \u0a82 \u0aae \u0aa8 \u0ab5 \u0ab2 \u0ab8 , . / {shift}",
+		"{shift} \u0a82 \u0aae \u0aa8 \u0ab5 \u0ab2 \u0ab8 , . \u0aaf {shift}",
 		"{accept} {alt} {space} {alt} {cancel}"
 	],
 	"shift" : [
