@@ -15,7 +15,7 @@ jQuery.keyboard.layouts['ms-Urdu'] = {
 		"~ ! @ # $ \u066a ^ \u06d6 \u066d ) ( _ + {bksp}",
 		"{tab} \u0638 \u0636 \u0630 \u0688 \u062b \u0651 \u06c3 \u0640 \u0686 \u062e } { |",
 		"\u0698 \u0632 \u0691 \u06ba \u06c2 \u0621 \u0622 \u06af \u064a : \" {enter}",
-		"{shift} | {ZWJ} {ZWNJ} \u06d3 {LRM} \u0624 \u0626 {RLM} > < / {shift}",
+		"{shift} | {ZWJ} {ZWNJ} \u06d3 {LRM} \u0624 \u0626 {RLM} > < \u061f {shift}",
 		"{accept} {space} {cancel}"
 	]
 };
