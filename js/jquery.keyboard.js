@@ -53,10 +53,20 @@ http://www.opensource.org/licenses/mit-license.php
 
 	base.init = function () {
 		base.initialized = false;
+		base.isTextArea = base.el.nodeName.toLowerCase() === 'textarea';
+		base.isInput = base.el.nodeName.toLowerCase() === 'input';
+		// detect contenteditable
+		base.isContentEditable = !base.isTextArea &&
+			!base.isInput &&
+			base.el.isContentEditable;
+
 		var k, position, tmp,
 			kbcss = $keyboard.css,
 			kbevents = $keyboard.events;
-		if ($.inArray((base.el.type || '').toLowerCase(), $keyboard.supportedInputTypes) < 0) {
+		if (
+			base.isInput &&
+			$.inArray((base.el.type || '').toLowerCase(), $keyboard.supportedInputTypes) < 0
+		) {
 			throw new TypeError('Input of type "' + base.el.type + '" is not supported; use type text, search, URL, tel or password');
 		}
 
@@ -97,12 +107,6 @@ http://www.opensource.org/licenses/mit-license.php
 		base.wheel = typeof $.fn.mousewheel === 'function';
 		// special character in regex that need to be escaped
 		base.escapeRegex = /[-\/\\^$*+?.()|[\]{}]/g;
-		base.isTextArea = base.el.nodeName.toLowerCase() === 'textarea';
-		base.isInput = base.el.nodeName.toLowerCase() === 'input';
-		// detect contenteditable
-		base.isContentEditable = !base.isTextArea &&
-			!base.isInput &&
-			base.el.isContentEditable;
 
 		// keyCode of keys always allowed to be typed
 		k = $keyboard.keyCodes;
