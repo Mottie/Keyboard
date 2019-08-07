@@ -627,11 +627,6 @@ http://www.opensource.org/licenses/mit-license.php
 				.show(); // for hidden inputs
 			base.preview = base.$preview[0];
 
-			// Switch the number input field to text so the caret positioning will work again
-			if (base.preview.type === 'number') {
-				base.preview.type = 'text';
-			}
-
 			// remove extraneous attributes.
 			removedAttr = /^(data-|id|aria-haspopup)/i;
 			attrs = base.$preview.get(0).attributes;
