@@ -322,7 +322,7 @@ http://www.opensource.org/licenses/mit-license.php
 	};
 
 	base.focusOn = function () {
-		if (!base && base.el.active) {
+		if (!base || !base.el.active) {
 			// keyboard was destroyed
 			return;
 		}
