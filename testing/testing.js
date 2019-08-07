@@ -34,6 +34,31 @@ jQuery(function($){
 		QUnit.module('core');
 
 		/************************************************
+			Throws on unsupported input types
+		************************************************/
+		QUnit.test('throws on unsupported input types', function(assert) {
+			$('#test').html('<input type="number"><input type="CoLoR">');
+			assert.throws(
+				function() {
+					$('#test').find('input[type=number]').keyboard();
+				},
+				function(err) {
+					return err.message === 'Input of type "number" is not supported; use type text, search, URL, tel or password';
+				},
+				'Throw on number type input'
+			);
+			assert.throws(
+				function() {
+					$('#test').find('input[type=color]').keyboard();
+				},
+				function(err) {
+					return err.message === 'Input of type "color" is not supported; use type text, search, URL, tel or password';
+				},
+				'Throw on color type input'
+			);
+		});
+
+		/************************************************
 			processName
 		************************************************/
 		QUnit.test( 'processName', function(assert) {
@@ -100,10 +125,10 @@ jQuery(function($){
 		************************************************/
 		QUnit.test( 'make preview', function( assert ) {
 			var done = assert.async();
-			assert.expect(3);
+			assert.expect(2);
 
 			$('#test')
-				.html('<input id="keyboard_test" type="number" data-test="zzz" data-this-is-a-fake="attr" aria-haspopup="true">')
+				.html('<input id="keyboard_test" type="text" data-test="zzz" data-this-is-a-fake="attr" aria-haspopup="true">')
 				.find('input')
 				.keyboard({
 					layout : 'qwerty',
@@ -113,7 +138,6 @@ jQuery(function($){
 						setTimeout(function(){
 							var el = keyboard.preview,
 								dataRemoved = typeof el['data-test'] === 'undefined' && typeof el['data-this-is-a-fake'] === 'undefined';
-							assert.equal( el.type, 'text', 'Preview type changed from number to text' );
 							assert.equal( typeof el['aria-haspopup'], 'undefined', 'Preview aria-haspopup removed' );
 							assert.equal( dataRemoved, true, 'Preview data-attributes removed' );
 							keyboard.destroy();

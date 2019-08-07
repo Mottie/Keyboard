@@ -56,6 +56,10 @@ http://www.opensource.org/licenses/mit-license.php
 		var k, position, tmp,
 			kbcss = $keyboard.css,
 			kbevents = $keyboard.events;
+		if ($.inArray((base.el.type || '').toLowerCase(), $keyboard.supportedInputTypes) < 0) {
+			throw new TypeError('Input of type "' + base.el.type + '" is not supported; use type text, search, URL, tel or password');
+		}
+
 		base.settings = options || {};
 		// shallow copy position to prevent performance issues; see #357
 		if (options && options.position) {
@@ -3133,6 +3137,14 @@ http://www.opensource.org/licenses/mit-license.php
 		}
 
 	};
+
+	$keyboard.supportedInputTypes = [
+		'text',
+		'search',
+		'url',
+		'tel',
+		'password'
+	];
 
 	// for checking combos
 	$keyboard.comboRegex = /([`\'~\^\"ao])([a-z])/mig;
