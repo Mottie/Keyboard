@@ -1358,14 +1358,14 @@ jQuery.keyboard.layouts["ko"] = {
 	"name":"Korean (\ud55c\uad6d\uc5b4)",
 	"normal":[
 		"` 1 2 3 4 5 6 7 8 9 0 - = \u20A9 {b}",
-		"{t} \u1107 \u110C \u1103 \u1100 \u1109 \u116D \u1167 \u1163 \u1162 \u1166 [ ]",
-		"\u1106 \u1102 \u110B \u1105 \u1112 \u1169 \u1165 \u1161 \u1175 ; ' {enter}",
-		"{s} \u110F \u1110 \u110E \u1111 \u1172 \u116E \u1173 , . / {s}",
+		"{t} \u3142 \u3148 \u3137 \u3131 \u3145 \u315B \u3155 \u3151 \u3150 \u3154 [ ]",
+		"\u3141 \u3134 \u3147 \u3139 \u314E \u3157 \u3153 \u314F \u3163 ; ' {enter}",
+		"{s} \u314B \u314C \u314A \u314D \u3160 \u315C \u3161 , . / {s}",
 		"{space} {alt} {accept}"
 	],
 	"shift":[
 		"~ ! @ # $ % ^ & * ) ( _ + | {b}",
-		"{t} \u1108 \u110D \u1104 \u1101 \u110A {empty} {empty} {empty} \u1164 \u1168 { }",
+		"{t} \u3143 \u3149 \u3138 \u3132 \u3146 {empty} {empty} {empty} \u3152 \u3156 { }",
 		"{empty} {empty} {empty} {empty} {empty} {empty} {empty} {empty} {empty} : \" {enter}",
 		"{s} {empty} {empty} {empty} {empty} {empty} {empty} {empty} < > ? {s}",
 		"{space} {alt} {accept}"

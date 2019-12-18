@@ -6,16 +6,16 @@ jQuery.keyboard.layouts["ms-Korean"] = {
 	"lang" : ["ko"],
 	"normal" : [
 		"` 1 2 3 4 5 6 7 8 9 0 - = {bksp}",
-		"{tab} \u1107 \u110c \u1103 \u1100 \u1109 \u116d \u1167 \u1163 \u1162 \u1166 [ ] \u20a9",
-		"\u1106 \u1102 \u110b \u1105 \u1112 \u1169 \u1165 \u1161 \u1175 ; ' {enter}",
-		"{shift} \u110f \u1110 \u110e \u1111 \u1172 \u116e \u1173 , . / {shift}",
+		"{tab} \u3142 \u3148 \u3137 \u3131 \u3145 \u315B \u3155 \u3151 \u3150 \u3154 [ ] \u20a9",
+		"\u3141 \u3134 \u3147 \u3139 \u314E \u3157 \u3153 \u314F \u3163 ; ' {enter}",
+		"{shift} \u314B \u314C \u314A \u314D \u3160 \u315C \u3161 , . / {shift}",
 		"{accept} {alt} {space} {alt} {cancel}"
 	],
 	"shift" : [
 		"~ ! @ # $ % ^ & * ( ) _ + {bksp}",
-		"{tab} \u1108 \u110d \u1104 \u1101 \u110a \u116d \u1167 \u1163 \u1164 \u1168 { } |",
-		'\u1106 \u1102 \u110b \u1105 \u1112 \u1169 \u1165 \u1161 \u1175 : " {enter}',
-		"{shift} \u110f \u1110 \u110e \u1111 \u1172 \u116e \u1173 < > ? {shift}",
+		"{tab} \u3143 \u3149 \u3138 \u3132 \u3146 \u315B \u3155 \u3151 \u3152 \u3156 { } |",
+		'\u3141 \u3134 \u3147 \u3139 \u314E \u3157 \u3153 \u314F \u3163 : " {enter}',
+		"{shift} \u314B \u314C \u314A \u314D \u3160 \u315C \u3161 < > ? {shift}",
 		"{accept} {alt} {space} {alt} {cancel}"
 	],
 	"alt" : [
