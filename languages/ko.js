@@ -1,3 +1,7 @@
+// Keyboard Language
+// please update this section to match this language and email me with corrections!
+// ko = ISO 639-1 code for Korean
+// ***********************
 jQuery.keyboard.language.ko = {
 	language: '\ud55c\uad6d\uc5b4 (Korean)',
 	display : {
@@ -1281,5 +1285,8 @@ jQuery.keyboard.language.ko = {
 		"\u314e": {
 			"\u314f": "\ud558", "\u3150": "\ud574", "\u3151": "\ud590", "\u3152": "\ud5ac", "\u3153": "\ud5c8", "\u3154": "\ud5e4", "\u3155": "\ud600", "\u3156": "\ud61c", "\u3157": "\ud638", "\u3158": "\ud654", "\u3159": "\ud670", "\u315a": "\ud68c", "\u315b": "\ud6a8", "\u315c": "\ud6c4", "\u315d": "\ud6e0", "\u315e": "\ud6fc", "\u315f": "\ud718", "\u3160": "\ud734", "\u3161": "\ud750", "\u3162": "\ud76c", "\u3163": "\ud788"
 		}
-	}
+	},
+
+	// language direction
+	rtl: false
 };
