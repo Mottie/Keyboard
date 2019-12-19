@@ -5,23 +5,29 @@
 var combos = {};
 var comboRegex = null;
 (function () {
-	var initials = [];
-	var medials = [];
 	var initialStart = 4352;
 	var medialStart = 4449;
 	var finalStart = 4519;
 	var medialOffset = 20;
 	// See: https://en.wikipedia.org/wiki/Korean_language_and_computers#Hangul_in_Unicode
-	var finals = [1, 2, 4, 7, null, 8, 16, 17, null, 19, 20, 21, 22, null, 23, 24, 25, 26, 27];
+	var finals = jQuery.map([1, 2, 4, 7, null, 8, 16, 17, null, 19, 20, 21, 22, null, 23, 24, 25, 26, 27], function (offset) {
+		if (offset === null) {
+			return;
+		}
+
+		return String.fromCharCode(finalStart + offset);
+	});
+	var initials = jQuery.map(finals, function (_, offset) {
+		return String.fromCharCode(initialStart + offset);
+	});
+	var medials = [];
 	for (var medialCharCode = medialStart; medialCharCode <= medialStart + medialOffset; medialCharCode++) {
 		var medial = String.fromCharCode(medialCharCode);
 		medials.push(medial);
 		combos[medial] = {};
-		jQuery.each(finals, function (initial, final) {
+		jQuery.each(finals, function (initialIndex, final) {
 			if (final) {
-				final = String.fromCharCode(finalStart + final);
-				initial = String.fromCharCode(initialStart + initial);
-				initials.push(initial);
+				var initial = initials[initialIndex];
 				combos[medial][initial] = medial + final;
 			}
 		});
