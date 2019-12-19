@@ -12,7 +12,7 @@ var comboRegex = null;
 	// See: https://en.wikipedia.org/wiki/Korean_language_and_computers#Hangul_in_Unicode
 	var finals = jQuery.map([1, 2, 4, 7, null, 8, 16, 17, null, 19, 20, 21, 22, null, 23, 24, 25, 26, 27], function (offset) {
 		if (offset === null) {
-			return;
+			return '';
 		}
 
 		return String.fromCharCode(finalStart + offset);
