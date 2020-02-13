@@ -2687,7 +2687,8 @@ http://www.opensource.org/licenses/mit-license.php
 			base.showSet();
 		},
 		sign: function (base) {
-			if (/^[+-]?\d*\.?\d*$/.test(base.getValue())) {
+			var signRegex = base.decimal ? /^[+-]?\d*\.?\d*$/ : /^[+-]?\d*,?\d*$/;
+			if (signRegex.test(base.getValue())) {
 				var caret,
 					p = $keyboard.caret(base.$preview),
 					val = base.getValue(),
