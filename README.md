@@ -147,6 +147,21 @@ Wiki: [Home](https://github.com/Mottie/Keyboard/wiki/Home) | [FAQ](https://githu
 
 Only the latest changes will be shown below, see the [wiki log](https://github.com/Mottie/Keyboard/wiki/Log) to view older versions.
 
+### Version 1.30.2 (2020-05-11)
+
+* Core
+  * Drop input type conversion from number to text.
+  * Throw error on non-supported input types. Fixes [issue #754](https://github.com/Mottie/Keyboard/issues/754) - This is a breaking change since before the library would convert number & email types to a text type input.
+  * Fix input type detection. See [issue #754](https://github.com/Mottie/Keyboard/issues/754).
+  * Fix destroyed keyboard detection.
+  * Update sign regex based on decimal setting. See [issue #771](https://github.com/Mottie/Keyboard/issues/771).
+* Layout
+  * Updated multiple layouts: Oriya, Tamil, Telugu, Malayalam, Hindi, Kannada, Bengali, Gujarati, Marathi, Nepali, Punjabi & Urdu; all thanks to [durga598](https://github.com/durga598)!
+* Language
+  * Fix French translation. Closes [issue #781](https://github.com/Mottie/Keyboard/issues/781) 
+* Docs
+  * Fix first layouts demo.
+
 ### Version 1.30.1 (2019-06-24)
 
 * Core:
@@ -160,22 +175,3 @@ Only the latest changes will be shown below, see the [wiki log](https://github.c
   * Add Czech translation. See [PR #742](https://github.com/Mottie/Keyboard/pull/742); thanks [@xmorave2](https://github.com/xmorave2)!
 * Meta:
   * Updated Qunit & jQuery migrate.
-
-### Version 1.29.0 &ndash; 1.29.1 (2019-05-02)
-
-* Core:
-  * Update to work with jQuery v3.4+.
-  * Remove focus binding on destroy.
-* Extensions:
-  * Updated navigation, scramble & typing extensions to work with jQuery 3.4+.
-* Docs:
-  * Update jQuery & UI (using slim & custom jQuery UI).
-
-### Version 1.28.9 (2019-03-09)
-
-* Core:
-  * Prevent overriding modified regex. Only if no language definition regex exists. See [issue #731](https://github.com/Mottie/Keyboard/issues/731).
-  * Add `base.isTextArea` & `base.isInput`; closes [pull #727](https://github.com/Mottie/Keyboard/pull/727); thanks [@DawidSu](https://github.com/DawidSu)
-* Language:
-  * Add untranslated Czech language file. See [issue #731](https://github.com/Mottie/Keyboard/issues/731).
-  * Update layouts dist (missing Syriac files).

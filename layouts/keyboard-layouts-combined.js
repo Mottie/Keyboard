@@ -2375,7 +2375,7 @@ jQuery.keyboard.language.fr = {
 	display : {
 		'a'      : '\u2714:Valider (Shift+Enter)', // check mark - same action as accept
 		'accept' : 'Valider:Valider (Shift+Enter)',
-		'alt'    : 'AltGr:Charact\u00e8re alternatif',
+		'alt'    : 'AltGr:Caract\u00e8re alternatif',
 		'b'      : '\u2190:Suppr arri\u00e8re', // Left arrow (same as &larr;)
 		'bksp'   : '\u2190Suppr:Suppr arri\u00e8re',
 		'c'      : '\u2716:Annuler', // big X, close - same action as cancel

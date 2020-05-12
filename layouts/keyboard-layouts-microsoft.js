@@ -379,14 +379,14 @@ jQuery.keyboard.layouts['ms-Bengali'] = {
 		"1 2 3 4 5 6 7 8 9 0 - \u09c3 {bksp}",
 		"{tab} \u09cc \u09c8 \u09be \u09c0 \u09c2 \u09ac \u09b9 \u0997 \u09a6 \u099c \u09a1 \u09bc",
 		"\u09cb \u09c7 \u09cd \u09bf \u09c1 \u09aa \u09b0 \u0995 \u09a4 \u099a \u099f {enter}",
-		"{shift} \u0982 \u09ae \u09a8 \u09ac \u09b2 \u09b8 , . / {shift}",
+		"{shift} \u0982 \u09ae \u09a8 \u09ac \u09b2 \u09b8 , . \u09af {shift}",
 		"{accept} {alt} {space} {alt} {cancel}"
 	],
 	"shift" : [
 		"{empty} {empty} \u09cd\u09b0 \u09b0\u09cd \u099c\u09cd\u09b0 \u09a4\u09cd\u09b7 \u0995\u09cd\u09b0 \u09b6\u09cd\u09b0 ( ) \u0983 \u098b {bksp}",
 		"{tab} \u0994 \u0990 \u0986 \u0988 \u098a \u09ad \u0999 \u0998 \u09a7 \u099d \u09a2 \u099e",
 		"\u0993 \u098f \u0985 \u0987 \u0989 \u09ab {empty} \u0996 \u09a5 \u099b \u09a0 {enter}",
-		"{shift} \u0981 \u09a3 {empty} {empty} {empty} \u09b6 \u09b7 { / {shift}",
+		"{shift} \u0981 \u09a3 {empty} {empty} {empty} \u09b6 \u09b7 { \u09df {shift}",
 		"{accept} {alt} {space} {alt} {cancel}"
 	],
 	"alt" : [
@@ -415,14 +415,14 @@ jQuery.keyboard.layouts['ms-Bengali - INSCRIPT (Legacy)'] = {
 		"\u09e7 \u09e8 \u09e9 \u09ea \u09eb \u09ec \u09ed \u09ee \u09ef \u09e6 - \u09c3 {bksp}",
 		"{tab} \u09cc \u09c8 \u09be \u09c0 \u09c2 \u09ac \u09b9 \u0997 \u09a6 \u099c \u09a1 \u09bc",
 		"\u09cb \u09c7 \u09cd \u09bf \u09c1 \u09aa \u09b0 \u0995 \u09a4 \u099a \u099f {enter}",
-		"{shift} \u0982 \u09ae \u09a8 \u09ac \u09b2 \u09b8 , . / {shift}",
+		"{shift} \u0982 \u09ae \u09a8 \u09ac \u09b2 \u09b8 , . \u09df {shift}",
 		"{accept} {space} {cancel}"
 	],
 	"shift" : [
 		"! @ {empty} \u09b0\u09cd \u099c\u09cd\u099e \u09a4\u09cd\u09b0 \u0995\u09cd\u09b7 \u09b6\u09cd\u09b0 ( ) \u0983 \u098b {bksp}",
 		"{tab} \u0994 \u0990 \u0986 \u0988 \u098a \u09ad \u0999 \u0998 \u09a7 \u099d \u09a2 \u099e",
 		"\u0993 \u098f \u0985 \u0987 \u0989 \u09ab {empty} \u0996 \u09a5 \u099b \u09a0 {enter}",
-		"{shift} \u0981 \u09a3 {empty} {empty} {empty} \u09b6 \u09b7 {empty} / {shift}",
+		"{shift} \u0981 \u09a3 {empty} {empty} {empty} \u09b6 \u09b7 {empty} \u09af {shift}",
 		"{accept} {space} {cancel}"
 	]
 };
@@ -1472,7 +1472,7 @@ jQuery.keyboard.layouts['ms-Gujarati'] = {
 		"{empty} 1 2 3 4 5 6 7 8 9 0 - \u0ac3 {bksp}",
 		"{tab} \u0acc \u0ac8 \u0abe \u0ac0 \u0ac2 \u0aac \u0ab9 \u0a97 \u0aa6 \u0a9c \u0aa1 \u0abc \u0ac9",
 		"\u0acb \u0ac7 \u0acd \u0abf \u0ac1 \u0aaa \u0ab0 \u0a95 \u0aa4 \u0a9a \u0a9f {enter}",
-		"{shift} \u0a82 \u0aae \u0aa8 \u0ab5 \u0ab2 \u0ab8 , . / {shift}",
+		"{shift} \u0a82 \u0aae \u0aa8 \u0ab5 \u0ab2 \u0ab8 , . \u0aaf {shift}",
 		"{accept} {alt} {space} {alt} {cancel}"
 	],
 	"shift" : [
@@ -1603,21 +1603,21 @@ jQuery.keyboard.layouts['ms-Hindi Traditional'] = {
 		"{empty} 1 2 3 4 5 6 7 8 9 0 - \u0943 {bksp}",
 		"{tab} \u094c \u0948 \u093e \u0940 \u0942 \u092c \u0939 \u0917 \u0926 \u091c \u0921 \u093c \u0949",
 		"\u094b \u0947 \u094d \u093f \u0941 \u092a \u0930 \u0915 \u0924 \u091a \u091f {enter}",
-		"{shift} \u0949 \u0902 \u092e \u0928 \u0935 \u0932 \u0938 , . / {shift}",
+		"{shift} \u0949 \u0902 \u092e \u0928 \u0935 \u0932 \u0938 , . \u092f {shift}",
 		"{accept} {alt} {space} {alt} {cancel}"
 	],
 	"shift" : [
 		"{empty} \u090d \u0945 \u094d\u0930 \u0930\u094d \u091c\u094d\u091e \u0924\u094d\u0930 \u0915\u094d\u0937 \u0936\u094d\u0930 ( ) \u0903 \u090b {bksp}",
 		"{tab} \u0914 \u0910 \u0906 \u0908 \u090a \u092d \u0919 \u0918 \u0927 \u091d \u0922 \u091e \u0911",
 		"\u0913 \u090f \u0905 \u0907 \u0909 \u092b \u0931 \u0916 \u0925 \u091b \u0920 {enter}",
-		"{shift} \u0911 \u0901 \u0923 {empty} {empty} \u0933 \u0936 \u0937 \u0964 / {shift}",
+		"{shift} \u0911 \u0901 \u0923 {empty} {empty} \u0933 \u0936 \u0937 \u0964 \u095f {shift}",
 		"{accept} {alt} {space} {alt} {cancel}"
 	],
 	"alt" : [
 		"` \u0967 \u0968 \u0969 \u096a \u096b \u096c \u096d \u096e \u096f \u0966 - = {bksp}",
 		"{tab} {empty} {empty} {empty} {empty} {empty} {empty} {empty} {empty} {empty} {empty} [ ] \\",
 		"{empty} {empty} {empty} {empty} {empty} {empty} {empty} {empty} {empty} ; ' {enter}",
-		"{shift} {empty} {empty} {empty} {empty} {empty} {empty} {empty} , . {empty} {shift}",
+		"{shift} {empty} {empty} {empty} {empty} {empty} {empty} {empty} , . / {shift}",
 		"{accept} {alt} {space} {alt} {cancel}"
 	],
 	"alt-shift" : [
@@ -2021,7 +2021,7 @@ jQuery.keyboard.layouts['ms-Kannada'] = {
 		"\u0cca 1 2 3 4 5 6 7 8 9 0 - \u0cc3 {bksp}",
 		"{tab} \u0ccc \u0cc8 \u0cbe \u0cc0 \u0cc2 \u0cac \u0cb9 \u0c97 \u0ca6 \u0c9c \u0ca1 {empty}",
 		"\u0ccb \u0cc7 \u0ccd \u0cbf \u0cc1 \u0caa \u0cb0 \u0c95 \u0ca4 \u0c9a \u0c9f {enter}",
-		"{shift} \u0cc6 \u0c82 \u0cae \u0ca8 \u0cb5 \u0cb2 \u0cb8 , . / {shift}",
+		"{shift} \u0cc6 \u0c82 \u0cae \u0ca8 \u0cb5 \u0cb2 \u0cb8 , . \u0caf {shift}",
 		"{accept} {alt} {space} {alt} {cancel}"
 	],
 	"shift" : [
@@ -2462,7 +2462,7 @@ jQuery.keyboard.layouts['ms-Malayalam'] = {
 		"\u0d4a 1 2 3 4 5 6 7 8 9 0 - \u0d43 {bksp}",
 		"{tab} \u0d4c \u0d48 \u0d3e \u0d40 \u0d42 \u0d2c \u0d39 \u0d17 \u0d26 \u0d1c \u0d21 {empty}",
 		"\u0d4b \u0d47 \u0d4d \u0d3f \u0d41 \u0d2a \u0d30 \u0d15 \u0d24 \u0d1a \u0d1f {enter}",
-		"{shift} \u0d46 \u0d02 \u0d2e \u0d28 \u0d35 \u0d32 \u0d38 , . / {shift}",
+		"{shift} \u0d46 \u0d02 \u0d2e \u0d28 \u0d35 \u0d32 \u0d38 , . \u0d2f {shift}",
 		"{accept} {alt} {space} {alt} {cancel}"
 	],
 	"shift" : [
@@ -2592,14 +2592,14 @@ jQuery.keyboard.layouts['ms-Marathi'] = {
 		"{empty} \u0967 \u0968 \u0969 \u096a \u096b \u096c \u096d \u096e \u096f \u0966 - \u0943 {bksp}",
 		"{tab} \u094c \u0948 \u093e \u0940 \u0942 \u092c \u0939 \u0917 \u0926 \u091c \u0921 \u093c \u0949",
 		"\u094b \u0947 \u094d \u093f \u0941 \u092a \u0930 \u0915 \u0924 \u091a \u091f {enter}",
-		"{shift} \u0949 \u0902 \u092e \u0928 \u0935 \u0932 \u0938 , . / {shift}",
+		"{shift} \u0949 \u0902 \u092e \u0928 \u0935 \u0932 \u0938 , . \u092f {shift}",
 		"{accept} {alt} {space} {alt} {cancel}"
 	],
 	"shift" : [
 		"{empty} \u090d \u0945 \u094d\u0930 \u0930\u094d \u091c\u094d\u091e \u0924\u094d\u0930 \u0915\u094d\u0937 \u0936\u094d\u0930 ( ) \u0903 \u090b {bksp}",
 		"{tab} \u0914 \u0910 \u0906 \u0908 \u090a \u092d \u0919 \u0918 \u0927 \u091d \u0922 \u091e \u0911",
 		"\u0913 \u090f \u0905 \u0907 \u0909 \u092b \u0931 \u0916 \u0925 \u091b \u0920 {enter}",
-		"{shift} \u0911 \u0901 \u0923 {empty} {empty} \u0933 \u0936 \u0937 \u0964 / {shift}",
+		"{shift} \u0911 \u0901 \u0923 {empty} {empty} \u0933 \u0936 \u0937 \u0964 \u095f {shift}",
 		"{accept} {alt} {space} {alt} {cancel}"
 	],
 	"alt" : [
@@ -2613,7 +2613,7 @@ jQuery.keyboard.layouts['ms-Marathi'] = {
 		"~ ! @ # $ % ^ & * ( ) _ + {bksp}",
 		"{tab} {empty} {empty} {empty} {empty} {empty} {empty} {empty} {empty} {empty} {empty} { } |",
 		"{empty} {empty} {empty} {empty} {empty} {empty} {empty} {empty} {empty} : \" {enter}",
-		"{shift} {empty} \u093d \u0950 {empty} {empty} {empty} {empty} < > {empty} {shift}",
+		"{shift} {empty} \u093d \u0950 {empty} {empty} {empty} {empty} < > \u003f {shift}",
 		"{accept} {alt} {space} {alt} {cancel}"
 	]
 };
@@ -2672,7 +2672,7 @@ jQuery.keyboard.layouts['ms-Nepali'] = {
 		"\u091e \u091c\u094d\u091e \u0918 \u0919 \u091d \u091b \u091f \u0920 \u0921 \u0922 \u0923 ( . {bksp}",
 		"{tab} \u0924\u094d\u0930 \u0927 \u092d \u091a \u0924 \u0925 \u0917 \u0937 \u092f \u0909 \u0943 \u0947 \u094d\u0930",
 		"\u092c \u0915 \u092e \u093e \u0928 \u091c \u0935 \u092a \u093f \u0938 \u0941 {enter}",
-		"{shift} \u0936 \u0939 \u0905 \u0916 \u0926 \u0932 \u092b , \u0964 / {shift}",
+		"{shift} \u0936 \u0939 \u0905 \u0916 \u0926 \u0932 \u092b , \u0964 \u0930 {shift}",
 		"{accept} {alt} {space} {alt} {cancel}"
 	],
 	"shift" : [
@@ -2763,31 +2763,31 @@ jQuery.keyboard.layouts['ms-Oriya'] = {
 	"name" : "ms-Oriya",
 	"lang" : ["or"],
 	"normal" : [
-		"1 2 3 4 5 6 7 8 9 0 0 \u0b43 {bksp}",
+		"1 2 3 4 5 6 7 8 9 0 \u002d \u0b43 {bksp}",
 		"{tab} \u0b4c \u0b48 \u0b3e \u0b40 \u0b42 \u0b2c \u0b39 \u0b17 \u0b26 \u0b1c \u0b21 \u0b3c",
 		"\u0b4b \u0b47 \u0b4d \u0b3f \u0b41 \u0b2a \u0b30 \u0b15 \u0b24 \u0b1a \u0b1f {enter}",
-		"{shift} \u0b5f \u0b02 \u0b2e \u0b28 \u0b2c \u0b32 \u0b38 , . / {shift}",
+		"{shift} \u0b5f \u0b02 \u0b2e \u0b28 \u0b2c \u0b32 \u0b38 , \u0964 \u0b2f {shift}",
 		"{accept} {alt} {space} {alt} {cancel}"
 	],
 	"shift" : [
 		"{empty} {empty} \u0b4d\u0b30 \u0b30\u0b4d \u0b1c\u0b4d\u0b1e \u0b24\u0b4d\u0b30 \u0b15\u0b4d\u0b37 \u0b36\u0b4d\u0b30 ( ) \u0b03 \u0b0b {bksp}",
 		"{tab} \u0b14 \u0b10 \u0b06 \u0b08 \u0b0a \u0b2d \u0b19 \u0b18 \u0b27 \u0b1d \u0b22 \u0b1e",
 		"\u0b13 \u0b0f \u0b05 \u0b07 \u0b09 \u0b2b {empty} \u0b16 \u0b25 \u0b1b \u0b20 {enter}",
-		"{shift} \u0b71 \u0b01 \u0b23 {empty} {empty} \u0b33 \u0b36 \u0b37 {empty} / {shift}",
+		"{shift} \u0b71 \u0b01 \u0b23 {empty} {empty} \u0b33 \u0b36 \u0b37 {empty} \u0b3c {shift}",
 		"{accept} {alt} {space} {alt} {cancel}"
 	],
 	"alt" : [
-		"\u0b67 \u0b68 \u0b69 \u0b6a \u0b6b \u0b6c \u0b6d \u0b6e \u0b6f \u0b66 {empty} {empty} {bksp}",
-		"{tab} {empty} {empty} {empty} {empty} {empty} {empty} {empty} {empty} {empty} {empty} \u0b5c {empty}",
-		"{empty} {empty} {empty} {empty} {empty} {empty} {empty} {empty} {empty} {empty} {empty} {enter}",
-		"{shift} {empty} {empty} {empty} {empty} {empty} {empty} {empty} {empty} {empty} {empty} {shift}",
+		"\u0b67 \u0b68 \u0b69 \u0b6a \u0b6b \u0b6c \u0b6d \u0b6e \u0b6f \u0b66 {empty} \u0b44 {bksp}",
+		"{tab} {empty} {empty} {empty} \u0b63 {empty} {empty} {empty} {empty} {empty} {empty} \u0b5c {empty}",
+		"{empty} {empty} {empty} \u0b62 {empty} {empty} {empty} {empty} {empty} {empty} {empty} {enter}",
+		"{shift} {empty} {empty} \u0b70 {empty} {empty} \u0b35 {empty} {empty} \u0965 {empty} {shift}",
 		"{accept} {alt} {space} {alt} {cancel}"
 	],
 	"alt-shift" : [
 		"{empty} {empty} {empty} {empty} {empty} {empty} {empty} {empty} {empty} {empty} {empty} \u0b60 {bksp}",
 		"{tab} {empty} {empty} {empty} \u0b61 {empty} {empty} {empty} {empty} {empty} {empty} \u0b5d {empty}",
 		"{empty} {empty} {empty} \u0b0c {empty} {empty} {empty} {empty} {empty} {empty} {empty} {enter}",
-		"{shift} {empty} {empty} {empty} {empty} {empty} {empty} {empty} {empty} \u0b3d {empty} {shift}",
+		"{shift} {empty} {empty} {empty} {empty} {empty} {empty} {empty} {empty} \u0b3d \u0b5f {shift}",
 		"{accept} {alt} {space} {alt} {cancel}"
 	]
 };
@@ -2976,7 +2976,7 @@ jQuery.keyboard.layouts['ms-Punjabi'] = {
 		"{empty} 1 2 3 4 5 6 7 8 9 0 - {empty} {bksp}",
 		"{tab} \u0a4c \u0a48 \u0a3e \u0a40 \u0a42 \u0a2c \u0a39 \u0a17 \u0a26 \u0a1c \u0a21 \u0a3c",
 		"\u0a4b \u0a47 \u0a4d \u0a3f \u0a41 \u0a2a \u0a30 \u0a15 \u0a24 \u0a1a \u0a1f {enter}",
-		"{shift} \u0a70 \u0a2e \u0a28 \u0a35 \u0a32 \u0a38 , . / {shift}",
+		"{shift} \u0a70 \u0a2e \u0a28 \u0a35 \u0a32 \u0a38 , . \u0a2f {shift}",
 		"{accept} {alt} {space} {alt} {cancel}"
 	],
 	"shift" : [
@@ -2996,7 +2996,7 @@ jQuery.keyboard.layouts['ms-Punjabi'] = {
 	"alt-shift" : [
 		"{empty} {empty} {empty} {empty} {empty} {empty} {empty} {empty} {empty} {empty} {empty} {empty} {empty} {bksp}",
 		"{tab} {empty} {empty} {empty} {empty} {empty} {empty} {empty} {empty} {empty} {empty} {empty} {empty}",
-		"{empty} {empty} {empty} {empty} {empty} {empty} {empty} {empty} {empty} {empty} {empty} {enter}",
+		"{empty} {empty} {empty} \u0a72 \u0a73 {empty} {empty} {empty} {empty} {empty} {empty} {enter}",
 		"{shift} \u0a74 {empty} {empty} {empty} {empty} {empty} {empty} {empty} {empty} {shift}",
 		"{accept} {alt} {space} {alt} {cancel}"
 	]
@@ -3867,7 +3867,7 @@ jQuery.keyboard.layouts['ms-Tamil'] = {
 		"\u0bca 1 2 3 4 5 6 7 8 9 0 - {empty} {bksp}",
 		"{tab} \u0bcc \u0bc8 \u0bbe \u0bc0 \u0bc2 \u0baa \u0bb9 \u0b95 \u0ba4 \u0b9c \u0b9f \u0b9e",
 		"\u0bcb \u0bc7 \u0bcd \u0bbf \u0bc1 \u0baa \u0bb0 \u0b95 \u0ba4 \u0b9a \u0b9f {enter}",
-		"{shift} \u0bc6 {empty} \u0bae \u0ba8 \u0bb5 \u0bb2 \u0bb8 , . / {shift}",
+		"{shift} \u0bc6 {empty} \u0bae \u0ba8 \u0bb5 \u0bb2 \u0bb8 , . \u0baf {shift}",
 		"{accept} {alt} {space} {alt} {cancel}"
 	],
 	"shift" : [
@@ -3932,7 +3932,7 @@ jQuery.keyboard.layouts['ms-Telugu'] = {
 		"\u0c4a 1 2 3 4 5 6 7 8 9 0 - \u0c43 {bksp}",
 		"{tab} \u0c4c \u0c48 \u0c3e \u0c40 \u0c42 \u0c2c \u0c39 \u0c17 \u0c26 \u0c1c \u0c21 {empty}",
 		"\u0c4b \u0c47 \u0c4d \u0c3f \u0c41 \u0c2a \u0c30 \u0c15 \u0c24 \u0c1a \u0c1f {enter}",
-		"{shift} \u0c46 \u0c02 \u0c2e \u0c28 \u0c35 \u0c32 \u0c38 , . / {shift}",
+		"{shift} \u0c46 \u0c02 \u0c2e \u0c28 \u0c35 \u0c32 \u0c38 , . \u0c2f {shift}",
 		"{accept} {alt} {space} {alt} {cancel}"
 	],
 	"shift" : [
@@ -4337,7 +4337,7 @@ jQuery.keyboard.layouts['ms-Urdu'] = {
 		"~ ! @ # $ \u066a ^ \u06d6 \u066d ) ( _ + {bksp}",
 		"{tab} \u0638 \u0636 \u0630 \u0688 \u062b \u0651 \u06c3 \u0640 \u0686 \u062e } { |",
 		"\u0698 \u0632 \u0691 \u06ba \u06c2 \u0621 \u0622 \u06af \u064a : \" {enter}",
-		"{shift} | {ZWJ} {ZWNJ} \u06d3 {LRM} \u0624 \u0626 {RLM} > < / {shift}",
+		"{shift} | {ZWJ} {ZWNJ} \u06d3 {LRM} \u0624 \u0626 {RLM} > < \u061f {shift}",
 		"{accept} {space} {cancel}"
 	]
 };
@@ -5046,7 +5046,7 @@ jQuery.keyboard.language.fr = {
 	display : {
 		'a'      : '\u2714:Valider (Shift+Enter)', // check mark - same action as accept
 		'accept' : 'Valider:Valider (Shift+Enter)',
-		'alt'    : 'AltGr:Charact\u00e8re alternatif',
+		'alt'    : 'AltGr:Caract\u00e8re alternatif',
 		'b'      : '\u2190:Suppr arri\u00e8re', // Left arrow (same as &larr;)
 		'bksp'   : '\u2190Suppr:Suppr arri\u00e8re',
 		'c'      : '\u2716:Annuler', // big X, close - same action as cancel
