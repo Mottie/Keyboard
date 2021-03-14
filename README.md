@@ -147,6 +147,10 @@ Wiki: [Home](https://github.com/Mottie/Keyboard/wiki/Home) | [FAQ](https://githu
 
 Only the latest changes will be shown below, see the [wiki log](https://github.com/Mottie/Keyboard/wiki/Log) to view older versions.
 
+### Version 1.30.3 (2021-03-14)
+
+* Caret: Fix caret positioning in textarea
+
 ### Version 1.30.2 (2020-05-11)
 
 * Core

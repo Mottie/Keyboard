@@ -4,7 +4,7 @@
 ██  ██ ██  ██   ██  ██ ██  ██   ██     ██ ██ ██ ██  ██ ██  ██ ██ ██▀▀   ▀▀▀▀██
 █████▀ ▀████▀   ██  ██ ▀████▀   ██     ██ ██ ██ ▀████▀ █████▀ ██ ██     █████▀
 */
-/*! jQuery UI Virtual Keyboard (1.30.2) - ALL Extensions + Mousewheel */
+/*! jQuery UI Virtual Keyboard (1.30.3) - ALL Extensions + Mousewheel */
 /*! jQuery UI Virtual Keyboard Alt Key Popup v2.0.0 *//*
  * for Keyboard v1.18+ only (2018-04-19)
  *
@@ -649,7 +649,7 @@ $.fn.addAutocomplete = function(options) {
 
 }));
 
-/*! jQuery UI Virtual Keyboard Virtual Caret v1.1.5 (beta) *//*
+/*! jQuery UI Virtual Keyboard Virtual Caret v1.1.6 (beta) *//*
  * for Keyboard v1.18+ only (2/20/2016)
  * modified from https://github.com/component/textarea-caret-position
  *
@@ -803,14 +803,12 @@ $.fn.addAutocomplete = function(options) {
 				span.textContent = element.value.substring( position ) || '\u200b';
 				div.appendChild( span );
 
-				offset = $(span).position();
-
 				// adjust for 2em added to width moves caret, use half; see #436
 				pos = style.textAlign === 'center' ? fontWidth : 0;
 
 				base.caretPos = {
-					top: offset.top + parseInt( computed.borderTopWidth, 10 ) + o.offsetY,
-					left: offset.left + parseInt( computed.borderLeftWidth, 10 ) + o.offsetX - pos
+					top: span.offsetTop + parseInt( computed.borderTopWidth, 10 ) + o.offsetY,
+					left: span.offsetLeft + parseInt( computed.borderLeftWidth, 10 ) + o.offsetX
 				};
 
 				// make caret height = font-size + any margin-top x2 added by the css
