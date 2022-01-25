@@ -1,4 +1,4 @@
-/*! jQuery UI Virtual Keyboard v1.30.3 *//*
+/*! jQuery UI Virtual Keyboard v1.30.4 *//*
 Author: Jeremy Satterfield
 Maintained: Rob Garrison (Mottie on github)
 Licensed under the MIT License
@@ -42,7 +42,7 @@ http://www.opensource.org/licenses/mit-license.php
 	var $keyboard = $.keyboard = function (el, options) {
 	var o, base = this;
 
-	base.version = '1.30.3';
+	base.version = '1.30.4';
 
 	// Access to jQuery and DOM versions of element
 	base.$el = $(el);
@@ -3168,6 +3168,7 @@ http://www.opensource.org/licenses/mit-license.php
 
 	$keyboard.checkCaretSupport = function () {
 		if (typeof $keyboard.checkCaret !== 'boolean') {
+			var elWithFocus = document.activeElement;
 			// Check if caret position is saved when input is hidden or loses focus
 			// (*cough* all versions of IE and I think Opera has/had an issue as well
 			var $temp = $('<div style="height:0px;width:0px;overflow:hidden;position:fixed;top:0;left:-100px;">' +
@@ -3176,6 +3177,9 @@ http://www.opensource.org/licenses/mit-license.php
 			// Also save caret position of the input if it is locked
 			$keyboard.checkCaret = $keyboard.caret($temp.find('input').hide().show()).start !== 3;
 			$temp.remove();
+			if (elWithFocus && elWithFocus.focus) {
+				elWithFocus.focus();
+			}
 		}
 		return $keyboard.checkCaret;
 	};
