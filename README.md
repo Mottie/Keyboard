@@ -147,6 +147,10 @@ Wiki: [Home](https://github.com/Mottie/Keyboard/wiki/Home) | [FAQ](https://githu
 
 Only the latest changes will be shown below, see the [wiki log](https://github.com/Mottie/Keyboard/wiki/Log) to view older versions.
 
+### Version 1.30.4 (2022-01-24)
+
+* Save & restore focus on init. Closes [issue #811](https://github.com/Mottie/Keyboard/issues/811)
+
 ### Version 1.30.3 (2021-03-14)
 
 * Caret: Fix caret positioning in textarea
@@ -165,17 +169,3 @@ Only the latest changes will be shown below, see the [wiki log](https://github.c
   * Fix French translation. Closes [issue #781](https://github.com/Mottie/Keyboard/issues/781) 
 * Docs
   * Fix first layouts demo.
-
-### Version 1.30.1 (2019-06-24)
-
-* Core:
-  * Fix focus when keyboard is set as current. Fixes [issue #744](https://github.com/Mottie/Keyboard/issues/744).
-
-### Version 1.30.0 (2019-06-18)
-
-* Core:
-  * The `display` option for action keys will now allow html (including colons), e.g. `<span style="color:red">Panic!</span>`.
-* Language:
-  * Add Czech translation. See [PR #742](https://github.com/Mottie/Keyboard/pull/742); thanks [@xmorave2](https://github.com/xmorave2)!
-* Meta:
-  * Updated Qunit & jQuery migrate.
